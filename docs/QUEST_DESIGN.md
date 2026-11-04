@@ -9,7 +9,7 @@ Memórias (álbum): meta ≈ 52.
 | ID | Tipo | Nome | Objetivos | Recompensa | Estado |
 |---|---|---|---|---|---|
 | pia-m1 | P | O encontro marcado | celular · roupa · óculos · colar · espelho · sala · porta · mãe · pai · sair | mem-pia-01 | ✅ |
-| pia-m2 | P | A hamburgueria | ir até a hamburgueria ✅ · fazer o pedido (minigame) · conversar no lanche | mem-pia-02 | 🟡 |
+| pia-m2 | P | A Rota 66 | esperar o Uber na calçada ✅ · trajeto de Uber · chegar na Rota 66 · fazer o pedido (minigame) · conversar no lanche | mem-pia-02 | 🟡 |
 | pia-m3 | P | O parque e a chuva | caminhar pelo parque · a chuva começa · achar abrigo · conversa · **primeiro beijo** | mem-pia-03 | ⏳ |
 | pia-s1 | S | Florzinhas do caminho | colher 3 flores · entregar à Dona Cida | flor/decoração | ✅ |
 | pia-s2 | S | O gato da rua | encontrar o gato 3 vezes e dar petisco | mem-pia-04 | ⏳ |

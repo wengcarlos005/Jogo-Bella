@@ -101,7 +101,9 @@ Só a roupa casual da Bella tem os óculos rosados.
 ### LOTE 2 — Piabetá completo (Fase 3)
 | ID | Arquivo | Categoria | Dimensões | Estado |
 |---|---|---|---|---|
-| MAP-005 | `maps/piabeta-hamburgueria-bg.png` | Cenário interior | 320×240 | planejado |
+| MAP-005 | `maps/piabeta-rota66-bg.png` | Interior da Rota 66 (diner americano) | 3:2 | planejado |
+| MAP-008 | `maps/piabeta-rota66-fora-bg.png` | Fachada da Rota 66 à noite (chegada de Uber) | 3:2 | planejado |
+| OBJ-020 | `objects/uber-car.png` | Carro do Uber (vista de cima/lado, 4 direções) | — | planejado |
 | MAP-006 | `maps/piabeta-parque-bg.png` | Cenário (parque arborizado) | 640×480 | planejado |
 | MAP-007 | `maps/piabeta-parque-fg.png` | Copas das árvores | 640×480 | planejado |
 | OBJ-001..010 | `objects/burger-*.png` | Ingredientes do minigame (pão, carne, queijo, alface, tomate, cebola, bacon, molho, picles, pão de cima) | 32×16 cada | planejado |

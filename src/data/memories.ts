@@ -31,9 +31,9 @@ export const MEMORIES: MemoryDef[] = [
   {
     id: 'mem-pia-02',
     region: 'piabeta',
-    title: 'A hamburgueria',
+    title: `A ${PERSONAL.places.hamburgueria}`,
     year: 'O começo',
-    text: '[Lembrança do primeiro lanche juntos — a definir na Fase 3]',
+    text: `De Uber até a ${PERSONAL.places.hamburgueria}, o primeiro lanche juntos. [Texto a definir na Fase 3]`,
     date: PERSONAL.dates.firstDate,
     image: 'memory-pia-02',
   },

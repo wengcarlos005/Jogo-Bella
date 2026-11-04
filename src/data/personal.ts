@@ -26,6 +26,12 @@ export const PERSONAL = {
     anniversary: '',
   },
 
+  /** Lugares reais da história. */
+  places: {
+    /** Hamburgueria do primeiro encontro (foram de Uber). */
+    hamburgueria: 'Rota 66',
+  },
+
   /** Mensagem que Weng manda no celular no início do jogo. */
   openingText: 'Tô saindo de casa! Daqui a pouco chego aí 😊',
 

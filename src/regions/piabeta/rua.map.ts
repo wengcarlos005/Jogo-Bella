@@ -9,6 +9,8 @@ import type { Script } from '@/core/script';
  * Retângulo medido no cenário ORIGINAL (art-source/maps/piabeta-rua.png,
  * 1619x971). 48 px da imagem = 1 tile (16 px lógicos).
  */
+const ROTA = PERSONAL.places.hamburgueria;
+
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({
   x: x0 / 48,
   y: y0 / 48,
@@ -54,16 +56,34 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', `Ufa. Acho que o ${PERSONAL.bellaStepdad.name} gostou de mim. Acho.`);
       await ctx.say('bella', 'Ele disse "bom rapaz". Isso, vindo dele, é praticamente um abraço.');
       await ctx.emote('weng', 'heart');
-      await ctx.say('weng', 'Então bora! A hamburgueria fica descendo a rua, à direita.');
+      await ctx.say('weng', `Então bora! Já pedi um Uber pra ${ROTA}. Vamos esperar ali na calçada.`);
     }
   },
 
-  async 'chegou-hamburgueria'(ctx) {
-    ctx.objective('pia-m2', 'caminho');
-    await ctx.say('weng', 'Chegamos! Dizem que o hambúrguer daqui é o melhor de Piabetá.');
-    await ctx.say('bella', 'Dizem quem?');
-    await ctx.say('weng', 'Eu. Eu digo. Agora há pouco.');
-    await ctx.narrate('A hamburgueria (com o minigame de montar pedidos) chega na Fase 3 do desenvolvimento.');
+  async uber(ctx) {
+    ctx.face('weng', 'bella');
+    await ctx.say('weng', 'O app diz que o Uber chega em três minutos.');
+    await ctx.say('bella', 'Três minutos de Uber é tipo dez na vida real.');
+    const c = await ctx.choose('weng', 'Então... a gente tem uns dez minutos.', ['"Você já foi na Rota 66?"', '"Tô com uma fome..."', 'Ficar em silêncio, sorrindo']);
+    if (c === 0) {
+      await ctx.say('weng', 'Já! O hambúrguer de lá é o melhor que eu conheço. Por isso escolhi. Quis acertar logo de primeira.');
+      await ctx.emote('bella', 'heart');
+    } else if (c === 1) {
+      await ctx.say('weng', 'Que bom! Porque eu pretendo pedir batata extra e fingir que é pra dividir.');
+    } else {
+      await ctx.emote('weng', 'sweat');
+      await ctx.say('weng', '...Você tá rindo de mim ou comigo?');
+      await ctx.say('bella', 'Com você. Talvez um pouquinho de você.');
+    }
+    await ctx.wait(400);
+    ctx.sfx('horn');
+    await ctx.emote('weng', 'exclaim');
+    await ctx.say('weng', 'É o nosso! Placa confere. Primeiro as damas.');
+    ctx.objective('pia-m2', 'uber');
+    await ctx.fadeOut(600);
+    await ctx.narrate(`A caminho da ${ROTA}...`);
+    await ctx.narrate(`(A chegada na ${ROTA}, com o minigame de montar o pedido, chega na Fase 3. A história para aqui por enquanto!)`);
+    await ctx.fadeIn(600);
   },
 
   async vizinha(ctx) {
@@ -98,8 +118,12 @@ const scripts: Record<string, Script> = {
   },
 
   async weng(ctx) {
-    if (ctx.questActive('pia-m2') && !ctx.objectiveDone('pia-m2', 'caminho')) {
-      await ctx.say('weng', 'É logo ali, descendo a rua. A do letreiro vermelho!');
+    if (ctx.questActive('pia-m2') && !ctx.objectiveDone('pia-m2', 'uber')) {
+      await ctx.say('weng', 'Vamos esperar o Uber ali na calçada, em frente da sua casa.');
+      return;
+    }
+    if (ctx.questActive('pia-m2')) {
+      await ctx.say('weng', `Daqui a pouco tem ${ROTA}!`);
       return;
     }
     const lines = [
@@ -114,7 +138,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'A casa da Dona Cida. Sempre cheirando a bolo. Melhor não entrar sem ser convidada.');
   },
   async letreiro(ctx) {
-    await ctx.say('bella', 'O letreiro de hambúrguer. Só de olhar já deu fome.');
+    await ctx.say('bella', `A lanchonete do bairro. Boa, mas hoje o encontro é na ${ROTA}!`);
   },
 
   async 'placa-parque'(ctx) {
@@ -202,22 +226,22 @@ export const ruaMap: MapDef = {
       rect: R(1300, 330, 1432, 350),
       toMap: 'piabeta-rua',
       toSpawn: 'from-casa',
-      blockedIf: () => 'A hamburgueria abre na Fase 3! (Em construção)',
+      blockedIf: () => `A lanchonete do bairro. Hoje o lanche é na ${ROTA}!`,
     },
     {
       rect: R(930, 0, 1010, 30),
       toMap: 'piabeta-rua',
       toSpawn: 'from-casa',
-      blockedIf: () => (QuestSystem.isDone('pia-m2') ? 'O parque chega na Fase 3! (Em construção)' : `${PERSONAL.weng.name}: "O parque fica pra depois do lanche!"`),
+      blockedIf: () => 'Uma trilha para o mato. Hoje o plano é outro!',
     },
   ],
   triggers: [
     {
-      id: 'hamburgueria',
-      rect: R(1140, 345, 1600, 455),
-      script: 'chegou-hamburgueria',
+      id: 'uber',
+      rect: R(150, 425, 620, 458), // beira da calçada (meio-fio)
+      script: 'uber',
       once: true,
-      enabledIf: () => QuestSystem.isActive('pia-m2'),
+      enabledIf: () => QuestSystem.isActive('pia-m2') && !QuestSystem.isObjectiveDone('pia-m2', 'uber'),
     },
   ],
   scripts,

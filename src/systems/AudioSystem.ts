@@ -9,7 +9,8 @@ export type Sfx =
   | 'doorbell'
   | 'menu'
   | 'quest'
-  | 'memory';
+  | 'memory'
+  | 'horn';
 
 type Note = [freq: number, dur: number, type?: OscillatorType];
 
@@ -28,6 +29,7 @@ const SYNTH: Record<Sfx, Note[]> = {
   menu: [[523, 0.05, 'triangle'], [784, 0.06, 'triangle']],
   quest: [[523, 0.1, 'triangle'], [659, 0.1, 'triangle'], [784, 0.1, 'triangle'], [1047, 0.25, 'triangle']],
   memory: [[659, 0.15, 'sine'], [784, 0.15, 'sine'], [988, 0.15, 'sine'], [1319, 0.4, 'sine']],
+  horn: [[415, 0.12, 'square'], [0.0001, 0.06, 'square'], [415, 0.22, 'square']],
 };
 
 class AudioSystemImpl {

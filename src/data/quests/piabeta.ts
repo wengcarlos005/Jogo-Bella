@@ -2,6 +2,7 @@ import type { QuestDef } from './index';
 import { PERSONAL } from '../personal';
 
 const ALE = PERSONAL.bellaStepdad.name;
+const ROTA = PERSONAL.places.hamburgueria;
 
 export const PIABETA_QUESTS: QuestDef[] = [
   {
@@ -30,11 +31,12 @@ export const PIABETA_QUESTS: QuestDef[] = [
     id: 'pia-m2',
     region: 'piabeta',
     chapter: 'Prólogo',
-    title: 'A hamburgueria',
+    title: `A ${ROTA}`,
     kind: 'principal',
-    description: 'O primeiro encontro vai ser numa hamburgueria. Siga com o Weng pela rua.',
+    description: `O primeiro encontro vai ser na ${ROTA}. O Weng chamou um Uber.`,
     objectives: [
-      { id: 'caminho', text: 'Ir até a hamburgueria', hint: 'Siga a rua para a direita.' },
+      { id: 'uber', text: 'Esperar o Uber na calçada', hint: 'Fique na calçada em frente de casa.' },
+      { id: 'chegar', text: `Chegar na ${ROTA} (em breve)`, hint: 'Disponível na Fase 3.' },
       { id: 'pedido', text: 'Fazer o pedido (em breve)', hint: 'Disponível na Fase 3.' },
     ],
   },

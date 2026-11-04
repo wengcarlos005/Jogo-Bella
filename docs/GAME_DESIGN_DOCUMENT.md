@@ -69,10 +69,10 @@ Conteúdo opcional (missões secundárias, colecionáveis 100%, decoração da c
 ## 4. Capítulos em detalhe
 
 ### Prólogo — Piabetá (40 min)
-**Mapas:** casa da Bella (interior) · rua/pracinha · hamburgueria (interior) · parque arborizado.
+**Mapas:** casa da Bella (interior) · rua/pracinha · Rota 66 (fachada + interior) · parque arborizado (perto da Rota 66).
 
 - **M1 — O encontro marcado** *(implementado)*: celular → escolher roupa → óculos → colar → espelho → sala → campainha → atender o Weng → apresentá-lo à mãe e ao padrasto (escolhas com humor) → sair juntos. Memória: *O encontro marcado*.
-- **M2 — A hamburgueria**: caminhar pela rua com o Weng; **minigame de montagem de hambúrguer** (pedido por ficha, ingredientes na ordem, tempo folgado, nota de 1–3 estrelas); conversa nervosa de primeiro encontro com escolhas.
+- **M2 — A Rota 66**: o Weng chama um **Uber** (fato real); conversa na calçada enquanto esperam (escolhas) → buzina → embarque *(implementado até aqui)* → **cena do trajeto de Uber** → chegada na fachada da **Rota 66** (hamburgueria com tema de estrada americana/diner) → **minigame de montagem de hambúrguer** (pedido por ficha, ingredientes na ordem, tempo folgado, nota de 1–3 estrelas) → conversa nervosa de primeiro encontro com escolhas. A lanchonete pintada na rua da Bella é só a lanchonete do bairro.
 - **M3 — O parque e a chuva**: passeio pelo parque (árvores grandes, bancos, flores, luz natural); o clima muda gradualmente; a chuva começa (partículas + escurecimento + som — sistema já implementado); procurar abrigo; conversa especial; **cena cinematográfica do primeiro beijo** (câmera, música própria, corações, fade). Memória: *O primeiro beijo*.
 - **Secundária — Florzinhas do caminho** *(implementada)*: colher 3 flores para Dona Cida.
 
