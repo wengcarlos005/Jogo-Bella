@@ -1,5 +1,5 @@
 import { T } from '@/world/tiles';
-import type { MapDef } from '@/world/MapTypes';
+import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script, ScriptContext } from '@/core/script';
 import { QuestSystem } from '@/systems/QuestSystem';
 import { GameState } from '@/core/GameState';
@@ -10,16 +10,13 @@ const Q = 'pia-m3';
  * Caminhada por Fragoso (fato real): entre a Rota 66 e o parque, a Bella,
  * nervosa desde o começo do encontro, finalmente se acalma.
  * Cada conversa no caminho baixa o medidor de nervosismo.
- *
- * Cenário provisório em tiles. Quando chegar maps/piabeta-fragoso-bg.png,
- * troque `art` para 'native' e meça as colisões sobre o desenho.
+
  */
 const nerves = () => Number(GameState.getFlag<number>('nervosismo') ?? 0);
 const lower = (ctx: ScriptContext, to: number) => ctx.nerves(Math.min(nerves(), to));
 
 const scripts: Record<string, Script> = {
   async entrar(ctx) {
-    ctx.weather('night');
     if (ctx.flag('fragoso-intro') || !ctx.questActive(Q)) return;
     ctx.setFlag('fragoso-intro');
     if (nerves() === 0) ctx.nerves(70);
@@ -82,8 +79,22 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Sabe... eu tô bem. Tô muito bem, na verdade.');
     await ctx.say('weng', 'Eu também. O parque é logo ali.');
     ctx.objective(Q, 'fragoso');
+    await ctx.memory('mem-pia-04');
   },
 
+  async gato(ctx) {
+    if (ctx.flag('gato-fragoso')) {
+      await ctx.say('bella', 'Ele continua aí, dormindo. Nem ligou pra gente.');
+      return;
+    }
+    ctx.setFlag('gato-fragoso');
+    await ctx.say('bella', 'Um gatinho dormindo em cima do muro!');
+    await ctx.say('weng', 'Ele parece mais tranquilo que nós dois juntos.');
+    await ctx.emote('bella', 'heart');
+  },
+  async varal(ctx) {
+    await ctx.say('weng', 'Roupa no varal com essa chuva que deu mais cedo... alguém vai ficar triste amanhã.');
+  },
   async poste(ctx) {
     await ctx.say('bella', 'A luz amarelinha do poste deixa tudo com cara de filme.');
   },
@@ -92,31 +103,10 @@ const scripts: Record<string, Script> = {
   },
 };
 
-/** Grade 32x21 (provisória): rua de cima → descida → rua de baixo. */
-const GROUND = [
-  'RRRRRRRGBBBBBBBGRRRRRRRGBBBBBBBG',
-  'RRRRRRRGBBBBBBBGRRRRRRRGBBBBBBBG',
-  'EEEEEEEGbbbbbbbGEEEEEEEGbbbbbbbG',
-  'HWHDHWHGJWJDJWJGHWHDHWHGJWJDJWJG',
-  'sssssssssssssssssssssssssssssshh',
-  'sssssssssssssssssssssssssssssshh',
-  'cccccccccccccccccccccccccccssshh',
-  'aaaaaaaaaaaaaaaaaaaaaaaaaaassshh',
-  'alaalaalaalaalaalaalaalaalassshh',
-  'GGGGGGGGGGGGGGGGGGGGGGGGGGGssshh',
-  'GGGfGGGGGGGGGGGfGGGGGGGGfGGssshh',
-  'GGGGGGGGGfGGGGGGGGfGGGGGGGGssshh',
-  'GGGGGGfGGGGGGGGGGGGGGfGGGGGssshh',
-  'GGGGGGGGGGGGGGGGGGGGGGGGGGGssshh',
-  'cccccccccccccccccccccccccccssshh',
-  'sssssssssssssssssssssssssssssshh',
-  'sssssssssssssssssssssssssssssshh',
-  'cccccccccccccccccccccccccccccchh',
-  'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaahh',
-  'alaalaalaalaalaalaalaalaalaalahh',
-  'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-];
+/** Retângulo no cenário ORIGINAL (art-source/maps/piabeta-fragoso.png, 1536x1024). 48 px = 1 tile. */
+const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
+/** Fragoso à noite (cenário pintado): calçada de cima → curva à direita → rua de baixo. */
 export const fragosoMap: MapDef = {
   id: 'piabeta-fragoso',
   region: 'piabeta',
@@ -124,47 +114,43 @@ export const fragosoMap: MapDef = {
   music: 'fragoso',
   background: '#1d1a2e',
   art: 'native',
-  legend: {
-    g: T.GRASS, G: T.GRASS_DARK, f: T.GRASS_FLOWERS, s: T.SIDEWALK, c: T.CURB, a: T.ASPHALT, l: T.ASPHALT_LINE, h: T.HEDGE,
-    R: T.ROOF, E: T.ROOF_EDGE, B: T.ROOF_BLUE, b: T.ROOF_BLUE_EDGE, H: T.HOUSE_WALL, J: T.HOUSE_WALL_2, W: T.WINDOW, D: T.DOOR,
-  },
-  ground: GROUND,
+  legend: { '.': T.SIDEWALK },
+  ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
   blocks: [
-    { x: 0, y: 0, w: 32, h: 4 }, // casas
-    { x: 0, y: 7, w: 27, h: 2 }, // rua de cima
-    { x: 0, y: 9, w: 27, h: 5 }, // jardins
-    { x: 0, y: 18, w: 30, h: 3 }, // rua de baixo
+    R(0, 0, 1500, 322), // casas e muros de cima
+    R(1500, 0, 1536, 1024), // árvores da direita
+    R(0, 468, 1192, 668), // terreno do meio (árvores, bananeiras, muro do gato)
+    R(0, 800, 1300, 1024), // casas de baixo
+    R(1300, 760, 1500, 1024), // flores e muro de baixo
+    // postes
+    R(108, 332, 140, 360),
+    R(724, 344, 752, 370),
+    R(1166, 362, 1196, 390),
+    R(210, 722, 242, 750),
   ],
-  props: [
-    { key: 'prop-lamp-post', tx: 5, ty: 6, block: [5, 40, 6, 6], interact: 'poste', label: 'Poste' },
-    { key: 'prop-lamp-post', tx: 15, ty: 6, block: [5, 40, 6, 6] },
-    { key: 'prop-lamp-post', tx: 24, ty: 6, block: [5, 40, 6, 6] },
-    { key: 'prop-lamp-post', tx: 22, ty: 17, block: [5, 40, 6, 6] },
-    { key: 'prop-lamp-post', tx: 11, ty: 17, block: [5, 40, 6, 6] },
-    { key: 'prop-tree', tx: 2, ty: 13, block: false },
-    { key: 'prop-tree', tx: 12, ty: 12, block: false },
-    { key: 'prop-tree', tx: 20, ty: 13, block: false },
-    { key: 'prop-bush', tx: 8, ty: 10, block: false },
-    { key: 'prop-bush', tx: 17, ty: 11, block: false },
+  hotspots: [
+    { rect: R(1010, 560, 1095, 640), interact: 'gato', label: 'Gato' },
+    { rect: R(865, 230, 1010, 330), interact: 'varal', label: 'Varal' },
+    { rect: R(100, 150, 150, 362), interact: 'poste', label: 'Poste' },
   ],
   spawns: {
-    'from-rota66': { tx: 1.4, ty: 4.6, facing: 'right' },
-    'from-parque': { tx: 1.4, ty: 15.6, facing: 'right' },
+    'from-rota66': { tx: 1.2, ty: 6.3, facing: 'right' },
+    'from-parque': { tx: 1.2, ty: 14.4, facing: 'right' },
   },
   exits: [
-    { rect: { x: 0, y: 4, w: 0.6, h: 2 }, toMap: 'piabeta-rota66-fora', toSpawn: 'from-fragoso' },
+    { rect: R(0, 322, 22, 468), toMap: 'piabeta-rota66-fora', toSpawn: 'from-fragoso' },
     {
-      rect: { x: 0, y: 15, w: 0.6, h: 2 },
+      rect: R(0, 668, 22, 800),
       toMap: 'piabeta-parque',
       toSpawn: 'from-rota66',
       blockedIf: () => (QuestSystem.isActive(Q) && !QuestSystem.isObjectiveDone(Q, 'fragoso') ? 'Vamos com calma, sem pressa.' : false),
     },
   ],
   triggers: [
-    { id: 'c1', rect: { x: 8, y: 4, w: 1, h: 3 }, script: 'conversa1', once: true, enabledIf: () => QuestSystem.isActive(Q) },
-    { id: 'c2', rect: { x: 19, y: 4, w: 1, h: 3 }, script: 'conversa2', once: true, enabledIf: () => QuestSystem.isActive(Q) },
-    { id: 'c3', rect: { x: 27, y: 10, w: 3, h: 1 }, script: 'conversa3', once: true, enabledIf: () => QuestSystem.isActive(Q) },
-    { id: 'c4', rect: { x: 16, y: 14, w: 1, h: 3 }, script: 'conversa4', once: true, enabledIf: () => QuestSystem.isActive(Q) },
+    { id: 'c1', rect: R(380, 322, 410, 468), script: 'conversa1', once: true, enabledIf: () => QuestSystem.isActive(Q) },
+    { id: 'c2', rect: R(1000, 322, 1030, 468), script: 'conversa2', once: true, enabledIf: () => QuestSystem.isActive(Q) },
+    { id: 'c3', rect: R(1192, 560, 1500, 590), script: 'conversa3', once: true, enabledIf: () => QuestSystem.isActive(Q) },
+    { id: 'c4', rect: R(700, 668, 730, 800), script: 'conversa4', once: true, enabledIf: () => QuestSystem.isActive(Q) },
   ],
   scripts,
   onEnter: 'entrar',
