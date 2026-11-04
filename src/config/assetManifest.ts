@@ -57,6 +57,10 @@ export const ASSETS: AssetEntry[] = [
   // Veículos (HD: quadros 192x128 — esquerda, direita, frente, costas)
   { id: 'OBJ-020', key: 'uber-car', file: 'assets/objects/uber-car.png', kind: 'spritesheet', frameWidth: 192, frameHeight: 128 },
 
+  // Guarda-chuvas (HD, opcionais): sobrepostos ao personagem na chuva
+  { id: 'OBJ-021', key: 'umbrella-bella', file: 'assets/objects/umbrella-bella.png', kind: 'image' },
+  { id: 'OBJ-022', key: 'umbrella-weng', file: 'assets/objects/umbrella-weng.png', kind: 'image' },
+
   // Retratos de diálogo (96x96)
   { id: 'PORT-001', key: 'portrait-bella', file: 'assets/portraits/bella-neutral.png', kind: 'image' },
   { id: 'PORT-002', key: 'portrait-weng', file: 'assets/portraits/weng-neutral.png', kind: 'image' },

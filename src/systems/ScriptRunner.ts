@@ -193,6 +193,10 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       if (v < before) ctx.hearts('bella', v === 0 ? 14 : 5);
     },
 
+    umbrella(who, mode) {
+      scene.setUmbrella(who === 'player' ? 'bella' : who, mode);
+    },
+
     visible(who, on) {
       actor(who)?.setVisible(on);
     },

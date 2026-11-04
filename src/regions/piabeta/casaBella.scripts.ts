@@ -12,7 +12,7 @@ const CHAMADO = PERSONAL.bellaStepdad.chamado;
 
 export const casaScripts: Record<string, Script> = {
   async entrar(ctx) {
-    if (ctx.flag('intro-vista')) return;
+    if (ctx.flag('intro-vista')) return casaScripts.voltou(ctx);
     ctx.setFlag('intro-vista');
     ctx.startQuest(Q);
     await ctx.narrate('Piabetá. Uma tarde que parecia comum...');
@@ -27,11 +27,11 @@ export const casaScripts: Record<string, Script> = {
       ctx.give('celular', 1, true);
       await ctx.say('celular', `${W}: "${PERSONAL.openingText}"`);
       await ctx.emote('bella', 'heart');
-      const c = await ctx.choose('bella', 'Ele já tá vindo! E eu ainda de pijama...', ['Responder com um emoji fofo', 'Responder "tô quase pronta!" (mentira)']);
+      const c = await ctx.choose('bella', 'Ele já tá chegando! Na chuva! E eu ainda de pijama...', ['Responder com um emoji fofo', 'Responder "tô quase pronta!" (mentira)']);
       if (c === 0) await ctx.say('bella', 'Pronto, mandei um coraçãozinho. Discreto. Muito discreto.');
       else await ctx.say('bella', '"Tô quase pronta!" ... Agora eu preciso MESMO ficar pronta.');
       ctx.objective(Q, 'celular');
-      ctx.toast('Se arrume: roupa, óculos e colar!');
+      ctx.toast('Se arrume: roupa, presente, óculos e colar!');
       return;
     }
     await ctx.say('bella', 'Se eu deitar agora, eu não levanto mais. Foco!');
@@ -113,7 +113,7 @@ export const casaScripts: Record<string, Script> = {
     else await ctx.say('bella', 'Não. O cabelo tá lindo. Os cachos colaboraram hoje, e isso é raro.');
     await ctx.emote('bella', 'heart');
     ctx.objective(Q, 'espelho');
-    ctx.toast('Desça até a sala');
+    ctx.toast('Desça até a sala e pegue o guarda-chuva');
   },
 
   async 'sair-quarto-cedo'(ctx) {
@@ -122,53 +122,35 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async 'chegou-sala'(ctx) {
-    ctx.objective(Q, 'sala');
-    await ctx.wait(300);
-    ctx.sfx('doorbell');
-    ctx.shake(200);
-    await ctx.emote('bella', 'exclaim');
+    await ctx.wait(200);
     ctx.face('mae-bella', 'up');
-    await ctx.say('mae-bella', 'Bella! Tocaram a campainha! Deve ser o tal do rapaz!');
-    await ctx.say('bella', 'Já vou! JÁ VOU!');
-    ctx.setFlag('campainha');
-    ctx.nerves(100, 'A Bella está nervosa!');
+    await ctx.say('mae-bella', 'Que linda! Vai sair assim? Tá caindo um pé d\'água lá fora, hein!');
+    await ctx.say('bella', 'Ele tá me esperando na esquina, mãe!');
+    await ctx.say('mae-bella', 'Então leva o guarda-chuva! Tá ali do lado da porta.');
   },
 
-  async 'atender-porta'(ctx) {
-    await ctx.fadeOut(300);
-    ctx.setFlag('weng-entrou');
-    ctx.refresh();
-    ctx.place('weng', 15, 18.4, 'up');
-    ctx.place('player', 15.5, 15, 'down');
-    ctx.face('mae-bella', 'right');
-    ctx.sfx('door');
-    await ctx.fadeIn(400);
-    await ctx.move('weng', 15.5, 16.8, 40);
-    await ctx.say('weng', 'Oi! Ééé... oi. Boa tarde.');
-    await ctx.emote('weng', 'sweat');
-    const c = await ctx.choose('bella', '(Ele tá tão nervoso quanto eu...)', ['"Oi! Você chegou rápido!"', '"Achou fácil a casa?"', 'Dar um abraço']);
-    if (c === 0) {
-      await ctx.say('weng', 'Eu meio que saí antes... pra não atrasar. Fiquei uns minutos rodando o quarteirão.');
-      await ctx.say('bella', 'Você ficou rodando o quarteirão?');
-      await ctx.say('weng', 'Talvez. Não conta pra ninguém.');
-    } else if (c === 1) {
-      await ctx.say('weng', 'Achei! Quer dizer, o GPS achou. Eu só obedeci.');
-    } else {
-      await ctx.emote('weng', 'heart');
-      await ctx.say('weng', '...Oi. Agora sim, boa tarde.');
+  async 'guarda-chuva'(ctx) {
+    if (!ctx.objectiveDone(Q, 'espelho')) {
+      await ctx.say('bella', 'O guarda-chuva. Primeiro deixa eu terminar de me arrumar.');
+      return;
     }
-    await ctx.say('weng', 'Ah! Quase esqueci. Isso aqui é pra você.');
-    ctx.give('rosa-rosa');
-    await ctx.emote('bella', 'heart');
-    await ctx.say('bella', 'Uma rosa... rosa! Ela é linda.');
-    await ctx.say('weng', 'Escolhi rosa porque combina com os seus óculos. E com você.');
-    await ctx.say('weng', 'E... você tá muito bonita.');
-    await ctx.say('bella', `Obrigada. (Respira, Bella. Respira.) Agora vem. Minha mãe e o ${PERSONAL.bellaStepdad.name} querem te conhecer.`);
-    await ctx.say('weng', 'Ah. Os pais. Claro. Os pais. Tudo bem. Tranquilo. Super tranquilo.');
-    ctx.objective(Q, 'porta');
-    ctx.follow('weng', true);
-    ctx.setFlag('weng-segue');
-    ctx.toast(`Apresente o ${W} para sua mãe e o ${PERSONAL.bellaStepdad.name}`);
+    if (ctx.objectiveDone(Q, 'guarda-chuva')) {
+      await ctx.say('bella', 'Só tem o guarda-chuva da minha mãe aqui. O meu já tá comigo.');
+      return;
+    }
+    ctx.sfx('pickup');
+    await ctx.say('bella', 'Guarda-chuva na mão. Coração na boca. Vamos.');
+    ctx.objective(Q, 'guarda-chuva');
+    ctx.toast('Busque o Weng na esquina (siga a calçada para a direita)');
+  },
+
+  async voltou(ctx) {
+    if (!ctx.flag('weng-entrou') || ctx.objectiveDone(Q, 'mae') || ctx.flag('voltou-visto')) return;
+    ctx.setFlag('voltou-visto');
+    await ctx.wait(200);
+    await ctx.say('bella', `Mãe! ${PERSONAL.bellaStepdad.chamado || ''}${PERSONAL.bellaStepdad.chamado ? '! ' : ''}Ele chegou!`);
+    await ctx.say('weng', '(sussurrando) Tô com cara de nervoso? Fala a verdade.');
+    await ctx.say('bella', '(sussurrando) Um pouquinho. Eu também.');
   },
 
   async weng(ctx) {
@@ -186,26 +168,31 @@ export const casaScripts: Record<string, Script> = {
 
   async mae(ctx) {
     if (!ctx.flag('weng-entrou')) {
-      if (ctx.flag('campainha')) {
-        await ctx.say('mae-bella', 'Vai lá abrir, menina! Não deixa o rapaz esperando!');
+      if (ctx.objectiveDone(Q, 'guarda-chuva')) {
+        await ctx.say('mae-bella', 'Vai logo, menina! Não deixa o rapaz esperando na chuva!');
       } else if (ctx.objectiveDone(Q, 'espelho')) {
-        await ctx.say('mae-bella', 'Que linda! Vai sair assim? Tá linda.');
+        await ctx.say('mae-bella', 'Leva o guarda-chuva! Tá ali do lado da porta.');
       } else {
         await ctx.say('mae-bella', 'Ainda não se arrumou? O moço vai chegar e você aí!');
       }
       return;
     }
     if (!ctx.objectiveDone(Q, 'mae')) {
-      ctx.face('weng', 'up');
+      ctx.face('weng', 'mae-bella');
       await ctx.say('bella', 'Mãe, esse é o Weng.');
       await ctx.say('mae-bella', 'Ah, então você que é o Weng! Prazer, querido. A Bella fala de você.');
       await ctx.emote('weng', 'exclaim');
-      await ctx.say('weng', 'Fala? Quer dizer... o prazer é meu, senhora!');
+      await ctx.say('weng', 'Fala? Quer dizer... o prazer é meu! Ah, e eu trouxe uma coisinha pra senhora.');
+      ctx.sfx('pickup');
+      await ctx.narrate('O Weng entrega uma caixa de chocolates para a mãe da Bella.');
+      await ctx.emote('mae-bella', 'heart');
+      await ctx.say('mae-bella', 'Chocolate?! Ah, que rapaz educado! Bella, esse aí pode voltar sempre.');
+      await ctx.emote('bella', 'heart');
       const c = await ctx.choose('bella', '(Hora de salvar o Weng)', ['"Mãe, a gente já tá de saída!"', '"Ela fala que você é educado."', 'Deixar a conversa rolar']);
       if (c === 0) {
         await ctx.say('mae-bella', 'Calma, deixa eu ver o rapaz direito! Hmm... aprovado. Por enquanto.');
       } else if (c === 1) {
-        await ctx.say('mae-bella', 'E é mesmo! Chamou de "senhora". Já gostei.');
+        await ctx.say('mae-bella', 'E é mesmo! Chamou de "senhora" e ainda trouxe chocolate. Já gostei.');
         await ctx.emote('weng', 'heart');
       } else {
         await ctx.say('mae-bella', 'Você come de tudo? Da próxima vez vem almoçar aqui.');

@@ -35,7 +35,8 @@ export class DialogueBox {
 
   private setSpeaker(speaker: string | null): void {
     const def = speaker ? SPEAKERS[speaker] ?? { name: speaker } : null;
-    const url = textureURL(def?.portrait);
+    // Sem retrato (narrador, celular): usa a lua da interface, se existir.
+    const url = textureURL(def?.portrait) ?? textureURL('ui-icon-lua');
     this.portrait.classList.toggle('hidden', !url);
     if (url) this.portrait.src = url;
     const isNarrator = !def || !def.name;

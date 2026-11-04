@@ -90,6 +90,12 @@ export const casaBellaMap: MapDef = {
     { rect: R(215, 650, 318, 888), interact: 'tv', label: 'TV' },
     { rect: R(1062, 545, 1290, 758), interact: 'estante', label: 'Estante' },
     { rect: R(550, 600, 910, 748), interact: 'sofa', label: 'Sofá' },
+    {
+      rect: R(610, 820, 690, 925),
+      interact: 'guarda-chuva',
+      label: 'Guarda-chuva',
+      markerIf: () => objActive('guarda-chuva') && objDone('espelho'),
+    },
   ],
 
   npcs: [
@@ -117,8 +123,10 @@ export const casaBellaMap: MapDef = {
       sfx: 'door',
       blockedIf: () => {
         if (!QuestSystem.isActive(Q)) return false;
-        if (!GameState.is('weng-entrou')) return 'Ainda não... o Weng tá vindo te buscar!';
-        if (!objDone('mae') || !objDone('pai')) return `Antes de sair, apresente o Weng para sua mãe e o ${PERSONAL.bellaStepdad.name}.`;
+        if (!objDone('espelho')) return 'Ainda não tô pronta!';
+        if (!objDone('guarda-chuva')) return 'Tá chovendo! Melhor pegar o guarda-chuva perto da porta.';
+        if (objDone('esquina') && (!objDone('mae') || !objDone('pai')))
+          return `Antes de sair, apresente o Weng para sua mãe e o ${PERSONAL.bellaStepdad.name}.`;
         return false;
       },
     },
@@ -130,13 +138,6 @@ export const casaBellaMap: MapDef = {
       script: 'chegou-sala',
       once: true,
       enabledIf: () => objDone('espelho'),
-    },
-    {
-      id: 'porta',
-      rect: R(600, 780, 900, 925),
-      script: 'atender-porta',
-      once: true,
-      enabledIf: () => GameState.is('campainha'),
     },
     {
       id: 'sair-cedo',

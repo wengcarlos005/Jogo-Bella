@@ -738,6 +738,22 @@ export class PlaceholderFactory {
     });
     this.prop('fx-shadow', 14, 4, (c) => px(c, '#00000040', 0, 0, 14, 4));
 
+    // Guarda-chuvas provisórios (28x18): Bella rosa, Weng azul-marinho
+    const umbrella = (main: string, dark: string, light: string): PropDraw => (c) => {
+      for (let y = 0; y < 11; y++) {
+        const half = Math.round(Math.sqrt(Math.max(0, 1 - ((10 - y) / 10.5) ** 2)) * 13);
+        px(c, y < 2 ? light : main, 14 - half, y, half * 2, 1);
+      }
+      for (const x of [3, 9, 14, 19, 25]) px(c, dark, x, 9, 1, 2);
+      px(c, dark, 1, 10, 26, 1);
+      px(c, light, 9, 2, 3, 2);
+      px(c, '#2a1f2e', 14, 0, 1, 1);
+      px(c, '#5a4a44', 14, 11, 1, 6);
+      px(c, '#5a4a44', 13, 16, 2, 1);
+    };
+    this.prop('umbrella-bella', 28, 18, umbrella('#f27a9b', '#b8456a', '#ffc2d4'));
+    this.prop('umbrella-weng', 28, 18, umbrella('#2c3a6b', '#1b2447', '#5a6fae'));
+
     // Balões de emoção 13x13
     const bubble = (c: Ctx) => {
       px(c, '#2a1f2e', 1, 0, 11, 11);

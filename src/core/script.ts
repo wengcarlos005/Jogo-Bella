@@ -65,6 +65,8 @@ export interface ScriptContext {
    * Use para o medidor do primeiro encontro.
    */
   nerves(value: number, message?: string): void;
+  /** Guarda-chuva: 'up' aberto, 'hide' abaixado escondendo o rosto, 'off' fechado. */
+  umbrella(who: string, mode: 'up' | 'hide' | 'off'): void;
   /** Mostra/esconde um personagem (ex.: dentro do carro). */
   visible(who: string, on: boolean): void;
   /** Weng (ou outro NPC) passa a seguir a Bella. */

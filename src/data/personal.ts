@@ -33,7 +33,7 @@ export const PERSONAL = {
   },
 
   /** Mensagem que Weng manda no celular no início do jogo. */
-  openingText: 'Tô saindo de casa! Daqui a pouco chego aí 😊',
+  openingText: 'Tô chegando! Te espero na esquina da sua rua, tá? Tá chovendo, leva guarda-chuva ☔',
 
   /**
    * A CARTA FINAL. Substitua pelo texto real do Weng.

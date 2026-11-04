@@ -11,6 +11,14 @@ import type { Script } from '@/core/script';
  */
 const ROTA = PERSONAL.places.hamburgueria;
 
+/** A Bella saiu de guarda-chuva e o Weng ainda espera na esquina. */
+const esperandoNaEsquina = () =>
+  QuestSystem.isActive('pia-m1') && QuestSystem.isObjectiveDone('pia-m1', 'guarda-chuva') && !QuestSystem.isObjectiveDone('pia-m1', 'esquina');
+/** Chove do começo do encontro até o Uber chegar. */
+const chovendo = () =>
+  (QuestSystem.isActive('pia-m1') && QuestSystem.isObjectiveDone('pia-m1', 'guarda-chuva')) ||
+  (QuestSystem.isActive('pia-m2') && !QuestSystem.isObjectiveDone('pia-m2', 'uber'));
+
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({
   x: x0 / 48,
   y: y0 / 48,
@@ -50,6 +58,20 @@ const scripts: Record<string, Script> = {
   ...flowerScripts,
 
   async entrar(ctx) {
+    // Chuva do começo do encontro (até o Uber chegar), com guarda-chuvas
+    if (chovendo()) {
+      ctx.weather('rain');
+      ctx.umbrella('bella', esperandoNaEsquina() ? 'hide' : 'up');
+      if (esperandoNaEsquina() || ctx.flag('weng-segue')) ctx.umbrella('weng', 'up');
+    }
+    if (esperandoNaEsquina() && !ctx.flag('saiu-na-chuva')) {
+      ctx.setFlag('saiu-na-chuva');
+      await ctx.wait(400);
+      await ctx.say('bella', 'Que chuva! Ele disse que tava na esquina...');
+      await ctx.say('bella', '(Ai, que vergonha. Vou ficar escondidinha aqui embaixo do guarda-chuva até chegar.)');
+      ctx.toast('Siga pela calçada para a direita, até a esquina');
+      return;
+    }
     if (ctx.questActive('pia-m1') && ctx.objectiveDone('pia-m1', 'pai') && !ctx.objectiveDone('pia-m1', 'sair')) {
       ctx.objective('pia-m1', 'sair');
       await ctx.wait(400);
@@ -58,6 +80,44 @@ const scripts: Record<string, Script> = {
       await ctx.emote('weng', 'heart');
       await ctx.say('weng', `Então bora! Já pedi um Uber pra ${ROTA}. Vamos esperar ali na calçada.`);
     }
+  },
+
+  async encontro(ctx) {
+    ctx.face('player', 'right');
+    await ctx.narrate('Escondida debaixo do guarda-chuva, a Bella foi chegando devagarinho...');
+    await ctx.move('player', 30.6, 8.0, 25);
+    await ctx.wait(500);
+    ctx.umbrella('bella', 'up');
+    await ctx.wait(500);
+    ctx.face('weng', 'bella');
+    await ctx.emote('weng', 'exclaim');
+    await ctx.say('weng', 'Ah! Oi! Ééé... oi. Boa tarde. Você tava aí embaixo esse tempo todo?');
+    await ctx.emote('weng', 'sweat');
+    ctx.nerves(100, 'O coração da Bella disparou!');
+    const c = await ctx.choose('bella', '(Ele tá tão nervoso quanto eu...)', ['"Oi! Você chegou rápido!"', '"Achou fácil a rua?"', '"Eu tava me escondendo, confesso."']);
+    if (c === 0) {
+      await ctx.say('weng', 'Eu meio que saí antes... pra não atrasar. Fiquei uns minutos rodando o quarteirão.');
+      await ctx.say('bella', 'Na chuva?');
+      await ctx.say('weng', 'Talvez. Não conta pra ninguém.');
+    } else if (c === 1) {
+      await ctx.say('weng', 'Achei! Quer dizer, o GPS achou. Eu só obedeci. E a chuva ajudou a dar emoção.');
+    } else {
+      await ctx.emote('weng', 'heart');
+      await ctx.say('weng', 'Eu vi um guarda-chuva rosa vindo devagarinho e pensei: "é ela".');
+    }
+    await ctx.say('weng', 'Ah! Quase esqueci. Isso aqui é pra você.');
+    ctx.give('rosa-rosa');
+    await ctx.emote('bella', 'heart');
+    await ctx.say('bella', 'Uma rosa... rosa! Ela é linda.');
+    await ctx.say('weng', 'Escolhi rosa porque combina com os seus óculos. E com você.');
+    await ctx.say('weng', 'E... você tá muito bonita.');
+    await ctx.say('bella', `Obrigada. (Respira, Bella. Respira.) Vem, vamos lá em casa. Minha mãe e o ${PERSONAL.bellaStepdad.name} querem te conhecer.`);
+    await ctx.say('weng', 'Ah. Os pais. Claro. Tudo bem. Tranquilo. Super tranquilo.');
+    ctx.objective('pia-m1', 'esquina');
+    ctx.setFlag('weng-entrou');
+    ctx.setFlag('weng-segue');
+    ctx.follow('weng', true);
+    ctx.toast(`Leve o ${PERSONAL.weng.name} até a sua casa`);
   },
 
   async uber(ctx) {
@@ -120,6 +180,10 @@ const scripts: Record<string, Script> = {
   },
 
   async weng(ctx) {
+    if (ctx.questActive('pia-m1') && !ctx.objectiveDone('pia-m1', 'mae')) {
+      await ctx.say('weng', 'Vamos? Tô doido pra conhecer sua mãe. Quer dizer... nervoso. Doido de nervoso.');
+      return;
+    }
     if (ctx.questActive('pia-m2') && !ctx.objectiveDone('pia-m2', 'uber')) {
       await ctx.say('weng', 'Vamos esperar o Uber ali na calçada, em frente da sua casa.');
       return;
@@ -217,6 +281,15 @@ export const ruaMap: MapDef = {
   ],
 
   npcs: [
+    {
+      id: 'weng',
+      sprite: 'weng',
+      tx: 32.3,
+      ty: 8.0,
+      facing: 'left',
+      interact: 'weng',
+      visibleIf: () => GameState.is('weng-segue') || esperandoNaEsquina(),
+    },
     { id: 'vizinha', sprite: 'vizinha', tx: 14.7, ty: 7.8, facing: 'down', interact: 'vizinha', behavior: 'wander', wanderRadius: 3, wanderAxis: 'x' },
   ],
   spawns: {
@@ -238,6 +311,13 @@ export const ruaMap: MapDef = {
     },
   ],
   triggers: [
+    {
+      id: 'encontro',
+      rect: R(1250, 372, 1612, 460),
+      script: 'encontro',
+      once: true,
+      enabledIf: () => esperandoNaEsquina(),
+    },
     {
       id: 'uber',
       rect: R(150, 425, 620, 458), // beira da calçada (meio-fio)

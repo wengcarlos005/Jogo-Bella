@@ -44,6 +44,8 @@ export class GameScene extends Phaser.Scene {
   npcs = new Map<string, NpcEntry>();
   /** Objetos temporários criados por scripts (carro do Uber etc.). */
   tempProps = new Map<string, Phaser.GameObjects.Image>();
+  /** Guarda-chuvas presos a personagens: 'up' (aberto) ou 'hide' (abaixado, escondendo o rosto). */
+  umbrellas = new Map<string, { img: Phaser.GameObjects.Image; mode: 'up' | 'hide' }>();
   weather!: WeatherSystem;
   interactions!: InteractionSystem;
   private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2 }[] = [];
@@ -63,6 +65,7 @@ export class GameScene extends Phaser.Scene {
     this.def = getMap(data.mapId);
     this.npcs = new Map();
     this.tempProps = new Map();
+    this.umbrellas = new Map();
     this.markers = [];
     this.scriptRunning = false;
     this.transitioning = false;
@@ -223,13 +226,17 @@ export class GameScene extends Phaser.Scene {
       if (def.markerIf) this.addMarker(def.markerIf, () => ({ x: npc.x, y: npc.y - 32 }), () => npc.visible);
     }
     // Weng seguindo a Bella
-    if (GameState.is('weng-segue')) this.attachFollower();
+    if (GameState.is('weng-segue')) this.attachFollower(true);
     this.refreshVisibility();
   }
 
   /** Cria o Weng como seguidor se ele não estiver no mapa. */
-  attachFollower(): void {
+  attachFollower(placeBehind = false): void {
     let entry = this.npcs.get('weng');
+    if (entry && placeBehind) {
+      const back = { down: [0, -14], up: [0, 14], left: [14, 0], right: [-14, 0] }[this.player.facing];
+      entry.npc.setPosition(this.player.x + back[0], this.player.y + back[1]);
+    }
     if (!entry) {
       const back = { down: [0, -14], up: [0, 14], left: [14, 0], right: [-14, 0] }[this.player.facing];
       const npc = new NPC(this, this.player.x + back[0], this.player.y + back[1], this.spriteFor('weng'), 'weng');
@@ -423,6 +430,7 @@ export class GameScene extends Phaser.Scene {
     this.player.update();
     for (const { npc } of this.npcs.values()) npc.update(time, delta);
     this.weather.update(this.cameras.main);
+    this.updateUmbrellas();
 
     // tempo de jogo + autosave
     GameState.data.playtimeMs += time - this.lastTick;
@@ -498,6 +506,40 @@ export class GameScene extends Phaser.Scene {
     const a = target.anchor();
     const cam = this.cameras.main;
     UI.hud.setPrompt(target.label(), a.x - cam.worldView.x, a.y - cam.worldView.y, UI.touch.usingTouch);
+  }
+
+  setUmbrella(who: string, mode: 'up' | 'hide' | 'off'): void {
+    const cur = this.umbrellas.get(who);
+    if (mode === 'off') {
+      cur?.img.destroy();
+      this.umbrellas.delete(who);
+      return;
+    }
+    if (cur) {
+      cur.mode = mode;
+      return;
+    }
+    const key = who === 'weng' ? 'umbrella-weng' : 'umbrella-bella';
+    const img = this.add.image(0, 0, key).setOrigin(0.5, 1);
+    if (img.width >= 64) img.setScale(1 / RENDER_SCALE);
+    this.umbrellas.set(who, { img, mode });
+  }
+
+  private updateUmbrellas(): void {
+    for (const [who, u] of this.umbrellas) {
+      const a = this.findActor(who);
+      if (!a || !a.visible) {
+        u.img.setVisible(false);
+        continue;
+      }
+      u.img.setVisible(true);
+      const top = a.y - a.displayHeight;
+      // 'up': aberto acima da cabeça; 'hide': abaixado, cobrindo o rosto
+      const targetY = u.mode === 'up' ? top + 10 : top + a.displayHeight * 0.55;
+      u.img.y += (targetY - u.img.y) * 0.25;
+      u.img.x = a.x + (a.facing === 'left' ? -2 : a.facing === 'right' ? 2 : 0);
+      u.img.setDepth(a.depth + 1);
+    }
   }
 
   // ------------------------------------------------------------ util p/ scripts
