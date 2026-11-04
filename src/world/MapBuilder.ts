@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { TILE } from '@/config/gameConfig';
+import { RENDER_SCALE, TILE } from '@/config/gameConfig';
 import { mapLayerKey } from '@/config/assetManifest';
 import { TILE_DEFS } from './tiles';
 import type { MapDef, PropPlacement } from './MapTypes';
@@ -16,6 +16,7 @@ export interface BuiltMap {
   collision: Phaser.Tilemaps.TilemapLayer;
   solids: Phaser.Physics.Arcade.StaticGroup;
   props: BuiltProp[];
+  hasArt: boolean;
 }
 
 function parseLayer(def: MapDef, rows: string[], label: string): number[][] {
@@ -61,12 +62,17 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
 
   const bgKey = mapLayerKey(def.id, 'bg');
   const fgKey = mapLayerKey(def.id, 'fg');
-  if (scene.textures.exists(bgKey)) {
-    scene.add.image(0, 0, bgKey).setOrigin(0).setDepth(-8).setDisplaySize(width * TILE, height * TILE);
+  const placeArt = (img: Phaser.GameObjects.Image) => {
+    if (def.art === 'native') img.setScale(1 / RENDER_SCALE);
+    else img.setDisplaySize(width * TILE, height * TILE);
+  };
+  const hasArt = scene.textures.exists(bgKey);
+  if (hasArt) {
+    placeArt(scene.add.image(0, 0, bgKey).setOrigin(0).setDepth(-8));
     groundLayer.setAlpha(0);
   }
   if (scene.textures.exists(fgKey)) {
-    scene.add.image(0, 0, fgKey).setOrigin(0).setDepth(100_000).setDisplaySize(width * TILE, height * TILE);
+    placeArt(scene.add.image(0, 0, fgKey).setOrigin(0).setDepth(100_000));
   }
 
   const solids = scene.physics.add.staticGroup();
@@ -84,7 +90,12 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     return { def: p, sprite, block };
   });
 
-  return { widthPx: width * TILE, heightPx: height * TILE, collision: groundLayer, solids, props };
+  for (const b of def.blocks ?? []) {
+    const r = tileRect(b);
+    solids.add(scene.add.zone(r.centerX, r.centerY, r.width, r.height));
+  }
+
+  return { widthPx: width * TILE, heightPx: height * TILE, collision: groundLayer, solids, props, hasArt };
 }
 
 /** Converte um retângulo em tiles para pixels. */

@@ -12,13 +12,16 @@ export class NPC extends Character {
   private wanderTimer = 0;
   private home: Phaser.Math.Vector2;
   private followTarget: Player | null = null;
+  wanderRadius = 24;
+  wanderAxis: 'x' | 'y' | 'both' = 'both';
 
   constructor(scene: Phaser.Scene, x: number, y: number, key: string, id: string) {
     super(scene, x, y, key);
     this.npcId = id;
     this.home = new Phaser.Math.Vector2(x, y);
+    // Não é "immovable" (senão atravessa paredes estáticas), mas o jogador
+    // também não consegue empurrá-lo.
     const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setImmovable(true);
     body.pushable = false;
   }
 
@@ -91,19 +94,25 @@ export class NPC extends Character {
     }
 
     if (this.behavior === 'wander') {
-      this.wanderTimer -= delta;
-      if (this.wanderTimer <= 0) {
-        this.wanderTimer = Phaser.Math.Between(1500, 3500);
-        if (Math.random() < 0.5) {
-          body.setVelocity(0, 0);
-        } else {
-          const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-          let [vx, vy] = dirs[Phaser.Math.Between(0, 3)];
-          if (Phaser.Math.Distance.Between(this.x, this.y, this.home.x, this.home.y) > 32) {
-            vx = Math.sign(this.home.x - this.x);
-            vy = vx === 0 ? Math.sign(this.home.y - this.y) : 0;
+      const dx = this.home.x - this.x;
+      const dy = this.home.y - this.y;
+      const away = Math.hypot(dx, dy);
+      if (away > this.wanderRadius) {
+        // passou do limite: volta para perto de casa
+        body.setVelocity((dx / away) * 25, (dy / away) * 25);
+        this.wanderTimer = 600;
+      } else {
+        this.wanderTimer -= delta;
+        if (this.wanderTimer <= 0) {
+          this.wanderTimer = Phaser.Math.Between(1500, 3500);
+          if (Math.random() < 0.45) {
+            body.setVelocity(0, 0);
+          } else {
+            const dirs =
+              this.wanderAxis === 'x' ? [[1, 0], [-1, 0]] : this.wanderAxis === 'y' ? [[0, 1], [0, -1]] : [[1, 0], [-1, 0], [0, 1], [0, -1]];
+            const [vx, vy] = dirs[Phaser.Math.Between(0, dirs.length - 1)];
+            body.setVelocity(vx * 25, vy * 25);
           }
-          body.setVelocity(vx * 25, vy * 25);
         }
       }
       this.animateFromVelocity();

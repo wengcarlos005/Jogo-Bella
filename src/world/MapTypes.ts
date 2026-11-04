@@ -30,6 +30,15 @@ export interface PropPlacement {
   id?: string;
 }
 
+/** Área interativa invisível (usada sobre cenários pintados). */
+export interface HotspotDef {
+  rect: TileRect;
+  interact: string;
+  label?: string;
+  markerIf?: () => boolean;
+  enabledIf?: () => boolean;
+}
+
 export interface NpcPlacement {
   id: string;
   sprite: string;
@@ -38,6 +47,10 @@ export interface NpcPlacement {
   facing?: Direction;
   interact?: string;
   behavior?: 'idle' | 'wander';
+  /** Raio (em tiles) que o NPC pode se afastar de onde nasceu. Padrão: 1,5. */
+  wanderRadius?: number;
+  /** Eixos permitidos na caminhada aleatória. Padrão: ambos. */
+  wanderAxis?: 'x' | 'y' | 'both';
   visibleIf?: () => boolean;
   markerIf?: () => boolean;
 }
@@ -77,6 +90,16 @@ export interface MapDef {
   /** Camada de detalhes sobre o chão (opcional, mesmas dimensões; ' ' = vazio). */
   detail?: string[];
   props?: PropPlacement[];
+  /** Colisões extras em retângulos (unidades de tile, fracionários). Ideal para cenários pintados. */
+  blocks?: TileRect[];
+  /** Interações invisíveis sobre o cenário. */
+  hotspots?: HotspotDef[];
+  /**
+   * Como o cenário pintado (maps/<id>-bg.png) é exibido:
+   *  - 'fill' (padrão): esticado para o tamanho da grade;
+   *  - 'native': 1 pixel da imagem = 1 pixel do canvas HD (imagem em 2× a escala lógica).
+   */
+  art?: 'fill' | 'native';
   npcs?: NpcPlacement[];
   spawns: Record<string, SpawnDef>;
   exits?: ExitDef[];

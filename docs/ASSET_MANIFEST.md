@@ -64,10 +64,15 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 | PORT-003 | `portraits/mae-bella.png` | Retrato | 96×96 | 1 | solicitado |
 | PORT-004 | `portraits/pai-bella.png` | Retrato | 96×96 | 1 | solicitado |
 | PORT-005 | `portraits/vizinha.png` | Retrato | 96×96 | 1 | solicitado |
-| MAP-001 | `maps/piabeta-casa-bella-bg.png` | Cenário | 704×480 (HD) | — | solicitado |
-| MAP-003 | `maps/piabeta-rua-bg.png` | Cenário | 1280×768 (HD) | — | solicitado |
+| MAP-001 | `maps/piabeta-casa-bella-bg.png` | Cenário (original 1536×1024) | 1024×683 | — | **integrado** |
+| MAP-003 | `maps/piabeta-rua-bg.png` | Cenário (original 1619×971) | 1079×647 | — | **integrado** |
 | MAP-002 | `maps/piabeta-casa-bella-fg.png` | Camada frontal | 704×480 | — | planejado (opcional) |
 | MAP-004 | `maps/piabeta-rua-fg.png` | Camada frontal | 1280×768 | — | planejado (opcional) |
+
+**Como integrar um cenário do ChatGPT:** guarde o original em `art-source/maps/`, reduza para 2/3
+(o jogo exibe 1 tile = 48 px da imagem original) e meça paredes/móveis em pixels da imagem original
+com o helper `R(x0, y0, x1, y1)` no arquivo do mapa (`blocks`, `hotspots`, `triggers`, `exits`).
+Abra o jogo com `?debug` na URL para ver colisões (vermelho), interações (verde), gatilhos (azul) e saídas (amarelo).
 
 **Como integrar uma folha nova do ChatGPT:** salve o original em `art-source/` e rode
 `python3 scripts/process-spritesheet.py art-source/<arquivo> public/assets/<pasta>/<nome>.png --frame 96 --height 72`

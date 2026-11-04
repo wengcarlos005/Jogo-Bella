@@ -93,6 +93,8 @@ export class GameScene extends Phaser.Scene {
     this.interactions = new InteractionSystem(this);
     this.spawnNpcs();
     this.registerPropInteractables();
+    this.registerHotspots();
+    if (new URLSearchParams(location.search).has('debug')) this.drawDebug();
     this.setupCamera();
     this.weather = new WeatherSystem(this);
 
@@ -196,6 +198,8 @@ export class GameScene extends Phaser.Scene {
       const npc = new NPC(this, p.x, p.y, this.spriteFor(def.sprite), def.id);
       npc.face(def.facing ?? 'down');
       npc.behavior = def.behavior ?? 'idle';
+      if (def.wanderRadius !== undefined) npc.wanderRadius = def.wanderRadius * TILE;
+      if (def.wanderAxis) npc.wanderAxis = def.wanderAxis;
       npc.interactScript = def.interact;
       this.physics.add.collider(this.player, npc);
       if (npc.behavior === 'wander') {
@@ -257,6 +261,37 @@ export class GameScene extends Phaser.Scene {
       if (def.markerIf)
         this.addMarker(def.markerIf, () => ({ x: sprite.x + sprite.width / 2, y: sprite.y - sprite.height - 4 }), () => sprite.visible);
     }
+  }
+
+  private registerHotspots(): void {
+    (this.def.hotspots ?? []).forEach((h, i) => {
+      const r = tileRect(h.rect);
+      this.interactions.add({
+        id: `hotspot:${i}:${h.interact}`,
+        rect: () => r,
+        label: () => h.label ?? 'Ver',
+        enabled: () => (h.enabledIf ? h.enabledIf() : true),
+        run: () => this.runScript(h.interact),
+        anchor: () => ({ x: r.centerX, y: r.y - 2 }),
+      });
+      if (h.markerIf) this.addMarker(h.markerIf, () => ({ x: r.centerX, y: r.y - 4 }), () => true);
+    });
+  }
+
+  /** ?debug na URL: desenha colisões (vermelho), interações (verde), gatilhos (azul), saídas (amarelo). */
+  private drawDebug(): void {
+    const g = this.add.graphics().setDepth(300_000);
+    const box = (r: Phaser.Geom.Rectangle, color: number) => {
+      g.fillStyle(color, 0.25).fillRect(r.x, r.y, r.width, r.height);
+      g.lineStyle(1, color, 0.9).strokeRect(r.x, r.y, r.width, r.height);
+    };
+    for (const b of this.def.blocks ?? []) box(tileRect(b), 0xff3040);
+    for (const h of this.def.hotspots ?? []) box(tileRect(h.rect), 0x30ff60);
+    for (const t of this.def.triggers ?? []) box(tileRect(t.rect), 0x3080ff);
+    for (const e of this.def.exits ?? []) box(tileRect(e.rect), 0xffd030);
+    this.built.collision.forEachTile((t) => {
+      if (t.collides) box(new Phaser.Geom.Rectangle(t.pixelX, t.pixelY, TILE, TILE), 0xff3040);
+    });
   }
 
   private addMarker(cond: () => boolean, anchor: () => Vec2, visible: () => boolean): void {

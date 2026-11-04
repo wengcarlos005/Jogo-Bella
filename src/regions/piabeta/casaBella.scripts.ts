@@ -104,7 +104,7 @@ export const casaScripts: Record<string, Script> = {
 
   async 'sair-quarto-cedo'(ctx) {
     await ctx.say('bella', 'Espera, ainda não tô pronta! Volta, volta.');
-    await ctx.move('player', 3.5, 6);
+    await ctx.move('player', 4, 8.4);
   },
 
   async 'chegou-sala'(ctx) {
@@ -123,11 +123,12 @@ export const casaScripts: Record<string, Script> = {
     await ctx.fadeOut(300);
     ctx.setFlag('weng-entrou');
     ctx.refresh();
-    ctx.place('weng', 10.5, 13, 'up');
-    ctx.place('player', 10.5, 10, 'down');
+    ctx.place('weng', 15, 18.4, 'up');
+    ctx.place('player', 15.5, 15, 'down');
+    ctx.face('mae-bella', 'right');
     ctx.sfx('door');
     await ctx.fadeIn(400);
-    await ctx.move('weng', 10.5, 11.5, 40);
+    await ctx.move('weng', 15.5, 16.8, 40);
     await ctx.say('weng', 'Oi! Ééé... oi. Boa tarde.');
     await ctx.emote('weng', 'sweat');
     const c = await ctx.choose('bella', '(Ele tá tão nervoso quanto eu...)', ['"Oi! Você chegou rápido!"', '"Achou fácil a casa?"', 'Dar um abraço']);
@@ -232,6 +233,12 @@ export const casaScripts: Record<string, Script> = {
     await ctx.say('pai-bella', 'No horário, hein.');
   },
 
+  async pia(ctx) {
+    await ctx.say('bella', 'Uma louça pra lavar. Ela pode esperar até amanhã. Hoje não.');
+  },
+  async sofa(ctx) {
+    await ctx.say('bella', 'O sofá do cochilo de domingo. Hoje não tem cochilo, tem encontro!');
+  },
   async geladeira(ctx) {
     await ctx.say('bella', 'Água gelada pra acalmar. Ok, não acalmou.');
   },
