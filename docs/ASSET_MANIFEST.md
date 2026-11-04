@@ -51,9 +51,13 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 | CHAR-012 | `characters/bella-linho.png` | Bella — conjunto de linho branco | 384×384 | 16 | **integrado** |
 | CHAR-013 | `characters/bella-festa.png` | Bella — vestido laranja de festa | 384×384 | 16 | **integrado** |
 | CHAR-014 | `characters/bella-inverno.png` | Bella — jaqueta preta | 384×384 | 16 | **integrado** |
-| CHAR-002 | `characters/weng-walk.png` | Personagem | 384×384 | 16 (4×4) | solicitado |
+| CHAR-002 | `characters/weng-casual.png` | Weng — camiseta preta estampada | 384×384 | 16 (4×4) | **integrado** |
+| CHAR-021 | `characters/weng-basica.png` | Weng — camiseta branca | 384×384 | 16 | **integrado** |
+| CHAR-022 | `characters/weng-social.png` | Weng — colete e gravata | 384×384 | 16 | **integrado** |
+| CHAR-023 | `characters/weng-xadrez.png` | Weng — camisa xadrez preta | 384×384 | 16 | **integrado** |
+| CHAR-024 | `characters/weng-reveillon.png` | Weng — camisa branca xadrez | 384×384 | 16 | **integrado** |
 | PORT-001 | `portraits/bella-neutral.png` | Retrato (gerado da folha casual) | 96×96 | 1 | **integrado** |
-| PORT-002 | `portraits/weng-neutral.png` | Retrato | 96×96 | 1 | solicitado |
+| PORT-002 | `portraits/weng-neutral.png` | Retrato (gerado da folha casual) | 192×192 | 1 | **integrado** |
 | NPC-001 | `npcs/mae-bella-walk.png` | NPC | 384×384 | 16 | solicitado |
 | NPC-002 | `npcs/pai-bella-walk.png` | NPC | 384×384 | 16 | solicitado |
 | NPC-003 | `npcs/vizinha-walk.png` | NPC (Dona Cida) | 384×384 | 16 | solicitado |
@@ -69,7 +73,18 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 `python3 scripts/process-spritesheet.py art-source/<arquivo> public/assets/<pasta>/<nome>.png --frame 96 --height 72`
 (remove o fundo, recorta a grade, padroniza a escala e alinha os pés).
 
-**Roupas da Bella por cidade** (`src/data/outfits.ts`): Piabetá/Caxias/Botafogo = casual · Petrópolis/Curitiba = jaqueta · Araruama/Cabo Frio = linho branco (réveillon) · Rio das Ostras/Niterói = vestido amarelo · Lapa/Seropédica = vestido laranja. Só a roupa casual tem os óculos rosados.
+**Roupas por cidade** (`src/data/outfits.ts`):
+
+| Cidade | Bella | Weng |
+|---|---|---|
+| Piabetá, Duque de Caxias, Botafogo | casual (óculos rosados) | camiseta preta estampada |
+| Petrópolis, Curitiba | jaqueta preta | camisa xadrez preta |
+| Araruama, Cabo Frio (réveillon) | linho branco | camisa branca xadrez |
+| Rio das Ostras, Niterói | vestido amarelo | camiseta branca |
+| Lapa | vestido laranja | camisa xadrez preta |
+| Seropédica (formatura) | vestido laranja | colete e gravata |
+
+Só a roupa casual da Bella tem os óculos rosados.
 
 **Prompts sugeridos (Lote 1):**
 

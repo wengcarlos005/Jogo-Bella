@@ -18,7 +18,7 @@ import { InteractionSystem, type Interactable } from '@/systems/InteractionSyste
 import { createScriptContext } from '@/systems/ScriptRunner';
 import { REGIONS, regionMeta } from '@/data/regions';
 import { ITEMS } from '@/data/items';
-import { BELLA_OUTFITS, REGION_OUTFIT } from '@/data/outfits';
+import { OUTFITS, REGION_OUTFIT } from '@/data/outfits';
 import { UI } from '@/ui/UIManager';
 
 export interface GameSceneData {
@@ -164,10 +164,21 @@ export class GameScene extends Phaser.Scene {
 
   /** Spritesheet da Bella para a região atual (com fallback para o placeholder). */
   bellaTexture(): string {
+    return this.spriteFor('bella');
+  }
+
+  /**
+   * Textura de um personagem na região atual. Bella e Weng trocam de roupa
+   * conforme a cidade; demais NPCs usam a própria chave. Sem arte real,
+   * cai no placeholder (chave original).
+   */
+  spriteFor(key: string): string {
+    if (key !== 'bella' && key !== 'weng') return key;
     const region = this.def.region;
-    const id = GameState.data.regionOutfits[region] ?? REGION_OUTFIT[region];
-    const tex = BELLA_OUTFITS[id]?.texture;
-    return tex && this.textures.exists(tex) ? tex : 'bella';
+    const override = key === 'bella' ? GameState.data.regionOutfits[region] : undefined;
+    const id = override ?? REGION_OUTFIT[key][region];
+    const tex = OUTFITS[key][id]?.texture;
+    return tex && this.textures.exists(tex) ? tex : key;
   }
 
   /** Reaplica a roupa (após troca no guarda-roupa). */
@@ -182,7 +193,7 @@ export class GameScene extends Phaser.Scene {
   private spawnNpcs(): void {
     for (const def of this.def.npcs ?? []) {
       const p = tileToFeet(def.tx, def.ty);
-      const npc = new NPC(this, p.x, p.y, def.sprite, def.id);
+      const npc = new NPC(this, p.x, p.y, this.spriteFor(def.sprite), def.id);
       npc.face(def.facing ?? 'down');
       npc.behavior = def.behavior ?? 'idle';
       npc.interactScript = def.interact;
@@ -214,7 +225,7 @@ export class GameScene extends Phaser.Scene {
     let entry = this.npcs.get('weng');
     if (!entry) {
       const back = { down: [0, -14], up: [0, 14], left: [14, 0], right: [-14, 0] }[this.player.facing];
-      const npc = new NPC(this, this.player.x + back[0], this.player.y + back[1], 'weng', 'weng');
+      const npc = new NPC(this, this.player.x + back[0], this.player.y + back[1], this.spriteFor('weng'), 'weng');
       npc.interactScript = 'weng';
       entry = { npc, def: { id: 'weng', sprite: 'weng', tx: 0, ty: 0, interact: 'weng' } };
       this.npcs.set('weng', entry);
