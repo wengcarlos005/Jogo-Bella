@@ -72,8 +72,15 @@ export const casaBellaMap: MapDef = {
 
   props: [
     // porta-guarda-chuvas ao lado da porta (o rosa some quando a Bella pega)
-    { key: 'prop-umbrella-stand', tx: 13.2, ty: 18.1, scale: 0.24, block: false, visibleIf: () => !objDone('guarda-chuva') },
+    { key: 'prop-umbrella-stand', tx: 13.2, ty: 18.1, scale: 0.24, block: [2, 36, 19, 12], visibleIf: () => !objDone('guarda-chuva') },
     { key: 'prop-umbrella-stand-empty', tx: 13.2, ty: 18.1, scale: 0.24, block: false, visibleIf: () => objDone('guarda-chuva') },
+  ],
+
+  // Profundidade: TV e planta da sala na frente de quem passa atrás
+  overlays: [
+    { x0: 243, y0: 642, x1: 294, y1: 805, base: 888 }, // tela da TV
+    { x0: 214, y0: 698, x1: 322, y1: 892, base: 888, cut: 'furniture' }, // rack
+    { x0: 1360, y0: 660, x1: 1492, y1: 815, base: 808, cut: 'foliage' }, // planta
   ],
 
   hotspots: [

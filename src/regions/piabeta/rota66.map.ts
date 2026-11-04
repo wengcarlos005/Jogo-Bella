@@ -212,6 +212,21 @@ export const rota66Map: MapDef = {
     R(905, 880, 995, 975),
   ],
 
+  // Profundidade: cabines, plantas e mesas na frente de quem passa atrás delas
+  overlays: [
+    { x0: 430, y0: 458, x1: 724, y1: 668, base: 665, cut: 'furniture' }, // cabine do meio (esq.)
+    { x0: 876, y0: 458, x1: 1164, y1: 668, base: 665, cut: 'furniture' }, // cabine do meio (dir.)
+    { x0: 84, y0: 670, x1: 412, y1: 906, base: 905, cut: 'furniture' }, // cabine de baixo (esq.)
+    { x0: 1132, y0: 670, x1: 1462, y1: 906, base: 905, cut: 'furniture' }, // cabine de baixo (dir.)
+    { x0: 86, y0: 478, x1: 302, y1: 655, base: 650, cut: 'furniture' }, // mesinha da janela
+    { x0: 342, y0: 492, x1: 438, y1: 600, base: 662, cut: 'foliage' }, // plantas
+    { x0: 1148, y0: 492, x1: 1244, y1: 600, base: 664, cut: 'foliage' },
+    { x0: 0, y0: 636, x1: 106, y1: 745, base: 760, cut: 'foliage' },
+    { x0: 1430, y0: 545, x1: 1536, y1: 690, base: 760, cut: 'foliage' },
+    { x0: 532, y0: 792, x1: 638, y1: 915, base: 975, cut: 'foliage' },
+    { x0: 900, y0: 792, x1: 1004, y1: 915, base: 975, cut: 'foliage' },
+  ],
+
   hotspots: [
     { rect: R(520, 250, 1250, 450), interact: 'balcao', label: 'Balcão', markerIf: () => objActive('pedido') || (objDone('pedido') && objActive('pedido-weng')) },
     { rect: R(88, 470, 300, 655), interact: 'mesa', label: 'Mesinha', markerIf: () => objActive('mesa') && objDone('pedido-weng') },

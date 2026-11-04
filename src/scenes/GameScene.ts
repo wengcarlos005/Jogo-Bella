@@ -20,6 +20,7 @@ import { REGIONS, regionMeta } from '@/data/regions';
 import { ITEMS } from '@/data/items';
 import { OUTFITS, REGION_OUTFIT } from '@/data/outfits';
 import { UI } from '@/ui/UIManager';
+import { setPortraitOverride } from '@/ui/components/DialogueBox';
 
 export interface GameSceneData {
   mapId: string;
@@ -129,6 +130,15 @@ export class GameScene extends Phaser.Scene {
     InputSystem.on('game:menu', this.onMenu, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.cleanup());
 
+    // retrato da caixa de falas = roupa que a Bella/Weng está usando agora
+    setPortraitOverride((who) => {
+      if (who === 'bella') return `portrait-${this.player.texture.key}`;
+      if (who === 'weng') {
+        const w = this.npcs.get('weng')?.npc;
+        return w ? `portrait-${w.texture.key}` : `portrait-${this.spriteFor('weng')}`;
+      }
+      return null;
+    });
     UI.showGameplayUI(true);
     if (def.music) AudioSystem.playMusic(def.music);
     this.lastTick = this.time.now;

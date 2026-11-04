@@ -739,12 +739,12 @@ export class PlaceholderFactory {
       px(c, '#f27a9b', 3, 5, 1, 1);
       px(c, '#ffffff', 1, 1, 1, 1);
     });
-    this.prop('fx-marker', 15, 14, (c) => {
-      const heart = ['..XXX...XXX..', '.XHHHX.XHHHX.', 'XHWWHHXHHHHHX', 'XHWHHHHHHHHHX', 'XHHHHHHHHHHHX', '.XHHHHHHHHHX.', '..XHHHHHHHX..', '...XHHHHHX...', '....XHHHX....', '.....XHX.....', '......X......'];
-      heart.forEach((row, y) =>
+    this.prop('fx-marker', 13, 13, (c) => {
+      const arrow = ['XXXXXXXXXXX', 'XYYYYYYYYYX', 'XXYYYWYYYXX', '.XYYYWYYYX.', '.XXYYYYYXX.', '..XYYYYYX..', '..XXYYYXX..', '...XYYYX...', '...XXYXX...', '....XYX....', '....XXX....', '.....X.....'];
+      arrow.forEach((row, y) =>
         [...row].forEach((ch, x) => {
-          if (ch === 'X') px(c, '#5a1a2a', x + 1, y + 1);
-          if (ch === 'H') px(c, '#f2557d', x + 1, y + 1);
+          if (ch === 'X') px(c, '#4a2a10', x + 1, y + 1);
+          if (ch === 'Y') px(c, y < 3 ? '#fff1a8' : '#ffc93c', x + 1, y + 1);
           if (ch === 'W') px(c, '#ffffff', x + 1, y + 1);
         }),
       );

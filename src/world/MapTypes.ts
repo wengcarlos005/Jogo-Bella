@@ -108,7 +108,7 @@ export interface MapDef {
     ellipse?: boolean;
     fade?: boolean;
     /** 'foliage': mantém só folhas, flores e contornos (tira chão, asfalto, pedra). */
-    cut?: 'foliage';
+    cut?: 'foliage' | 'furniture' | 'lamp';
   }[];
   /** Interações invisíveis sobre o cenário. */
   hotspots?: HotspotDef[];

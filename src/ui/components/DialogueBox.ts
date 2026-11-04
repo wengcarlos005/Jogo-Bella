@@ -7,6 +7,12 @@ import { textureURL } from '../textures';
 
 const SPEED = { lenta: 45, normal: 25, rapida: 10 };
 
+/** Permite trocar o retrato conforme a roupa atual (definido pela GameScene). */
+let portraitOverride: ((speaker: string) => string | null) | null = null;
+export function setPortraitOverride(fn: ((speaker: string) => string | null) | null): void {
+  portraitOverride = fn;
+}
+
 /**
  * Caixa de diálogo: retrato, nome, texto progressivo e escolhas.
  * Avança com E/Espaço/Enter, clique ou botão A no celular.
@@ -36,7 +42,8 @@ export class DialogueBox {
   private setSpeaker(speaker: string | null): void {
     const def = speaker ? SPEAKERS[speaker] ?? { name: speaker } : null;
     // Sem retrato (narrador, celular): usa a lua da interface, se existir.
-    const url = textureURL(def?.portrait) ?? textureURL('ui-icon-lua');
+    const live = speaker ? portraitOverride?.(speaker) : null;
+    const url = textureURL(live ?? def?.portrait) ?? textureURL(def?.portrait) ?? textureURL('ui-icon-lua');
     this.portrait.classList.toggle('hidden', !url);
     if (url) this.portrait.src = url;
     const isNarrator = !def || !def.name;

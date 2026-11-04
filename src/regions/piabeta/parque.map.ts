@@ -193,8 +193,8 @@ export const parqueMap: MapDef = {
     // portão e arco de flores
     { x0: 520, y0: 740, x1: 610, y1: 950, base: 945 },
     { x0: 868, y0: 740, x1: 958, y1: 950, base: 945 },
-    { x0: 588, y0: 668, x1: 655, y1: 790, base: 930 },
-    { x0: 840, y0: 668, x1: 925, y1: 790, base: 930 },
+    { x0: 588, y0: 668, x1: 655, y1: 790, base: 930, cut: 'foliage' },
+    { x0: 840, y0: 668, x1: 925, y1: 790, base: 930, cut: 'foliage' },
     { x0: 600, y0: 640, x1: 900, y1: 790, base: 930, cut: 'foliage' },
     { x0: 0, y0: 830, x1: 520, y1: 935, base: 930, cut: 'foliage' },
     { x0: 958, y0: 830, x1: 1536, y1: 935, base: 930, cut: 'foliage' },
@@ -207,12 +207,12 @@ export const parqueMap: MapDef = {
     { x0: 497, y0: 250, x1: 625, y1: 352, base: 345 }, // parapeito da frente (esq.)
     { x0: 722, y0: 250, x1: 850, y1: 352, base: 345 }, // parapeito da frente (dir.)
     // postes
-    { x0: 392, y0: 520, x1: 444, y1: 585, base: 640 },
-    { x0: 409, y0: 585, x1: 427, y1: 640, base: 640 },
-    { x0: 1040, y0: 718, x1: 1082, y1: 775, base: 862 },
-    { x0: 1054, y0: 775, x1: 1068, y1: 862, base: 862 },
-    { x0: 1455, y0: 562, x1: 1505, y1: 625, base: 682 },
-    { x0: 1472, y0: 625, x1: 1488, y1: 682, base: 682 },
+    { x0: 392, y0: 520, x1: 444, y1: 585, base: 640, cut: 'lamp' },
+    { x0: 409, y0: 585, x1: 427, y1: 640, base: 640, cut: 'lamp' },
+    { x0: 1040, y0: 718, x1: 1082, y1: 775, base: 862, cut: 'lamp' },
+    { x0: 1054, y0: 775, x1: 1068, y1: 862, base: 862, cut: 'lamp' },
+    { x0: 1455, y0: 562, x1: 1505, y1: 625, base: 682, cut: 'lamp' },
+    { x0: 1472, y0: 625, x1: 1488, y1: 682, base: 682, cut: 'lamp' },
   ],
 
   hotspots: [

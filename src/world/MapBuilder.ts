@@ -134,6 +134,8 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
             keep = ex * ex + ey * ey <= 0.25;
           }
           if (keep && o.cut === 'foliage') keep = isFoliage(d[p], d[p + 1], d[p + 2]);
+          if (keep && o.cut === 'furniture') keep = isFurniture(d[p], d[p + 1], d[p + 2]);
+          if (keep && o.cut === 'lamp') keep = isLamp(d[p], d[p + 1], d[p + 2]);
           if (!keep) d[p + 3] = 0;
         }
         ctx.putImageData(data, 0, 0);
@@ -176,6 +178,24 @@ function isFoliage(r: number, g: number, b: number): boolean {
   if (h >= 55 && h <= 170 && sat > 0.22) return true; // verdes
   if (sat > 0.42 && (h >= 290 || h < 12 || (h >= 45 && h < 55) || (h >= 170 && h < 290))) return true; // rosa, vermelho, roxo, amarelo, azul
   return false;
+}
+
+/** Móveis coloridos (estofado, madeira, plantas): tira o piso xadrez/neutro. */
+function isFurniture(r: number, g: number, b: number): boolean {
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const sat = max === 0 ? 0 : (max - min) / max;
+  return max / 255 < 0.16 || sat > 0.3;
+}
+
+/** Poste: ferro escuro e luz amarela; tira calçada, asfalto e grama. */
+function isLamp(r: number, g: number, b: number): boolean {
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const v = max / 255;
+  const sat = max === 0 ? 0 : (max - min) / max;
+  const greenish = g > r && g > b;
+  return (v < 0.3 && !greenish) || (sat > 0.35 && v > 0.62 && r >= g && !greenish);
 }
 
 /** Converte um retângulo em tiles para pixels. */

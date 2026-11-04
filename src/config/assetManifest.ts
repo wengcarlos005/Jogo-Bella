@@ -65,6 +65,13 @@ export const ASSETS: AssetEntry[] = [
 
   // Retratos de diálogo (96x96)
   { id: 'PORT-001', key: 'portrait-bella', file: 'assets/portraits/bella-neutral.png', kind: 'image' },
+  // Retrato por roupa (a caixa de falas usa o da roupa atual)
+  ...['casual', 'floral', 'linho', 'festa', 'inverno', 'pijama', 'pijama-oculos'].map(
+    (n, i): AssetEntry => ({ id: `PORT-B${i}`, key: `portrait-bella-${n}`, file: `assets/portraits/bella-${n}.png`, kind: 'image' }),
+  ),
+  ...['casual', 'basica', 'social', 'xadrez', 'reveillon'].map(
+    (n, i): AssetEntry => ({ id: `PORT-W${i}`, key: `portrait-weng-${n}`, file: `assets/portraits/weng-${n}.png`, kind: 'image' }),
+  ),
   { id: 'PORT-002', key: 'portrait-weng', file: 'assets/portraits/weng-neutral.png', kind: 'image' },
   { id: 'PORT-003', key: 'portrait-mae-bella', file: 'assets/portraits/mae-bella.png', kind: 'image' },
   { id: 'PORT-004', key: 'portrait-pai-bella', file: 'assets/portraits/pai-bella.png', kind: 'image' },

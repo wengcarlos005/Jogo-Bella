@@ -282,11 +282,11 @@ export const ruaMap: MapDef = {
 
   // Profundidade: o que fica NA FRENTE de quem passa atrás
   overlays: [
-    { x0: 252, y0: 398, x1: 505, y1: 542, base: 532 }, // carro
-    { x0: 118, y0: 372, x1: 212, y1: 466, base: 638 }, // poste esquerdo (luminária)
-    { x0: 128, y0: 466, x1: 154, y1: 640, base: 638 }, // poste esquerdo (haste)
-    { x0: 1418, y0: 372, x1: 1512, y1: 466, base: 638 }, // poste direito (luminária)
-    { x0: 1478, y0: 466, x1: 1504, y1: 640, base: 638 }, // poste direito (haste)
+    { x0: 252, y0: 400, x1: 505, y1: 542, base: 532, cut: 'furniture' }, // carro
+    { x0: 118, y0: 372, x1: 212, y1: 466, base: 638, cut: 'lamp' }, // poste esquerdo (luminária)
+    { x0: 128, y0: 466, x1: 154, y1: 640, base: 638, cut: 'lamp' }, // poste esquerdo (haste)
+    { x0: 1418, y0: 372, x1: 1512, y1: 466, base: 638, cut: 'lamp' }, // poste direito (luminária)
+    { x0: 1478, y0: 466, x1: 1504, y1: 640, base: 638, cut: 'lamp' }, // poste direito (haste)
     { x0: 140, y0: 535, x1: 470, y1: 780, base: 880, cut: 'foliage' }, // copa esquerda
     { x0: 1185, y0: 540, x1: 1465, y1: 785, base: 885, cut: 'foliage' }, // copa direita
     { x0: 478, y0: 678, x1: 634, y1: 740, base: 775 }, // banco
