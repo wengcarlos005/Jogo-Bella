@@ -62,11 +62,11 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
   const bgKey = mapLayerKey(def.id, 'bg');
   const fgKey = mapLayerKey(def.id, 'fg');
   if (scene.textures.exists(bgKey)) {
-    scene.add.image(0, 0, bgKey).setOrigin(0).setDepth(-8);
+    scene.add.image(0, 0, bgKey).setOrigin(0).setDepth(-8).setDisplaySize(width * TILE, height * TILE);
     groundLayer.setAlpha(0);
   }
   if (scene.textures.exists(fgKey)) {
-    scene.add.image(0, 0, fgKey).setOrigin(0).setDepth(100_000);
+    scene.add.image(0, 0, fgKey).setOrigin(0).setDepth(100_000).setDisplaySize(width * TILE, height * TILE);
   }
 
   const solids = scene.physics.add.staticGroup();

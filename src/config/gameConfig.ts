@@ -1,6 +1,13 @@
 /** Constantes globais do jogo. Ajuste aqui, não espalhe números mágicos. */
+/** Área visível do mundo (em px lógicos). Toda a lógica usa esta escala. */
 export const GAME_WIDTH = 480;
 export const GAME_HEIGHT = 270;
+/**
+ * O canvas é desenhado em resolução dobrada (960x540) com zoom 2 na câmera.
+ * Arte "HD" (personagens e cenários do ChatGPT) é carregada com o dobro de
+ * pixels e exibida em escala 0,5 — mantém o detalhe original da arte.
+ */
+export const RENDER_SCALE = 2;
 export const TILE = 16;
 
 export const PLAYER = {

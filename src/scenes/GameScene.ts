@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { AUTOSAVE_INTERVAL_MS, CAMERA, GAME_HEIGHT, GAME_WIDTH, TILE } from '@/config/gameConfig';
+import { AUTOSAVE_INTERVAL_MS, CAMERA, GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE, TILE } from '@/config/gameConfig';
 import { EventBus } from '@/core/EventBus';
 import { GameState } from '@/core/GameState';
 import type { Direction, RegionId, Vec2 } from '@/core/types';
@@ -151,6 +151,7 @@ export class GameScene extends Phaser.Scene {
 
   private setupCamera(): void {
     const cam = this.cameras.main;
+    cam.setZoom(RENDER_SCALE);
     const { widthPx: w, heightPx: h } = this.built;
     const bx = w < GAME_WIDTH ? -(GAME_WIDTH - w) / 2 : 0;
     const by = h < GAME_HEIGHT ? -(GAME_HEIGHT - h) / 2 : 0;
@@ -366,6 +367,7 @@ export class GameScene extends Phaser.Scene {
   update(time: number, delta: number): void {
     this.player.update();
     for (const { npc } of this.npcs.values()) npc.update(time, delta);
+    this.weather.update(this.cameras.main);
 
     // tempo de jogo + autosave
     GameState.data.playtimeMs += time - this.lastTick;

@@ -14,10 +14,11 @@ export class WeatherSystem {
   current: Weather = 'clear';
 
   constructor(private scene: Phaser.Scene) {
+    // Posicionados no mundo e reposicionados a cada quadro sobre a área visível
+    // (scrollFactor 0 + zoom de câmera desloca objetos).
     this.overlay = scene.add
-      .rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 1)
+      .rectangle(0, 0, GAME_WIDTH + 64, GAME_HEIGHT + 64, 0x000000, 1)
       .setOrigin(0)
-      .setScrollFactor(0)
       .setDepth(200_000)
       .setAlpha(0);
     this.rain = scene.add.particles(0, 0, 'fx-rain', {
@@ -31,7 +32,14 @@ export class WeatherSystem {
       alpha: { min: 0.5, max: 0.9 },
       emitting: false,
     });
-    this.rain.setScrollFactor(0).setDepth(200_001);
+    this.rain.setDepth(200_001);
+  }
+
+  /** Mantém overlay e chuva cobrindo a câmera. */
+  update(cam: Phaser.Cameras.Scene2D.Camera): void {
+    const v = cam.worldView;
+    this.overlay.setPosition(v.x - 32, v.y - 32);
+    this.rain.setPosition(v.x, v.y);
   }
 
   set(kind: Weather, ms = 1500): void {

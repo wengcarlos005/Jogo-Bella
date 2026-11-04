@@ -30,17 +30,18 @@ const char = (id: string, key: string, file: string, frame = 32): AssetEntry => 
 
 export const ASSETS: AssetEntry[] = [
   // Personagens — walk sheet 4x4 (linhas: baixo, esquerda, direita, cima).
-  // Arte real: quadros 48x48 (personagem ~38px). Placeholders: 32x32.
+  // Arte real HD: quadros 96x96 (personagem ~72px de arte, exibido com 36px lógicos).
+  // Placeholders: 32x32.
   // Bella tem uma folha por roupa (ver src/data/outfits.ts).
-  char('CHAR-001', 'bella-casual', 'characters/bella-casual.png', 48),
-  char('CHAR-011', 'bella-floral', 'characters/bella-floral.png', 48),
-  char('CHAR-012', 'bella-linho', 'characters/bella-linho.png', 48),
-  char('CHAR-013', 'bella-festa', 'characters/bella-festa.png', 48),
-  char('CHAR-014', 'bella-inverno', 'characters/bella-inverno.png', 48),
-  char('CHAR-002', 'weng', 'characters/weng-walk.png', 48),
-  char('NPC-001', 'mae-bella', 'npcs/mae-bella-walk.png', 48),
-  char('NPC-002', 'pai-bella', 'npcs/pai-bella-walk.png', 48),
-  char('NPC-003', 'vizinha', 'npcs/vizinha-walk.png', 48),
+  char('CHAR-001', 'bella-casual', 'characters/bella-casual.png', 96),
+  char('CHAR-011', 'bella-floral', 'characters/bella-floral.png', 96),
+  char('CHAR-012', 'bella-linho', 'characters/bella-linho.png', 96),
+  char('CHAR-013', 'bella-festa', 'characters/bella-festa.png', 96),
+  char('CHAR-014', 'bella-inverno', 'characters/bella-inverno.png', 96),
+  char('CHAR-002', 'weng', 'characters/weng-walk.png', 96),
+  char('NPC-001', 'mae-bella', 'npcs/mae-bella-walk.png', 96),
+  char('NPC-002', 'pai-bella', 'npcs/pai-bella-walk.png', 96),
+  char('NPC-003', 'vizinha', 'npcs/vizinha-walk.png', 96),
 
   // Retratos de diálogo (96x96)
   { id: 'PORT-001', key: 'portrait-bella', file: 'assets/portraits/bella-neutral.png', kind: 'image' },

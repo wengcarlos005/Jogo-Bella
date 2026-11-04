@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import type { Direction } from '@/core/types';
-import { PLAYER } from '@/config/gameConfig';
+import { PLAYER, RENDER_SCALE } from '@/config/gameConfig';
 
 const ROW: Record<Direction, number> = { down: 0, left: 1, right: 2, up: 3 };
 
@@ -46,10 +46,14 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     this.setTexture(key, ROW[this.facing] * 4);
     const fw = this.frame.width;
     const fh = this.frame.height;
+    // Folhas HD (quadros ≥ 64px) são exibidas em meia escala: 1 pixel da arte
+    // = 1 pixel do canvas (que tem o dobro da resolução lógica).
+    const s = fh >= 64 ? 1 / RENDER_SCALE : 1;
+    this.setScale(s);
     const b = PLAYER.body;
     const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setSize(b.width, b.height);
-    body.setOffset((fw - b.width) / 2, fh - b.height - 1);
+    body.setSize(b.width / s, b.height / s);
+    body.setOffset((fw - b.width / s) / 2, fh - (b.height + 1) / s);
   }
 
   /** Posição dos pés (centro do corpo). */

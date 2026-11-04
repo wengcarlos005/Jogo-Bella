@@ -60,6 +60,11 @@ public/assets/            arte e áudio definitivos (ver ASSET_MANIFEST.md)
 docs/
 ```
 
+## Resolução
+Área lógica 480×270 (toda a lógica, tiles de 16px), canvas 960×540 com `camera.zoom = 2`.
+Folhas de personagem com quadros ≥ 64px recebem `scale 0.5` (1 pixel de arte = 1 pixel do canvas).
+Cenários pintados são ajustados ao tamanho do mapa com `setDisplaySize`, então aceitam qualquer resolução (2× recomendado).
+
 ## Fluxo de cenas
 `Boot → Preload → Menu (título DOM) → Game(mapId, spawn | posição)`.
 Trocar de mapa = `scene.restart({ mapId, spawn })` com fade. A cena reconstrói tudo a partir do `MapDef` e do `GameState`.

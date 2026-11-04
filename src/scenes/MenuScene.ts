@@ -9,7 +9,7 @@ export class MenuScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.cameras.main.setBackgroundColor('#1b1838');
+    this.cameras.main.setBackgroundColor('#1b1838').setZoom(2).centerOn(240, 135);
     for (let i = 0; i < 60; i++) {
       const s = this.add.rectangle(Phaser.Math.Between(0, 480), Phaser.Math.Between(0, 270), 1, 1, i % 7 ? 0xd8d2f0 : 0xffd75e);
       this.tweens.add({ targets: s, alpha: 0.2, duration: Phaser.Math.Between(800, 2200), yoyo: true, repeat: -1, delay: Phaser.Math.Between(0, 1500) });

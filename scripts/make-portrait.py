@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Gera um retrato de diálogo (96x96) a partir do primeiro quadro (frente)
+Gera um retrato de diálogo (192x192) a partir do primeiro quadro (frente)
 de uma spritesheet de IA em alta resolução.
 
 Uso: python3 scripts/make-portrait.py entrada.webp saida.png [--crop 0.55]
@@ -20,7 +20,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("src")
 ap.add_argument("dst")
 ap.add_argument("--crop", type=float, default=0.55, help="fração superior do corpo usada (cabeça+ombros)")
-ap.add_argument("--size", type=int, default=96)
+ap.add_argument("--size", type=int, default=192)
 a = ap.parse_args()
 
 rgb = ps.load_flat(a.src)

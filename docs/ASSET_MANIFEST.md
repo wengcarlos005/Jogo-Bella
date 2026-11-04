@@ -8,6 +8,10 @@
 
 ---
 
+> **Resolução HD:** o canvas é desenhado em 960×540 (2× a área lógica de 480×270).
+> Personagens e cenários do ChatGPT entram com o dobro de pixels e são exibidos em
+> meia escala, preservando o detalhe da arte.
+
 ## 0. Regras para TODA arte (cole no começo de cada pedido ao ChatGPT)
 
 ```
@@ -27,12 +31,12 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 ### Especificações técnicas
 | Tipo | Dimensão final no jogo | Grade | Observações |
 |---|---|---|---|
-| Spritesheet de personagem | 192×192 | 4×4 quadros de 48×48 (personagem ~38px) | linhas: frente, esquerda, direita, costas · 4 quadros de passo · processada por `scripts/process-spritesheet.py` |
-| Retrato de diálogo | 96×96 | — | rosto + ombros, fundo liso claro |
+| Spritesheet de personagem | 384×384 (HD) | 4×4 quadros de 96×96 (personagem ~72px de arte) | linhas: frente, esquerda, direita, costas · 4 quadros de passo · processada por `scripts/process-spritesheet.py` |
+| Retrato de diálogo | 192×192 (HD) | — | rosto + ombros, fundo liso claro |
 | Objeto | múltiplos de 16 (ex.: 32×48) | — | base apoiada no "chão" da imagem |
 | Ícone de item | 16×16 (gerar 256×256) | — | silhueta clara |
-| Cenário pintado | tamanho do mapa (abaixo) | 16px | vista de cima; luz vindo do canto superior esquerdo |
-| Camada frontal (`-fg`) | tamanho do mapa | — | só o que fica NA FRENTE dos personagens (copas, telhados), resto transparente |
+| Cenário pintado | **2× o tamanho do mapa** (HD, abaixo) | 32px por tile | vista de cima; luz vindo do canto superior esquerdo |
+| Camada frontal (`-fg`) | igual ao cenário | — | só o que fica NA FRENTE dos personagens (copas, telhados), resto transparente |
 | Ilustração de memória | 320×200 | — | cena especial, pode ter personagens |
 
 ---
@@ -42,27 +46,27 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 ### LOTE 1 — Personagens base + Piabetá (PRIORIDADE MÁXIMA)
 | ID | Arquivo | Categoria | Dimensões | Frames | Estado |
 |---|---|---|---|---|---|
-| CHAR-001 | `characters/bella-casual.png` | Bella — camiseta preta, óculos rosados | 192×192 | 16 (4×4) | **integrado** |
-| CHAR-011 | `characters/bella-floral.png` | Bella — vestido amarelo florido | 192×192 | 16 | **integrado** |
-| CHAR-012 | `characters/bella-linho.png` | Bella — conjunto de linho branco | 192×192 | 16 | **integrado** |
-| CHAR-013 | `characters/bella-festa.png` | Bella — vestido laranja de festa | 192×192 | 16 | **integrado** |
-| CHAR-014 | `characters/bella-inverno.png` | Bella — jaqueta preta | 192×192 | 16 | **integrado** |
-| CHAR-002 | `characters/weng-walk.png` | Personagem | 192×192 | 16 (4×4) | solicitado |
+| CHAR-001 | `characters/bella-casual.png` | Bella — camiseta preta, óculos rosados | 384×384 | 16 (4×4) | **integrado** |
+| CHAR-011 | `characters/bella-floral.png` | Bella — vestido amarelo florido | 384×384 | 16 | **integrado** |
+| CHAR-012 | `characters/bella-linho.png` | Bella — conjunto de linho branco | 384×384 | 16 | **integrado** |
+| CHAR-013 | `characters/bella-festa.png` | Bella — vestido laranja de festa | 384×384 | 16 | **integrado** |
+| CHAR-014 | `characters/bella-inverno.png` | Bella — jaqueta preta | 384×384 | 16 | **integrado** |
+| CHAR-002 | `characters/weng-walk.png` | Personagem | 384×384 | 16 (4×4) | solicitado |
 | PORT-001 | `portraits/bella-neutral.png` | Retrato (gerado da folha casual) | 96×96 | 1 | **integrado** |
 | PORT-002 | `portraits/weng-neutral.png` | Retrato | 96×96 | 1 | solicitado |
-| NPC-001 | `npcs/mae-bella-walk.png` | NPC | 192×192 | 16 | solicitado |
-| NPC-002 | `npcs/pai-bella-walk.png` | NPC | 192×192 | 16 | solicitado |
-| NPC-003 | `npcs/vizinha-walk.png` | NPC (Dona Cida) | 192×192 | 16 | solicitado |
+| NPC-001 | `npcs/mae-bella-walk.png` | NPC | 384×384 | 16 | solicitado |
+| NPC-002 | `npcs/pai-bella-walk.png` | NPC | 384×384 | 16 | solicitado |
+| NPC-003 | `npcs/vizinha-walk.png` | NPC (Dona Cida) | 384×384 | 16 | solicitado |
 | PORT-003 | `portraits/mae-bella.png` | Retrato | 96×96 | 1 | solicitado |
 | PORT-004 | `portraits/pai-bella.png` | Retrato | 96×96 | 1 | solicitado |
 | PORT-005 | `portraits/vizinha.png` | Retrato | 96×96 | 1 | solicitado |
-| MAP-001 | `maps/piabeta-casa-bella-bg.png` | Cenário | 352×240 | — | solicitado |
-| MAP-003 | `maps/piabeta-rua-bg.png` | Cenário | 640×384 | — | solicitado |
-| MAP-002 | `maps/piabeta-casa-bella-fg.png` | Camada frontal | 352×240 | — | planejado (opcional) |
-| MAP-004 | `maps/piabeta-rua-fg.png` | Camada frontal | 640×384 | — | planejado (opcional) |
+| MAP-001 | `maps/piabeta-casa-bella-bg.png` | Cenário | 704×480 (HD) | — | solicitado |
+| MAP-003 | `maps/piabeta-rua-bg.png` | Cenário | 1280×768 (HD) | — | solicitado |
+| MAP-002 | `maps/piabeta-casa-bella-fg.png` | Camada frontal | 704×480 | — | planejado (opcional) |
+| MAP-004 | `maps/piabeta-rua-fg.png` | Camada frontal | 1280×768 | — | planejado (opcional) |
 
 **Como integrar uma folha nova do ChatGPT:** salve o original em `art-source/` e rode
-`python3 scripts/process-spritesheet.py art-source/<arquivo> public/assets/<pasta>/<nome>.png`
+`python3 scripts/process-spritesheet.py art-source/<arquivo> public/assets/<pasta>/<nome>.png --frame 96 --height 72`
 (remove o fundo, recorta a grade, padroniza a escala e alinha os pés).
 
 **Roupas da Bella por cidade** (`src/data/outfits.ts`): Piabetá/Caxias/Botafogo = casual · Petrópolis/Curitiba = jaqueta · Araruama/Cabo Frio = linho branco (réveillon) · Rio das Ostras/Niterói = vestido amarelo · Lapa/Seropédica = vestido laranja. Só a roupa casual tem os óculos rosados.

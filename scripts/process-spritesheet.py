@@ -10,7 +10,7 @@ em uma spritesheet limpa para o jogo.
   - reduz com filtro de área e binariza o alfa (bordas nítidas)
 
 Uso:
-  python3 scripts/process-spritesheet.py entrada.png saida.png [--frame 48] [--height 38]
+  python3 scripts/process-spritesheet.py entrada.png saida.png [--frame 96] [--height 72]
 
 Requer: Pillow e numpy.
 """
@@ -43,8 +43,19 @@ def background_mask(rgb: np.ndarray) -> np.ndarray:
         grown[:, :-1] |= mask[:, 1:]
         grown &= cand
         if (grown == mask).all():
-            return mask
+            break
         mask = grown
+    # Halo: pixels claros/neutros (antialias do fundo) colados no fundo
+    # entram na máscara com tolerância maior, por poucas iterações.
+    halo = (mn > 120) & ((mx - mn) < 45)
+    for _ in range(6):
+        grown = mask.copy()
+        grown[1:, :] |= mask[:-1, :]
+        grown[:-1, :] |= mask[1:, :]
+        grown[:, 1:] |= mask[:, :-1]
+        grown[:, :-1] |= mask[:, 1:]
+        mask = mask | (grown & halo)
+    return mask
 
 
 def segments(profile: np.ndarray, n: int, min_gap: int = 3) -> list[tuple[int, int]]:
@@ -78,8 +89,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("src")
     ap.add_argument("dst")
-    ap.add_argument("--frame", type=int, default=48)
-    ap.add_argument("--height", type=int, default=38, help="altura do personagem (px) no quadro")
+    ap.add_argument("--frame", type=int, default=96)
+    ap.add_argument("--height", type=int, default=72, help="altura do personagem (px) no quadro")
     ap.add_argument("--grid", type=int, default=4)
     args = ap.parse_args()
 

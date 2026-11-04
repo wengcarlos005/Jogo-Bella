@@ -4,7 +4,7 @@ import '@fontsource/pixelify-sans/600.css';
 import '@fontsource/nunito/600.css';
 import '@fontsource/nunito/700.css';
 import '@fontsource/nunito/800.css';
-import { GAME_HEIGHT, GAME_WIDTH } from './config/gameConfig';
+import { GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE } from './config/gameConfig';
 import { BootScene } from './scenes/BootScene';
 import { PreloadScene } from './scenes/PreloadScene';
 import { MenuScene } from './scenes/MenuScene';
@@ -22,8 +22,8 @@ InputSystem.init();
 const game = new Phaser.Game({
   type: Phaser.AUTO,
   parent: 'game',
-  width: GAME_WIDTH,
-  height: GAME_HEIGHT,
+  width: GAME_WIDTH * RENDER_SCALE,
+  height: GAME_HEIGHT * RENDER_SCALE,
   backgroundColor: '#1b1838',
   pixelArt: true,
   roundPixels: true,
