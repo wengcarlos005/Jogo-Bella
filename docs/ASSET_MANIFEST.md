@@ -59,11 +59,11 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 | PORT-001 | `portraits/bella-neutral.png` | Retrato (gerado da folha casual) | 96×96 | 1 | **integrado** |
 | PORT-002 | `portraits/weng-neutral.png` | Retrato (gerado da folha casual) | 192×192 | 1 | **integrado** |
 | NPC-001 | `npcs/mae-bella-walk.png` | NPC | 384×384 | 16 | solicitado |
-| NPC-002 | `npcs/pai-bella-walk.png` | NPC | 384×384 | 16 | solicitado |
-| NPC-003 | `npcs/vizinha-walk.png` | NPC (Dona Cida) | 384×384 | 16 | solicitado |
+| NPC-002 | `npcs/pai-bella-walk.png` | NPC | 384×384 | 16 | **integrado** |
+| NPC-003 | `npcs/vizinha-walk.png` | NPC (Dona Cida) | 384×384 | 16 | **integrado** |
 | PORT-003 | `portraits/mae-bella.png` | Retrato | 96×96 | 1 | solicitado |
-| PORT-004 | `portraits/pai-bella.png` | Retrato | 96×96 | 1 | solicitado |
-| PORT-005 | `portraits/vizinha.png` | Retrato | 96×96 | 1 | solicitado |
+| PORT-004 | `portraits/pai-bella.png` | Retrato (gerado da folha) | 192×192 | 1 | **integrado** |
+| PORT-005 | `portraits/vizinha.png` | Retrato (gerado da folha) | 192×192 | 1 | **integrado** |
 | MAP-001 | `maps/piabeta-casa-bella-bg.png` | Cenário (original 1536×1024) | 1024×683 | — | **integrado** |
 | MAP-003 | `maps/piabeta-rua-bg.png` | Cenário (original 1619×971) | 1079×647 | — | **integrado** |
 | MAP-002 | `maps/piabeta-casa-bella-fg.png` | Camada frontal | 704×480 | — | planejado (opcional) |
