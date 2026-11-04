@@ -10,9 +10,14 @@ export const PERSONAL = {
   bella: { name: 'Bella' },
   weng: { name: 'Weng' },
 
-  /** Nomes dos pais da Bella como aparecerão nos diálogos. */
+  /** Família da Bella como aparecerá nos diálogos. */
   bellaMom: { name: 'Mãe da Bella' },
-  bellaDad: { name: 'Pai da Bella' },
+  /**
+   * Padrasto da Bella.
+   *  - name: nome exibido na caixa de diálogo (ex.: 'Carlos').
+   *  - chamado: como a Bella chama ele nas falas (ex.: 'Carlos', 'Tio'). Vazio = sem vocativo.
+   */
+  bellaStepdad: { name: 'Padrasto da Bella', chamado: '' },
 
   /** Datas reais (formato livre, ex.: "12/03/2023"). Deixe '' se não souber. */
   dates: {

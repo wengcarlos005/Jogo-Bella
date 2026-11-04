@@ -59,7 +59,7 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 | PORT-001 | `portraits/bella-neutral.png` | Retrato (gerado da folha casual) | 96×96 | 1 | **integrado** |
 | PORT-002 | `portraits/weng-neutral.png` | Retrato (gerado da folha casual) | 192×192 | 1 | **integrado** |
 | NPC-001 | `npcs/mae-bella-walk.png` | NPC | 384×384 | 16 | solicitado |
-| NPC-002 | `npcs/pai-bella-walk.png` | NPC | 384×384 | 16 | **integrado** |
+| NPC-002 | `npcs/pai-bella-walk.png` | NPC (padrasto da Bella) | 384×384 | 16 | **integrado** |
 | NPC-003 | `npcs/vizinha-walk.png` | NPC (Dona Cida) | 384×384 | 16 | **integrado** |
 | PORT-003 | `portraits/mae-bella.png` | Retrato | 96×96 | 1 | solicitado |
 | PORT-004 | `portraits/pai-bella.png` | Retrato (gerado da folha) | 192×192 | 1 | **integrado** |

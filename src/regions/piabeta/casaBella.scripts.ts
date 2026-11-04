@@ -7,6 +7,8 @@ import { PERSONAL } from '@/data/personal';
  */
 const Q = 'pia-m1';
 const W = PERSONAL.weng.name;
+/** Como a Bella chama o padrasto (personal.ts). */
+const CHAMADO = PERSONAL.bellaStepdad.chamado;
 
 export const casaScripts: Record<string, Script> = {
   async entrar(ctx) {
@@ -149,7 +151,7 @@ export const casaScripts: Record<string, Script> = {
     ctx.objective(Q, 'porta');
     ctx.follow('weng', true);
     ctx.setFlag('weng-segue');
-    ctx.toast(`Apresente o ${W} para seus pais`);
+    ctx.toast(`Apresente o ${W} para sua mãe e seu padrasto`);
   },
 
   async weng(ctx) {
@@ -159,7 +161,7 @@ export const casaScripts: Record<string, Script> = {
     }
     const lines = [
       'Sua casa é bem aconchegante. Tô tentando não esbarrar em nada.',
-      'Seu pai me olhou de um jeito... sério. Ele é sempre assim?',
+      'Seu padrasto me olhou de um jeito... sério. Ele é sempre assim?',
       'Respira, Weng. Respira. (Isso era pra eu mesmo, desculpa.)',
     ];
     await ctx.say('weng', lines[Math.floor(Math.random() * lines.length)]);
@@ -208,14 +210,14 @@ export const casaScripts: Record<string, Script> = {
       return;
     }
     if (!ctx.objectiveDone(Q, 'pai')) {
-      await ctx.say('bella', 'Pai, esse é o Weng.');
+      await ctx.say('bella', `${CHAMADO ? `${CHAMADO}, esse` : 'Esse'} é o Weng.`);
       ctx.face('weng', 'up');
       await ctx.say('pai-bella', '...');
       await ctx.say('pai-bella', '......');
       await ctx.emote('weng', 'sweat');
       await ctx.say('weng', 'B-boa tarde! Prazer em conhecer o senhor.');
       await ctx.say('pai-bella', 'Weng. Hm. Torce pra qual time?');
-      const c = await ctx.choose('weng', '(O Weng olha pra você pedindo socorro)', ['Responder pelo Weng: "Ele torce pro mesmo que você, pai!"', 'Deixar o Weng responder sozinho']);
+      const c = await ctx.choose('weng', '(O Weng olha pra você pedindo socorro)', ['Responder pelo Weng: "Ele torce pro mesmo time que você!"', 'Deixar o Weng responder sozinho']);
       if (c === 0) {
         await ctx.say('pai-bella', 'Hm. Sei. Vou fingir que acredito.');
       } else {

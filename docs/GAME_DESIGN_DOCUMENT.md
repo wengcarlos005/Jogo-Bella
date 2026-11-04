@@ -37,7 +37,7 @@ Cabelos escuros cacheados e volumosos, óculos grandes rosados, rosto delicado, 
 Cabelo preto, sorridente, camiseta bege/verde-clara, jaqueta escura, calça cargo verde, tênis claros. Na maior parte do jogo **segue a Bella** (sistema de seguidor com rastro) e participa de diálogos e cenas.
 
 ### Elenco de apoio (por região)
-Pais da Bella (Piabetá) · vizinhança e comércio (Duque de Caxias) · família do Weng (Araruama) · colegas de faculdade (Seropédica) · equipe do hotel, garçons e guias (Curitiba). Nomes reais configuráveis em `personal.ts`.
+Mãe e padrasto da Bella (Piabetá) · vizinhança e comércio (Duque de Caxias) · família do Weng (Araruama) · colegas de faculdade (Seropédica) · equipe do hotel, garçons e guias (Curitiba). Nomes reais configuráveis em `personal.ts`.
 
 ### Animações (por personagem)
 Idle e caminhada em 4 direções (implementado), corrida (implementado via velocidade da animação), interagir, sentar, acenar, expressões (balões de emoção já implementados: ♥ ! ? ♪ gota). Arquitetura preparada para roupas alternativas (`outfits` no save).
@@ -71,7 +71,7 @@ Conteúdo opcional (missões secundárias, colecionáveis 100%, decoração da c
 ### Prólogo — Piabetá (40 min)
 **Mapas:** casa da Bella (interior) · rua/pracinha · hamburgueria (interior) · parque arborizado.
 
-- **M1 — O encontro marcado** *(implementado)*: celular → escolher roupa → óculos → colar → espelho → sala → campainha → atender o Weng → apresentá-lo à mãe e ao pai (escolhas com humor) → sair juntos. Memória: *O encontro marcado*.
+- **M1 — O encontro marcado** *(implementado)*: celular → escolher roupa → óculos → colar → espelho → sala → campainha → atender o Weng → apresentá-lo à mãe e ao padrasto (escolhas com humor) → sair juntos. Memória: *O encontro marcado*.
 - **M2 — A hamburgueria**: caminhar pela rua com o Weng; **minigame de montagem de hambúrguer** (pedido por ficha, ingredientes na ordem, tempo folgado, nota de 1–3 estrelas); conversa nervosa de primeiro encontro com escolhas.
 - **M3 — O parque e a chuva**: passeio pelo parque (árvores grandes, bancos, flores, luz natural); o clima muda gradualmente; a chuva começa (partículas + escurecimento + som — sistema já implementado); procurar abrigo; conversa especial; **cena cinematográfica do primeiro beijo** (câmera, música própria, corações, fade). Memória: *O primeiro beijo*.
 - **Secundária — Florzinhas do caminho** *(implementada)*: colher 3 flores para Dona Cida.

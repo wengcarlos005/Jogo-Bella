@@ -51,7 +51,7 @@ const scripts: Record<string, Script> = {
     if (ctx.questActive('pia-m1') && ctx.objectiveDone('pia-m1', 'pai') && !ctx.objectiveDone('pia-m1', 'sair')) {
       ctx.objective('pia-m1', 'sair');
       await ctx.wait(400);
-      await ctx.say('weng', 'Ufa. Acho que seu pai gostou de mim. Acho.');
+      await ctx.say('weng', 'Ufa. Acho que seu padrasto gostou de mim. Acho.');
       await ctx.say('bella', 'Ele disse "bom rapaz". Isso, vindo dele, é praticamente um abraço.');
       await ctx.emote('weng', 'heart');
       await ctx.say('weng', 'Então bora! A hamburgueria fica descendo a rua, à direita.');

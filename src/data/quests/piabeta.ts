@@ -17,7 +17,7 @@ export const PIABETA_QUESTS: QuestDef[] = [
       { id: 'sala', text: 'Descer até a sala', hint: 'Saia do quarto pela porta de baixo.' },
       { id: 'porta', text: 'Atender a porta', hint: 'A campainha tocou! A porta de entrada fica na sala.' },
       { id: 'mae', text: 'Apresentar o Weng para sua mãe', hint: 'Sua mãe está no sofá.' },
-      { id: 'pai', text: 'Apresentar o Weng para seu pai', hint: 'Seu pai está na mesa da cozinha.' },
+      { id: 'pai', text: 'Apresentar o Weng para seu padrasto', hint: 'Seu padrasto está na cozinha, perto da mesa.' },
       { id: 'sair', text: 'Sair para o encontro', hint: 'Saia pela porta da frente com o Weng.' },
     ],
     next: 'pia-m2',

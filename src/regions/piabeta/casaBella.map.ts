@@ -117,7 +117,7 @@ export const casaBellaMap: MapDef = {
       blockedIf: () => {
         if (!QuestSystem.isActive(Q)) return false;
         if (!GameState.is('weng-entrou')) return 'Ainda não... o Weng tá vindo te buscar!';
-        if (!objDone('mae') || !objDone('pai')) return 'Antes de sair, apresente o Weng para seus pais.';
+        if (!objDone('mae') || !objDone('pai')) return 'Antes de sair, apresente o Weng para sua mãe e seu padrasto.';
         return false;
       },
     },
