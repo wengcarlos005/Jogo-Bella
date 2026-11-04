@@ -940,3 +940,38 @@ html, body {
 .bg-name { font-size: clamp(8px, calc(var(--u) * 4.2), 13px); }
 .bg-key { font-size: 9px; }
 #ui .toasts { z-index: 7; }
+
+/* ---------- Guarda-roupa ---------- */
+.wd-screen { background: rgba(20, 18, 48, 0.6); }
+.wd-panel {
+  color: var(--ink);
+  width: min(90%, calc(var(--u) * 230));
+  padding: calc(var(--u) * 6) calc(var(--u) * 8);
+  display: flex; flex-direction: column; align-items: center; gap: calc(var(--u) * 2.5);
+  text-align: center;
+  animation: pop 300ms cubic-bezier(.2, 1.6, .4, 1);
+}
+.wd-title { font-family: var(--font-pixel); color: var(--red); font-size: clamp(16px, calc(var(--u) * 10), 30px); }
+.wd-stage { display: flex; align-items: center; gap: calc(var(--u) * 6); }
+.wd-mirror {
+  width: calc(var(--u) * 92); height: calc(var(--u) * 92);
+  border-radius: 50% 50% calc(var(--u) * 6) calc(var(--u) * 6);
+  background: radial-gradient(ellipse at 50% 35%, #fff 0, #f6e7d4 60%, #e8cfa8 100%);
+  border: calc(var(--u) * 2) solid #c9a14a;
+  box-shadow: inset 0 0 0 calc(var(--u) * 1) #fff8, 0 calc(var(--u) * 2) 0 rgba(0,0,0,.25);
+  display: grid; place-items: center; overflow: hidden;
+}
+.wd-sprite { width: 120%; image-rendering: pixelated; margin-top: 8%; }
+.wd-arrow {
+  font-size: clamp(16px, calc(var(--u) * 10), 30px); color: var(--red);
+  background: none; border: none; cursor: pointer; padding: calc(var(--u) * 2);
+}
+.wd-arrow:hover { transform: scale(1.15); }
+.wd-name { font-family: var(--font-pixel); font-size: clamp(16px, calc(var(--u) * 10), 30px); line-height: 1.05; }
+.wd-desc { font-weight: 700; color: var(--ink-soft); font-size: clamp(11px, calc(var(--u) * 6), 19px); min-height: 2.6em; }
+.wd-dots { display: flex; gap: calc(var(--u) * 1.5); }
+.wd-dots span { width: calc(var(--u) * 3); height: calc(var(--u) * 3); border-radius: 50%; background: #d8cdbb; }
+.wd-dots span.on { background: var(--red); }
+.wd-actions { display: flex; align-items: center; gap: calc(var(--u) * 6); }
+.wd-count { font-weight: 800; color: var(--ink-soft); }
+.wd-sprite { width: 100%; margin-top: 0; } .wd-mirror { width: calc(var(--u) * 84); height: calc(var(--u) * 96); align-items: end; }

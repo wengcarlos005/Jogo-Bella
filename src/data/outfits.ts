@@ -3,25 +3,26 @@ import type { RegionId } from '@/core/types';
 export interface OutfitDef {
   id: string;
   name: string;
+  description?: string;
   /** Chave da spritesheet (public/assets/characters/<personagem>-<id>.png). */
   texture: string;
 }
 
 type Wardrobe = Record<string, OutfitDef>;
 
-const wardrobe = (char: string, list: [id: string, name: string][]): Wardrobe =>
-  Object.fromEntries(list.map(([id, name]) => [id, { id, name, texture: `${char}-${id}` }]));
+const wardrobe = (char: string, list: [id: string, name: string, description?: string][]): Wardrobe =>
+  Object.fromEntries(list.map(([id, name, description]) => [id, { id, name, description, texture: `${char}-${id}` }]));
 
 /** Guarda-roupas (cada roupa = spritesheet HD 4x4, quadros 96x96). */
 export const OUTFITS: Record<'bella' | 'weng', Wardrobe> = {
   bella: wardrobe('bella', [
-    ['pijama', 'Camisola (sem óculos)'],
-    ['pijama-oculos', 'Camisola (com óculos)'],
-    ['casual', 'Camiseta preta e óculos rosados'],
-    ['floral', 'Vestido amarelo florido'],
-    ['linho', 'Conjunto de linho branco'],
-    ['festa', 'Vestido laranja de festa'],
-    ['inverno', 'Jaqueta preta de frio'],
+    ['pijama', 'Camisola', 'Pijama de coração e pantufas de coelhinho.'],
+    ['pijama-oculos', 'Camisola', 'Pijama de coração e pantufas de coelhinho.'],
+    ['casual', 'O clássico', 'Camiseta preta, calça larga e tênis. A minha cara.'],
+    ['floral', 'Vestido amarelo', 'Florido e alegre, com cara de primeiro encontro.'],
+    ['linho', 'Linho branco', 'Leve e elegante. Combina com a noite.'],
+    ['festa', 'Vestido laranja', 'Pra brilhar. Talvez demais pra uma hamburgueria?'],
+    ['inverno', 'Jaqueta preta', 'Quentinha pra noite de chuva.'],
   ]),
   weng: wardrobe('weng', [
     ['casual', 'Camiseta preta com estampa'],

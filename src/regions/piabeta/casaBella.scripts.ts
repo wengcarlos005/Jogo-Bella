@@ -55,18 +55,22 @@ export const casaScripts: Record<string, Script> = {
       return;
     }
     await ctx.say('bella', 'O eterno dilema: o que vestir num primeiro encontro?');
-    const c = await ctx.choose('bella', 'Hmm...', ['Camiseta preta e calça larga (o clássico)', 'Vestido amarelo florido', 'Moletom gigante (conforto acima de tudo)']);
-    await ctx.fadeOut(250);
-    ctx.outfit(c === 1 ? 'floral' : 'casual');
+    let id = 'pijama-oculos';
+    for (;;) {
+      id = await ctx.wardrobe(['casual', 'floral', 'linho', 'festa', 'inverno', 'pijama-oculos']);
+      if (id !== 'pijama-oculos') break;
+      await ctx.say('bella', 'De pijama e pantufa de coelhinho? Ele ia amar... mas não. Vamos de novo.');
+    }
     ctx.sfx('pickup');
-    await ctx.fadeIn(250);
-    const looks = [
-      'Camiseta preta, calça larga e tênis. Bonita e confortável. Perfeito.',
-      'O vestido amarelo! Florido, alegre... é a cara de um primeiro encontro.',
-      'O moletom é tentador, mas não. Camiseta preta e calça larga: confortável E bonita.',
-    ];
-    await ctx.say('bella', looks[c]);
-    ctx.setFlag('look-escolhido', c);
+    const looks: Record<string, string> = {
+      casual: 'Camiseta preta, calça larga e tênis. Bonita, confortável e a minha cara. Perfeito.',
+      floral: 'O vestido amarelo! Florido, alegre... é a cara de um primeiro encontro.',
+      linho: 'Linho branco. Elegante sem parecer que eu me esforcei demais. (Eu me esforcei.)',
+      festa: 'O vestido laranja! Se for pra ficar nervosa, que seja bem-vestida.',
+      inverno: 'Jaqueta preta. Tá chovendo, então é praticamente uma decisão inteligente.',
+    };
+    await ctx.say('bella', looks[id] ?? 'Pronto. Vestida e decidida. Quase decidida.');
+    ctx.setFlag('look-escolhido', id);
     ctx.objective(Q, 'roupa');
   },
 

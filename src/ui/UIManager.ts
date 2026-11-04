@@ -11,6 +11,7 @@ import { showMemoryPopup } from './screens/MemoryPopup';
 import { playBurgerGame, type BurgerOptions, type BurgerResult } from './screens/BurgerGame';
 import { InputSystem } from '@/systems/InputSystem';
 import { bindTextures, textureURL } from './textures';
+import { openWardrobe, type WardrobeOption } from './screens/Wardrobe';
 import './styles.css';
 
 /**
@@ -203,6 +204,10 @@ class UIManagerImpl {
         screen.addEventListener('pointerdown', next);
       }, 1200);
     });
+  }
+
+  wardrobe(title: string, options: WardrobeOption[], startId?: string): Promise<string> {
+    return openWardrobe(this.root, title, options, startId);
   }
 
   /** Janela de item obtido: centralizada, grande; fecha com interagir/clique. */

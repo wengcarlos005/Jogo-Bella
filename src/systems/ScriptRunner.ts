@@ -9,6 +9,7 @@ import { AudioSystem } from './AudioSystem';
 import { UI } from '@/ui/UIManager';
 import { NPC } from '@/entities/NPC';
 import { ITEMS } from '@/data/items';
+import { OUTFITS } from '@/data/outfits';
 import Phaser from 'phaser';
 import { PROP_SCALE, RENDER_SCALE } from '@/config/gameConfig';
 
@@ -33,6 +34,17 @@ export function createScriptContext(scene: GameScene): ScriptContext {
 
     flag: (key) => GameState.is(key),
     setFlag: (key, value = true) => GameState.setFlag(key, value),
+
+    async wardrobe(ids) {
+      const options = ids
+        .map((id) => OUTFITS.bella[id])
+        .filter(Boolean)
+        .map((o) => ({ id: o.id, name: o.name, description: o.description ?? '', texture: o.texture }));
+      const id = await UI.wardrobe('Guarda-roupa', options, options[0]?.id);
+      GameState.data.regionOutfits[scene.def.region] = id;
+      scene.dressPlayer();
+      return id;
+    },
 
     async showItem(item, kicker, name, description) {
       AudioSystem.play('pickup');

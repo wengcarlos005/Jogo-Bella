@@ -17,3 +17,15 @@ export function textureURL(key: string | undefined): string | null {
   }
   return url;
 }
+
+/** Data URL de um quadro específico de uma spritesheet (ex.: prévia de roupa). */
+export function frameURL(key: string, frame: number): string | null {
+  if (!game || !game.textures.exists(key)) return null;
+  const id = `${key}#${frame}`;
+  let url = cache.get(id);
+  if (!url) {
+    url = game.textures.getBase64(key, frame);
+    cache.set(id, url);
+  }
+  return url;
+}
