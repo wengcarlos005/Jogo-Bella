@@ -110,17 +110,44 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
   if (hasArt && def.art === 'native') {
     // O cenário em public/ tem 2/3 da resolução do original (art-source).
     const toTex = (v: number) => (v * 2) / 3;
-    for (const o of def.overlays ?? []) {
-      const img = scene.add.image(0, 0, bgKey).setOrigin(0).setScale(1 / RENDER_SCALE);
-      img.setCrop(toTex(o.x0), toTex(o.y0), toTex(o.x1 - o.x0), toTex(o.y1 - o.y0));
-      img.setDepth(o.base / 3);
-      overlays.push({ img, rect: new Phaser.Geom.Rectangle(o.x0 / 3, o.y0 / 3, (o.x1 - o.x0) / 3, (o.y1 - o.y0) / 3), base: o.base / 3, fade: o.fade ?? !!o.ellipse });
-      if (o.ellipse) {
-        const g = scene.make.graphics({}, false);
-        g.fillStyle(0xffffff).fillEllipse((o.x0 + o.x1) / 6, (o.y0 + o.y1) / 6, (o.x1 - o.x0) / 3, (o.y1 - o.y0) / 3);
-        img.setMask(g.createGeometryMask());
+    const src = scene.textures.get(bgKey).getSourceImage() as HTMLImageElement;
+    (def.overlays ?? []).forEach((o, idx) => {
+      const cx = Math.max(0, Math.round(toTex(o.x0)));
+      const cy = Math.max(0, Math.round(toTex(o.y0)));
+      const cw = Math.min(src.width - cx, Math.round(toTex(o.x1 - o.x0)));
+      const ch = Math.min(src.height - cy, Math.round(toTex(o.y1 - o.y0)));
+      if (cw <= 0 || ch <= 0) return;
+      const key = `ov-${def.id}-${idx}`;
+      if (!scene.textures.exists(key)) {
+        const tex = scene.textures.createCanvas(key, cw, ch)!;
+        const ctx = tex.getContext();
+        ctx.drawImage(src, cx, cy, cw, ch, 0, 0, cw, ch);
+        const data = ctx.getImageData(0, 0, cw, ch);
+        const d = data.data;
+        for (let p = 0; p < d.length; p += 4) {
+          const x = (p / 4) % cw;
+          const y = Math.floor(p / 4 / cw);
+          let keep = true;
+          if (o.ellipse) {
+            const ex = (x + 0.5) / cw - 0.5;
+            const ey = (y + 0.5) / ch - 0.5;
+            keep = ex * ex + ey * ey <= 0.25;
+          }
+          if (keep && o.cut === 'foliage') keep = isFoliage(d[p], d[p + 1], d[p + 2]);
+          if (!keep) d[p + 3] = 0;
+        }
+        ctx.putImageData(data, 0, 0);
+        tex.refresh();
       }
-    }
+      const img = scene.add.image(cx / RENDER_SCALE, cy / RENDER_SCALE, key).setOrigin(0).setScale(1 / RENDER_SCALE);
+      img.setDepth(o.base / 3);
+      overlays.push({
+        img,
+        rect: new Phaser.Geom.Rectangle(o.x0 / 3, o.y0 / 3, (o.x1 - o.x0) / 3, (o.y1 - o.y0) / 3),
+        base: o.base / 3,
+        fade: o.fade ?? false,
+      });
+    });
   }
 
   for (const b of def.blocks ?? []) {
@@ -129,6 +156,26 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
   }
 
   return { widthPx: artW, heightPx: artH, collision: groundLayer, solids, props, hasArt, overlays };
+}
+
+/** Folhas, flores e contornos escuros (o que deve ficar na frente); chão, asfalto e pedra não. */
+function isFoliage(r: number, g: number, b: number): boolean {
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const v = max / 255;
+  const sat = max === 0 ? 0 : (max - min) / max;
+  if (v < 0.16) return true; // contorno
+  let h = 0;
+  if (max !== min) {
+    if (max === r) h = ((g - b) / (max - min)) % 6;
+    else if (max === g) h = (b - r) / (max - min) + 2;
+    else h = (r - g) / (max - min) + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+  if (h >= 55 && h <= 170 && sat > 0.22) return true; // verdes
+  if (sat > 0.42 && (h >= 290 || h < 12 || (h >= 45 && h < 55) || (h >= 170 && h < 290))) return true; // rosa, vermelho, roxo, amarelo, azul
+  return false;
 }
 
 /** Converte um retângulo em tiles para pixels. */

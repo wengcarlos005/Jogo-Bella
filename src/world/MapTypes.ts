@@ -99,7 +99,17 @@ export interface MapDef {
    * NA FRENTE dos personagens que estiverem acima (atrás) da linha `base`.
    * Coordenadas em pixels da imagem ORIGINAL (art-source). `ellipse` recorta em oval (copas).
    */
-  overlays?: { x0: number; y0: number; x1: number; y1: number; base: number; ellipse?: boolean; fade?: boolean }[];
+  overlays?: {
+    x0: number;
+    y0: number;
+    x1: number;
+    y1: number;
+    base: number;
+    ellipse?: boolean;
+    fade?: boolean;
+    /** 'foliage': mantém só folhas, flores e contornos (tira chão, asfalto, pedra). */
+    cut?: 'foliage';
+  }[];
   /** Interações invisíveis sobre o cenário. */
   hotspots?: HotspotDef[];
   /**

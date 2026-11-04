@@ -789,6 +789,7 @@ export class PlaceholderFactory {
       px(c, '#f2c08a', 7, 50, 18, 2);
       px(c, '#00000040', 2, 62, 28, 2);
     });
+    this.prop('prop-umbrella-stand-empty', 32, 64, (c) => { px(c, '#b5643c', 5, 36, 22, 26); });
     // Guarda-chuva rosa da Bella, fechado e encostado (HD 20x60)
     this.prop('prop-umbrella-closed', 20, 60, (c) => {
       px(c, '#4a3a34', 9, 0, 2, 4); px(c, '#4a3a34', 6, 50, 2, 8); px(c, '#4a3a34', 4, 56, 4, 2);

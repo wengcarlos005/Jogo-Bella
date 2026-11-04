@@ -2,7 +2,10 @@ import { h } from '@/utils/dom';
 import { EventBus } from '@/core/EventBus';
 import { InventorySystem } from '@/systems/InventorySystem';
 import { GameState } from '@/core/GameState';
+import { QuestSystem } from '@/systems/QuestSystem';
 import { MEMORY_GOAL } from '@/data/memories';
+import { REGIONS } from '@/data/regions';
+import { getMap } from '@/regions';
 import { textureURL } from '../textures';
 
 const BUTTONS: [tab: string, label: string, icon: string][] = [
@@ -15,26 +18,29 @@ const BUTTONS: [tab: string, label: string, icon: string][] = [
 ];
 
 /**
- * Menu FORA da tela do jogo (barra lateral; no celular em pé vira barra de baixo).
- * Mostra os botões do menu e a mochila com os itens já pegos.
+ * Menu FORA da tela do jogo, nas bordas:
+ *  - em cima: lugar atual, missão e lembranças;
+ *  - à esquerda: a mochila com os itens pegos;
+ *  - à direita: os botões do menu.
  */
 export class Sidebar {
-  readonly el: HTMLElement;
-  private buttons = h('div', { class: 'sb-buttons' });
+  private top = h('header', { id: 'topbar', class: 'idle' });
+  private left = h('aside', { id: 'leftbar', class: 'idle' });
+  private right = h('aside', { id: 'rightbar', class: 'idle' });
   private bag = h('div', { class: 'sb-bag' });
-  private album = h('div', { class: 'sb-album' });
   private active = false;
 
   constructor(private openMenu: (tab: string) => void) {
-    this.el = h('aside', { id: 'sidebar', class: 'idle' }, h('div', { class: 'sb-logo' }, '☾'), this.buttons, this.album, h('div', { class: 'sb-bag-title' }, 'Mochila'), this.bag);
-    document.body.append(this.el);
+    this.left.append(h('div', { class: 'sb-title' }, 'Mochila'), this.bag);
+    document.body.append(this.top, this.left, this.right);
     EventBus.on('state:changed', () => this.refresh());
     EventBus.on('item:added', (id: string) => this.flash(id));
   }
 
   /** Cria os botões depois que as texturas carregaram. */
   build(): void {
-    this.buttons.replaceChildren(
+    this.right.replaceChildren(
+      h('div', { class: 'sb-title' }, 'Menu'),
       ...BUTTONS.map(([tab, label, icon]) => {
         const url = textureURL(`ui-icon-${icon}`);
         return h(
@@ -50,27 +56,56 @@ export class Sidebar {
 
   setActive(on: boolean): void {
     this.active = on;
-    this.el.classList.toggle('idle', !on);
+    for (const el of [this.top, this.left, this.right]) el.classList.toggle('idle', !on);
     this.refresh();
   }
 
   refresh(): void {
     if (!this.active) return;
+    // mochila
     const items = InventorySystem.list().filter((e) => e.def.category !== 'missao');
     this.bag.replaceChildren(
       ...items.map(({ def, qty }) => {
         const url = textureURL(def.icon);
         return h(
           'button',
-          { class: 'sb-item', 'data-id': def.id, title: def.name, onclick: () => this.openMenu('inventario') },
+          { class: 'sb-item', 'data-id': def.id, title: `${def.name} — ${def.description}`, onclick: () => this.openMenu('inventario') },
           url ? h('img', { src: url, alt: def.name }) : def.name[0],
           qty > 1 ? h('span', { class: 'sb-qty' }, String(qty)) : null,
+          h('span', { class: 'sb-item-name' }, def.name),
         );
       }),
-      ...Array.from({ length: Math.max(0, 6 - items.length) }, () => h('div', { class: 'sb-item empty' })),
+      ...Array.from({ length: Math.max(0, 8 - items.length) }, () => h('div', { class: 'sb-item empty' })),
     );
+    // barra de cima
+    let place = '';
+    try {
+      const map = getMap(GameState.data.mapId);
+      const region = REGIONS.find((r) => r.id === map.region);
+      place = region && region.name !== map.name ? `${region.name} · ${map.name}` : map.name;
+    } catch {
+      place = '';
+    }
+    const tracked = GameState.data.trackedQuest;
+    const obj = tracked ? QuestSystem.currentObjective(tracked) : null;
     const n = GameState.data.memories.length;
-    this.album.replaceChildren(h('span', {}, '♥ Lembranças'), h('b', {}, `${n}/${MEMORY_GOAL}`));
+    const nerves = Number(GameState.getFlag<number>('nervosismo') ?? 0);
+    const filled = Math.ceil(nerves / 20);
+    const heart =
+      nerves > 0
+        ? h(
+            'div',
+            { class: 'tb-nerves' },
+            h('span', { class: `nerves-hearts ${nerves >= 60 ? 'fast' : nerves >= 30 ? 'mid' : ''}` }, ...Array.from({ length: 5 }, (_, i) => h('span', { class: i < filled ? 'on' : '' }, '♥'))),
+            h('span', { class: 'tb-nerves-txt' }, nerves >= 80 ? 'Muito nervosa' : nerves >= 50 ? 'Nervosa' : nerves >= 20 ? 'Quase calma' : 'Tranquila'),
+          )
+        : '';
+    this.top.replaceChildren(
+      h('div', { class: 'tb-place' }, h('span', { class: 'tb-moon' }, '☾'), place),
+      heart,
+      h('div', { class: 'tb-quest' }, obj ? h('span', {}, h('b', {}, `${QuestSystem.def(tracked!).title}: `), obj.text) : ''),
+      h('div', { class: 'tb-mem' }, '♥ Lembranças ', h('b', {}, `${n}/${MEMORY_GOAL}`)),
+    );
   }
 
   private flash(id: string): void {

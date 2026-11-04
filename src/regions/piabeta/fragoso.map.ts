@@ -131,10 +131,10 @@ export const fragosoMap: MapDef = {
   ],
   // Profundidade: copas, bananeiras e postes ficam NA FRENTE de quem passa atrás
   overlays: [
-    { x0: 236, y0: 362, x1: 534, y1: 575, base: 655, ellipse: true },
-    { x0: -40, y0: 330, x1: 160, y1: 580, base: 650, ellipse: true },
-    { x0: 588, y0: 440, x1: 792, y1: 640, base: 640 },
-    { x0: 922, y0: 420, x1: 1088, y1: 565, base: 600 },
+    { x0: 230, y0: 360, x1: 540, y1: 580, base: 655, cut: 'foliage' },
+    { x0: 0, y0: 330, x1: 160, y1: 585, base: 650, cut: 'foliage' },
+    { x0: 580, y0: 430, x1: 800, y1: 640, base: 640, cut: 'foliage' },
+    { x0: 915, y0: 415, x1: 1095, y1: 600, base: 600, cut: 'foliage' },
     { x0: 1176, y0: 420, x1: 1296, y1: 492, base: 668 },
     { x0: 1194, y0: 492, x1: 1220, y1: 670, base: 668 },
     { x0: 196, y0: 545, x1: 318, y1: 640, base: 745 },

@@ -287,12 +287,12 @@ export const ruaMap: MapDef = {
     { x0: 128, y0: 466, x1: 154, y1: 640, base: 638 }, // poste esquerdo (haste)
     { x0: 1418, y0: 372, x1: 1512, y1: 466, base: 638 }, // poste direito (luminária)
     { x0: 1478, y0: 466, x1: 1504, y1: 640, base: 638 }, // poste direito (haste)
-    { x0: 140, y0: 540, x1: 465, y1: 775, base: 880, ellipse: true }, // copa esquerda
-    { x0: 1188, y0: 548, x1: 1462, y1: 780, base: 885, ellipse: true }, // copa direita
+    { x0: 140, y0: 535, x1: 470, y1: 780, base: 880, cut: 'foliage' }, // copa esquerda
+    { x0: 1185, y0: 540, x1: 1465, y1: 785, base: 885, cut: 'foliage' }, // copa direita
     { x0: 478, y0: 678, x1: 634, y1: 740, base: 775 }, // banco
     { x0: 986, y0: 678, x1: 1144, y1: 740, base: 775 }, // banco
-    { x0: 0, y0: 640, x1: 770, y1: 712, base: 705 }, // cerca viva (esq.)
-    { x0: 850, y0: 640, x1: 1619, y1: 712, base: 705 }, // cerca viva (dir.)
+    { x0: 0, y0: 640, x1: 770, y1: 712, base: 705, cut: 'foliage' }, // cerca viva (esq.)
+    { x0: 850, y0: 640, x1: 1619, y1: 712, base: 705, cut: 'foliage' }, // cerca viva (dir.)
   ],
 
   hotspots: [

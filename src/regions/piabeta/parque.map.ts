@@ -43,8 +43,8 @@ const scripts: Record<string, Script> = {
     await ctx.fadeOut(300);
     ctx.follow('weng', false);
     // dentro do coreto, no piso, entre as colunas da frente
-    ctx.place('player', 12.2, 5.6, 'right');
-    ctx.place('weng', 14.3, 5.6, 'left');
+    ctx.place('player', 12.6, 5.6, 'right');
+    ctx.place('weng', 14.0, 5.6, 'left');
     await ctx.fadeIn(500);
     ctx.letterbox(true);
     await ctx.focus(13.25, 4.6, 1.5, 1200);
@@ -195,15 +195,17 @@ export const parqueMap: MapDef = {
     { x0: 868, y0: 740, x1: 958, y1: 950, base: 945 },
     { x0: 588, y0: 668, x1: 655, y1: 790, base: 930 },
     { x0: 840, y0: 668, x1: 925, y1: 790, base: 930 },
-    { x0: 640, y0: 645, x1: 850, y1: 700, base: 930 },
-    { x0: 0, y0: 830, x1: 520, y1: 935, base: 930 },
-    { x0: 958, y0: 830, x1: 1536, y1: 935, base: 930 },
+    { x0: 600, y0: 640, x1: 900, y1: 790, base: 930, cut: 'foliage' },
+    { x0: 0, y0: 830, x1: 520, y1: 935, base: 930, cut: 'foliage' },
+    { x0: 958, y0: 830, x1: 1536, y1: 935, base: 930, cut: 'foliage' },
     // copas das árvores
-    { x0: 425, y0: 525, x1: 725, y1: 700, base: 725, ellipse: true },
-    { x0: 830, y0: 520, x1: 1135, y1: 720, base: 765, ellipse: true },
-    { x0: -90, y0: 540, x1: 190, y1: 720, base: 815, ellipse: true },
+    { x0: 425, y0: 520, x1: 730, y1: 705, base: 725, cut: 'foliage' },
+    { x0: 830, y0: 515, x1: 1140, y1: 725, base: 765, cut: 'foliage' },
+    { x0: 0, y0: 535, x1: 190, y1: 725, base: 815, cut: 'foliage' },
     // coreto: telhado e colunas da frente
-    { x0: 505, y0: 30, x1: 845, y1: 205, base: 240 },
+    { x0: 505, y0: 75, x1: 845, y1: 205, base: 330 }, // telhado na frente das cabeças
+    { x0: 497, y0: 250, x1: 625, y1: 352, base: 345 }, // parapeito da frente (esq.)
+    { x0: 722, y0: 250, x1: 850, y1: 352, base: 345 }, // parapeito da frente (dir.)
     // postes
     { x0: 392, y0: 520, x1: 444, y1: 585, base: 640 },
     { x0: 409, y0: 585, x1: 427, y1: 640, base: 640 },

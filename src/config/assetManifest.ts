@@ -84,6 +84,11 @@ export const ASSETS: AssetEntry[] = [
   { id: 'MEM-001', key: 'memory-pia-01', file: 'assets/cinematics/memory-pia-01.png', kind: 'image' },
   { id: 'MEM-002', key: 'memory-pia-02', file: 'assets/cinematics/memory-pia-02.png', kind: 'image' },
   { id: 'MEM-004', key: 'memory-pia-04', file: 'assets/cinematics/memory-pia-04.png', kind: 'image' },
+  ...['colar', 'oculos', 'celular', 'guardanapo', 'flor'].map(
+    (n, i): AssetEntry => ({ id: `ICO-${String(10 + i).padStart(3, '0')}`, key: `icon-${n}`, file: `assets/ui/icon-${n}.png`, kind: 'image' }),
+  ),
+  { id: 'OBJ-030', key: 'prop-umbrella-stand', file: 'assets/objects/umbrella-stand.png', kind: 'image' },
+  { id: 'OBJ-031', key: 'prop-umbrella-stand-empty', file: 'assets/objects/umbrella-stand-empty.png', kind: 'image' },
   { id: 'ICO-001', key: 'icon-rosa', file: 'assets/ui/icon-rosa.png', kind: 'image' },
   { id: 'ICO-002', key: 'icon-vale', file: 'assets/ui/icon-vale.png', kind: 'image' },
   { id: 'ICO-003', key: 'icon-chocolate', file: 'assets/ui/icon-chocolate.png', kind: 'image' },

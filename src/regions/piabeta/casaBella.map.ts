@@ -72,8 +72,8 @@ export const casaBellaMap: MapDef = {
 
   props: [
     // porta-guarda-chuvas ao lado da porta (o rosa some quando a Bella pega)
-    { key: 'prop-umbrella-stand', tx: 13.25, ty: 18.1, scale: 0.5, block: false },
-    { key: 'prop-umbrella-closed', tx: 13.95, ty: 18.1, scale: 0.5, block: false, visibleIf: () => !objDone('guarda-chuva') },
+    { key: 'prop-umbrella-stand', tx: 13.2, ty: 18.1, scale: 0.24, block: false, visibleIf: () => !objDone('guarda-chuva') },
+    { key: 'prop-umbrella-stand-empty', tx: 13.2, ty: 18.1, scale: 0.24, block: false, visibleIf: () => objDone('guarda-chuva') },
   ],
 
   hotspots: [

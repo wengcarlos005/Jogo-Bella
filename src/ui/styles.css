@@ -976,57 +976,69 @@ html, body {
 .wd-count { font-weight: 800; color: var(--ink-soft); }
 .wd-sprite { width: 100%; margin-top: 0; } .wd-mirror { width: calc(var(--u) * 84); height: calc(var(--u) * 96); align-items: end; }
 
-/* ================= Menu lateral FORA da tela do jogo ================= */
-:root { --side: clamp(74px, 8.5vw, 128px); }
-#game { right: var(--side); }
-#sidebar {
-  position: fixed; top: 0; right: 0; bottom: 0; width: var(--side);
-  z-index: 20;
-  display: flex; flex-direction: column; align-items: stretch; gap: 8px;
-  padding: 10px 8px;
-  background: linear-gradient(#26224d, #1b1838);
-  border-left: 3px solid #4a3030;
-  box-shadow: inset 3px 0 0 #fbf3e222;
-  font-family: var(--font-body);
-  color: var(--cream);
-  overflow-y: auto;
-  user-select: none;
+/* ================= Menu nas bordas (fora da tela do jogo) ================= */
+:root { --side: clamp(88px, 9vw, 150px); --top: clamp(34px, 5.2vh, 48px); }
+#game { top: var(--top); left: var(--side); right: var(--side); }
+#topbar, #leftbar, #rightbar {
+  position: fixed; z-index: 20; color: var(--cream); font-family: var(--font-body);
+  background: linear-gradient(#26224d, #1b1838); user-select: none;
 }
-#sidebar.idle .sb-buttons, #sidebar.idle .sb-bag, #sidebar.idle .sb-bag-title, #sidebar.idle .sb-album { visibility: hidden; }
-.sb-logo { text-align: center; font-size: clamp(20px, 2.4vw, 34px); color: var(--gold); text-shadow: 0 0 10px #ffd75e88; }
-.sb-buttons { display: grid; grid-template-columns: 1fr; gap: 6px; }
+#topbar {
+  top: 0; left: 0; right: 0; height: var(--top);
+  display: flex; align-items: center; gap: 16px; padding: 0 16px;
+  border-bottom: 3px solid #4a3030; box-shadow: inset 0 -3px 0 #fbf3e214;
+  font-size: clamp(12px, 1.25vw, 17px); white-space: nowrap; overflow: hidden;
+}
+.tb-place { font-family: var(--font-pixel); color: var(--gold); font-size: 1.15em; flex: none; }
+.tb-moon { margin-right: 8px; text-shadow: 0 0 8px #ffd75e99; }
+.tb-quest { flex: 1; overflow: hidden; text-overflow: ellipsis; text-align: center; font-weight: 700; color: #f1e3c6; }
+.tb-quest b { color: var(--rose); }
+.tb-mem { flex: none; font-weight: 700; color: #f6d9e0; }
+.tb-mem b { font-family: var(--font-pixel); color: var(--rose); font-size: 1.15em; }
+#leftbar, #rightbar {
+  top: var(--top); bottom: 0; width: var(--side);
+  display: flex; flex-direction: column; gap: 7px; padding: 10px 8px; overflow-y: auto;
+}
+#leftbar { left: 0; border-right: 3px solid #4a3030; }
+#rightbar { right: 0; border-left: 3px solid #4a3030; }
+#topbar.idle > *, #leftbar.idle > *, #rightbar.idle > * { visibility: hidden; }
+.sb-title { text-align: center; font-family: var(--font-pixel); color: var(--gold); font-size: clamp(13px, 1.2vw, 18px); }
 .sb-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  display: flex; flex-direction: column; align-items: center; gap: 1px; flex: none;
   background: #fbf3e212; border: 2px solid #fbf3e233; border-radius: 10px;
-  padding: 4px 2px; cursor: pointer; color: var(--cream);
-  transition: transform 100ms, background 100ms;
+  padding: 4px 2px; cursor: pointer; color: var(--cream); transition: transform 100ms, background 100ms;
 }
 .sb-btn:hover { background: #fbf3e22a; transform: translateY(-1px); }
 .sb-btn:active { transform: translateY(1px); }
-.sb-btn img { width: min(70%, 54px); image-rendering: auto; filter: drop-shadow(0 2px 0 #0006); }
+.sb-btn img { width: min(62%, 52px); image-rendering: auto; filter: drop-shadow(0 2px 0 #0006); }
 .sb-label { font-weight: 800; font-size: clamp(10px, 0.95vw, 14px); }
 .sb-fallback { font-family: var(--font-pixel); font-size: 22px; }
-.sb-album { display: flex; flex-direction: column; align-items: center; font-size: clamp(10px, 0.9vw, 13px); font-weight: 700; color: #f6d9e0; margin-top: 4px; }
-.sb-album b { font-family: var(--font-pixel); font-size: 1.3em; color: var(--rose); }
-.sb-bag-title { text-align: center; font-family: var(--font-pixel); color: var(--gold); font-size: clamp(12px, 1.1vw, 16px); margin-top: 4px; }
-.sb-bag { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.sb-bag { display: grid; grid-template-columns: 1fr; gap: 6px; }
 .sb-item {
-  position: relative; aspect-ratio: 1; border-radius: 8px;
-  background: #fbf3e2; border: 2px solid #4a3030; padding: 3px; cursor: pointer;
-  display: grid; place-items: center;
+  position: relative; display: flex; flex-direction: column; align-items: center;
+  border-radius: 10px; background: #fbf3e2; border: 2px solid #4a3030; padding: 4px 3px 3px; cursor: pointer;
 }
-.sb-item.empty { background: #fbf3e214; border: 2px dashed #fbf3e233; cursor: default; }
-.sb-item img { width: 100%; height: 100%; object-fit: contain; }
-.sb-qty { position: absolute; right: 2px; bottom: 0; font-weight: 800; font-size: 11px; color: var(--ink); }
+.sb-item img { width: min(64%, 56px); aspect-ratio: 1; object-fit: contain; }
+.sb-item-name { font-size: clamp(9px, 0.85vw, 12px); font-weight: 800; color: var(--ink); line-height: 1.1; text-align: center; }
+.sb-item.empty { background: #fbf3e20f; border: 2px dashed #fbf3e22a; cursor: default; min-height: 54px; }
+.sb-qty { position: absolute; right: 5px; top: 2px; font-weight: 800; font-size: 11px; color: var(--ink); }
 .sb-item.new { animation: sb-new 1.2s ease; }
-@keyframes sb-new { 0% { transform: scale(0.4); box-shadow: 0 0 0 0 #ffd75e; } 40% { transform: scale(1.25); box-shadow: 0 0 18px 6px #ffd75eaa; } 100% { transform: scale(1); } }
-/* celular em pé: barra embaixo */
+@keyframes sb-new { 0% { transform: scale(0.4); box-shadow: 0 0 0 0 #ffd75e; } 40% { transform: scale(1.15); box-shadow: 0 0 18px 6px #ffd75eaa; } 100% { transform: scale(1); } }
+/* telas baixas: botões em 2 colunas */
+@media (max-height: 640px) {
+  #rightbar { display: grid; grid-template-columns: 1fr 1fr; align-content: start; }
+  #rightbar .sb-title { grid-column: 1 / -1; }
+  .sb-label { font-size: 10px; }
+  .sb-bag { grid-template-columns: 1fr 1fr; }
+  .sb-item-name { display: none; }
+}
+/* celular em pé: barra única embaixo */
 @media (max-aspect-ratio: 1/1) {
-  #game { right: 0; bottom: 92px; }
-  #sidebar { top: auto; left: 0; width: auto; height: 92px; flex-direction: row; border-left: none; border-top: 3px solid #4a3030; padding: 6px; }
-  .sb-logo, .sb-album, .sb-bag-title { display: none; }
-  .sb-buttons { grid-template-columns: repeat(6, 1fr); flex: 1; }
-  .sb-bag { display: none; }
+  #game { top: 0; left: 0; right: 0; bottom: 84px; }
+  #topbar, #leftbar { display: none; }
+  #rightbar { top: auto; left: 0; width: auto; height: 84px; flex-direction: row; border-left: none; border-top: 3px solid #4a3030; padding: 6px; }
+  #rightbar .sb-title { display: none; }
+  .sb-btn { flex: 1; }
 }
 /* a lua do topo da tela do jogo some: o menu agora fica ao lado */
 .hud-buttons { display: none !important; }
@@ -1117,3 +1129,9 @@ html, body {
 .bg-stars span { display: inline-block; color: #d8cdbb; }
 .bg-stars span.on { color: var(--gold); animation: star-pop 500ms cubic-bezier(.2, 1.9, .4, 1) both; }
 @keyframes star-pop { from { transform: scale(0) rotate(-90deg); } }
+/* missão e nervosismo ficam na barra de cima; nada disso sobre o jogo */
+.quest-card { display: none !important; }
+.tb-nerves { flex: none; display: flex; align-items: center; gap: 6px; font-weight: 800; }
+.tb-nerves .nerves-hearts span { color: #5a5390; font-size: 1.2em; display: inline-block; }
+.tb-nerves .nerves-hearts span.on { color: var(--rose); }
+.tb-nerves-txt { color: var(--rose); }
