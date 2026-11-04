@@ -1,8 +1,8 @@
 {
-  "name": "bella-e-weng-nossa-historia",
+  "name": "a-lua-esta-bella",
   "private": true,
   "version": "0.2.0",
-  "description": "Bella & Weng — Nossa História. RPG 2D em pixel art para os 3 anos de namoro.",
+  "description": "A Lua está Bella — RPG 2D em pixel art para os 3 anos de namoro de Bella e Weng.",
   "type": "module",
   "scripts": {
     "dev": "vite --host",

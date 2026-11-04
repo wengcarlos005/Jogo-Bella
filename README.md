@@ -1,4 +1,4 @@
-# Bella & Weng — Nossa História 💗
+# A Lua está Bella 🌙💗
 
 RPG 2D em pixel art feito para comemorar os 3 anos de namoro da Bella e do Weng.
 Phaser 3 + TypeScript + Vite, roda no navegador (computador e celular).

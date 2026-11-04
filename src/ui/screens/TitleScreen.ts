@@ -2,7 +2,7 @@ import { h, formatDate, formatPlaytime } from '@/utils/dom';
 import { SaveSystem, AUTOSAVE_SLOT } from '@/systems/SaveSystem';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
-import { SAVE_SLOTS, VERSION } from '@/config/gameConfig';
+import { GAME_TITLE, SAVE_SLOTS, VERSION } from '@/config/gameConfig';
 import type { SaveData } from '@/core/types';
 import { textureURL } from '../textures';
 
@@ -47,9 +47,9 @@ export class TitleScreen {
         { class: 'title-panel' },
         hearts,
         logo
-          ? h('img', { class: 'title-logo-img', src: logo, alt: 'Bella & Weng' })
-          : h('div', { class: 'title-logo' }, 'Bella', h('span', { class: 'amp' }, ' ♥'), h('br'), 'Weng'),
-        h('div', { class: 'title-sub' }, 'Nossa História'),
+          ? h('img', { class: 'title-logo-img', src: logo, alt: GAME_TITLE })
+          : h('div', { class: 'title-logo' }, h('span', { class: 'title-small' }, 'A Lua está'), h('br'), 'Bella', h('span', { class: 'amp' }, ' ☾')),
+        h('div', { class: 'title-sub' }, 'Bella ♥ Weng · 3 anos'),
         list,
       ),
       h('div', { class: 'version' }, `v${VERSION}`),

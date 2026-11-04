@@ -27,3 +27,5 @@ export const AUTOSAVE_INTERVAL_MS = 60_000;
 export const SAVE_SLOTS = 3;
 
 export const VERSION = '0.2.0';
+
+export const GAME_TITLE = 'A Lua está Bella';

@@ -1,4 +1,4 @@
-# Bella & Weng — Nossa História
+# A Lua está Bella
 ## Game Design Document (v0.2)
 
 > Um RPG 2D em pixel art sobre três anos de história.
