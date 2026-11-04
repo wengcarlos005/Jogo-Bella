@@ -524,7 +524,8 @@ export class GameScene extends Phaser.Scene {
     }
     const key = who === 'weng' ? 'umbrella-weng' : 'umbrella-bella';
     const img = this.add.image(0, 0, key).setOrigin(0.5, 1);
-    img.setScale((img.width >= 64 ? 1 / RENDER_SCALE : 1) * PROP_SCALE);
+    // arte HD: 1 pixel da arte = 1 pixel de tela; provisório (pequeno): ampliado
+    img.setScale(img.width >= 64 ? 1 / RENDER_SCALE : PROP_SCALE);
     const shaft = this.add.image(0, 0, 'umbrella-shaft').setOrigin(0.5, 0);
     this.umbrellas.set(who, { img, shaft, mode });
   }
@@ -540,7 +541,7 @@ export class GameScene extends Phaser.Scene {
       // Cobertura (origem na borda de baixo) na frente do personagem;
       // cabo atrás do personagem, descendo da cobertura até a mão.
       // 'up': cobertura logo acima do cabelo. 'hide': abaixada, escondendo o rosto.
-      const canopyBottom = u.mode === 'up' ? a.headY + 4 : a.headY + a.bodyHeight * 0.45;
+      const canopyBottom = u.mode === 'up' ? a.headY + 8 : a.headY + a.bodyHeight * 0.45;
       if (!u.img.visible || u.img.y === 0) u.img.y = canopyBottom;
       u.img.setVisible(true);
       u.img.y += (canopyBottom - u.img.y) * 0.25;
