@@ -30,24 +30,26 @@ const char = (id: string, key: string, file: string, frame = 32): AssetEntry => 
 
 export const ASSETS: AssetEntry[] = [
   // Personagens — walk sheet 4x4 (linhas: baixo, esquerda, direita, cima).
-  // Arte real HD: quadros 96x96 (personagem ~72px de arte, exibido com 36px lógicos).
+  // Arte real HD: quadros 136x136 (personagem ~100px de arte = 50px lógicos, 1 pixel de arte por pixel de tela).
   // Placeholders: 32x32.
   // Bella tem uma folha por roupa (ver src/data/outfits.ts).
-  char('CHAR-001', 'bella-casual', 'characters/bella-casual.png', 96),
-  char('CHAR-011', 'bella-floral', 'characters/bella-floral.png', 96),
-  char('CHAR-012', 'bella-linho', 'characters/bella-linho.png', 96),
-  char('CHAR-013', 'bella-festa', 'characters/bella-festa.png', 96),
-  char('CHAR-014', 'bella-inverno', 'characters/bella-inverno.png', 96),
-  char('CHAR-002', 'weng-casual', 'characters/weng-casual.png', 96),
-  char('CHAR-021', 'weng-basica', 'characters/weng-basica.png', 96),
-  char('CHAR-022', 'weng-social', 'characters/weng-social.png', 96),
-  char('CHAR-023', 'weng-xadrez', 'characters/weng-xadrez.png', 96),
-  char('CHAR-024', 'weng-reveillon', 'characters/weng-reveillon.png', 96),
-  char('NPC-001', 'mae-bella', 'npcs/mae-bella-walk.png', 96),
-  char('NPC-002', 'pai-bella', 'npcs/pai-bella-walk.png', 96),
-  char('NPC-003', 'vizinha', 'npcs/vizinha-walk.png', 96),
+  char('CHAR-001', 'bella-casual', 'characters/bella-casual.png', 136),
+  char('CHAR-015', 'bella-pijama', 'characters/bella-pijama.png', 136),
+  char('CHAR-016', 'bella-pijama-oculos', 'characters/bella-pijama-oculos.png', 136),
+  char('CHAR-011', 'bella-floral', 'characters/bella-floral.png', 136),
+  char('CHAR-012', 'bella-linho', 'characters/bella-linho.png', 136),
+  char('CHAR-013', 'bella-festa', 'characters/bella-festa.png', 136),
+  char('CHAR-014', 'bella-inverno', 'characters/bella-inverno.png', 136),
+  char('CHAR-002', 'weng-casual', 'characters/weng-casual.png', 136),
+  char('CHAR-021', 'weng-basica', 'characters/weng-basica.png', 136),
+  char('CHAR-022', 'weng-social', 'characters/weng-social.png', 136),
+  char('CHAR-023', 'weng-xadrez', 'characters/weng-xadrez.png', 136),
+  char('CHAR-024', 'weng-reveillon', 'characters/weng-reveillon.png', 136),
+  char('NPC-001', 'mae-bella', 'npcs/mae-bella-walk.png', 136),
+  char('NPC-002', 'pai-bella', 'npcs/pai-bella-walk.png', 136),
+  char('NPC-003', 'vizinha', 'npcs/vizinha-walk.png', 136),
 
-  char('NPC-004', 'atendente', 'npcs/atendente-walk.png', 96),
+  char('NPC-004', 'atendente', 'npcs/atendente-walk.png', 136),
 
   // Minigame do hambúrguer (ingredientes recortados de objects/burger-ingredientes)
   ...['pao-baixo', 'carne', 'queijo', 'alface', 'tomate', 'cebola', 'bacon', 'picles', 'molho', 'pao-cima'].map(

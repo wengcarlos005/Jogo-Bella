@@ -754,6 +754,34 @@ export class PlaceholderFactory {
     this.prop('umbrella-weng', 28, 11, umbrella('#2c3a6b', '#1b2447', '#5a6fae'));
     this.prop('umbrella-shaft', 1, 16, (c) => px(c, '#4a3a34', 0, 0, 1, 16));
 
+    // Porta-guarda-chuvas (HD 32x64, exibido em 0,5) com guarda-chuva escuro da mãe
+    this.prop('prop-umbrella-stand', 32, 64, (c) => {
+      // guarda-chuva da mãe (fechado, roxo escuro)
+      px(c, '#2a1f2e', 17, 2, 6, 3); px(c, '#4a3a34', 19, 0, 2, 3);
+      for (let y = 5; y < 40; y++) { const w = Math.max(2, Math.round(7 - (y - 5) * 0.12)); px(c, '#2a1f2e', 20 - Math.ceil(w / 2) - 1, y, w + 2, 1); px(c, '#5b3f7a', 20 - Math.ceil(w / 2), y, w, 1); }
+      px(c, '#7d5fa3', 19, 8, 1, 26);
+      // balde de cerâmica
+      px(c, '#3a2420', 3, 34, 26, 30);
+      px(c, '#b5643c', 5, 36, 22, 26);
+      px(c, '#d17f4f', 5, 36, 22, 4);
+      px(c, '#8e4a2a', 5, 58, 22, 4);
+      px(c, '#f2c08a', 7, 44, 18, 2);
+      px(c, '#f2c08a', 7, 50, 18, 2);
+      px(c, '#00000040', 2, 62, 28, 2);
+    });
+    // Guarda-chuva rosa da Bella, fechado e encostado (HD 20x60)
+    this.prop('prop-umbrella-closed', 20, 60, (c) => {
+      px(c, '#4a3a34', 9, 0, 2, 4); px(c, '#4a3a34', 6, 50, 2, 8); px(c, '#4a3a34', 4, 56, 4, 2);
+      for (let y = 4; y < 50; y++) {
+        const w = Math.max(2, Math.round(9 - (y - 4) * 0.15));
+        const x0 = 10 - Math.ceil(w / 2) - Math.round((y - 4) * 0.06);
+        px(c, '#7a2b3d', x0 - 1, y, w + 2, 1);
+        px(c, y % 9 < 2 ? '#d85d84' : '#f27a9b', x0, y, w, 1);
+      }
+      px(c, '#ffc2d4', 9, 8, 1, 30);
+      px(c, '#ffd75e', 7, 24, 6, 2);
+    });
+
     // Balões de emoção 13x13
     const bubble = (c: Ctx) => {
       px(c, '#2a1f2e', 1, 0, 11, 11);

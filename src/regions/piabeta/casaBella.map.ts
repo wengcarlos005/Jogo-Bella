@@ -70,10 +70,16 @@ export const casaBellaMap: MapDef = {
     R(1382, 740, 1480, 808), // planta
   ],
 
+  props: [
+    // porta-guarda-chuvas ao lado da porta (o rosa some quando a Bella pega)
+    { key: 'prop-umbrella-stand', tx: 13.25, ty: 18.1, scale: 0.5, block: false },
+    { key: 'prop-umbrella-closed', tx: 13.95, ty: 18.1, scale: 0.5, block: false, visibleIf: () => !objDone('guarda-chuva') },
+  ],
+
   hotspots: [
     // Quarto
     { rect: R(62, 175, 232, 466), interact: 'cama', label: 'Cama', markerIf: () => objActive('celular') },
-    { rect: R(272, 150, 448, 338), interact: 'oculos', label: 'Escrivaninha', markerIf: () => objActive('oculos') },
+    { rect: R(272, 150, 448, 338), interact: 'oculos', label: 'Escrivaninha', markerIf: () => objActive('oculos') && objDone('celular') },
     { rect: R(458, 150, 536, 338), interact: 'colar', label: 'Penteadeira', markerIf: () => objActive('colar') },
     {
       rect: R(538, 110, 604, 304),
@@ -81,7 +87,7 @@ export const casaBellaMap: MapDef = {
       label: 'Espelho',
       markerIf: () => objActive('espelho') && objDone('roupa') && objDone('oculos') && objDone('colar') && objDone('presente'),
     },
-    { rect: R(635, 90, 818, 322), interact: 'guarda-roupa', label: 'Guarda-roupa', markerIf: () => objDone('celular') && (objActive('roupa') || objActive('presente')) },
+    { rect: R(635, 90, 818, 322), interact: 'guarda-roupa', label: 'Guarda-roupa', markerIf: () => objDone('celular') && objDone('oculos') && (objActive('roupa') || objActive('presente')) },
     // Cozinha
     { rect: R(940, 85, 1062, 302), interact: 'geladeira', label: 'Geladeira' },
     { rect: R(1066, 160, 1160, 302), interact: 'fogao', label: 'Fogão' },
@@ -91,7 +97,7 @@ export const casaBellaMap: MapDef = {
     { rect: R(1062, 545, 1290, 758), interact: 'estante', label: 'Estante' },
     { rect: R(550, 600, 910, 748), interact: 'sofa', label: 'Sofá' },
     {
-      rect: R(610, 820, 690, 925),
+      rect: R(620, 820, 700, 925),
       interact: 'guarda-chuva',
       label: 'Guarda-chuva',
       markerIf: () => objActive('guarda-chuva') && objDone('espelho'),

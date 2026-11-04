@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { AUTOSAVE_INTERVAL_MS, CAMERA, CHAR_SCALE, GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE, TILE } from '@/config/gameConfig';
+import { AUTOSAVE_INTERVAL_MS, CAMERA, PROP_SCALE, GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE, TILE } from '@/config/gameConfig';
 import { EventBus } from '@/core/EventBus';
 import { GameState } from '@/core/GameState';
 import type { Direction, RegionId, Vec2 } from '@/core/types';
@@ -186,7 +186,9 @@ export class GameScene extends Phaser.Scene {
     const override = key === 'bella' ? GameState.data.regionOutfits[region] : undefined;
     const id = override ?? REGION_OUTFIT[key][region];
     const tex = OUTFITS[key][id]?.texture;
-    return tex && this.textures.exists(tex) ? tex : key;
+    if (tex && this.textures.exists(tex)) return tex;
+    const casual = OUTFITS[key].casual.texture;
+    return this.textures.exists(casual) ? casual : key;
   }
 
   /** Reaplica a roupa (após troca no guarda-roupa). */
@@ -261,15 +263,15 @@ export class GameScene extends Phaser.Scene {
       if (def.interact) {
         this.interactions.add({
           id: `prop:${def.id ?? def.key}:${def.tx}:${def.ty}`,
-          rect: () => new Phaser.Geom.Rectangle(sprite.x - 2, sprite.y - sprite.height - 2, sprite.width + 4, sprite.height + 4),
+          rect: () => new Phaser.Geom.Rectangle(sprite.x - 2, sprite.y - sprite.displayHeight - 2, sprite.displayWidth + 4, sprite.displayHeight + 4),
           label: () => def.label ?? 'Ver',
           enabled: () => sprite.visible,
           run: () => this.runScript(def.interact!),
-          anchor: () => ({ x: sprite.x + sprite.width / 2, y: sprite.y - sprite.height - 2 }),
+          anchor: () => ({ x: sprite.x + sprite.displayWidth / 2, y: sprite.y - sprite.displayHeight - 2 }),
         });
       }
       if (def.markerIf)
-        this.addMarker(def.markerIf, () => ({ x: sprite.x + sprite.width / 2, y: sprite.y - sprite.height - 4 }), () => sprite.visible);
+        this.addMarker(def.markerIf, () => ({ x: sprite.x + sprite.displayWidth / 2, y: sprite.y - sprite.displayHeight - 4 }), () => sprite.visible);
     }
   }
 
@@ -378,10 +380,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   /** Item ganho com aviso na tela. */
-  notifyItem(id: string, qty: number): void {
+  notifyItem(id: string, qty: number): Promise<void> {
     const def = ITEMS[id];
     AudioSystem.play('pickup');
-    UI.toasts.show(`${def.name}${qty > 1 ? ` ×${qty}` : ''}`, def.icon);
+    return UI.itemPopup(def.name + (qty > 1 ? ` ×${qty}` : ''), def.description, def.icon);
   }
 
   // ------------------------------------------------------------ transições
@@ -522,7 +524,7 @@ export class GameScene extends Phaser.Scene {
     }
     const key = who === 'weng' ? 'umbrella-weng' : 'umbrella-bella';
     const img = this.add.image(0, 0, key).setOrigin(0.5, 1);
-    img.setScale((img.width >= 64 ? 1 / RENDER_SCALE : 1) * CHAR_SCALE);
+    img.setScale((img.width >= 64 ? 1 / RENDER_SCALE : 1) * PROP_SCALE);
     const shaft = this.add.image(0, 0, 'umbrella-shaft').setOrigin(0.5, 0);
     this.umbrellas.set(who, { img, shaft, mode });
   }

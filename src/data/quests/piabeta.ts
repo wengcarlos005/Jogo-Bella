@@ -14,8 +14,8 @@ export const PIABETA_QUESTS: QuestDef[] = [
     description: 'O Weng está chegando para o primeiro encontro. Tá chovendo, e ele vai te esperar na esquina!',
     objectives: [
       { id: 'celular', text: 'Ler a mensagem no celular', hint: 'O celular está na cama.' },
-      { id: 'roupa', text: 'Escolher a roupa no guarda-roupa', hint: 'O guarda-roupa fica no seu quarto.' },
       { id: 'oculos', text: 'Pegar os óculos', hint: 'Estão na escrivaninha.' },
+      { id: 'roupa', text: 'Escolher a roupa no guarda-roupa', hint: 'O guarda-roupa fica no seu quarto.' },
       { id: 'colar', text: 'Colocar o colar da sorte', hint: 'Na penteadeira, perto do espelho.' },
       { id: 'presente', text: 'Pegar o presente do Weng', hint: 'Você escondeu no guarda-roupa, atrás das roupas.' },
       { id: 'espelho', text: 'Dar uma última olhada no espelho', hint: 'O espelho fica ao lado da penteadeira.' },

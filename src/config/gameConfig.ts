@@ -9,11 +9,13 @@ export const GAME_HEIGHT = 270;
  */
 export const RENDER_SCALE = 2;
 /**
- * Escala extra dos personagens em relação ao cenário pintado.
- * 1 = 1 pixel da arte por pixel do canvas. Os cenários do ChatGPT têm
- * móveis grandes, então os personagens ficam um pouco maiores.
+ * Escala extra dos personagens. Mantenha 1: as folhas já são geradas no
+ * tamanho final (quadros 136px) para 1 pixel da arte = 1 pixel do canvas.
+ * Escalas fracionárias quebram o contorno do pixel art.
  */
-export const CHAR_SCALE = 1.4;
+export const CHAR_SCALE = 1;
+/** Escala dos guarda-chuvas e objetos de cena provisórios (desenhados pequenos). */
+export const PROP_SCALE = 1.4;
 export const TILE = 16;
 
 export const PLAYER = {

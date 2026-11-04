@@ -15,6 +15,8 @@ const wardrobe = (char: string, list: [id: string, name: string][]): Wardrobe =>
 /** Guarda-roupas (cada roupa = spritesheet HD 4x4, quadros 96x96). */
 export const OUTFITS: Record<'bella' | 'weng', Wardrobe> = {
   bella: wardrobe('bella', [
+    ['pijama', 'Camisola (sem óculos)'],
+    ['pijama-oculos', 'Camisola (com óculos)'],
     ['casual', 'Camiseta preta e óculos rosados'],
     ['floral', 'Vestido amarelo florido'],
     ['linho', 'Conjunto de linho branco'],

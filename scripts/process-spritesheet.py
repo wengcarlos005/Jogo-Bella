@@ -243,7 +243,7 @@ def main() -> None:
         ).astype(np.float32) / 255.0
         a = small[..., 3:4]
         rgbs = np.where(a > 0, small[..., :3] / np.maximum(a, 1e-6), 0)
-        alpha_bin = (a[..., 0] > 0.5).astype(np.float32)
+        alpha_bin = (a[..., 0] > 0.35).astype(np.float32)
         # remove pixels soltos (≤ 1 vizinho opaco em 8 direções)
         pad = np.pad(alpha_bin, 1)
         neigh = sum(np.roll(np.roll(pad, dy, 0), dx, 1) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx)[1:-1, 1:-1]

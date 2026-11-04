@@ -727,3 +727,89 @@ html, body {
 }
 /* durante o diálogo, controles de toque somem (o diálogo usa a tela toda embaixo) */
 #ui:has(.dialogue:not(.hidden)) .touch { display: none; }
+
+/* ================= Menos coisa sobre o jogo ================= */
+/* Cartão de missão: aparece quando o objetivo muda e some sozinho */
+.quest-card { transition: opacity 600ms ease, transform 600ms ease; }
+.quest-card.peek-out { opacity: 0; transform: translateY(calc(var(--u) * -6)); pointer-events: none; }
+
+/* Topo direito: só a lua (menu), discreta. Álbum/mochila/mapa ficam no menu. */
+.hud-buttons .icon-btn:not([data-art="lua"]) { display: none; }
+.hud-buttons { opacity: 0.7; transition: opacity 200ms; }
+.hud-buttons:hover { opacity: 1; }
+.icon-btn.art { width: calc(var(--u) * 13); min-width: 28px; }
+#ui:has(.dialogue:not(.hidden)) .hud-buttons { opacity: 0; pointer-events: none; }
+
+/* ---------- Caixa de diálogo: proporção da arte (7:1), texto dentro da área creme ---------- */
+#ui.has-dialogue-art .dialogue {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  width: calc(var(--u) * 392);
+  height: calc(var(--u) * 56);
+  bottom: calc(var(--u) * 4);
+  padding: 0;
+  display: block;
+}
+#ui.has-dialogue-art .dialogue .body {
+  position: absolute;
+  left: 12.9%;
+  right: 8.2%;
+  top: 21%;
+  bottom: 18%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+#ui.has-dialogue-art .dialogue .name,
+#ui.has-dialogue-art .dialogue .name.narrator {
+  position: static;
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 0 calc(var(--u) * 1.5);
+  font-family: var(--font-pixel);
+  font-weight: 600;
+  font-size: clamp(14px, calc(var(--u) * 8.5), 30px);
+  line-height: 1;
+  color: var(--red);
+  text-shadow: 0 calc(var(--u) * 0.6) 0 rgba(255, 255, 255, 0.8);
+}
+#ui.has-dialogue-art .dialogue .text {
+  font-size: clamp(12px, calc(var(--u) * 7), 24px);
+  line-height: 1.3;
+}
+#ui.has-dialogue-art .dialogue .portrait.hidden + .body { left: 4%; }
+#ui.has-dialogue-art .dialogue .more { right: 8.6%; bottom: 17%; }
+#ui.has-dialogue-art ~ * .choices, #ui.has-dialogue-art .choices {
+  right: calc(50% - var(--u) * 196 + var(--u) * 6);
+  bottom: calc(var(--u) * 64);
+}
+/* texto de ação ("E Escrivaninha") mais legível */
+.prompt {
+  font-size: clamp(13px, calc(var(--u) * 7), 22px);
+  padding: calc(var(--u) * 0.6) calc(var(--u) * 4);
+  border-width: calc(var(--u) * 1.2);
+  box-shadow: 0 calc(var(--u) * 1) 0 rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- Janela de item obtido ---------- */
+.item-screen { background: rgba(20, 18, 48, 0.55); backdrop-filter: none; }
+.item-pop {
+  color: var(--ink);
+  width: min(86%, calc(var(--u) * 210));
+  padding: calc(var(--u) * 8) calc(var(--u) * 10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+  text-align: center;
+  animation: pop 350ms cubic-bezier(.2, 1.6, .4, 1);
+}
+.item-kicker { font-family: var(--font-pixel); color: var(--red); font-size: clamp(13px, calc(var(--u) * 7), 22px); }
+.item-icon { width: calc(var(--u) * 48); height: calc(var(--u) * 48); object-fit: contain; image-rendering: auto; filter: drop-shadow(0 calc(var(--u) * 1.5) 0 rgba(0,0,0,.25)); }
+.item-name { font-family: var(--font-pixel); font-size: clamp(18px, calc(var(--u) * 12), 36px); line-height: 1.05; }
+.item-desc { font-weight: 700; font-size: clamp(12px, calc(var(--u) * 6.5), 20px); color: var(--ink-soft); }
+.item-pop .btn { min-width: 40%; margin-top: calc(var(--u) * 2); }

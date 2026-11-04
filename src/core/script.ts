@@ -15,7 +15,10 @@ export interface ScriptContext {
 
   flag(key: string): boolean;
   setFlag(key: string, value?: boolean | number | string): void;
-  give(item: string, qty?: number, silent?: boolean): void;
+  /** Mostra um objeto em destaque no centro da tela (sem dar o item). */
+  showItem(icon: string, kicker: string, name: string, description: string): Promise<void>;
+  /** Dá um item. Mostra a janela de item no centro (a jogadora fecha). Use com await. */
+  give(item: string, qty?: number, silent?: boolean): Promise<void>;
   has(item: string, qty?: number): boolean;
   take(item: string, qty?: number): boolean;
   count(item: string): number;

@@ -13,6 +13,7 @@ export class NPC extends Character {
   private home: Phaser.Math.Vector2;
   private followTarget: Player | null = null;
   wanderRadius = 24;
+  private followMoving = false;
   wanderAxis: 'x' | 'y' | 'both' = 'both';
 
   constructor(scene: Phaser.Scene, x: number, y: number, key: string, id: string) {
@@ -79,15 +80,19 @@ export class NPC extends Character {
       const trail = p.trail;
       const goal = trail.length > 8 ? trail[trail.length - 8] : null;
       const d = Phaser.Math.Distance.Between(this.x, this.y, p.x, p.y);
-      if (goal && d > 24) {
+      // Histerese: começa a andar longe (>34), para perto (<24) — evita o "pisca-pisca".
+      if (!this.followMoving && d > 34) this.followMoving = true;
+      if (this.followMoving && d < 24) this.followMoving = false;
+      const toGoal = goal ? Math.hypot(goal.x - this.x, goal.y - this.y) : 0;
+      if (goal && this.followMoving && toGoal > 3) {
         const dx = goal.x - this.x;
         const dy = goal.y - this.y;
-        const len = Math.hypot(dx, dy) || 1;
-        const sp = d > 60 ? 140 : d > 30 ? 95 : 70;
-        body.setVelocity((dx / len) * sp, (dy / len) * sp);
+        const sp = d > 70 ? 140 : d > 40 ? 95 : 70;
+        body.setVelocity((dx / toGoal) * sp, (dy / toGoal) * sp);
         if (d > 160) this.setPosition(goal.x, goal.y);
       } else {
         body.setVelocity(0, 0);
+        this.followMoving = false;
       }
       this.animateFromVelocity();
       return;

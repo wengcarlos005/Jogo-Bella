@@ -25,6 +25,8 @@ export interface PropPlacement {
   visibleIf?: () => boolean;
   /** Mostra o marcador de objetivo (♥ flutuante) enquanto verdadeiro. */
   markerIf?: () => boolean;
+  /** Escala de exibição (ex.: 0.5 para objetos desenhados em resolução HD). */
+  scale?: number;
   /** Sempre abaixo dos personagens (tapetes, capachos). */
   flat?: boolean;
   id?: string;

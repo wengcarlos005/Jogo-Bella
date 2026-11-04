@@ -52,9 +52,22 @@ export class HUD {
     });
   }
 
+  private peekTimer = 0;
+  private lastNerves = -1;
+
+  /** Mostra o cartão de missão por alguns segundos e depois esconde. */
+  peek(ms = 5000): void {
+    this.card.classList.remove('peek-out');
+    clearTimeout(this.peekTimer);
+    this.peekTimer = window.setTimeout(() => this.card.classList.add('peek-out'), ms);
+  }
+
   show(on: boolean): void {
     this.el.classList.toggle('hidden', !on);
-    if (on) this.refresh();
+    if (on) {
+      this.refresh();
+      this.peek(6000);
+    }
   }
 
   /** Linha compacta do nervosismo (dentro do cartão de missão). */
@@ -94,6 +107,9 @@ export class HUD {
       void this.card.offsetWidth;
       this.card.classList.add('flash');
     }
+    const nerves = Number(GameState.getFlag<number>('nervosismo') ?? 0);
+    if (this.lastObjective !== obj.id || nerves !== this.lastNerves) this.peek();
+    this.lastNerves = nerves;
     this.lastObjective = obj.id;
   }
 

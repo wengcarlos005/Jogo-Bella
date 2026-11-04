@@ -130,7 +130,11 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
       if (this.anims.isPlaying) this.face(this.facing);
       return;
     }
-    this.facing = Math.abs(x) > Math.abs(y) ? (x < 0 ? 'left' : 'right') : y < 0 ? 'up' : 'down';
+    // Só troca de direção quando um eixo domina claramente (evita girar na diagonal).
+    const ax = Math.abs(x);
+    const ay = Math.abs(y);
+    if (ax > ay * 1.25) this.facing = x < 0 ? 'left' : 'right';
+    else if (ay > ax * 1.25) this.facing = y < 0 ? 'up' : 'down';
     this.anims.play(`${this.charKey}-walk-${this.facing}`, true);
     this.anims.timeScale = speedScale;
   }

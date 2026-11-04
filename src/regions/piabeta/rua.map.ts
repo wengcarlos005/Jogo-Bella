@@ -48,7 +48,7 @@ const flowerScripts: Record<string, Script> = Object.fromEntries(
     `flor-${i}`,
     async (ctx) => {
       ctx.setFlag(`flor-${i}`);
-      ctx.give('flor-do-quintal');
+      await ctx.give('flor-do-quintal');
       if (ctx.questActive('pia-s1') && ctx.count('flor-do-quintal') >= 3) ctx.objective('pia-s1', 'colher');
     },
   ]),
@@ -106,7 +106,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Eu vi um guarda-chuva rosa vindo devagarinho e pensei: "é ela".');
     }
     await ctx.say('weng', 'Ah! Quase esqueci. Isso aqui é pra você.');
-    ctx.give('rosa-rosa');
+    await ctx.give('rosa-rosa');
     await ctx.emote('bella', 'heart');
     await ctx.say('bella', 'Uma rosa... rosa! Ela é linda.');
     await ctx.say('weng', 'Escolhi rosa porque combina com os seus óculos. E com você.');

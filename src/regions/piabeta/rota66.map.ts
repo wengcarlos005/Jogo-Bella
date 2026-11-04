@@ -125,7 +125,7 @@ const scripts: Record<string, Script> = {
     await ctx.emote('bella', 'heart');
     await ctx.say('weng', 'Ei... quer dar uma volta depois? A gente pode ir andando por Fragoso até o parque.');
     await ctx.say('bella', 'Quero. Acho que uma caminhada vai me fazer bem.');
-    ctx.give('burger-rota66');
+    await ctx.give('burger-rota66');
     await ctx.unfocus(700);
     ctx.letterbox(false);
     await ctx.fadeOut(400);

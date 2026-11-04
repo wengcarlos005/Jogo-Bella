@@ -18,7 +18,8 @@ export function createNewSave(): SaveData {
     regionsUnlocked: ['piabeta'],
     regionsVisited: [],
     outfits: { bella: 'casual', weng: 'casual' },
-    regionOutfits: {},
+    // O jogo começa com a Bella de camisola, sem óculos.
+    regionOutfits: { piabeta: 'pijama' },
     outfitsUnlocked: ['casual'],
     houseDecor: {},
   };

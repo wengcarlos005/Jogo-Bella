@@ -8,8 +8,9 @@ import { MemoryAlbumSystem } from './MemoryAlbumSystem';
 import { AudioSystem } from './AudioSystem';
 import { UI } from '@/ui/UIManager';
 import { NPC } from '@/entities/NPC';
+import { ITEMS } from '@/data/items';
 import Phaser from 'phaser';
-import { CHAR_SCALE, RENDER_SCALE } from '@/config/gameConfig';
+import { PROP_SCALE, RENDER_SCALE } from '@/config/gameConfig';
 
 const DIRS: Direction[] = ['down', 'up', 'left', 'right'];
 
@@ -33,9 +34,14 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     flag: (key) => GameState.is(key),
     setFlag: (key, value = true) => GameState.setFlag(key, value),
 
-    give(item, qty = 1, silent = false) {
+    async showItem(item, kicker, name, description) {
+      AudioSystem.play('pickup');
+      await UI.itemPopup(name, description, ITEMS[item]?.icon ?? item, kicker);
+    },
+
+    async give(item, qty = 1, silent = false) {
       InventorySystem.add(item, qty);
-      if (!silent) scene.notifyItem(item, qty);
+      if (!silent) await scene.notifyItem(item, qty);
     },
     has: (item, qty = 1) => InventorySystem.has(item, qty),
     take: (item, qty = 1) => InventorySystem.remove(item, qty),
@@ -167,7 +173,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     prop(id, key, tx, ty, frame = 0) {
       scene.tempProps.get(id)?.destroy();
       const img = scene.add.image(tx * 16, ty * 16, key, frame).setOrigin(0.5, 1);
-      if (img.height >= 64) img.setScale((1 / RENDER_SCALE) * CHAR_SCALE * 0.9);
+      if (img.height >= 64) img.setScale((1 / RENDER_SCALE) * PROP_SCALE * 0.9);
       img.setDepth(img.y);
       scene.tempProps.set(id, img);
     },

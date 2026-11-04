@@ -163,6 +163,35 @@ class UIManagerImpl {
     });
   }
 
+  /** Janela de item obtido: centralizada, grande; fecha com interagir/clique. */
+  itemPopup(name: string, description: string, icon?: string, kicker = 'Você recebeu'): Promise<void> {
+    const url = textureURL(icon);
+    return new Promise((resolve) => {
+      const close = () => {
+        InputSystem.off('item:interact', close);
+        InputSystem.pop('item');
+        screen.remove();
+        resolve();
+      };
+      const screen = h(
+        'div',
+        { class: 'screen item-screen' },
+        h(
+          'div',
+          { class: 'item-pop panel' },
+          h('div', { class: 'item-kicker' }, kicker),
+          url ? h('img', { class: 'item-icon', src: url, alt: '' }) : null,
+          h('div', { class: 'item-name' }, name),
+          h('div', { class: 'item-desc' }, description),
+          h('button', { class: 'btn primary', onclick: close }, 'OK'),
+        ),
+      );
+      this.root.append(screen);
+      InputSystem.push('item');
+      setTimeout(() => InputSystem.on('item:interact', close), 350);
+    });
+  }
+
   /** Cartão de capítulo (ex.: fim do prólogo). Resolve ao confirmar. */
   chapterCard(kicker: string, title: string, sub: string, button = 'Continuar'): Promise<void> {
     return new Promise((resolve) => {

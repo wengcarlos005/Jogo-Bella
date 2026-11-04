@@ -79,12 +79,12 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
   const props: BuiltProp[] = (def.props ?? []).map((p) => {
     const x = p.tx * TILE;
     const bottom = (p.ty + 1) * TILE;
-    const sprite = scene.add.image(x, bottom, p.key).setOrigin(0, 1);
+    const sprite = scene.add.image(x, bottom, p.key).setOrigin(0, 1).setScale(p.scale ?? 1);
     sprite.setDepth(p.flat ? -5 : bottom);
     let block: Phaser.GameObjects.Zone | null = null;
     if (p.block !== false && !p.flat) {
-      const [ox, oy, w, h] = p.block ?? [1, Math.max(0, sprite.height - Math.min(12, sprite.height * 0.5)), sprite.width - 2, Math.min(12, sprite.height * 0.5)];
-      block = scene.add.zone(x + ox + w / 2, bottom - sprite.height + oy + h / 2, w, h);
+      const [ox, oy, w, h] = p.block ?? [1, Math.max(0, sprite.displayHeight - Math.min(12, sprite.displayHeight * 0.5)), sprite.displayWidth - 2, Math.min(12, sprite.displayHeight * 0.5)];
+      block = scene.add.zone(x + ox + w / 2, bottom - sprite.displayHeight + oy + h / 2, w, h);
       solids.add(block);
     }
     return { def: p, sprite, block };

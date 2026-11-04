@@ -24,14 +24,17 @@ export const casaScripts: Record<string, Script> = {
   async cama(ctx) {
     if (!ctx.objectiveDone(Q, 'celular')) {
       ctx.sfx('pickup');
-      ctx.give('celular', 1, true);
+      await ctx.give('celular', 1, true);
+      if (!ctx.objectiveDone(Q, 'oculos')) {
+        await ctx.say('bella', 'Tá tudo embaçado... aperta o olho... pronto, deu pra ler:');
+      }
       await ctx.say('celular', `${W}: "${PERSONAL.openingText}"`);
       await ctx.emote('bella', 'heart');
       const c = await ctx.choose('bella', 'Ele já tá chegando! Na chuva! E eu ainda de pijama...', ['Responder com um emoji fofo', 'Responder "tô quase pronta!" (mentira)']);
       if (c === 0) await ctx.say('bella', 'Pronto, mandei um coraçãozinho. Discreto. Muito discreto.');
       else await ctx.say('bella', '"Tô quase pronta!" ... Agora eu preciso MESMO ficar pronta.');
       ctx.objective(Q, 'celular');
-      ctx.toast('Se arrume: roupa, presente, óculos e colar!');
+      ctx.toast('Se arrume: óculos, roupa, presente e colar!');
       return;
     }
     await ctx.say('bella', 'Se eu deitar agora, eu não levanto mais. Foco!');
@@ -40,6 +43,10 @@ export const casaScripts: Record<string, Script> = {
   async 'guarda-roupa'(ctx) {
     if (!ctx.objectiveDone(Q, 'celular')) {
       await ctx.say('bella', 'Primeiro deixa eu ver o que vibrou no celular...');
+      return;
+    }
+    if (!ctx.objectiveDone(Q, 'oculos')) {
+      await ctx.say('bella', 'Sem os óculos eu vou acabar vestindo a camiseta do avesso. Primeiro os óculos!');
       return;
     }
     if (ctx.objectiveDone(Q, 'roupa')) {
@@ -71,7 +78,8 @@ export const casaScripts: Record<string, Script> = {
     if (!ctx.objectiveDone(Q, 'celular')) {
       await ctx.say('bella', 'Tá tudo meio embaçado... ah, é. Os óculos.');
     }
-    ctx.give('oculos-rosa');
+    await ctx.give('oculos-rosa');
+    if (!ctx.objectiveDone(Q, 'roupa')) ctx.outfit('pijama-oculos');
     await ctx.say('bella', 'Óculos! Agora sim dá pra enxergar o mundo. E o Weng chegando.');
     ctx.objective(Q, 'oculos');
   },
@@ -81,15 +89,15 @@ export const casaScripts: Record<string, Script> = {
       await ctx.say('bella', 'Perfume, maquiagem... tudo pronto por aqui.');
       return;
     }
-    ctx.give('colar-pingente');
+    await ctx.give('colar-pingente');
     await ctx.say('bella', 'O colar com o pingente. Ele dá sorte. Hoje eu preciso de sorte.');
     ctx.objective(Q, 'colar');
   },
 
   async presente(ctx) {
     await ctx.say('bella', 'E agora... o presente. Escondido atrás das roupas, pra ninguém ver.');
-    ctx.give('vale-beijo');
-    ctx.give('chocolates');
+    await ctx.give('vale-beijo');
+    await ctx.give('chocolates');
     await ctx.say('bella', 'Um Vale Beijo, um Vale Abraço e um montão de chocolate. Será que é demais pra um primeiro encontro?');
     const c = await ctx.choose('bella', '(...)', ['"Não. É perfeito."', '"Talvez seja. Vou levar mesmo assim."']);
     await ctx.say('bella', c === 0 ? 'É perfeito. E se ele não gostar, os chocolates ficam comigo.' : 'Se for demais, a culpa é do coração. Vai na bolsa!');
@@ -178,13 +186,17 @@ export const casaScripts: Record<string, Script> = {
       return;
     }
     if (!ctx.objectiveDone(Q, 'mae')) {
-      ctx.face('weng', 'mae-bella');
+      // posiciona os três lado a lado (sem empilhar)
+      await ctx.fadeOut(200);
+      ctx.place('player', 11.0, 16.2, 'right');
+      ctx.place('mae-bella', 12.8, 15.7, 'down');
+      ctx.place('weng', 14.7, 16.2, 'left');
+      await ctx.fadeIn(250);
       await ctx.say('bella', 'Mãe, esse é o Weng.');
       await ctx.say('mae-bella', 'Ah, então você que é o Weng! Prazer, querido. A Bella fala de você.');
       await ctx.emote('weng', 'exclaim');
       await ctx.say('weng', 'Fala? Quer dizer... o prazer é meu! Ah, e eu trouxe uma coisinha pra senhora.');
-      ctx.sfx('pickup');
-      await ctx.narrate('O Weng entrega uma caixa de chocolates para a mãe da Bella.');
+      await ctx.showItem('chocolates', 'O Weng deu para a sua mãe', 'Uma caixa de chocolates', 'Comprada especialmente pra ela. Primeira impressão: excelente.');
       await ctx.emote('mae-bella', 'heart');
       await ctx.say('mae-bella', 'Chocolate?! Ah, que rapaz educado! Bella, esse aí pode voltar sempre.');
       await ctx.emote('bella', 'heart');
@@ -214,6 +226,11 @@ export const casaScripts: Record<string, Script> = {
       return;
     }
     if (!ctx.objectiveDone(Q, 'pai')) {
+      await ctx.fadeOut(200);
+      ctx.place('player', 18.7, 8.2, 'right');
+      ctx.place('weng', 18.7, 9.9, 'right');
+      ctx.place('pai-bella', 20.4, 8.4, 'left');
+      await ctx.fadeIn(250);
       await ctx.say('bella', `${CHAMADO ? `${CHAMADO}, esse` : 'Esse'} é o Weng.`);
       ctx.face('weng', 'up');
       await ctx.say('pai-bella', '...');
