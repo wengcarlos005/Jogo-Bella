@@ -184,6 +184,15 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     },
     illustration: (key, lines) => UI.illustration(key, lines),
 
+    nerves(value, message) {
+      const v = Math.max(0, Math.min(100, Math.round(value)));
+      const before = Number(GameState.getFlag<number>('nervosismo') ?? 0);
+      GameState.setFlag('nervosismo', v);
+      if (message) UI.toasts.show(message);
+      else if (v < before) UI.toasts.show(v === 0 ? 'A Bella se acalmou ♥' : 'A Bella está mais calma');
+      if (v < before) ctx.hearts('bella', v === 0 ? 14 : 5);
+    },
+
     visible(who, on) {
       actor(who)?.setVisible(on);
     },

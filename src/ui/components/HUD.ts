@@ -14,6 +14,7 @@ export class HUD {
   readonly el: HTMLDivElement;
   private card = h('div', { class: 'quest-card panel hidden' });
   private prompt = h('div', { class: 'prompt hidden' });
+  private nerves = h('div', { class: 'nerves panel hidden' });
   private banner = h('div', { class: 'region-banner' });
   private bannerTimer = 0;
   private lastObjective = '';
@@ -34,6 +35,7 @@ export class HUD {
         btn(ICON.map, 'Mapa', 'mapa', 'mapa'),
         btn(ICON.menu, 'Menu', 'missoes', 'lua'),
       ),
+      this.nerves,
       this.prompt,
       this.banner,
     );
@@ -57,7 +59,20 @@ export class HUD {
     if (on) this.refresh();
   }
 
+  private refreshNerves(): void {
+    const v = Number(GameState.getFlag<number>('nervosismo') ?? 0);
+    this.nerves.classList.toggle('hidden', v <= 0);
+    if (v <= 0) return;
+    const filled = Math.ceil(v / 20);
+    this.nerves.replaceChildren(
+      h('div', { class: 'nerves-label' }, 'Coração da Bella'),
+      h('div', { class: `nerves-hearts ${v >= 60 ? 'fast' : v >= 30 ? 'mid' : ''}` }, ...Array.from({ length: 5 }, (_, i) => h('span', { class: i < filled ? 'on' : '' }, '♥'))),
+      h('div', { class: 'nerves-state' }, v >= 80 ? 'Muito nervosa' : v >= 50 ? 'Nervosa' : v >= 20 ? 'Quase calma' : 'Tranquila'),
+    );
+  }
+
   refresh(): void {
+    this.refreshNerves();
     const id = GameState.data.trackedQuest;
     const obj = id ? QuestSystem.currentObjective(id) : null;
     if (!id || !obj) {

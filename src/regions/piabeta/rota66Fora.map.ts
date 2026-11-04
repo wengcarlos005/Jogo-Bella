@@ -35,7 +35,7 @@ const scripts: Record<string, Script> = {
     }
     if (QuestSystem.isDone('pia-m2') && ctx.questActive('pia-m3') && !ctx.objectiveDone('pia-m3', 'parque')) {
       await ctx.wait(300);
-      await ctx.say('weng', 'Olha, dá pra ver o coreto do parque daqui. É só seguir aquele caminho à direita.');
+      await ctx.say('weng', 'Vamos por Fragoso? É por ali, seguindo a calçada pra esquerda.');
     }
   },
 
@@ -49,15 +49,11 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Um banquinho na frente da lanchonete. Bom pra esperar o Uber de volta.');
   },
   async trilha(ctx) {
-    if (!QuestSystem.isDone('pia-m2')) {
-      await ctx.say('weng', 'O parque é ali do lado. Mas primeiro o lanche!');
-      return;
-    }
-    await ctx.say('weng', 'É por aqui. Bora?');
+    await ctx.say('bella', 'Um caminho escuro no meio das árvores. Melhor ir pela rua, com o Weng.');
   },
   async weng(ctx) {
     if (!QuestSystem.isDone('pia-m2')) await ctx.say('weng', 'Vamos entrar? Tô morrendo de fome.');
-    else await ctx.say('weng', 'O parque é pelo caminho de terra, ali à direita.');
+    else await ctx.say('weng', 'Vamos por Fragoso? É seguindo a calçada pra esquerda.');
   },
 };
 
@@ -97,24 +93,19 @@ export const rota66ForaMap: MapDef = {
     { rect: R(330, 140, 920, 320), interact: 'neon', label: 'Letreiro' },
     { rect: R(1080, 440, 1185, 684), interact: 'placa', label: 'Placa' },
     { rect: R(215, 585, 385, 702), interact: 'banco', label: 'Banco' },
-    {
-      rect: R(1340, 380, 1450, 520),
-      interact: 'trilha',
-      label: 'Parque',
-      markerIf: () => QuestSystem.isDone('pia-m2') && QuestSystem.isActive('pia-m3') && !QuestSystem.isObjectiveDone('pia-m3', 'parque'),
-    },
+    { rect: R(1340, 380, 1450, 560), interact: 'trilha', label: 'Caminho' },
   ],
 
   spawns: {
     'from-uber': { tx: 12.6, ty: 15.0, facing: 'up' },
     'from-rota66': { tx: 13.7, ty: 13.6, facing: 'down' },
-    'from-parque': { tx: 28.5, ty: 12.4, facing: 'down' },
+    'from-fragoso': { tx: 1.2, ty: 15.5, facing: 'right' },
   },
   exits: [
     { rect: R(605, 600, 762, 645), toMap: 'piabeta-rota66', toSpawn: 'from-fora', sfx: 'door' },
     {
-      rect: R(1345, 520, 1445, 562),
-      toMap: 'piabeta-parque',
+      rect: R(0, 705, 40, 805),
+      toMap: 'piabeta-fragoso',
       toSpawn: 'from-rota66',
       blockedIf: () => (QuestSystem.isDone('pia-m2') || !QuestSystem.isActive('pia-m2') ? false : `${PERSONAL.weng.name}: "Primeiro o lanche!"`),
     },

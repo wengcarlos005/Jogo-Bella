@@ -32,7 +32,7 @@ export interface ScriptContext {
   shake(ms?: number): void;
   sfx(name: Sfx): void;
   toast(text: string): void;
-  weather(kind: 'clear' | 'rain' | 'sunset'): void;
+  weather(kind: 'clear' | 'rain' | 'sunset' | 'night'): void;
 
   emote(who: string, emote: Emote): Promise<void>;
   face(who: string, dir: Direction | string): void;
@@ -60,6 +60,11 @@ export interface ScriptContext {
   removeProp(id: string): void;
   /** Ilustração em tela cheia com legendas (avança com interagir). */
   illustration(key: string, lines: string[]): Promise<void>;
+  /**
+   * Nervosismo da Bella (0 a 100), mostrado no HUD enquanto > 0.
+   * Use para o medidor do primeiro encontro.
+   */
+  nerves(value: number, message?: string): void;
   /** Mostra/esconde um personagem (ex.: dentro do carro). */
   visible(who: string, on: boolean): void;
   /** Weng (ou outro NPC) passa a seguir a Bella. */

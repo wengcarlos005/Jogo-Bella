@@ -79,9 +79,9 @@ export const casaBellaMap: MapDef = {
       rect: R(538, 110, 604, 304),
       interact: 'espelho',
       label: 'Espelho',
-      markerIf: () => objActive('espelho') && objDone('roupa') && objDone('oculos') && objDone('colar'),
+      markerIf: () => objActive('espelho') && objDone('roupa') && objDone('oculos') && objDone('colar') && objDone('presente'),
     },
-    { rect: R(635, 90, 818, 322), interact: 'guarda-roupa', label: 'Guarda-roupa', markerIf: () => objActive('roupa') && objDone('celular') },
+    { rect: R(635, 90, 818, 322), interact: 'guarda-roupa', label: 'Guarda-roupa', markerIf: () => objDone('celular') && (objActive('roupa') || objActive('presente')) },
     // Cozinha
     { rect: R(940, 85, 1062, 302), interact: 'geladeira', label: 'Geladeira' },
     { rect: R(1066, 160, 1160, 302), interact: 'fogao', label: 'Fogão' },

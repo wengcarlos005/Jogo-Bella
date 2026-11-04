@@ -43,6 +43,7 @@ export const casaScripts: Record<string, Script> = {
       return;
     }
     if (ctx.objectiveDone(Q, 'roupa')) {
+      if (!ctx.objectiveDone(Q, 'presente')) return casaScripts.presente(ctx);
       await ctx.say('bella', 'Já escolhi. Se eu abrir de novo vou mudar de ideia pela quinta vez.');
       return;
     }
@@ -85,14 +86,25 @@ export const casaScripts: Record<string, Script> = {
     ctx.objective(Q, 'colar');
   },
 
+  async presente(ctx) {
+    await ctx.say('bella', 'E agora... o presente. Escondido atrás das roupas, pra ninguém ver.');
+    ctx.give('vale-beijo');
+    ctx.give('chocolates');
+    await ctx.say('bella', 'Um Vale Beijo, um Vale Abraço e um montão de chocolate. Será que é demais pra um primeiro encontro?');
+    const c = await ctx.choose('bella', '(...)', ['"Não. É perfeito."', '"Talvez seja. Vou levar mesmo assim."']);
+    await ctx.say('bella', c === 0 ? 'É perfeito. E se ele não gostar, os chocolates ficam comigo.' : 'Se for demais, a culpa é do coração. Vai na bolsa!');
+    ctx.objective(Q, 'presente');
+  },
+
   async espelho(ctx) {
-    const ready = ctx.objectiveDone(Q, 'roupa') && ctx.objectiveDone(Q, 'oculos') && ctx.objectiveDone(Q, 'colar');
+    const ready =
+      ctx.objectiveDone(Q, 'roupa') && ctx.objectiveDone(Q, 'oculos') && ctx.objectiveDone(Q, 'colar') && ctx.objectiveDone(Q, 'presente');
     if (ctx.objectiveDone(Q, 'espelho')) {
       await ctx.say('bella', 'Tá ótimo. Para de se olhar e desce!');
       return;
     }
     if (!ready) {
-      await ctx.say('bella', 'Ainda falta coisa... roupa, óculos e o colar da sorte.');
+      await ctx.say('bella', 'Ainda falta coisa... roupa, óculos, o colar da sorte e o presente dele!');
       return;
     }
     await ctx.say('bella', 'Ok. Respira.');
@@ -119,6 +131,7 @@ export const casaScripts: Record<string, Script> = {
     await ctx.say('mae-bella', 'Bella! Tocaram a campainha! Deve ser o tal do rapaz!');
     await ctx.say('bella', 'Já vou! JÁ VOU!');
     ctx.setFlag('campainha');
+    ctx.nerves(100, 'A Bella está nervosa!');
   },
 
   async 'atender-porta'(ctx) {
@@ -144,9 +157,13 @@ export const casaScripts: Record<string, Script> = {
       await ctx.emote('weng', 'heart');
       await ctx.say('weng', '...Oi. Agora sim, boa tarde.');
     }
-    await ctx.say('weng', 'Você tá... muito bonita.');
+    await ctx.say('weng', 'Ah! Quase esqueci. Isso aqui é pra você.');
+    ctx.give('rosa-rosa');
     await ctx.emote('bella', 'heart');
-    await ctx.say('bella', 'Obrigada. Agora vem. Meus pais querem te conhecer.');
+    await ctx.say('bella', 'Uma rosa... rosa! Ela é linda.');
+    await ctx.say('weng', 'Escolhi rosa porque combina com os seus óculos. E com você.');
+    await ctx.say('weng', 'E... você tá muito bonita.');
+    await ctx.say('bella', `Obrigada. (Respira, Bella. Respira.) Agora vem. Minha mãe e o ${PERSONAL.bellaStepdad.name} querem te conhecer.`);
     await ctx.say('weng', 'Ah. Os pais. Claro. Os pais. Tudo bem. Tranquilo. Super tranquilo.');
     ctx.objective(Q, 'porta');
     ctx.follow('weng', true);

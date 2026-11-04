@@ -61,6 +61,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Bella... posso te falar uma coisa?');
     await ctx.say('weng', 'Hoje foi o melhor dia que eu tive em muito tempo.');
     await ctx.choose('bella', '(O coração disparou)', ['"Pra mim também."', 'Chegar mais perto']);
+    if (ctx.flag('vale-beijo-entregue')) {
+      await ctx.say('weng', 'Será que... eu já posso usar o meu Vale Beijo?');
+      await ctx.choose('bella', '(...)', ['"Pode."', 'Responder com um sorriso']);
+    }
 
     await Promise.all([ctx.move('player', 13.0, 6.3, 14), ctx.move('weng', 13.9, 6.3, 14)]);
     ctx.face('player', 'right');
@@ -194,7 +198,7 @@ export const parqueMap: MapDef = {
   spawns: {
     'from-rota66': { tx: 14.9, ty: 19.1, facing: 'up' },
   },
-  exits: [{ rect: R(0, 925, 30, 1005), toMap: 'piabeta-rota66-fora', toSpawn: 'from-parque' }],
+  exits: [{ rect: R(0, 925, 30, 1005), toMap: 'piabeta-fragoso', toSpawn: 'from-parque' }],
   triggers: [
     {
       id: 'chuva',

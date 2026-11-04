@@ -113,6 +113,8 @@ Só a roupa casual da Bella tem os óculos rosados.
 | UI-003 | `ui/logo.png` | Logo "A Lua está Bella" | **integrado** |
 | UI-004 | `ui/panel.png` | Moldura 9-slice de painéis/botões/diálogo | **integrado** |
 | NPC-001 | `npcs/mae-bella-walk.png` | Mãe da Bella | **pendente** |
+| MAP-009 | `maps/piabeta-fragoso-bg.png` | Rua de Fragoso à noite (caminhada) | **pendente** |
+| ICON-001..003 | `ui/icon-rosa.png`, `icon-vale.png`, `icon-chocolate.png` | Itens: rosa rosa, Vale Beijo/Abraço, chocolates | pendente |
 | NPC-004 | `npcs/atendente-walk.png` | Atendente da Rota 66 | **pendente** |
 | UI-005 | `ui/dialogue-box.png` | Caixa de diálogo com moldura de retrato e lua | **integrado** |
 | UI-006..008 | `ui/btn-normal/hover/primary.png` | Botões (normal, selecionado, destaque) | **integrado** |

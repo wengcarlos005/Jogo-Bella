@@ -95,6 +95,21 @@ const scripts: Record<string, Script> = {
       await ctx.emote('weng', 'note');
       await ctx.say('weng', 'Vou considerar isso um cinco estrelas.');
     }
+    // Presente da Bella: Vale Beijo, Vale Abraço e chocolates
+    await ctx.say('bella', 'Ah! Eu também trouxe uma coisa pra você. Fecha os olhos.');
+    await ctx.emote('weng', 'question');
+    ctx.take('vale-beijo');
+    ctx.take('chocolates');
+    ctx.sfx('pickup');
+    await ctx.say('weng', '...Chocolates! Um monte de chocolates! E isso aqui é... um Vale Beijo? E um Vale Abraço?!');
+    await ctx.emote('weng', 'heart');
+    const cg = await ctx.choose('bella', '(Ele tá olhando os vales sem piscar...)', ['"Válidos por tempo indeterminado."', '"Os chocolates são pra dividir, tá?"', '"Gostou? Fui eu que fiz."']);
+    if (cg === 0) await ctx.say('weng', 'Tempo indeterminado... Vou guardar isso com a minha vida.');
+    else if (cg === 1) await ctx.say('weng', 'Dividir... Tá. Mas o de morango é meu.');
+    else await ctx.say('weng', 'Você que fez?! Agora é que eu não perco isso nunca mais.');
+    await ctx.hearts('weng', 10);
+    ctx.setFlag('vale-beijo-entregue');
+    ctx.nerves(70);
     await ctx.say('weng', 'Sabe... eu tava muito nervoso hoje. Rodei o quarteirão, ensaiei o que ia falar...');
     const c2 = await ctx.choose('bella', 'E eu...', ['"Eu também tava nervosa. Troquei de roupa umas três vezes."', '"Não deu pra perceber. Quer dizer... deu um pouquinho."', 'Pegar na mão dele por cima da mesa']);
     if (c2 === 0) {
@@ -108,8 +123,8 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', '...Ok. Agora o nervoso passou. Quer dizer, mudou de tipo.');
     }
     await ctx.emote('bella', 'heart');
-    await ctx.say('weng', 'Ei... tem um parque aqui do lado. Quer dar uma volta depois?');
-    await ctx.say('bella', 'Quero.');
+    await ctx.say('weng', 'Ei... quer dar uma volta depois? A gente pode ir andando por Fragoso até o parque.');
+    await ctx.say('bella', 'Quero. Acho que uma caminhada vai me fazer bem.');
     ctx.give('burger-rota66');
     await ctx.unfocus(700);
     ctx.letterbox(false);

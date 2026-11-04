@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '@/config/gameConfig';
 import { AudioSystem } from './AudioSystem';
 
-export type Weather = 'clear' | 'rain' | 'sunset';
+export type Weather = 'clear' | 'rain' | 'sunset' | 'night';
 
 /**
  * Clima e iluminação ambiente: chuva (partículas + escurecimento + som)
@@ -57,6 +57,7 @@ export class WeatherSystem {
       this.rain.stop();
       AudioSystem.setRain(false);
       if (kind === 'sunset') tween(0xff8a3d, 0.22);
+      else if (kind === 'night') tween(0x141a48, 0.42);
       else tween(0x000000, 0);
     }
   }
