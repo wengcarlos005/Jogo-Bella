@@ -17,7 +17,7 @@ export const PERSONAL = {
    *  - name: nome exibido na caixa de diálogo (ex.: 'Carlos').
    *  - chamado: como a Bella chama ele nas falas (ex.: 'Carlos', 'Tio'). Vazio = sem vocativo.
    */
-  bellaStepdad: { name: 'Padrasto da Bella', chamado: '' },
+  bellaStepdad: { name: 'Alexandre', chamado: 'Alexandre' },
 
   /** Datas reais (formato livre, ex.: "12/03/2023"). Deixe '' se não souber. */
   dates: {

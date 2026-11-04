@@ -23,7 +23,7 @@ export class TitleScreen {
     this.close();
     InputSystem.push('title');
     const latest = await SaveSystem.latest(ALL_SLOTS);
-    const art = textureURL('ui-title-art');
+    const logo = textureURL('ui-logo');
     const hearts = h('div', { class: 'title-hearts' }, ...Array.from({ length: 9 }, (_, i) => h('span', { class: i < 3 ? '' : 'off' }, '♥')));
     const list = h('div', { class: 'menu-list' });
     const btn = (label: string, fn: () => void, primary = false) =>
@@ -41,12 +41,17 @@ export class TitleScreen {
 
     this.el = h(
       'div',
-      { class: 'screen opaque' },
-      hearts,
-      art ? h('img', { class: 'title-art', src: art, alt: '' }) : null,
-      h('div', { class: 'title-logo' }, 'Bella ', h('span', { class: 'amp' }, '&'), ' Weng'),
-      h('div', { class: 'title-sub' }, 'Nossa História'),
-      list,
+      { class: 'screen title-screen' },
+      h(
+        'div',
+        { class: 'title-panel' },
+        hearts,
+        logo
+          ? h('img', { class: 'title-logo-img', src: logo, alt: 'Bella & Weng' })
+          : h('div', { class: 'title-logo' }, 'Bella', h('span', { class: 'amp' }, ' ♥'), h('br'), 'Weng'),
+        h('div', { class: 'title-sub' }, 'Nossa História'),
+        list,
+      ),
       h('div', { class: 'version' }, `v${VERSION}`),
     );
     this.parent.append(this.el);

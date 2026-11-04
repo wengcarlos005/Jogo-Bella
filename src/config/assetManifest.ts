@@ -71,6 +71,7 @@ export const ASSETS: AssetEntry[] = [
   // UI
   { id: 'UI-001', key: 'ui-title-art', file: 'assets/ui/title-art.png', kind: 'image' },
   { id: 'UI-002', key: 'ui-world-map', file: 'assets/ui/world-map.png', kind: 'image' },
+  { id: 'UI-003', key: 'ui-logo', file: 'assets/ui/logo.png', kind: 'image' },
 
   // Áudio (opcional)
   { id: 'AUD-001', key: 'music-tema-principal', file: 'assets/audio/music/tema-principal.ogg', kind: 'audio' },

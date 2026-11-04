@@ -436,3 +436,32 @@ html, body {
   pointer-events: none;
   transition: opacity 400ms;
 }
+
+/* ---------- Tela de título (capa) ---------- */
+.screen.title-screen {
+  align-items: flex-start;
+  background: linear-gradient(90deg, rgba(20, 18, 48, 0.88) 0%, rgba(20, 18, 48, 0.62) 38%, rgba(20, 18, 48, 0) 62%);
+  backdrop-filter: none;
+}
+.title-panel {
+  width: 44%;
+  min-width: min(300px, 92%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 calc(var(--u) * 18);
+}
+.title-panel .title-logo { text-align: left; font-size: clamp(32px, calc(var(--u) * 30), 96px); line-height: 0.95; }
+.title-panel .title-sub { text-align: left; margin: calc(var(--u) * 4) 0 calc(var(--u) * 12); color: var(--gold); letter-spacing: 0.04em; }
+.title-panel .title-hearts { margin-bottom: calc(var(--u) * 6); }
+.title-panel .menu-list { min-width: 0; width: 100%; max-width: 320px; }
+.title-panel .btn { text-align: left; padding-left: calc(var(--u) * 10); }
+.title-panel .btn::before { content: '♥'; color: var(--rose); margin-right: calc(var(--u) * 5); opacity: 0; transition: opacity 120ms; }
+.title-panel .btn.primary::before { color: #fff; }
+.title-panel .btn:hover::before, .title-panel .btn:focus-visible::before { opacity: 1; }
+.title-logo-img { width: 100%; max-width: 420px; image-rendering: pixelated; }
+@media (max-aspect-ratio: 4/3) {
+  .screen.title-screen { background: linear-gradient(180deg, rgba(20, 18, 48, 0.85), rgba(20, 18, 48, 0.4)); }
+  .title-panel { width: 100%; }
+}

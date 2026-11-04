@@ -3,6 +3,7 @@ import type { MapDef, TileRect } from '@/world/MapTypes';
 import { GameState } from '@/core/GameState';
 import { QuestSystem } from '@/systems/QuestSystem';
 import { casaScripts } from './casaBella.scripts';
+import { PERSONAL } from '@/data/personal';
 
 const Q = 'pia-m1';
 const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
@@ -117,7 +118,7 @@ export const casaBellaMap: MapDef = {
       blockedIf: () => {
         if (!QuestSystem.isActive(Q)) return false;
         if (!GameState.is('weng-entrou')) return 'Ainda não... o Weng tá vindo te buscar!';
-        if (!objDone('mae') || !objDone('pai')) return 'Antes de sair, apresente o Weng para sua mãe e seu padrasto.';
+        if (!objDone('mae') || !objDone('pai')) return `Antes de sair, apresente o Weng para sua mãe e o ${PERSONAL.bellaStepdad.name}.`;
         return false;
       },
     },

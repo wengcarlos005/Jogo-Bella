@@ -151,7 +151,7 @@ export const casaScripts: Record<string, Script> = {
     ctx.objective(Q, 'porta');
     ctx.follow('weng', true);
     ctx.setFlag('weng-segue');
-    ctx.toast(`Apresente o ${W} para sua mãe e seu padrasto`);
+    ctx.toast(`Apresente o ${W} para sua mãe e o ${PERSONAL.bellaStepdad.name}`);
   },
 
   async weng(ctx) {
@@ -161,7 +161,7 @@ export const casaScripts: Record<string, Script> = {
     }
     const lines = [
       'Sua casa é bem aconchegante. Tô tentando não esbarrar em nada.',
-      'Seu padrasto me olhou de um jeito... sério. Ele é sempre assim?',
+      `O ${PERSONAL.bellaStepdad.name} me olhou de um jeito... sério. Ele é sempre assim?`,
       'Respira, Weng. Respira. (Isso era pra eu mesmo, desculpa.)',
     ];
     await ctx.say('weng', lines[Math.floor(Math.random() * lines.length)]);
