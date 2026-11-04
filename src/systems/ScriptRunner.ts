@@ -11,7 +11,7 @@ import { NPC } from '@/entities/NPC';
 import { ITEMS } from '@/data/items';
 import { OUTFITS } from '@/data/outfits';
 import Phaser from 'phaser';
-import { PROP_SCALE, RENDER_SCALE } from '@/config/gameConfig';
+import { RENDER_SCALE } from '@/config/gameConfig';
 
 const DIRS: Direction[] = ['down', 'up', 'left', 'right'];
 
@@ -51,9 +51,9 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       await UI.itemPopup(name, description, ITEMS[item]?.icon ?? item, kicker);
     },
 
-    async give(item, qty = 1, silent = false) {
+    async give(item, qty = 1, silent = false, kicker = 'Você pegou') {
       InventorySystem.add(item, qty);
-      if (!silent) await scene.notifyItem(item, qty);
+      if (!silent) await scene.notifyItem(item, qty, kicker);
     },
     has: (item, qty = 1) => InventorySystem.has(item, qty),
     take: (item, qty = 1) => InventorySystem.remove(item, qty),
@@ -63,7 +63,11 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     objective(q, o) {
       const before = QuestSystem.isObjectiveDone(q, o);
       QuestSystem.complete(q, o);
-      if (!before && QuestSystem.isObjectiveDone(q, o) && QuestSystem.isActive(q)) AudioSystem.play('confirm');
+      if (!before && QuestSystem.isObjectiveDone(q, o)) {
+        AudioSystem.play('confirm');
+        scene.sparkleBurst(scene.player.x, scene.player.headY + 4, 12);
+        scene.floatText(scene.player.x, scene.player.headY - 6, '✓');
+      }
     },
     questActive: (id) => QuestSystem.isActive(id),
     objectiveDone: (q, o) => QuestSystem.isObjectiveDone(q, o),
@@ -113,14 +117,22 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         a.behavior = wasFollowing ? 'follow' : 'idle';
         return;
       }
-      // jogador: tween simples com animação
+      // jogador: tween com animação de caminhada na velocidade certa
       const dist = Math.hypot(p.x - a.x, p.y - a.y);
+      if (dist < 0.5) return;
+      const pl = scene.player;
+      pl.scripted = true;
+      (pl.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
       a.faceTowards(p.x, p.y);
       a.anims.play(`${a.charKey}-walk-${a.facing}`, true);
+      a.anims.timeScale = Math.max(0.45, speed / 70);
       await new Promise<void>((resolve) =>
         scene.tweens.add({ targets: a, x: p.x, y: p.y, duration: (dist / speed) * 1000, onComplete: () => resolve() }),
       );
+      (pl.body as Phaser.Physics.Arcade.Body).reset(a.x, a.y);
+      a.anims.timeScale = 1;
       a.face(a.facing);
+      pl.scripted = false;
     },
 
     place(who, tx, ty, facing) {
@@ -185,7 +197,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     prop(id, key, tx, ty, frame = 0) {
       scene.tempProps.get(id)?.destroy();
       const img = scene.add.image(tx * 16, ty * 16, key, frame).setOrigin(0.5, 1);
-      if (img.height >= 64) img.setScale((1 / RENDER_SCALE) * PROP_SCALE * 0.9);
+      // carro HD (quadro de 192px): mesma escala dos carros pintados no cenário (~84px lógicos)
+      if (img.height >= 64) img.setScale(0.47);
       img.setDepth(img.y);
       scene.tempProps.set(id, img);
     },
@@ -215,6 +228,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     umbrella(who, mode) {
       scene.setUmbrella(who === 'player' ? 'bella' : who, mode);
     },
+
+    playerTile: () => ({ x: (scene.player.x - 8) / 16, y: (scene.player.y + 1) / 16 - 1 }),
 
     visible(who, on) {
       actor(who)?.setVisible(on);

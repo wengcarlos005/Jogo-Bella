@@ -72,7 +72,7 @@ export const ITEMS: Record<string, ItemDef> = {
     name: 'Guardanapo da Rota 66',
     category: 'lembrancas',
     description: 'Guardado de recordação do primeiro lanche juntos. Tem uma manchinha de molho.',
-    icon: 'burger-pao-cima',
+    icon: 'icon-guardanapo',
     unique: true,
   },
   'bilhete-misterioso': {

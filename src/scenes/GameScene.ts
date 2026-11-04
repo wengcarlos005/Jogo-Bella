@@ -98,11 +98,16 @@ export class GameScene extends Phaser.Scene {
 
     this.interactions = new InteractionSystem(this);
     this.spawnNpcs();
+    if (def.hideActorsOnEnter?.()) {
+      this.player.setVisible(false);
+      this.npcs.get('weng')?.npc.setVisible(false);
+    }
     this.registerPropInteractables();
     this.registerHotspots();
     if (new URLSearchParams(location.search).has('debug')) this.drawDebug();
     this.setupCamera();
     this.weather = new WeatherSystem(this);
+    this.addAmbient(def.ambient ?? (def.indoor ? 'dust' : undefined));
 
     GameState.data.mapId = def.id;
     this.visitRegion(def.region);
@@ -110,7 +115,8 @@ export class GameScene extends Phaser.Scene {
     this.listen('memory:unlocked', (id) => this.pendingMemories.push(id as string));
     this.listen('quest:completed', (id) => {
       AudioSystem.play('quest');
-      UI.toasts.show(`Missão concluída: ${QuestSystem.def(id as string).title}`);
+      UI.celebrate('Missão concluída!', QuestSystem.def(id as string).title);
+      this.sparkleBurst(this.player.x, this.player.headY, 22, true);
       void SaveSystem.autosave();
     });
     this.listen('quest:started', (id) => {
@@ -209,11 +215,7 @@ export class GameScene extends Phaser.Scene {
       if (def.wanderRadius !== undefined) npc.wanderRadius = def.wanderRadius * TILE;
       if (def.wanderAxis) npc.wanderAxis = def.wanderAxis;
       npc.interactScript = def.interact;
-      this.physics.add.collider(this.player, npc);
-      if (npc.behavior === 'wander') {
-        this.physics.add.collider(npc, this.built.collision);
-        this.physics.add.collider(npc, this.built.solids);
-      }
+      this.addNpcColliders(npc);
       this.npcs.set(def.id, { npc, def });
       if (def.interact) {
         this.interactions.add({
@@ -243,6 +245,7 @@ export class GameScene extends Phaser.Scene {
       const back = { down: [0, -18], up: [0, 18], left: [18, 0], right: [-18, 0] }[this.player.facing];
       const npc = new NPC(this, this.player.x + back[0], this.player.y + back[1], this.spriteFor('weng'), 'weng');
       npc.interactScript = 'weng';
+      this.addNpcColliders(npc);
       entry = { npc, def: { id: 'weng', sprite: 'weng', tx: 0, ty: 0, interact: 'weng' } };
       this.npcs.set('weng', entry);
       this.interactions.add({
@@ -255,6 +258,69 @@ export class GameScene extends Phaser.Scene {
       });
     }
     entry.npc.follow(this.player);
+  }
+
+  private addAmbient(kind?: 'dust' | 'fireflies' | 'petals'): void {
+    if (!kind) return;
+    const { widthPx: w, heightPx: h } = this.built;
+    const zone = new Phaser.Geom.Rectangle(0, 0, w, h);
+    const cfg: Record<string, Phaser.Types.GameObjects.Particles.ParticleEmitterConfig> = {
+      dust: {
+        speedX: { min: -4, max: 4 }, speedY: { min: -6, max: -1 }, lifespan: 6000, frequency: 260,
+        scale: { min: 0.25, max: 0.5 }, alpha: { values: [0, 0.7, 0.7, 0] },
+        tint: 0xfff2c4,
+      },
+      fireflies: {
+        speedX: { min: -8, max: 8 }, speedY: { min: -8, max: 4 }, lifespan: 4200, frequency: 300,
+        scale: { min: 0.4, max: 0.7 }, alpha: { values: [0, 1, 0.3, 1, 0] },
+        tint: 0xffe066, blendMode: 'ADD',
+      },
+      petals: {
+        speedX: { min: 6, max: 16 }, speedY: { min: 8, max: 18 }, lifespan: 7000, frequency: 420,
+        rotate: { min: 0, max: 360 }, scale: { min: 0.5, max: 0.8 }, alpha: 0.9, tint: [0xf27a9b, 0xffc2d4, 0xffd75e],
+      },
+    };
+    const key = kind === 'petals' ? 'fx-heart' : 'fx-spark';
+    const em = this.add.particles(0, 0, key, { ...cfg[kind], emitZone: { type: 'random', source: zone } as never });
+    em.setDepth(kind === 'dust' ? 90_000 : 150_000);
+  }
+
+  /** Explosão de brilhos/corações (feedback de coleta, objetivo cumprido). */
+  sparkleBurst(x: number, y: number, count = 10, hearts = false): void {
+    for (let i = 0; i < count; i++) {
+      const key = hearts || i % 4 === 0 ? 'fx-heart' : 'fx-spark';
+      const img = this.add.image(x, y, key).setDepth(170_000).setScale(0.6);
+      const ang = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+      const dist = 14 + Math.random() * 16;
+      this.tweens.add({
+        targets: img,
+        x: x + Math.cos(ang) * dist,
+        y: y + Math.sin(ang) * dist - 8,
+        scale: { from: 1.3, to: 0.2 },
+        alpha: { from: 1, to: 0 },
+        duration: 650 + Math.random() * 350,
+        ease: 'Cubic.easeOut',
+        onComplete: () => img.destroy(),
+      });
+    }
+  }
+
+  /** Texto flutuante sobre um ponto (ex.: "✓ Objetivo!"). */
+  floatText(x: number, y: number, text: string, color = '#ffd75e'): void {
+    const t = this.add
+      .text(x, y, text, { fontFamily: 'Pixelify Sans', fontSize: '20px', color, stroke: '#3a2a2e', strokeThickness: 5 })
+      .setOrigin(0.5)
+      .setScale(0.5)
+      .setDepth(171_000);
+    this.tweens.add({ targets: t, y: y - 18, alpha: { from: 1, to: 0 }, duration: 1300, ease: 'Sine.easeOut', onComplete: () => t.destroy() });
+  }
+
+  private addNpcColliders(npc: NPC): void {
+    this.physics.add.collider(this.player, npc, undefined, () => !npc.passThroughPlayer);
+    // paredes só valem quando o NPC anda sozinho (cenas de script atravessam tudo)
+    const walls = () => npc.behavior !== 'scripted';
+    this.physics.add.collider(npc, this.built.collision, undefined, walls);
+    this.physics.add.collider(npc, this.built.solids, undefined, walls);
   }
 
   private registerPropInteractables(): void {
@@ -380,10 +446,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   /** Item ganho com aviso na tela. */
-  notifyItem(id: string, qty: number): Promise<void> {
+  notifyItem(id: string, qty: number, kicker = 'Você pegou'): Promise<void> {
     const def = ITEMS[id];
     AudioSystem.play('pickup');
-    return UI.itemPopup(def.name + (qty > 1 ? ` ×${qty}` : ''), def.description, def.icon);
+    this.sparkleBurst(this.player.x, this.player.headY + 6, 14);
+    return UI.itemPopup(def.name + (qty > 1 ? ` ×${qty}` : ''), def.description, def.icon, kicker);
   }
 
   // ------------------------------------------------------------ transições
@@ -432,6 +499,15 @@ export class GameScene extends Phaser.Scene {
     this.player.update();
     for (const { npc } of this.npcs.values()) npc.update(time, delta);
     this.weather.update(this.cameras.main);
+    // Quem passa atrás de uma copa/planta continua visível (a planta fica translúcida).
+    for (const o of this.built.overlays) {
+      if (!o.fade) continue;
+      const behind = [this.player, this.npcs.get('weng')?.npc].some(
+        (a) => a && a.visible && a.y < o.base && Phaser.Geom.Rectangle.Overlaps(o.rect, new Phaser.Geom.Rectangle(a.x - 8, a.headY, 16, a.y - a.headY)),
+      );
+      const target = behind ? 0.55 : 1;
+      o.img.alpha += (target - o.img.alpha) * 0.2;
+    }
     this.updateUmbrellas();
 
     // tempo de jogo + autosave
@@ -449,7 +525,8 @@ export class GameScene extends Phaser.Scene {
       m.sprite.setVisible(on);
       if (on) {
         const a = m.anchor();
-        m.sprite.setPosition(Math.round(a.x), Math.round(a.y + Math.sin(time / 200) * 1.5));
+        m.sprite.setPosition(Math.round(a.x), Math.round(a.y - 2 + Math.abs(Math.sin(time / 260)) * -5));
+        m.sprite.setScale(1 + Math.max(0, Math.sin(time / 260)) * 0.12);
       }
     }
 

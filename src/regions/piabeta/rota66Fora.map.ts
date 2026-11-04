@@ -64,9 +64,10 @@ export const rota66ForaMap: MapDef = {
   name: ROTA,
   music: 'rota66',
   background: '#1d1a2e',
+  ambient: 'fireflies',
   art: 'native',
   legend: { '.': T.SIDEWALK },
-  ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
+  ground: Array.from({ length: 22 }, () => '.'.repeat(25)), // cenário cortado em x=1200 (sem o parque)
 
   blocks: [
     // fachada, prédio vizinho e topo do parque
@@ -93,7 +94,6 @@ export const rota66ForaMap: MapDef = {
     { rect: R(330, 140, 920, 320), interact: 'neon', label: 'Letreiro' },
     { rect: R(1080, 440, 1185, 684), interact: 'placa', label: 'Placa' },
     { rect: R(215, 585, 385, 702), interact: 'banco', label: 'Banco' },
-    { rect: R(1340, 380, 1450, 560), interact: 'trilha', label: 'Caminho' },
   ],
 
   spawns: {
@@ -110,6 +110,7 @@ export const rota66ForaMap: MapDef = {
       blockedIf: () => (QuestSystem.isDone('pia-m2') || !QuestSystem.isActive('pia-m2') ? false : `${PERSONAL.weng.name}: "Primeiro o lanche!"`),
     },
   ],
+  hideActorsOnEnter: () => QuestSystem.isActive('pia-m2') && !QuestSystem.isObjectiveDone('pia-m2', 'chegar'),
   scripts,
   onEnter: 'entrar',
 };

@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import { Character } from './Character';
 import type { Player } from './Player';
+import type { Direction } from '@/core/types';
+import { InputSystem } from '@/systems/InputSystem';
 
 export class NPC extends Character {
   readonly npcId: string;
@@ -14,6 +16,9 @@ export class NPC extends Character {
   private followTarget: Player | null = null;
   wanderRadius = 24;
   private followMoving = false;
+  private lookTimer = Phaser.Math.Between(2000, 5000);
+  /** Seguidor: não bloqueia a Bella (mas colide com paredes). */
+  passThroughPlayer = false;
   wanderAxis: 'x' | 'y' | 'both' = 'both';
 
   constructor(scene: Phaser.Scene, x: number, y: number, key: string, id: string) {
@@ -46,13 +51,13 @@ export class NPC extends Character {
   follow(player: Player): void {
     this.behavior = 'follow';
     this.followTarget = player;
-    (this.body as Phaser.Physics.Arcade.Body).checkCollision.none = true;
+    this.passThroughPlayer = true;
   }
 
   stopFollowing(): void {
     this.followTarget = null;
     this.behavior = 'idle';
-    (this.body as Phaser.Physics.Arcade.Body).checkCollision.none = false;
+    this.passThroughPlayer = false;
   }
 
   update(_time: number, delta: number): void {
@@ -71,7 +76,7 @@ export class NPC extends Character {
       } else {
         body.setVelocity((dx / dist) * this.speed, (dy / dist) * this.speed);
       }
-      this.animateFromVelocity();
+      this.animateFromVelocity(Math.max(0.45, this.speed / 70));
       return;
     }
 
@@ -84,6 +89,18 @@ export class NPC extends Character {
       if (!this.followMoving && d > 34) this.followMoving = true;
       if (this.followMoving && d < 24) this.followMoving = false;
       const toGoal = goal ? Math.hypot(goal.x - this.x, goal.y - this.y) : 0;
+      if (d < 20) {
+        // a Bella veio na direção dele: ele dá passagem (nunca ficam um dentro do outro)
+        const ax = this.x - p.x || 0.01;
+        const ay = this.y - p.y;
+        const len = Math.hypot(ax, ay) || 1;
+        body.setVelocity((ax / len) * 90, (ay / len) * 90);
+        this.followMoving = false;
+        // durante a fuga ele continua olhando pra ela
+        this.animateFromVelocity();
+        if (Math.abs(ax) > Math.abs(ay)) this.facing = ax > 0 ? 'left' : 'right';
+        return;
+      }
       if (goal && this.followMoving && toGoal > 3) {
         const dx = goal.x - this.x;
         const dy = goal.y - this.y;
@@ -126,6 +143,15 @@ export class NPC extends Character {
 
     body.setVelocity(0, 0);
     this.animateFromVelocity();
+    // parado: de vez em quando olha pra outro lado (só fora de cenas)
+    if (this.behavior === 'idle' && InputSystem.gameplayEnabled) {
+      this.lookTimer -= delta;
+      if (this.lookTimer <= 0) {
+        this.lookTimer = Phaser.Math.Between(2500, 6000);
+        const options: Direction[] = ['down', 'left', 'right', 'down'];
+        this.face(options[Phaser.Math.Between(0, options.length - 1)]);
+      }
+    }
   }
 
   /** Para a caminhada aleatória (ex.: ao conversar). */

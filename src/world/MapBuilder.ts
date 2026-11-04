@@ -17,6 +17,15 @@ export interface BuiltMap {
   solids: Phaser.Physics.Arcade.StaticGroup;
   props: BuiltProp[];
   hasArt: boolean;
+  overlays: BuiltOverlay[];
+}
+
+export interface BuiltOverlay {
+  img: Phaser.GameObjects.Image;
+  rect: Phaser.Geom.Rectangle;
+  base: number;
+  /** Fica translúcido quando alguém passa atrás (copas grandes). */
+  fade: boolean;
 }
 
 function parseLayer(def: MapDef, rows: string[], label: string): number[][] {
@@ -67,9 +76,15 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     else img.setDisplaySize(width * TILE, height * TILE);
   };
   const hasArt = scene.textures.exists(bgKey);
+  let artW = width * TILE;
+  let artH = height * TILE;
   if (hasArt) {
-    placeArt(scene.add.image(0, 0, bgKey).setOrigin(0).setDepth(-8));
+    const bg = scene.add.image(0, 0, bgKey).setOrigin(0).setDepth(-8);
+    placeArt(bg);
     groundLayer.setAlpha(0);
+    // A área jogável/visível termina onde o desenho termina (sem faixas vazias).
+    artW = Math.min(artW, Math.floor(bg.displayWidth));
+    artH = Math.min(artH, Math.floor(bg.displayHeight));
   }
   if (scene.textures.exists(fgKey)) {
     placeArt(scene.add.image(0, 0, fgKey).setOrigin(0).setDepth(100_000));
@@ -90,6 +105,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     return { def: p, sprite, block };
   });
 
+  const overlays: BuiltOverlay[] = [];
   // Profundidade: recortes do cenário na frente de quem está "atrás" deles.
   if (hasArt && def.art === 'native') {
     // O cenário em public/ tem 2/3 da resolução do original (art-source).
@@ -98,6 +114,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
       const img = scene.add.image(0, 0, bgKey).setOrigin(0).setScale(1 / RENDER_SCALE);
       img.setCrop(toTex(o.x0), toTex(o.y0), toTex(o.x1 - o.x0), toTex(o.y1 - o.y0));
       img.setDepth(o.base / 3);
+      overlays.push({ img, rect: new Phaser.Geom.Rectangle(o.x0 / 3, o.y0 / 3, (o.x1 - o.x0) / 3, (o.y1 - o.y0) / 3), base: o.base / 3, fade: o.fade ?? !!o.ellipse });
       if (o.ellipse) {
         const g = scene.make.graphics({}, false);
         g.fillStyle(0xffffff).fillEllipse((o.x0 + o.x1) / 6, (o.y0 + o.y1) / 6, (o.x1 - o.x0) / 3, (o.y1 - o.y0) / 3);
@@ -111,7 +128,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     solids.add(scene.add.zone(r.centerX, r.centerY, r.width, r.height));
   }
 
-  return { widthPx: width * TILE, heightPx: height * TILE, collision: groundLayer, solids, props, hasArt };
+  return { widthPx: artW, heightPx: artH, collision: groundLayer, solids, props, hasArt, overlays };
 }
 
 /** Converte um retângulo em tiles para pixels. */

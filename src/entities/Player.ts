@@ -7,9 +7,12 @@ export class Player extends Character {
   /** Histórico de posições usado pelo seguidor (Weng). */
   readonly trail: Phaser.Math.Vector2[] = [];
   frozen = false;
+  /** Enquanto true, um script controla posição e animação. */
+  scripted = false;
 
   update(): void {
     const body = this.body as Phaser.Physics.Arcade.Body;
+    if (this.scripted) return; // movida por script (anima sozinha)
     if (this.frozen || !InputSystem.gameplayEnabled) {
       body.setVelocity(0, 0);
       this.animateFromVelocity();

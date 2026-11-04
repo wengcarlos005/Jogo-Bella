@@ -602,6 +602,15 @@ const ICONS: Record<string, PropDraw> = {
     px(c, '#f27a9b', 6, 5, 4, 3);
   },
   'icon-flor': (c) => PROPS['prop-flower-pick'].draw(c, 16, 16),
+  'icon-guardanapo': (c) => {
+    px(c, '#c9b9a0', 2, 3, 12, 11);
+    px(c, '#ffffff', 2, 2, 12, 11);
+    px(c, '#e9e3d6', 2, 7, 12, 1);
+    px(c, '#e9e3d6', 8, 2, 1, 11);
+    px(c, '#d8433f', 4, 4, 3, 2);
+    px(c, '#d8433f', 5, 6, 1, 1);
+    px(c, '#c9415a', 10, 9, 2, 2);
+  },
   'icon-rosa': (c) => {
     px(c, '#3f7a35', 7, 7, 2, 8);
     px(c, '#4e9442', 4, 9, 3, 2);
@@ -730,11 +739,22 @@ export class PlaceholderFactory {
       px(c, '#f27a9b', 3, 5, 1, 1);
       px(c, '#ffffff', 1, 1, 1, 1);
     });
-    this.prop('fx-marker', 7, 5, (c) => {
-      px(c, '#f27a9b', 0, 0, 7, 1);
-      px(c, '#f27a9b', 1, 1, 5, 1);
-      px(c, '#f27a9b', 2, 2, 3, 1);
-      px(c, '#f27a9b', 3, 3, 1, 1);
+    this.prop('fx-marker', 15, 14, (c) => {
+      const heart = ['..XXX...XXX..', '.XHHHX.XHHHX.', 'XHWWHHXHHHHHX', 'XHWHHHHHHHHHX', 'XHHHHHHHHHHHX', '.XHHHHHHHHHX.', '..XHHHHHHHX..', '...XHHHHHX...', '....XHHHX....', '.....XHX.....', '......X......'];
+      heart.forEach((row, y) =>
+        [...row].forEach((ch, x) => {
+          if (ch === 'X') px(c, '#5a1a2a', x + 1, y + 1);
+          if (ch === 'H') px(c, '#f2557d', x + 1, y + 1);
+          if (ch === 'W') px(c, '#ffffff', x + 1, y + 1);
+        }),
+      );
+    });
+    this.prop('fx-ring', 24, 10, (c) => {
+      c.strokeStyle = '#ffd75e';
+      c.lineWidth = 1;
+      c.beginPath();
+      c.ellipse(12, 5, 11, 4, 0, 0, Math.PI * 2);
+      c.stroke();
     });
     this.prop('fx-shadow', 14, 4, (c) => px(c, '#00000040', 0, 0, 14, 4));
 

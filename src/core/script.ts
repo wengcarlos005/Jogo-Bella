@@ -20,7 +20,7 @@ export interface ScriptContext {
   /** Mostra um objeto em destaque no centro da tela (sem dar o item). */
   showItem(icon: string, kicker: string, name: string, description: string): Promise<void>;
   /** Dá um item. Mostra a janela de item no centro (a jogadora fecha). Use com await. */
-  give(item: string, qty?: number, silent?: boolean): Promise<void>;
+  give(item: string, qty?: number, silent?: boolean, kicker?: string): Promise<void>;
   has(item: string, qty?: number): boolean;
   take(item: string, qty?: number): boolean;
   count(item: string): number;
@@ -74,6 +74,8 @@ export interface ScriptContext {
   nerves(value: number, message?: string): void;
   /** Guarda-chuva: 'up' aberto, 'hide' abaixado escondendo o rosto, 'off' fechado. */
   umbrella(who: string, mode: 'up' | 'hide' | 'off'): void;
+  /** Tile atual da Bella. */
+  playerTile(): { x: number; y: number };
   /** Mostra/esconde um personagem (ex.: dentro do carro). */
   visible(who: string, on: boolean): void;
   /** Weng (ou outro NPC) passa a seguir a Bella. */

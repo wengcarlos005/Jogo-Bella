@@ -79,9 +79,14 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', 'Nossa mesinha. Ainda tem migalha de batata aqui.');
       return;
     }
-    // Cena da mesa: ilustração dos dois sentados, diálogos por cima.
+    // Cena da mesa: câmera na mesinha; a ilustração só aparece na hora do presente.
     ctx.follow('weng', false);
-    await ctx.backdrop('memory-pia-02');
+    await ctx.fadeOut(300);
+    ctx.visible('player', false);
+    ctx.visible('weng', false);
+    ctx.letterbox(true);
+    await ctx.focus(4.1, 11.0, 1.6, 10);
+    await ctx.fadeIn(500);
     await ctx.narrate('Os lanches chegam. O cheiro é incrível. O nervosismo também.');
     await ctx.say('weng', 'E aí? Aprovado?');
     const c1 = await ctx.choose('bella', '(Primeira mordida...)', ['"Melhor hambúrguer da minha vida."', '"Hmm... preciso de mais uma mordida pra decidir."', 'Fazer um joinha de boca cheia']);
@@ -93,6 +98,7 @@ const scripts: Record<string, Script> = {
     }
     // Presente da Bella: Vale Beijo, Vale Abraço e chocolates
     await ctx.say('bella', 'Ah! Eu também trouxe uma coisa pra você. Fecha os olhos.');
+    await ctx.backdrop('memory-pia-02');
     await ctx.emote('weng', 'question');
     ctx.take('vale-beijo');
     ctx.take('chocolates');
@@ -122,11 +128,15 @@ const scripts: Record<string, Script> = {
     await ctx.emote('bella', 'heart');
     await ctx.say('weng', 'Ei... quer dar uma volta depois? A gente pode ir andando por Fragoso até o parque.');
     await ctx.say('bella', 'Quero. Acho que uma caminhada vai me fazer bem.');
-    await ctx.give('burger-rota66');
+    await ctx.give('burger-rota66', 1, false, 'Você guardou de lembrança');
+    await ctx.backdrop(null);
+    await ctx.unfocus(10);
+    ctx.letterbox(false);
     ctx.place('player', 3.7, 13.4, 'down');
     ctx.place('weng', 5.8, 13.4, 'down');
+    ctx.visible('player', true);
+    ctx.visible('weng', true);
     ctx.follow('weng', true);
-    await ctx.backdrop(null);
     ctx.objective(Q, 'mesa');
   },
 
@@ -196,6 +206,7 @@ export const rota66Map: MapDef = {
     R(1005, 840, 1455, 905),
     // floreiras e plantas da frente
     R(0, 905, 645, 1100),
+    R(645, 815, 890, 1100), // porta de vidro (não dá pra pisar em cima)
     R(890, 905, 1536, 1100),
     R(540, 880, 625, 975),
     R(905, 880, 995, 975),
@@ -211,11 +222,11 @@ export const rota66Map: MapDef = {
 
   npcs: [{ id: 'atendente', sprite: 'atendente', tx: 15.3, ty: 9.0, facing: 'down', interact: 'atendente' }],
   spawns: {
-    'from-fora': { tx: 15.5, ty: 18.6, facing: 'up' },
+    'from-fora': { tx: 15.5, ty: 15.6, facing: 'up' },
   },
   exits: [
     {
-      rect: R(645, 985, 890, 1024),
+      rect: R(645, 780, 890, 815), // encostar na porta de vidro = sair
       toMap: 'piabeta-rota66-fora',
       toSpawn: 'from-rota66',
       sfx: 'door',

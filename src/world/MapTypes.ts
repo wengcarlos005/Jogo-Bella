@@ -99,7 +99,7 @@ export interface MapDef {
    * NA FRENTE dos personagens que estiverem acima (atrás) da linha `base`.
    * Coordenadas em pixels da imagem ORIGINAL (art-source). `ellipse` recorta em oval (copas).
    */
-  overlays?: { x0: number; y0: number; x1: number; y1: number; base: number; ellipse?: boolean }[];
+  overlays?: { x0: number; y0: number; x1: number; y1: number; base: number; ellipse?: boolean; fade?: boolean }[];
   /** Interações invisíveis sobre o cenário. */
   hotspots?: HotspotDef[];
   /**
@@ -113,6 +113,10 @@ export interface MapDef {
   exits?: ExitDef[];
   triggers?: TriggerDef[];
   scripts?: Record<string, Script>;
+  /** Partículas de ambiente: poeira de luz, vaga-lumes, pétalas. */
+  ambient?: 'dust' | 'fireflies' | 'petals';
+  /** Se verdadeiro, Bella e Weng começam invisíveis (ex.: ainda dentro do carro). */
+  hideActorsOnEnter?: () => boolean;
   /** Script ao entrar no mapa (após o fade-in). */
   onEnter?: string;
   music?: string;

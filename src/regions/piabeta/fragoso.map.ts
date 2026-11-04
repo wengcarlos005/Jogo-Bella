@@ -113,6 +113,7 @@ export const fragosoMap: MapDef = {
   name: 'Fragoso',
   music: 'fragoso',
   background: '#1d1a2e',
+  ambient: 'fireflies',
   art: 'native',
   legend: { '.': T.SIDEWALK },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
@@ -128,6 +129,20 @@ export const fragosoMap: MapDef = {
     R(1166, 362, 1196, 390),
     R(210, 722, 242, 750),
   ],
+  // Profundidade: copas, bananeiras e postes ficam NA FRENTE de quem passa atrás
+  overlays: [
+    { x0: 236, y0: 362, x1: 534, y1: 575, base: 655, ellipse: true },
+    { x0: -40, y0: 330, x1: 160, y1: 580, base: 650, ellipse: true },
+    { x0: 588, y0: 440, x1: 792, y1: 640, base: 640 },
+    { x0: 922, y0: 420, x1: 1088, y1: 565, base: 600 },
+    { x0: 1176, y0: 420, x1: 1296, y1: 492, base: 668 },
+    { x0: 1194, y0: 492, x1: 1220, y1: 670, base: 668 },
+    { x0: 196, y0: 545, x1: 318, y1: 640, base: 745 },
+    { x0: 210, y0: 640, x1: 236, y1: 745, base: 745 },
+    { x0: 1168, y0: 250, x1: 1192, y1: 388, base: 388 },
+    { x0: 728, y0: 250, x1: 752, y1: 370, base: 370 },
+  ],
+
   hotspots: [
     { rect: R(1010, 560, 1095, 640), interact: 'gato', label: 'Gato' },
     { rect: R(865, 230, 1010, 330), interact: 'varal', label: 'Varal' },

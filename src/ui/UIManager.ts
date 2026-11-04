@@ -10,8 +10,9 @@ import { TitleScreen, type TitleActions } from './screens/TitleScreen';
 import { showMemoryPopup } from './screens/MemoryPopup';
 import { playBurgerGame, type BurgerOptions, type BurgerResult } from './screens/BurgerGame';
 import { InputSystem } from '@/systems/InputSystem';
-import { bindTextures, textureURL } from './textures';
+import { bindTextures, textureURL, textureWidth } from './textures';
 import { openWardrobe, type WardrobeOption } from './screens/Wardrobe';
+import { Sidebar } from './components/Sidebar';
 import './styles.css';
 
 /**
@@ -26,6 +27,7 @@ class UIManagerImpl {
   touch!: TouchControls;
   pause!: PauseMenu;
   title!: TitleScreen;
+  sidebar!: Sidebar;
   private fadeEl = h('div', { class: 'fade' });
   private game!: Phaser.Game;
 
@@ -33,6 +35,7 @@ class UIManagerImpl {
     this.game = game;
     bindTextures(game);
     this.root = document.getElementById('ui')!;
+    this.sidebar = new Sidebar((tab) => this.openMenu(tab as PauseTab));
     this.hud = new HUD(this.root, { openMenu: (tab) => this.openMenu((tab as PauseTab) ?? 'missoes') });
     this.touch = new TouchControls(this.root);
     this.toasts = new Toasts(this.root);
@@ -75,6 +78,7 @@ class UIManagerImpl {
       if (cls) this.root.classList.add(cls);
     }
     this.hud.applyIcons();
+    this.sidebar.build();
   }
 
   /** Alinha #ui ao retângulo do canvas e calcula a unidade --u. */
@@ -88,6 +92,8 @@ class UIManagerImpl {
 
   openMenu(tab: PauseTab = 'missoes'): void {
     if (this.dialogue.isOpen) return;
+    // não abre no meio de cenas/minigames (só no jogo livre ou trocando de aba)
+    if (!this.pause.isOpen && !InputSystem.gameplayEnabled) return;
     this.pause.open(tab);
   }
 
@@ -210,8 +216,30 @@ class UIManagerImpl {
     return openWardrobe(this.root, title, options, startId);
   }
 
+  /** Carimbo comemorativo com confete (não bloqueia o jogo). */
+  celebrate(title: string, sub: string): void {
+    const show = () => {
+      if (this.root.querySelector('.screen')) {
+        setTimeout(show, 500);
+        return;
+      }
+      const confetti = h(
+        'div',
+        { class: 'cel-confetti' },
+        ...Array.from({ length: 26 }, (_, i) =>
+          h('span', { style: `left:${(i * 37) % 100}%;animation-delay:${(i % 7) * 0.08}s;background:${['#f27a9b', '#ffd75e', '#5aa64c', '#7fc3e0', '#fbf3e2'][i % 5]}` }),
+        ),
+      );
+      const el = h('div', { class: 'celebrate' }, confetti, h('div', { class: 'cel-card panel' }, h('div', { class: 'cel-title' }, title), h('div', { class: 'cel-sub' }, sub)));
+      this.root.append(el);
+      setTimeout(() => el.classList.add('out'), 2600);
+      setTimeout(() => el.remove(), 3200);
+    };
+    show();
+  }
+
   /** Janela de item obtido: centralizada, grande; fecha com interagir/clique. */
-  itemPopup(name: string, description: string, icon?: string, kicker = 'Você recebeu'): Promise<void> {
+  itemPopup(name: string, description: string, icon?: string, kicker = 'Você pegou'): Promise<void> {
     const url = textureURL(icon);
     return new Promise((resolve) => {
       const close = () => {
@@ -227,7 +255,9 @@ class UIManagerImpl {
           'div',
           { class: 'item-pop panel' },
           h('div', { class: 'item-kicker' }, kicker),
-          url ? h('img', { class: 'item-icon', src: url, alt: '' }) : null,
+          url
+            ? h('div', { class: 'item-glow' }, h('img', { class: `item-icon ${textureWidth(icon) < 64 ? 'pixel' : ''}`, src: url, alt: '' }))
+            : null,
           h('div', { class: 'item-name' }, name),
           h('div', { class: 'item-desc' }, description),
           h('button', { class: 'btn primary', onclick: close }, 'OK'),
@@ -260,6 +290,7 @@ class UIManagerImpl {
   }
 
   showGameplayUI(on: boolean): void {
+    this.sidebar.setActive(on);
     this.hud.show(on);
     this.touch.show(on);
   }

@@ -63,11 +63,24 @@ export function playBurgerGame(parent: HTMLElement, opts: BurgerOptions): Promis
     const ticket = h('div', { class: 'bg-ticket' });
     const buttons = h('div', { class: 'bg-buttons' });
     const actions = h('div', { class: 'bg-actions' });
+    const weng = textureURL('portrait-weng');
     const panel = h(
       'div',
       { class: 'bg-panel panel' },
       h('div', { class: 'bg-title' }, opts.title),
-      h('div', { class: 'bg-main' }, h('div', { class: 'bg-stage' }, plate, msg), ticket),
+      h(
+        'div',
+        { class: 'bg-main' },
+        h(
+          'div',
+          { class: 'bg-stage' },
+          h('div', { class: 'bg-neon' }, 'ROTA 66'),
+          h('div', { class: 'bg-lamp' }),
+          h('div', { class: 'bg-steam' }, h('span'), h('span'), h('span')),
+          plate,
+        ),
+        h('div', { class: 'bg-side' }, ticket, h('div', { class: 'bg-talk' }, weng ? h('img', { src: weng, alt: '' }) : null, msg)),
+      ),
       buttons,
       actions,
     );
@@ -115,7 +128,7 @@ export function playBurgerGame(parent: HTMLElement, opts: BurgerOptions): Promis
       AudioSystem.play('quest');
       buttons.replaceChildren();
       actions.replaceChildren(
-        h('div', { class: 'bg-stars' }, '★'.repeat(stars) + '☆'.repeat(3 - stars)),
+        h('div', { class: 'bg-stars' }, ...[0, 1, 2].map((k) => h('span', { class: k < stars ? 'on' : '', style: `animation-delay:${k * 0.25}s` }, '★'))),
         h('button', { class: 'btn primary', onclick: close }, 'Servir ♥'),
       );
       setTimeout(() => (actions.querySelector('button') as HTMLButtonElement | null)?.focus(), 50);

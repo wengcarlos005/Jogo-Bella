@@ -131,6 +131,6 @@ export class HUD {
     this.banner.replaceChildren(h('div', { class: 'chapter' }, chapter), h('div', { class: 'name' }, name), h('div', { class: 'sub' }, sub));
     this.banner.classList.add('show');
     clearTimeout(this.bannerTimer);
-    this.bannerTimer = window.setTimeout(() => this.banner.classList.remove('show'), 2800);
+    this.bannerTimer = window.setTimeout(() => this.banner.classList.remove('show'), 4800);
   }
 }

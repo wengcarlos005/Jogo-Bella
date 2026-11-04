@@ -29,3 +29,9 @@ export function frameURL(key: string, frame: number): string | null {
   }
   return url;
 }
+
+/** Largura original de uma textura (0 se não existir). */
+export function textureWidth(key: string | undefined): number {
+  if (!key || !game || !game.textures.exists(key)) return 0;
+  return game.textures.get(key).getSourceImage().width;
+}

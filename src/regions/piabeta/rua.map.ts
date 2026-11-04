@@ -61,14 +61,15 @@ const scripts: Record<string, Script> = {
     // Chuva do começo do encontro (até o Uber chegar), com guarda-chuvas
     if (chovendo()) {
       ctx.weather('rain');
-      ctx.umbrella('bella', esperandoNaEsquina() ? 'hide' : 'up');
+      ctx.umbrella('bella', 'up');
       if (esperandoNaEsquina() || ctx.flag('weng-segue')) ctx.umbrella('weng', 'up');
     }
     if (esperandoNaEsquina() && !ctx.flag('saiu-na-chuva')) {
       ctx.setFlag('saiu-na-chuva');
       await ctx.wait(400);
       await ctx.say('bella', 'Que chuva! Ele disse que tava na esquina...');
-      await ctx.say('bella', '(Ai, que vergonha. Vou ficar escondidinha aqui embaixo do guarda-chuva até chegar.)');
+      ctx.nerves(60, 'A Bella está nervosa!');
+      await ctx.say('bella', '(Calma, Bella. É só ir até a esquina. Só isso. Normal. Super normal.)');
       ctx.toast('Siga pela calçada para a direita, até a esquina');
       return;
     }
@@ -83,18 +84,28 @@ const scripts: Record<string, Script> = {
   },
 
   async encontro(ctx) {
+    // Ela vê o Weng lá na esquina e vai chegando, passo a passo, cada vez mais nervosa.
+    const sx = ctx.playerTile().x;
+    const stop = 29.4;
+    const step = (stop - sx) / 3;
     ctx.face('player', 'right');
-    await ctx.narrate('Escondida debaixo do guarda-chuva, a Bella foi chegando devagarinho...');
-    await ctx.move('player', 30.6, 8.0, 25);
-    await ctx.wait(500);
-    ctx.umbrella('bella', 'up');
-    await ctx.wait(500);
+    await ctx.emote('bella', 'exclaim');
+    await ctx.say('bella', '(É ele. Ali na esquina. Com um guarda-chuva azul.)');
+    await ctx.move('player', sx + step, 8.0, 32);
+    ctx.nerves(75);
+    await ctx.emote('bella', 'sweat');
+    await ctx.say('bella', '(Ai. Ele é mais bonito pessoalmente.)');
+    await ctx.move('player', sx + step * 2, 8.0, 28);
+    ctx.nerves(90);
+    await ctx.emote('bella', 'sweat');
+    await ctx.say('bella', '(O que eu falo? "Oi"? "Olá"? Desde quando eu falo "olá"?!)');
+    await ctx.move('player', stop, 8.0, 24);
     ctx.face('weng', 'bella');
     await ctx.emote('weng', 'exclaim');
-    await ctx.say('weng', 'Ah! Oi! Ééé... oi. Boa tarde. Você tava aí embaixo esse tempo todo?');
-    await ctx.emote('weng', 'sweat');
     ctx.nerves(100, 'O coração da Bella disparou!');
-    const c = await ctx.choose('bella', '(Ele tá tão nervoso quanto eu...)', ['"Oi! Você chegou rápido!"', '"Achou fácil a rua?"', '"Eu tava me escondendo, confesso."']);
+    await ctx.say('weng', 'Ah! Oi! Ééé... oi. Boa tarde.');
+    await ctx.emote('weng', 'sweat');
+    const c = await ctx.choose('bella', '(Ele tá tão nervoso quanto eu...)', ['"Oi! Você chegou rápido!"', '"Achou fácil a rua?"', '"Oi... (sorrir sem graça)"']);
     if (c === 0) {
       await ctx.say('weng', 'Eu meio que saí antes... pra não atrasar. Fiquei uns minutos rodando o quarteirão.');
       await ctx.say('bella', 'Na chuva?');
@@ -103,10 +114,10 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Achei! Quer dizer, o GPS achou. Eu só obedeci. E a chuva ajudou a dar emoção.');
     } else {
       await ctx.emote('weng', 'heart');
-      await ctx.say('weng', 'Eu vi um guarda-chuva rosa vindo devagarinho e pensei: "é ela".');
+      await ctx.say('weng', 'Eu vi um guarda-chuva rosa vindo bem devagarinho e pensei: "é ela".');
     }
     await ctx.say('weng', 'Ah! Quase esqueci. Isso aqui é pra você.');
-    await ctx.give('rosa-rosa');
+    await ctx.give('rosa-rosa', 1, false, 'O Weng te deu');
     await ctx.emote('bella', 'heart');
     await ctx.say('bella', 'Uma rosa... rosa! Ela é linda.');
     await ctx.say('weng', 'Escolhi rosa porque combina com os seus óculos. E com você.');
@@ -251,7 +262,7 @@ export const ruaMap: MapDef = {
     R(1112, 270, 1190, 362),
     R(1538, 270, 1612, 362),
     // Rua: carro e postes
-    R(262, 455, 498, 532),
+    R(262, 432, 498, 532),
     R(118, 595, 166, 640),
     R(1462, 595, 1515, 640),
     // Pracinha: cerca viva (abertura do caminho em x 770–850)
@@ -267,6 +278,21 @@ export const ruaMap: MapDef = {
     R(1318, 838, 1382, 892),
     // Canteiros floridos
     ...FLOWER_BEDS,
+  ],
+
+  // Profundidade: o que fica NA FRENTE de quem passa atrás
+  overlays: [
+    { x0: 252, y0: 398, x1: 505, y1: 542, base: 532 }, // carro
+    { x0: 118, y0: 372, x1: 212, y1: 466, base: 638 }, // poste esquerdo (luminária)
+    { x0: 128, y0: 466, x1: 154, y1: 640, base: 638 }, // poste esquerdo (haste)
+    { x0: 1418, y0: 372, x1: 1512, y1: 466, base: 638 }, // poste direito (luminária)
+    { x0: 1478, y0: 466, x1: 1504, y1: 640, base: 638 }, // poste direito (haste)
+    { x0: 140, y0: 540, x1: 465, y1: 775, base: 880, ellipse: true }, // copa esquerda
+    { x0: 1188, y0: 548, x1: 1462, y1: 780, base: 885, ellipse: true }, // copa direita
+    { x0: 478, y0: 678, x1: 634, y1: 740, base: 775 }, // banco
+    { x0: 986, y0: 678, x1: 1144, y1: 740, base: 775 }, // banco
+    { x0: 0, y0: 640, x1: 770, y1: 712, base: 705 }, // cerca viva (esq.)
+    { x0: 850, y0: 640, x1: 1619, y1: 712, base: 705 }, // cerca viva (dir.)
   ],
 
   hotspots: [
@@ -320,7 +346,7 @@ export const ruaMap: MapDef = {
     },
     {
       id: 'uber',
-      rect: R(150, 425, 620, 458), // beira da calçada (meio-fio)
+      rect: R(150, 392, 620, 458), // beira da calçada (meio-fio), inclusive na frente do carro
       script: 'uber',
       once: true,
       enabledIf: () => QuestSystem.isActive('pia-m2') && !QuestSystem.isObjectiveDone('pia-m2', 'uber'),
