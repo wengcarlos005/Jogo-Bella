@@ -18,6 +18,7 @@ import { InteractionSystem, type Interactable } from '@/systems/InteractionSyste
 import { createScriptContext } from '@/systems/ScriptRunner';
 import { REGIONS, regionMeta } from '@/data/regions';
 import { ITEMS } from '@/data/items';
+import { BELLA_OUTFITS, REGION_OUTFIT } from '@/data/outfits';
 import { UI } from '@/ui/UIManager';
 
 export interface GameSceneData {
@@ -82,7 +83,7 @@ export class GameScene extends Phaser.Scene {
       pos = tileToFeet(sp.tx, sp.ty);
       facing = sp.facing;
     }
-    this.player = new Player(this, pos.x, pos.y, 'bella');
+    this.player = new Player(this, pos.x, pos.y, this.bellaTexture());
     this.player.face(facing);
     (this.player.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
     this.physics.world.setBounds(0, 0, this.built.widthPx, this.built.heightPx);
@@ -156,6 +157,23 @@ export class GameScene extends Phaser.Scene {
     cam.setBounds(bx, by, Math.max(w, GAME_WIDTH), Math.max(h, GAME_HEIGHT));
     cam.startFollow(this.player, true, CAMERA.lerp, CAMERA.lerp, 0, -8);
     cam.setRoundPixels(true);
+  }
+
+  // ------------------------------------------------------------ roupas
+
+  /** Spritesheet da Bella para a região atual (com fallback para o placeholder). */
+  bellaTexture(): string {
+    const region = this.def.region;
+    const id = GameState.data.regionOutfits[region] ?? REGION_OUTFIT[region];
+    const tex = BELLA_OUTFITS[id]?.texture;
+    return tex && this.textures.exists(tex) ? tex : 'bella';
+  }
+
+  /** Reaplica a roupa (após troca no guarda-roupa). */
+  dressPlayer(): void {
+    const facing = this.player.facing;
+    this.player.applySheet(this.bellaTexture());
+    this.player.face(facing);
   }
 
   // ------------------------------------------------------------ NPCs / props

@@ -45,10 +45,14 @@ export const casaScripts: Record<string, Script> = {
       return;
     }
     await ctx.say('bella', 'O eterno dilema: o que vestir num primeiro encontro?');
-    const c = await ctx.choose('bella', 'Hmm...', ['Camiseta preta e calça larga (o clássico)', 'Vestido florido', 'Moletom gigante (conforto acima de tudo)']);
+    const c = await ctx.choose('bella', 'Hmm...', ['Camiseta preta e calça larga (o clássico)', 'Vestido amarelo florido', 'Moletom gigante (conforto acima de tudo)']);
+    await ctx.fadeOut(250);
+    ctx.outfit(c === 1 ? 'floral' : 'casual');
+    ctx.sfx('pickup');
+    await ctx.fadeIn(250);
     const looks = [
       'Camiseta preta, calça larga e tênis. Bonita e confortável. Perfeito.',
-      'O vestido é lindo... mas e se chover? Vai a camiseta preta mesmo, que é a minha cara.',
+      'O vestido amarelo! Florido, alegre... é a cara de um primeiro encontro.',
       'O moletom é tentador, mas não. Camiseta preta e calça larga: confortável E bonita.',
     ];
     await ctx.say('bella', looks[c]);

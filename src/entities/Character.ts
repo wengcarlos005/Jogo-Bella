@@ -25,19 +25,31 @@ export function ensureCharacterAnims(scene: Phaser.Scene, key: string): void {
  */
 export class Character extends Phaser.Physics.Arcade.Sprite {
   facing: Direction = 'down';
-  readonly charKey: string;
+  charKey: string;
 
   constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
     super(scene, x, y, key, 0);
     this.charKey = key;
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    ensureCharacterAnims(scene, key);
     this.setOrigin(0.5, 1);
+    this.applySheet(key);
+  }
+
+  /**
+   * Troca a spritesheet (ex.: roupa nova) mantendo posição e direção.
+   * O corpo de colisão é recalculado pelo tamanho do quadro (32 ou 48px).
+   */
+  applySheet(key: string): void {
+    this.charKey = key;
+    ensureCharacterAnims(this.scene, key);
+    this.setTexture(key, ROW[this.facing] * 4);
+    const fw = this.frame.width;
+    const fh = this.frame.height;
     const b = PLAYER.body;
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.setSize(b.width, b.height);
-    body.setOffset(b.offsetX, b.offsetY);
+    body.setOffset((fw - b.width) / 2, fh - b.height - 1);
   }
 
   /** Posição dos pés (centro do corpo). */

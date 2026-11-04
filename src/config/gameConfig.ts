@@ -6,8 +6,8 @@ export const TILE = 16;
 export const PLAYER = {
   walkSpeed: 70,
   runSpeed: 120,
-  /** Corpo de colisão (nos pés), relativo ao frame 32x32. */
-  body: { width: 10, height: 6, offsetX: 11, offsetY: 25 },
+  /** Corpo de colisão (nos pés). Posição calculada pelo tamanho do quadro. */
+  body: { width: 10, height: 6 },
   interactRange: 18,
 };
 

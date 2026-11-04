@@ -40,6 +40,8 @@ export interface ScriptContext {
   move(who: string, tx: number, ty: number, speed?: number): Promise<void>;
   /** Posiciona instantaneamente um NPC (ou 'player'). */
   place(who: string, tx: number, ty: number, facing?: Direction): void;
+  /** Troca a roupa da Bella nesta região (ids em data/outfits.ts). */
+  outfit(id: string): void;
   /** Weng (ou outro NPC) passa a seguir a Bella. */
   follow(who: string, on: boolean): void;
   /** Mostra/esconde NPCs conforme as condições do mapa. */

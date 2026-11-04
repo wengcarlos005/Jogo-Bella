@@ -27,7 +27,7 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 ### Especificações técnicas
 | Tipo | Dimensão final no jogo | Grade | Observações |
 |---|---|---|---|
-| Spritesheet de personagem | 128×128 | 4×4 quadros de 32×32 | linhas: frente, esquerda, direita, costas · 4 quadros de passo · pés na mesma linha em todos |
+| Spritesheet de personagem | 192×192 | 4×4 quadros de 48×48 (personagem ~38px) | linhas: frente, esquerda, direita, costas · 4 quadros de passo · processada por `scripts/process-spritesheet.py` |
 | Retrato de diálogo | 96×96 | — | rosto + ombros, fundo liso claro |
 | Objeto | múltiplos de 16 (ex.: 32×48) | — | base apoiada no "chão" da imagem |
 | Ícone de item | 16×16 (gerar 256×256) | — | silhueta clara |
@@ -42,13 +42,17 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 ### LOTE 1 — Personagens base + Piabetá (PRIORIDADE MÁXIMA)
 | ID | Arquivo | Categoria | Dimensões | Frames | Estado |
 |---|---|---|---|---|---|
-| CHAR-001 | `characters/bella-walk.png` | Personagem | 128×128 | 16 (4×4) | solicitado |
-| CHAR-002 | `characters/weng-walk.png` | Personagem | 128×128 | 16 (4×4) | solicitado |
-| PORT-001 | `portraits/bella-neutral.png` | Retrato | 96×96 | 1 | solicitado |
+| CHAR-001 | `characters/bella-casual.png` | Bella — camiseta preta, óculos rosados | 192×192 | 16 (4×4) | **integrado** |
+| CHAR-011 | `characters/bella-floral.png` | Bella — vestido amarelo florido | 192×192 | 16 | **integrado** |
+| CHAR-012 | `characters/bella-linho.png` | Bella — conjunto de linho branco | 192×192 | 16 | **integrado** |
+| CHAR-013 | `characters/bella-festa.png` | Bella — vestido laranja de festa | 192×192 | 16 | **integrado** |
+| CHAR-014 | `characters/bella-inverno.png` | Bella — jaqueta preta | 192×192 | 16 | **integrado** |
+| CHAR-002 | `characters/weng-walk.png` | Personagem | 192×192 | 16 (4×4) | solicitado |
+| PORT-001 | `portraits/bella-neutral.png` | Retrato (gerado da folha casual) | 96×96 | 1 | **integrado** |
 | PORT-002 | `portraits/weng-neutral.png` | Retrato | 96×96 | 1 | solicitado |
-| NPC-001 | `npcs/mae-bella-walk.png` | NPC | 128×128 | 16 | solicitado |
-| NPC-002 | `npcs/pai-bella-walk.png` | NPC | 128×128 | 16 | solicitado |
-| NPC-003 | `npcs/vizinha-walk.png` | NPC (Dona Cida) | 128×128 | 16 | solicitado |
+| NPC-001 | `npcs/mae-bella-walk.png` | NPC | 192×192 | 16 | solicitado |
+| NPC-002 | `npcs/pai-bella-walk.png` | NPC | 192×192 | 16 | solicitado |
+| NPC-003 | `npcs/vizinha-walk.png` | NPC (Dona Cida) | 192×192 | 16 | solicitado |
 | PORT-003 | `portraits/mae-bella.png` | Retrato | 96×96 | 1 | solicitado |
 | PORT-004 | `portraits/pai-bella.png` | Retrato | 96×96 | 1 | solicitado |
 | PORT-005 | `portraits/vizinha.png` | Retrato | 96×96 | 1 | solicitado |
@@ -57,10 +61,16 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 | MAP-002 | `maps/piabeta-casa-bella-fg.png` | Camada frontal | 352×240 | — | planejado (opcional) |
 | MAP-004 | `maps/piabeta-rua-fg.png` | Camada frontal | 640×384 | — | planejado (opcional) |
 
+**Como integrar uma folha nova do ChatGPT:** salve o original em `art-source/` e rode
+`python3 scripts/process-spritesheet.py art-source/<arquivo> public/assets/<pasta>/<nome>.png`
+(remove o fundo, recorta a grade, padroniza a escala e alinha os pés).
+
+**Roupas da Bella por cidade** (`src/data/outfits.ts`): Piabetá/Caxias/Botafogo = casual · Petrópolis/Curitiba = jaqueta · Araruama/Cabo Frio = linho branco (réveillon) · Rio das Ostras/Niterói = vestido amarelo · Lapa/Seropédica = vestido laranja. Só a roupa casual tem os óculos rosados.
+
 **Prompts sugeridos (Lote 1):**
 
 - **CHAR-001 Bella:** "Spritesheet de pixel art 4×4 em fundo transparente da personagem Bella (use a imagem anexada como referência): cabelo escuro cacheado e volumoso, óculos grandes rosados, bochechas rosadas, colar com pequeno pingente, camiseta preta, calça larga clara, tênis robustos. Linha 1: andando de frente (4 quadros); linha 2: andando para a esquerda; linha 3: andando para a direita; linha 4: andando de costas. Todos os quadros com o mesmo tamanho, personagem centralizada, pés na mesma altura."
-- **CHAR-002 Weng:** mesmo texto, com: "cabelo preto curto, sorridente, camiseta bege/verde-clara, jaqueta escura aberta, calça cargo verde, tênis claros". **Mesma escala da Bella.**
+- **CHAR-002 Weng:** use a folha casual da Bella como referência de estilo e escala (anexe-a). Mesmo texto, com: "cabelo preto curto, sorridente, camiseta bege/verde-clara, jaqueta escura aberta, calça cargo verde, tênis claros". **Mesma escala da Bella.**
 - **MAP-001 Casa da Bella:** "Cenário de pixel art visto de cima, interior de uma casa brasileira simples e aconchegante, sem personagens. Esquerda superior: quarto da Bella (cama com colcha rosa, guarda-roupa de madeira, escrivaninha, penteadeira com espelho, planta). Direita superior: cozinha com piso quadriculado (geladeira, fogão, mesa com toalha). Parte de baixo: sala com sofá azul, tapete vermelho estampado, TV, estante com livros e porta de entrada no centro da parede de baixo. Paredes internas finas separando os cômodos, passagem do quarto para a sala à esquerda, passagem da cozinha para a sala no centro."
 - **MAP-003 Rua de Piabetá:** "Cenário de pixel art visto de cima, rua residencial brasileira de bairro tranquilo, fim de tarde ensolarado, sem personagens. Faixa de cima: três construções lado a lado — casa da Bella (telhado laranja, muro baixo de madeira, jardinzinho e caixa de correio vermelha), casa da vizinha (telhado azul, paredes verde-água) e uma hamburgueria com letreiro vermelho de hambúrguer e calçada larga; entre a casa azul e a hamburgueria, uma trilha de terra subindo para o norte. Meio: calçada, meio-fio, rua de asfalto com faixa amarela tracejada, um carro estacionado. Faixa de baixo: pracinha com grama, flores, árvores, dois bancos de madeira, postes de luz e caminhos de terra em cruz, cercada por cerca viva."
 

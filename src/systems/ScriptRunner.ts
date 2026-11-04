@@ -62,7 +62,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     emote(who, emote: Emote) {
       const a = actor(who);
       if (!a) return Promise.resolve();
-      const img = scene.add.image(a.x, a.y - 34, `emote-${emote}`).setDepth(160_000).setScale(0);
+      const img = scene.add.image(a.x, a.y - a.displayHeight + 4, `emote-${emote}`).setDepth(160_000).setScale(0);
       scene.tweens.add({ targets: img, scale: 1, duration: 160, ease: 'Back.Out' });
       return new Promise<void>((resolve) => {
         scene.time.delayedCall(850, () => {
@@ -110,6 +110,11 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       (a.body as Phaser.Physics.Arcade.Body).reset(p.x, p.y);
       if (facing) a.face(facing);
       if (a === scene.player) scene.player.trail.length = 0;
+    },
+
+    outfit(id) {
+      GameState.data.regionOutfits[scene.def.region] = id;
+      scene.dressPlayer();
     },
 
     follow(who, on) {

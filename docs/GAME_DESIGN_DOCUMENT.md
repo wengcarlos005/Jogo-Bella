@@ -31,6 +31,8 @@
 ### Bella (protagonista jogável)
 Cabelos escuros cacheados e volumosos, óculos grandes rosados, rosto delicado, bochechas rosadas, colar com pingente, camiseta preta, calça larga, tênis robustos.
 
+**Guarda-roupa por cidade** (integrado): casual (Piabetá, Caxias, Botafogo), jaqueta preta (Petrópolis, Curitiba), linho branco de réveillon (Araruama, Cabo Frio), vestido amarelo florido (Rio das Ostras, Niterói), vestido laranja de festa (Lapa, Seropédica). Em momentos específicos a jogadora escolhe (ex.: guarda-roupa do prólogo: casual ou vestido amarelo).
+
 ### Weng (coprotagonista)
 Cabelo preto, sorridente, camiseta bege/verde-clara, jaqueta escura, calça cargo verde, tênis claros. Na maior parte do jogo **segue a Bella** (sistema de seguidor com rastro) e participa de diálogos e cenas.
 

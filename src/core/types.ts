@@ -58,6 +58,8 @@ export interface SaveData {
   regionsUnlocked: RegionId[];
   regionsVisited: RegionId[];
   outfits: { bella: string; weng: string };
+  /** Roupa escolhida pela jogadora numa região (sobrepõe a roupa padrão da cidade). */
+  regionOutfits: Partial<Record<RegionId, string>>;
   outfitsUnlocked: string[];
   houseDecor: Record<string, string>;
 }

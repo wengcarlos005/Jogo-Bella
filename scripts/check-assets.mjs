@@ -5,7 +5,7 @@ import { join } from 'node:path';
 
 const src = readFileSync('src/config/assetManifest.ts', 'utf8');
 const entries = [];
-for (const m of src.matchAll(/char\('([^']+)',\s*'([^']+)',\s*'([^']+)'\)/g)) entries.push({ id: m[1], file: `assets/${m[3]}` });
+for (const m of src.matchAll(/char\('([^']+)',\s*'([^']+)',\s*'([^']+)'(?:,\s*\d+)?\)/g)) entries.push({ id: m[1], file: `assets/${m[3]}` });
 for (const m of src.matchAll(/\{\s*id:\s*'([^']+)',\s*key:\s*'[^']+',\s*file:\s*'([^']+)'/g)) entries.push({ id: m[1], file: m[2] });
 
 let ok = 0;

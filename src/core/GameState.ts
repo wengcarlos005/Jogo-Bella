@@ -18,6 +18,7 @@ export function createNewSave(): SaveData {
     regionsUnlocked: ['piabeta'],
     regionsVisited: [],
     outfits: { bella: 'casual', weng: 'casual' },
+    regionOutfits: {},
     outfitsUnlocked: ['casual'],
     houseDecor: {},
   };
