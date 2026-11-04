@@ -8,6 +8,12 @@ export const GAME_HEIGHT = 270;
  * pixels e exibida em escala 0,5 — mantém o detalhe original da arte.
  */
 export const RENDER_SCALE = 2;
+/**
+ * Escala extra dos personagens em relação ao cenário pintado.
+ * 1 = 1 pixel da arte por pixel do canvas. Os cenários do ChatGPT têm
+ * móveis grandes, então os personagens ficam um pouco maiores.
+ */
+export const CHAR_SCALE = 1.4;
 export const TILE = 16;
 
 export const PLAYER = {
@@ -15,7 +21,7 @@ export const PLAYER = {
   runSpeed: 120,
   /** Corpo de colisão (nos pés). Posição calculada pelo tamanho do quadro. */
   body: { width: 10, height: 6 },
-  interactRange: 18,
+  interactRange: 22,
 };
 
 export const CHAR_FRAME = { width: 32, height: 32 };

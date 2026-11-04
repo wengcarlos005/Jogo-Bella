@@ -685,3 +685,45 @@ html, body {
 @keyframes beat { 30% { transform: scale(1.3); } }
 .nerves-state { color: var(--red); }
 #ui.has-dialogue-art .dialogue .portrait[src*="data"] { object-fit: contain; }
+
+/* ================= Revisão de layout (HUD compacto, sem sobreposição) ================= */
+.quest-card {
+  max-width: 36%;
+  font-size: clamp(10px, calc(var(--u) * 5.2), 17px);
+  padding: calc(var(--u) * 2) calc(var(--u) * 4) calc(var(--u) * 2.5);
+  top: calc(var(--u) * 9);
+  left: calc(var(--u) * 5);
+}
+.quest-card .tag { font-size: 0.82em; top: calc(var(--u) * -6.5); }
+#ui.has-panel-art .quest-card .tag { top: calc(var(--u) * -9); }
+.quest-card .dot { width: calc(var(--u) * 2.6); height: calc(var(--u) * 2.6); }
+.quest-card .dots { gap: calc(var(--u) * 0.8); margin-top: calc(var(--u) * 1); }
+.nerves-row { display: flex; align-items: center; gap: calc(var(--u) * 2); margin-top: calc(var(--u) * 1); font-size: 0.85em; font-weight: 800; }
+.nerves-row .nerves-hearts span { font-size: 1.15em; margin: 0; }
+.nerves { display: none !important; }
+
+.hud-buttons { top: calc(var(--u) * 4); right: calc(var(--u) * 4); gap: calc(var(--u) * 1.5); }
+.icon-btn.art { width: calc(var(--u) * 16); min-width: 30px; }
+
+/* avisos no topo central, entre o cartão de missão e os ícones */
+.toasts { top: calc(var(--u) * 5); bottom: auto; max-width: 34%; }
+.toast { font-size: clamp(10px, calc(var(--u) * 5), 16px); padding: calc(var(--u) * 1.5) calc(var(--u) * 4); text-align: center; }
+.toast img { width: calc(var(--u) * 9); height: auto; }
+
+.prompt { font-size: clamp(10px, calc(var(--u) * 5), 15px); z-index: 2; }
+.region-banner { top: 38%; }
+
+/* toque: botões menores e "Correr" legível */
+.stick { width: clamp(96px, calc(var(--u) * 52), 150px); opacity: 0.8; }
+.touch-btn.a { width: clamp(52px, calc(var(--u) * 26), 76px); right: calc(var(--u) * 10); bottom: calc(var(--u) * 26); }
+.touch-btn.b {
+  width: auto;
+  aspect-ratio: auto;
+  border-radius: 999px;
+  padding: calc(var(--u) * 2) calc(var(--u) * 5);
+  font-size: clamp(11px, calc(var(--u) * 5), 15px);
+  right: calc(var(--u) * 40);
+  bottom: calc(var(--u) * 8);
+}
+/* durante o diálogo, controles de toque somem (o diálogo usa a tela toda embaixo) */
+#ui:has(.dialogue:not(.hidden)) .touch { display: none; }

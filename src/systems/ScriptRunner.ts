@@ -9,7 +9,7 @@ import { AudioSystem } from './AudioSystem';
 import { UI } from '@/ui/UIManager';
 import { NPC } from '@/entities/NPC';
 import Phaser from 'phaser';
-import { RENDER_SCALE } from '@/config/gameConfig';
+import { CHAR_SCALE, RENDER_SCALE } from '@/config/gameConfig';
 
 const DIRS: Direction[] = ['down', 'up', 'left', 'right'];
 
@@ -65,7 +65,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     emote(who, emote: Emote) {
       const a = actor(who);
       if (!a) return Promise.resolve();
-      const img = scene.add.image(a.x, a.y - a.displayHeight + 4, `emote-${emote}`).setDepth(160_000).setScale(0);
+      const img = scene.add.image(a.x, a.headY - 8, `emote-${emote}`).setDepth(160_000).setScale(0);
       scene.tweens.add({ targets: img, scale: 1, duration: 160, ease: 'Back.Out' });
       return new Promise<void>((resolve) => {
         scene.time.delayedCall(850, () => {
@@ -144,7 +144,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       const a = actor(who);
       if (!a) return;
       for (let i = 0; i < count; i++) {
-        const img = scene.add.image(a.x + Phaser.Math.Between(-10, 10), a.y - 30, 'fx-heart').setDepth(160_000);
+        const img = scene.add.image(a.x + Phaser.Math.Between(-10, 10), a.headY + 4, 'fx-heart').setDepth(160_000);
         scene.tweens.add({
           targets: img,
           x: img.x + Phaser.Math.Between(-24, 24),
@@ -167,7 +167,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     prop(id, key, tx, ty, frame = 0) {
       scene.tempProps.get(id)?.destroy();
       const img = scene.add.image(tx * 16, ty * 16, key, frame).setOrigin(0.5, 1);
-      if (img.height >= 64) img.setScale(1 / RENDER_SCALE);
+      if (img.height >= 64) img.setScale((1 / RENDER_SCALE) * CHAR_SCALE * 0.9);
       img.setDepth(img.y);
       scene.tempProps.set(id, img);
     },

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import type { Direction } from '@/core/types';
-import { PLAYER, RENDER_SCALE } from '@/config/gameConfig';
+import { CHAR_SCALE, PLAYER, RENDER_SCALE } from '@/config/gameConfig';
 
 const ROW: Record<Direction, number> = { down: 0, left: 1, right: 2, up: 3 };
 
@@ -26,6 +26,17 @@ export function ensureCharacterAnims(scene: Phaser.Scene, key: string): void {
 export class Character extends Phaser.Physics.Arcade.Sprite {
   facing: Direction = 'down';
   charKey: string;
+  headRatio = 0.86;
+
+  /** Y (mundo) do topo da cabeça desenhada. */
+  get headY(): number {
+    return this.y - this.displayHeight * this.headRatio;
+  }
+
+  /** Altura real do personagem desenhado (sem o espaço vazio do quadro). */
+  get bodyHeight(): number {
+    return this.displayHeight * this.headRatio;
+  }
 
   constructor(scene: Phaser.Scene, x: number, y: number, key: string) {
     super(scene, x, y, key, 0);
@@ -48,7 +59,9 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     const fh = this.frame.height;
     // Folhas HD (quadros ≥ 64px) são exibidas em meia escala: 1 pixel da arte
     // = 1 pixel do canvas (que tem o dobro da resolução lógica).
-    const s = fh >= 64 ? 1 / RENDER_SCALE : 1;
+    const s = (fh >= 64 ? 1 / RENDER_SCALE : 1) * CHAR_SCALE;
+    // Fração do quadro ocupada pelo personagem (o resto é espaço vazio acima da cabeça).
+    this.headRatio = fh >= 64 ? 0.76 : 0.86;
     this.setScale(s);
     const b = PLAYER.body;
     const body = this.body as Phaser.Physics.Arcade.Body;

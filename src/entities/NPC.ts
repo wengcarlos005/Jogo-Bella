@@ -77,9 +77,9 @@ export class NPC extends Character {
     if (this.behavior === 'follow' && this.followTarget) {
       const p = this.followTarget;
       const trail = p.trail;
-      const goal = trail.length > 6 ? trail[trail.length - 6] : null;
+      const goal = trail.length > 8 ? trail[trail.length - 8] : null;
       const d = Phaser.Math.Distance.Between(this.x, this.y, p.x, p.y);
-      if (goal && d > 18) {
+      if (goal && d > 24) {
         const dx = goal.x - this.x;
         const dy = goal.y - this.y;
         const len = Math.hypot(dx, dy) || 1;

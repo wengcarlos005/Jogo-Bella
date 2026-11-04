@@ -14,7 +14,6 @@ export class HUD {
   readonly el: HTMLDivElement;
   private card = h('div', { class: 'quest-card panel hidden' });
   private prompt = h('div', { class: 'prompt hidden' });
-  private nerves = h('div', { class: 'nerves panel hidden' });
   private banner = h('div', { class: 'region-banner' });
   private bannerTimer = 0;
   private lastObjective = '';
@@ -35,7 +34,6 @@ export class HUD {
         btn(ICON.map, 'Mapa', 'mapa', 'mapa'),
         btn(ICON.menu, 'Menu', 'missoes', 'lua'),
       ),
-      this.nerves,
       this.prompt,
       this.banner,
     );
@@ -59,20 +57,20 @@ export class HUD {
     if (on) this.refresh();
   }
 
-  private refreshNerves(): void {
+  /** Linha compacta do nervosismo (dentro do cartão de missão). */
+  private nervesRow(): HTMLElement | null {
     const v = Number(GameState.getFlag<number>('nervosismo') ?? 0);
-    this.nerves.classList.toggle('hidden', v <= 0);
-    if (v <= 0) return;
+    if (v <= 0) return null;
     const filled = Math.ceil(v / 20);
-    this.nerves.replaceChildren(
-      h('div', { class: 'nerves-label' }, 'Coração da Bella'),
-      h('div', { class: `nerves-hearts ${v >= 60 ? 'fast' : v >= 30 ? 'mid' : ''}` }, ...Array.from({ length: 5 }, (_, i) => h('span', { class: i < filled ? 'on' : '' }, '♥'))),
-      h('div', { class: 'nerves-state' }, v >= 80 ? 'Muito nervosa' : v >= 50 ? 'Nervosa' : v >= 20 ? 'Quase calma' : 'Tranquila'),
+    return h(
+      'div',
+      { class: 'nerves-row' },
+      h('span', { class: `nerves-hearts ${v >= 60 ? 'fast' : v >= 30 ? 'mid' : ''}` }, ...Array.from({ length: 5 }, (_, i) => h('span', { class: i < filled ? 'on' : '' }, '♥'))),
+      h('span', { class: 'nerves-state' }, v >= 80 ? 'Muito nervosa' : v >= 50 ? 'Nervosa' : v >= 20 ? 'Quase calma' : 'Tranquila'),
     );
   }
 
   refresh(): void {
-    this.refreshNerves();
     const id = GameState.data.trackedQuest;
     const obj = id ? QuestSystem.currentObjective(id) : null;
     if (!id || !obj) {
@@ -88,6 +86,7 @@ export class HUD {
       h('div', { class: 'title' }, q.title),
       h('div', { class: 'obj' }, obj.text),
       h('div', { class: 'dots' }, ...dots, ` ${done}/${total}`),
+      this.nervesRow() ?? "",
     );
     this.card.classList.remove('hidden');
     if (this.lastObjective && this.lastObjective !== obj.id) {
@@ -105,8 +104,10 @@ export class HUD {
       return;
     }
     this.prompt.innerHTML = touch ? label : `<b>E</b> ${label}`;
-    this.prompt.style.left = `calc(var(--u) * ${gx})`;
-    this.prompt.style.top = `calc(var(--u) * ${gy})`;
+    const x = Math.max(30, Math.min(450, gx));
+    const y = Math.max(52, Math.min(200, gy));
+    this.prompt.style.left = `calc(var(--u) * ${x})`;
+    this.prompt.style.top = `calc(var(--u) * ${y})`;
     this.prompt.classList.remove('hidden');
   }
 

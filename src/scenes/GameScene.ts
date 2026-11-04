@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { AUTOSAVE_INTERVAL_MS, CAMERA, GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE, TILE } from '@/config/gameConfig';
+import { AUTOSAVE_INTERVAL_MS, CAMERA, CHAR_SCALE, GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE, TILE } from '@/config/gameConfig';
 import { EventBus } from '@/core/EventBus';
 import { GameState } from '@/core/GameState';
 import type { Direction, RegionId, Vec2 } from '@/core/types';
@@ -216,14 +216,14 @@ export class GameScene extends Phaser.Scene {
       if (def.interact) {
         this.interactions.add({
           id: `npc:${def.id}`,
-          rect: () => new Phaser.Geom.Rectangle(npc.x - 9, npc.y - 22, 18, 24),
+          rect: () => new Phaser.Geom.Rectangle(npc.x - 10, npc.headY, 20, npc.bodyHeight),
           label: () => 'Falar',
           enabled: () => npc.visible,
           run: () => this.talkTo(npc),
-          anchor: () => ({ x: npc.x, y: npc.y - 30 }),
+          anchor: () => ({ x: npc.x, y: npc.headY - 2 }),
         });
       }
-      if (def.markerIf) this.addMarker(def.markerIf, () => ({ x: npc.x, y: npc.y - 32 }), () => npc.visible);
+      if (def.markerIf) this.addMarker(def.markerIf, () => ({ x: npc.x, y: npc.headY - 4 }), () => npc.visible);
     }
     // Weng seguindo a Bella
     if (GameState.is('weng-segue')) this.attachFollower(true);
@@ -234,22 +234,22 @@ export class GameScene extends Phaser.Scene {
   attachFollower(placeBehind = false): void {
     let entry = this.npcs.get('weng');
     if (entry && placeBehind) {
-      const back = { down: [0, -14], up: [0, 14], left: [14, 0], right: [-14, 0] }[this.player.facing];
+      const back = { down: [0, -18], up: [0, 18], left: [18, 0], right: [-18, 0] }[this.player.facing];
       entry.npc.setPosition(this.player.x + back[0], this.player.y + back[1]);
     }
     if (!entry) {
-      const back = { down: [0, -14], up: [0, 14], left: [14, 0], right: [-14, 0] }[this.player.facing];
+      const back = { down: [0, -18], up: [0, 18], left: [18, 0], right: [-18, 0] }[this.player.facing];
       const npc = new NPC(this, this.player.x + back[0], this.player.y + back[1], this.spriteFor('weng'), 'weng');
       npc.interactScript = 'weng';
       entry = { npc, def: { id: 'weng', sprite: 'weng', tx: 0, ty: 0, interact: 'weng' } };
       this.npcs.set('weng', entry);
       this.interactions.add({
         id: 'npc:weng',
-        rect: () => new Phaser.Geom.Rectangle(npc.x - 9, npc.y - 22, 18, 24),
+        rect: () => new Phaser.Geom.Rectangle(npc.x - 10, npc.headY, 20, npc.bodyHeight),
         label: () => 'Falar',
         enabled: () => npc.visible && !!this.def.scripts?.weng,
         run: () => this.talkTo(npc),
-        anchor: () => ({ x: npc.x, y: npc.y - 30 }),
+        anchor: () => ({ x: npc.x, y: npc.headY - 2 }),
       });
     }
     entry.npc.follow(this.player);
@@ -521,7 +521,7 @@ export class GameScene extends Phaser.Scene {
     }
     const key = who === 'weng' ? 'umbrella-weng' : 'umbrella-bella';
     const img = this.add.image(0, 0, key).setOrigin(0.5, 1);
-    if (img.width >= 64) img.setScale(1 / RENDER_SCALE);
+    img.setScale((img.width >= 64 ? 1 / RENDER_SCALE : 1) * CHAR_SCALE);
     this.umbrellas.set(who, { img, mode });
   }
 
@@ -533,9 +533,9 @@ export class GameScene extends Phaser.Scene {
         continue;
       }
       u.img.setVisible(true);
-      const top = a.y - a.displayHeight;
       // 'up': aberto acima da cabeça; 'hide': abaixado, cobrindo o rosto
-      const targetY = u.mode === 'up' ? top + 10 : top + a.displayHeight * 0.55;
+      const targetY = u.mode === 'up' ? a.headY + a.bodyHeight * 0.32 : a.headY + a.bodyHeight * 0.62;
+      if (!u.img.visible || u.img.y === 0) u.img.y = targetY;
       u.img.y += (targetY - u.img.y) * 0.25;
       u.img.x = a.x + (a.facing === 'left' ? -2 : a.facing === 'right' ? 2 : 0);
       u.img.setDepth(a.depth + 1);
