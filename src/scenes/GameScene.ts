@@ -538,17 +538,24 @@ export class GameScene extends Phaser.Scene {
         u.shaft.setVisible(false);
         continue;
       }
-      // Cobertura (origem na borda de baixo) na frente do personagem;
-      // cabo atrás do personagem, descendo da cobertura até a mão.
-      // 'up': cobertura logo acima do cabelo. 'hide': abaixada, escondendo o rosto.
-      const canopyBottom = u.mode === 'up' ? a.headY + 8 : a.headY + a.bodyHeight * 0.45;
-      if (!u.img.visible || u.img.y === 0) u.img.y = canopyBottom;
+      // 'up': cobertura logo acima do cabelo, cabo atrás do personagem até a mão.
+      // 'hide': guarda-chuva inclinado para a frente, como um escudo na frente do
+      // rosto (na direção em que ela olha), cabo escondido atrás da cobertura.
+      const dir = a.facing === 'right' ? 1 : a.facing === 'left' ? -1 : 0;
+      const hide = u.mode === 'hide';
+      const targetY = hide ? a.headY + a.bodyHeight * (dir ? 0.3 : 0.42) : a.headY + 8;
+      const targetX = a.x + (hide ? dir * 2 : dir * 3 || 3);
+      const targetRot = hide ? dir * 1.3 : 0;
+      if (!u.img.visible || u.img.y === 0) {
+        u.img.y = targetY;
+        u.img.rotation = targetRot;
+      }
       u.img.setVisible(true);
-      u.img.y += (canopyBottom - u.img.y) * 0.25;
-      const side = { down: 3, up: -3, left: -3, right: 3 }[a.facing];
-      u.img.x = a.x + side;
+      u.img.y += (targetY - u.img.y) * 0.25;
+      u.img.rotation += (targetRot - u.img.rotation) * 0.25;
+      u.img.x = targetX;
       const hand = a.y - a.bodyHeight * 0.38;
-      u.shaft.setVisible(true).setPosition(u.img.x, u.img.y - 1);
+      u.shaft.setVisible(!hide).setPosition(u.img.x, u.img.y - 1);
       u.shaft.setDisplaySize(1, Math.max(2, hand - u.img.y + 1));
       u.shaft.setDepth(a.depth - 1);
       u.img.setDepth(a.depth + 1);
