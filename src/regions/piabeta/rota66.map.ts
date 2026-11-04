@@ -82,10 +82,13 @@ const scripts: Record<string, Script> = {
     // Cena da mesa: câmera na mesinha; a ilustração só aparece na hora do presente.
     ctx.follow('weng', false);
     await ctx.fadeOut(300);
-    ctx.visible('player', false);
-    ctx.visible('weng', false);
+    // sentados frente a frente: mesa e cadeiras (recorte de profundidade) escondem as pernas
+    ctx.place('player', 1.7, 11.81, 'right');
+    ctx.place('weng', 5.13, 11.81, 'left');
+    ctx.prop('lanche-bella', 'burger-full', 3.44, 11.35, 0, 0.08, 200_000);
+    ctx.prop('lanche-weng', 'burger-full', 4.48, 11.35, 0, 0.08, 200_000);
     ctx.letterbox(true);
-    await ctx.focus(4.1, 11.0, 1.6, 10);
+    await ctx.focus(3.56, 10.6, 1.6, 10);
     await ctx.fadeIn(500);
     await ctx.narrate('Os lanches chegam. O cheiro é incrível. O nervosismo também.');
     await ctx.say('weng', 'E aí? Aprovado?');
@@ -130,6 +133,8 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Quero. Acho que uma caminhada vai me fazer bem.');
     await ctx.give('burger-rota66', 1, false, 'Você guardou de lembrança');
     await ctx.backdrop(null);
+    ctx.removeProp('lanche-bella');
+    ctx.removeProp('lanche-weng');
     await ctx.unfocus(10);
     ctx.letterbox(false);
     ctx.place('player', 3.7, 13.4, 'down');
@@ -218,7 +223,8 @@ export const rota66Map: MapDef = {
     { x0: 876, y0: 458, x1: 1164, y1: 668, base: 665, cut: 'furniture' }, // cabine do meio (dir.)
     { x0: 84, y0: 670, x1: 412, y1: 906, base: 905, cut: 'furniture' }, // cabine de baixo (esq.)
     { x0: 1132, y0: 670, x1: 1462, y1: 906, base: 905, cut: 'furniture' }, // cabine de baixo (dir.)
-    { x0: 86, y0: 478, x1: 302, y1: 655, base: 650, cut: 'furniture' }, // mesinha da janela
+    { x0: 137, y0: 503, x1: 252, y1: 568, base: 650, cut: 'furniture' }, // mesinha da janela: tampo
+    { x0: 118, y0: 568, x1: 262, y1: 650, base: 650, cut: 'furniture' }, // assentos e pés (os encostos ficam atrás)
     { x0: 342, y0: 492, x1: 438, y1: 600, base: 662, cut: 'foliage' }, // plantas
     { x0: 1148, y0: 492, x1: 1244, y1: 600, base: 664, cut: 'foliage' },
     { x0: 0, y0: 636, x1: 106, y1: 745, base: 760, cut: 'foliage' },

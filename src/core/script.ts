@@ -60,7 +60,7 @@ export interface ScriptContext {
   chapterCard(kicker: string, title: string, sub: string, button?: string): Promise<void>;
   unlockRegion(id: import('./types').RegionId): void;
   /** Cria um objeto temporário de cena (ex.: o carro do Uber). Base-centro em (tx*16, ty*16). */
-  prop(id: string, key: string, tx: number, ty: number, frame?: number): void;
+  prop(id: string, key: string, tx: number, ty: number, frame?: number, scale?: number, depth?: number): void;
   moveProp(id: string, tx: number, ty: number, ms: number): Promise<void>;
   removeProp(id: string): void;
   /** Ilustração de fundo em tela cheia; os diálogos continuam por cima. null remove. */

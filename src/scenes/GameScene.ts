@@ -109,6 +109,7 @@ export class GameScene extends Phaser.Scene {
     this.setupCamera();
     this.weather = new WeatherSystem(this);
     this.addAmbient(def.ambient ?? (def.indoor ? 'dust' : undefined));
+    this.addRainWindows();
 
     GameState.data.mapId = def.id;
     this.visitRegion(def.region);
@@ -230,11 +231,12 @@ export class GameScene extends Phaser.Scene {
       if (def.interact) {
         this.interactions.add({
           id: `npc:${def.id}`,
-          rect: () => new Phaser.Geom.Rectangle(npc.x - 10, npc.headY, 20, npc.bodyHeight),
+          rect: () => new Phaser.Geom.Rectangle(npc.x - 16, npc.headY, 32, npc.bodyHeight + 6),
           label: () => 'Falar',
           enabled: () => npc.visible,
           run: () => this.talkTo(npc),
           anchor: () => ({ x: npc.x, y: npc.headY - 2 }),
+          priority: def.id === 'weng' ? -1 : 0,
         });
       }
       if (def.markerIf) this.addMarker(def.markerIf, () => ({ x: npc.x, y: npc.headY - 4 }), () => npc.visible);
@@ -260,14 +262,47 @@ export class GameScene extends Phaser.Scene {
       this.npcs.set('weng', entry);
       this.interactions.add({
         id: 'npc:weng',
-        rect: () => new Phaser.Geom.Rectangle(npc.x - 10, npc.headY, 20, npc.bodyHeight),
+        rect: () => new Phaser.Geom.Rectangle(npc.x - 16, npc.headY, 32, npc.bodyHeight + 6),
         label: () => 'Falar',
         enabled: () => npc.visible && !!this.def.scripts?.weng,
+        priority: -1,
         run: () => this.talkTo(npc),
         anchor: () => ({ x: npc.x, y: npc.headY - 2 }),
       });
     }
     entry.npc.follow(this.player);
+  }
+
+  private rainWindowObjs: Phaser.GameObjects.GameObject[] = [];
+
+  /** Vidros das janelas: céu cinza + gotas caindo, enquanto estiver chovendo lá fora. */
+  private addRainWindows(): void {
+    this.rainWindowObjs = [];
+    const rw = this.def.rainWindows;
+    if (!rw) return;
+    for (const r of rw.rects) {
+      const rect = tileRect(r);
+      const glass = this.add.rectangle(rect.x, rect.y, rect.width, rect.height, 0x5a6a86, 0.72).setOrigin(0).setDepth(-7);
+      const shape = this.make.graphics({}, false).fillRect(rect.x, rect.y, rect.width, rect.height);
+      const drops = this.add.particles(0, 0, 'fx-rain', {
+        x: { min: rect.x, max: rect.right },
+        y: rect.y - 4,
+        speedY: { min: 90, max: 130 },
+        speedX: -12,
+        lifespan: (rect.height / 100) * 1000 + 200,
+        frequency: 70,
+        scale: 0.6,
+        alpha: { min: 0.5, max: 0.9 },
+      });
+      drops.setDepth(-6).setMask(shape.createGeometryMask());
+      this.rainWindowObjs.push(glass, drops);
+    }
+    this.refreshRainWindows();
+  }
+
+  private refreshRainWindows(): void {
+    const on = this.def.rainWindows?.when() ?? false;
+    for (const o of this.rainWindowObjs) (o as unknown as Phaser.GameObjects.Components.Visible).setVisible(on);
   }
 
   private addAmbient(kind?: 'dust' | 'fireflies' | 'petals'): void {
@@ -293,6 +328,46 @@ export class GameScene extends Phaser.Scene {
     const key = kind === 'petals' ? 'fx-heart' : 'fx-spark';
     const em = this.add.particles(0, 0, key, { ...cfg[kind], emitZone: { type: 'random', source: zone } as never });
     em.setDepth(kind === 'dust' ? 90_000 : 150_000);
+  }
+
+  /** Hambúrguer completo montado a partir das camadas do minigame. */
+  ensureBurgerTexture(): void {
+    if (this.textures.exists('burger-full')) return;
+    const layers = ['pao-baixo', 'carne', 'queijo', 'alface', 'pao-cima'].map((n) => this.textures.get(`burger-${n}`).getSourceImage() as HTMLImageElement);
+    const w = 128;
+    const step = 22;
+    const h = layers[layers.length - 1].height + step * (layers.length - 1) + 10;
+    const tex = this.textures.createCanvas('burger-full', w, h)!;
+    const ctx = tex.getContext();
+    layers.forEach((img, i) => ctx.drawImage(img, 0, h - img.height - i * step));
+    tex.refresh();
+  }
+
+  /** Ao bater numa quina andando reto, desliza para o lado livre mais próximo. */
+  private cornerAssist(): void {
+    if (this.busy || !InputSystem.gameplayEnabled || this.player.scripted) return;
+    const v = InputSystem.vector();
+    const body = this.player.body as Phaser.Physics.Arcade.Body;
+    const vertical = Math.abs(v.y) > 0.5 && Math.abs(v.x) < 0.3;
+    const horizontal = Math.abs(v.x) > 0.5 && Math.abs(v.y) < 0.3;
+    if (!vertical && !horizontal) return;
+    const blocked = vertical ? (v.y > 0 ? body.blocked.down : body.blocked.up) : v.x > 0 ? body.blocked.right : body.blocked.left;
+    if (!blocked) return;
+    const free = (dx: number, dy: number) =>
+      this.physics.overlapRect(body.x + dx, body.y + dy, body.width, body.height, false, true).length === 0 &&
+      !this.built.collision.getTilesWithinWorldXY(body.x + dx, body.y + dy, body.width, body.height, { isColliding: true }).length;
+    const step = vertical ? Math.sign(v.y) * 3 : Math.sign(v.x) * 3;
+    for (let off = 1; off <= 14; off++) {
+      for (const s of [-1, 1]) {
+        const ok = vertical ? free(s * off, step) : free(step, s * off);
+        if (ok) {
+          const sp = 60;
+          if (vertical) body.setVelocity(s * sp, body.velocity.y);
+          else body.setVelocity(body.velocity.x, s * sp);
+          return;
+        }
+      }
+    }
   }
 
   /** Explosão de brilhos/corações (feedback de coleta, objetivo cumprido). */
@@ -389,6 +464,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Reavalia visibleIf de props e NPCs (chamado quando flags mudam). */
   refreshVisibility(): void {
+    this.refreshRainWindows();
     for (const bp of this.built.props) {
       const vis = bp.def.visibleIf ? bp.def.visibleIf() : true;
       bp.sprite.setVisible(vis);
@@ -507,16 +583,27 @@ export class GameScene extends Phaser.Scene {
 
   update(time: number, delta: number): void {
     this.player.update();
+    this.cornerAssist();
     for (const { npc } of this.npcs.values()) npc.update(time, delta);
     this.weather.update(this.cameras.main);
-    // Quem passa atrás de uma copa/planta continua visível (a planta fica translúcida).
+    // Um recorte só cobre quem está DE FATO atrás do objeto (pés entre o topo e a base).
+    // Quem está mais ao norte (acima do objeto) passa por cima, sem corte.
     for (const o of this.built.overlays) {
-      if (!o.fade) continue;
-      const behind = [this.player, this.npcs.get('weng')?.npc].some(
-        (a) => a && a.visible && a.y < o.base && Phaser.Geom.Rectangle.Overlaps(o.rect, new Phaser.Geom.Rectangle(a.x - 8, a.headY, 16, a.y - a.headY)),
-      );
-      const target = behind ? 0.55 : 1;
-      o.img.alpha += (target - o.img.alpha) * 0.2;
+      let depth = o.base;
+      for (const a of [this.player, this.npcs.get('weng')?.npc]) {
+        if (!a || !a.visible) continue;
+        const overlapX = a.x + 9 > o.rect.x && a.x - 9 < o.rect.right;
+        if (overlapX && a.y < o.rect.y + 2) depth = Math.min(depth, a.y - 1);
+      }
+      o.img.setDepth(depth);
+      if (o.fade) {
+        // Stardew: copa fica transparente quando alguém está atrás dela
+        const behind = [this.player, this.npcs.get('weng')?.npc].some(
+          (a) => a && a.visible && a.y < o.base && a.y > o.rect.y && a.x + 8 > o.rect.x && a.x - 8 < o.rect.right,
+        );
+        const target = behind ? 0.42 : 1;
+        o.img.alpha += (target - o.img.alpha) * 0.2;
+      }
     }
     this.updateUmbrellas();
 
@@ -531,7 +618,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     for (const m of this.markers) {
-      const on = m.cond();
+      const on = !this.busy && m.cond();
       m.sprite.setVisible(on);
       if (on) {
         const a = m.anchor();

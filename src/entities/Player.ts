@@ -31,11 +31,16 @@ export class Player extends Character {
     }
   }
 
+  isMoving(): boolean {
+    const v = (this.body as Phaser.Physics.Arcade.Body).velocity;
+    return Math.abs(v.x) + Math.abs(v.y) > 5;
+  }
+
   /** Ponto à frente do jogador, usado para detectar interações. */
   probe(): Phaser.Math.Vector2 {
     const f = this.feet;
-    const d = PLAYER.interactRange * 0.6;
-    const off = { down: [0, d], up: [0, -d - 4], left: [-d, -2], right: [d, -2] }[this.facing];
+    const d = PLAYER.interactRange * 0.85;
+    const off = { down: [0, d], up: [0, -d - 6], left: [-d, -8], right: [d, -8] }[this.facing];
     return new Phaser.Math.Vector2(f.x + off[0], f.y + off[1]);
   }
 }

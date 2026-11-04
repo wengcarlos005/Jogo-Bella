@@ -43,11 +43,11 @@ const scripts: Record<string, Script> = {
     await ctx.fadeOut(300);
     ctx.follow('weng', false);
     // dentro do coreto, no piso, entre as colunas da frente
-    ctx.place('player', 12.6, 5.6, 'right');
-    ctx.place('weng', 14.0, 5.6, 'left');
+    ctx.place('player', 12.75, 5.95, 'right');
+    ctx.place('weng', 14.35, 5.95, 'left');
     await ctx.fadeIn(500);
     ctx.letterbox(true);
-    await ctx.focus(13.25, 4.6, 1.5, 1200);
+    await ctx.focus(13.5, 4.9, 1.5, 1200);
 
     await ctx.say('bella', 'Que chuva é essa?! Do nada!');
     await ctx.say('weng', 'Pelo menos a gente achou o coreto a tempo. Mais ou menos a tempo.');
@@ -67,10 +67,10 @@ const scripts: Record<string, Script> = {
       await ctx.choose('bella', '(...)', ['"Pode."', 'Responder com um sorriso']);
     }
 
-    await Promise.all([ctx.move('player', 12.68, 5.6, 12), ctx.move('weng', 13.82, 5.6, 12)]);
+    await Promise.all([ctx.move('player', 13.2, 5.95, 12), ctx.move('weng', 13.85, 5.95, 12)]);
     ctx.face('player', 'right');
     ctx.face('weng', 'left');
-    await ctx.focus(13.25, 4.4, 2.1, 2200);
+    await ctx.focus(13.5, 4.7, 2.1, 2200);
     ctx.hearts('bella', 14);
     ctx.hearts('weng', 14);
     await ctx.wait(1200);
@@ -150,7 +150,7 @@ export const parqueMap: MapDef = {
     R(0, 830, 650, 925),
     R(830, 830, 1536, 925),
     // coreto: telhado/fundo e laterais (entra pela escadinha)
-    R(505, 150, 840, 280),
+    R(505, 150, 840, 288),
     R(505, 180, 555, 400),
     R(790, 180, 840, 400),
     R(495, 330, 588, 410),
@@ -183,36 +183,26 @@ export const parqueMap: MapDef = {
     R(1125, 672, 1262, 762),
     R(1155, 752, 1310, 832),
     R(90, 745, 262, 830),
-    // troncos
-    R(545, 640, 605, 725),
+    // árvores: a área da copa é sólida (ninguém fica "atrás" da árvore)
+    R(545, 640, 605, 725), // troncos
     R(950, 650, 1010, 765),
     R(30, 690, 100, 815),
+    // atrás dos postes
+    R(395, 585, 440, 640),
+    R(1040, 790, 1082, 862),
+    R(1458, 625, 1500, 682),
   ],
 
   overlays: [
-    // portão e arco de flores
-    { x0: 520, y0: 740, x1: 610, y1: 950, base: 945 },
-    { x0: 868, y0: 740, x1: 958, y1: 950, base: 945 },
-    { x0: 588, y0: 668, x1: 655, y1: 790, base: 930, cut: 'foliage' },
-    { x0: 840, y0: 668, x1: 925, y1: 790, base: 930, cut: 'foliage' },
-    { x0: 600, y0: 640, x1: 900, y1: 790, base: 930, cut: 'foliage' },
-    { x0: 0, y0: 830, x1: 520, y1: 935, base: 930, cut: 'foliage' },
-    { x0: 958, y0: 830, x1: 1536, y1: 935, base: 930, cut: 'foliage' },
-    // copas das árvores
-    { x0: 425, y0: 520, x1: 730, y1: 705, base: 725, cut: 'foliage' },
-    { x0: 830, y0: 515, x1: 1140, y1: 725, base: 765, cut: 'foliage' },
-    { x0: 0, y0: 535, x1: 190, y1: 725, base: 815, cut: 'foliage' },
-    // coreto: telhado e colunas da frente
-    { x0: 505, y0: 75, x1: 845, y1: 205, base: 330 }, // telhado na frente das cabeças
-    { x0: 497, y0: 250, x1: 625, y1: 352, base: 345 }, // parapeito da frente (esq.)
-    { x0: 722, y0: 250, x1: 850, y1: 352, base: 345 }, // parapeito da frente (dir.)
-    // postes
-    { x0: 392, y0: 520, x1: 444, y1: 585, base: 640, cut: 'lamp' },
-    { x0: 409, y0: 585, x1: 427, y1: 640, base: 640, cut: 'lamp' },
-    { x0: 1040, y0: 718, x1: 1082, y1: 775, base: 862, cut: 'lamp' },
-    { x0: 1054, y0: 775, x1: 1068, y1: 862, base: 862, cut: 'lamp' },
-    { x0: 1455, y0: 562, x1: 1505, y1: 625, base: 682, cut: 'lamp' },
-    { x0: 1472, y0: 625, x1: 1488, y1: 682, base: 682, cut: 'lamp' },
+    // copas (Stardew: ficam na frente e transparentes quando a Bella passa atrás)
+    { x0: 425, y0: 520, x1: 730, y1: 705, base: 725, cut: 'foliage', fade: true },
+    { x0: 830, y0: 515, x1: 1140, y1: 725, base: 765, cut: 'foliage', fade: true },
+    { x0: 0, y0: 535, x1: 190, y1: 725, base: 815, cut: 'foliage', fade: true },
+    // topo do arco de flores (só sobre a passagem)
+    { x0: 655, y0: 640, x1: 840, y1: 705, base: 930, cut: 'foliage' },
+    // coreto: só os parapeitos laterais da frente (o casal fica entre as colunas)
+    { x0: 497, y0: 262, x1: 612, y1: 352, base: 345 },
+    { x0: 735, y0: 262, x1: 850, y1: 352, base: 345 },
   ],
 
   hotspots: [

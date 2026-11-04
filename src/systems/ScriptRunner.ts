@@ -153,7 +153,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       cam.stopFollow();
       cam.pan(p.x, p.y - 12, ms, 'Sine.easeInOut');
       cam.zoomTo(RENDER_SCALE * zoom, ms, 'Sine.easeInOut');
-      return new Promise((r) => scene.time.delayedCall(ms, r));
+      // garante o enquadramento final (respeitando as bordas do mapa)
+      return new Promise((r) => scene.time.delayedCall(ms + 20, () => { cam.centerOn(p.x, p.y - 12); r(undefined); }));
     },
 
     unfocus(ms = 700) {
@@ -194,9 +195,16 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       if (!GameState.data.regionsUnlocked.includes(id)) GameState.data.regionsUnlocked.push(id);
     },
 
-    prop(id, key, tx, ty, frame = 0) {
+    prop(id, key, tx, ty, frame = 0, scale, depth) {
       scene.tempProps.get(id)?.destroy();
+      if (key === 'burger-full') scene.ensureBurgerTexture();
       const img = scene.add.image(tx * 16, ty * 16, key, frame).setOrigin(0.5, 1);
+      if (scale !== undefined) {
+        img.setScale(scale);
+        img.setDepth(depth ?? img.y);
+        scene.tempProps.set(id, img);
+        return;
+      }
       // carro HD (quadro de 192px): mesma escala dos carros pintados no cenário (~84px lógicos)
       if (img.height >= 64) img.setScale(0.47);
       img.setDepth(img.y);

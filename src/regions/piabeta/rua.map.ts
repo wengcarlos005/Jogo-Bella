@@ -270,9 +270,11 @@ export const ruaMap: MapDef = {
     R(850, 625, 1619, 705),
     R(0, 625, 70, 971),
     R(1548, 625, 1619, 971),
-    // Bancos, lixeira, troncos das árvores
-    R(482, 735, 628, 775),
-    R(992, 735, 1135, 775),
+    // Bancos (inclusive atrás deles), lixeira, árvores (copa sólida)
+    R(482, 690, 628, 775),
+    R(992, 690, 1135, 775),
+    R(268, 800, 335, 892), // tronco esquerdo
+    R(1310, 800, 1385, 892), // tronco direito
     R(925, 728, 972, 762),
     R(268, 838, 322, 892),
     R(1318, 838, 1382, 892),
@@ -283,16 +285,8 @@ export const ruaMap: MapDef = {
   // Profundidade: o que fica NA FRENTE de quem passa atrás
   overlays: [
     { x0: 252, y0: 400, x1: 505, y1: 542, base: 532, cut: 'furniture' }, // carro
-    { x0: 118, y0: 372, x1: 212, y1: 466, base: 638, cut: 'lamp' }, // poste esquerdo (luminária)
-    { x0: 128, y0: 466, x1: 154, y1: 640, base: 638, cut: 'lamp' }, // poste esquerdo (haste)
-    { x0: 1418, y0: 372, x1: 1512, y1: 466, base: 638, cut: 'lamp' }, // poste direito (luminária)
-    { x0: 1478, y0: 466, x1: 1504, y1: 640, base: 638, cut: 'lamp' }, // poste direito (haste)
-    { x0: 140, y0: 535, x1: 470, y1: 780, base: 880, cut: 'foliage' }, // copa esquerda
-    { x0: 1185, y0: 540, x1: 1465, y1: 785, base: 885, cut: 'foliage' }, // copa direita
-    { x0: 478, y0: 678, x1: 634, y1: 740, base: 775 }, // banco
-    { x0: 986, y0: 678, x1: 1144, y1: 740, base: 775 }, // banco
-    { x0: 0, y0: 640, x1: 770, y1: 712, base: 705, cut: 'foliage' }, // cerca viva (esq.)
-    { x0: 850, y0: 640, x1: 1619, y1: 712, base: 705, cut: 'foliage' }, // cerca viva (dir.)
+    { x0: 140, y0: 535, x1: 470, y1: 800, base: 880, cut: 'foliage', fade: true }, // copa esquerda
+    { x0: 1185, y0: 540, x1: 1465, y1: 800, base: 885, cut: 'foliage', fade: true }, // copa direita
   ],
 
   hotspots: [

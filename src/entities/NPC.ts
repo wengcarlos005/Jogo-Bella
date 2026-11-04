@@ -89,16 +89,29 @@ export class NPC extends Character {
       if (!this.followMoving && d > 34) this.followMoving = true;
       if (this.followMoving && d < 24) this.followMoving = false;
       const toGoal = goal ? Math.hypot(goal.x - this.x, goal.y - this.y) : 0;
-      if (d < 20) {
-        // a Bella veio na direção dele: ele dá passagem (nunca ficam um dentro do outro)
-        const ax = this.x - p.x || 0.01;
+      if (d < 15 && !p.isMoving()) {
+        // parados: o Weng dá um passinho pra trás (nunca ficam um dentro do outro)
+        const ax = this.x - p.x || 1;
         const ay = this.y - p.y;
         const len = Math.hypot(ax, ay) || 1;
-        body.setVelocity((ax / len) * 90, (ay / len) * 90);
-        this.followMoving = false;
-        // durante a fuga ele continua olhando pra ela
+        body.setVelocity((ax / len) * 40, (ay / len) * 40);
         this.animateFromVelocity();
-        if (Math.abs(ax) > Math.abs(ay)) this.facing = ax > 0 ? 'left' : 'right';
+        this.face(Math.abs(ax) > Math.abs(ay) ? (ax > 0 ? 'left' : 'right') : ay > 0 ? 'up' : 'down');
+        return;
+      }
+      if (d < 16 && p.isMoving()) {
+        // a Bella vem na direção dele: ele dá um passo pro lado, andando (sem ser "empurrado")
+        const pv = (p.body as Phaser.Physics.Arcade.Body).velocity;
+        const len = Math.hypot(pv.x, pv.y) || 1;
+        let sx = -pv.y / len;
+        let sy = pv.x / len;
+        if ((this.x - p.x) * sx + (this.y - p.y) * sy < 0) {
+          sx = -sx;
+          sy = -sy;
+        }
+        body.setVelocity(sx * 55, sy * 55);
+        this.followMoving = false;
+        this.animateFromVelocity();
         return;
       }
       if (goal && this.followMoving && toGoal > 3) {

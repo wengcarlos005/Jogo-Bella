@@ -123,6 +123,8 @@ export interface MapDef {
   exits?: ExitDef[];
   triggers?: TriggerDef[];
   scripts?: Record<string, Script>;
+  /** Janelas (vidros) onde aparece chuva lá fora enquanto `when()` for verdadeiro. */
+  rainWindows?: { rects: TileRect[]; when: () => boolean };
   /** Partículas de ambiente: poeira de luz, vaga-lumes, pétalas. */
   ambient?: 'dust' | 'fireflies' | 'petals';
   /** Se verdadeiro, Bella e Weng começam invisíveis (ex.: ainda dentro do carro). */

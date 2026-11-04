@@ -121,26 +121,18 @@ export const fragosoMap: MapDef = {
     R(0, 0, 1500, 322), // casas e muros de cima
     R(1500, 0, 1536, 1024), // árvores da direita
     R(0, 468, 1192, 668), // terreno do meio (árvores, bananeiras, muro do gato)
-    R(0, 800, 1300, 1024), // casas de baixo
+    R(0, 778, 1300, 1024), // casas de baixo (telhados)
     R(1300, 760, 1500, 1024), // flores e muro de baixo
-    // postes
+    // postes (e a área logo atrás deles)
+    R(1176, 470, 1230, 560),
     R(108, 332, 140, 360),
     R(724, 344, 752, 370),
     R(1166, 362, 1196, 390),
     R(210, 722, 242, 750),
   ],
-  // Profundidade: copas, bananeiras e postes ficam NA FRENTE de quem passa atrás
   overlays: [
-    { x0: 230, y0: 360, x1: 540, y1: 580, base: 655, cut: 'foliage' },
-    { x0: 0, y0: 330, x1: 160, y1: 585, base: 650, cut: 'foliage' },
-    { x0: 580, y0: 430, x1: 800, y1: 640, base: 640, cut: 'foliage' },
-    { x0: 915, y0: 415, x1: 1095, y1: 600, base: 600, cut: 'foliage' },
-    { x0: 1176, y0: 420, x1: 1296, y1: 492, base: 668, cut: 'lamp' },
-    { x0: 1194, y0: 492, x1: 1220, y1: 670, base: 668, cut: 'lamp' },
-    { x0: 196, y0: 545, x1: 318, y1: 640, base: 745, cut: 'lamp' },
-    { x0: 210, y0: 640, x1: 236, y1: 745, base: 745, cut: 'lamp' },
-    { x0: 1168, y0: 250, x1: 1192, y1: 388, base: 388, cut: 'lamp' },
-    { x0: 728, y0: 250, x1: 752, y1: 370, base: 370, cut: 'lamp' },
+    { x0: 240, y0: 375, x1: 540, y1: 600, base: 655, cut: 'foliage', fade: true }, // árvore grande
+    { x0: 585, y0: 425, x1: 800, y1: 620, base: 640, cut: 'foliage', fade: true }, // bananeira
   ],
 
   hotspots: [

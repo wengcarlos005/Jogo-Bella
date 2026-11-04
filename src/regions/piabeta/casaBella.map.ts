@@ -50,10 +50,10 @@ export const casaBellaMap: MapDef = {
     R(270, 484, 910, 690),
     R(1030, 484, 1536, 690),
     // Parede de baixo (porta em x 690–800)
-    R(0, 925, 690, 1024),
-    R(800, 925, 1536, 1024),
+    R(0, 885, 690, 1024),
+    R(800, 885, 1536, 1024),
     // Quarto
-    R(62, 230, 232, 466), // cama
+    R(40, 230, 258, 466), // cama (com folga dos lados para o cabelo não passar por cima)
     R(272, 230, 448, 338), // escrivaninha + cadeira
     R(458, 230, 538, 338), // penteadeira + banquinho
     R(538, 230, 640, 322), // espelho + planta
@@ -75,6 +75,12 @@ export const casaBellaMap: MapDef = {
     { key: 'prop-umbrella-stand', tx: 13.2, ty: 18.1, scale: 0.24, block: [2, 36, 19, 12], visibleIf: () => !objDone('guarda-chuva') },
     { key: 'prop-umbrella-stand-empty', tx: 13.2, ty: 18.1, scale: 0.24, block: false, visibleIf: () => objDone('guarda-chuva') },
   ],
+
+  // Lá fora está chovendo (do começo do encontro até o Uber)
+  rainWindows: {
+    rects: [R(305, 68, 452, 132), R(1198, 66, 1352, 136), R(368, 914, 508, 968), R(1025, 914, 1166, 968)],
+    when: () => QuestSystem.isActive('pia-m1'),
+  },
 
   // Profundidade: TV e planta da sala na frente de quem passa atrás
   overlays: [

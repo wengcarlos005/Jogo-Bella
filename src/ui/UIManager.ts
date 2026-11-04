@@ -63,6 +63,7 @@ class UIManagerImpl {
     const panel = textureURL('ui-panel');
     if (panel) {
       this.root.style.setProperty('--panel-img', `url(${panel})`);
+      document.documentElement.style.setProperty('--panel-img', `url(${panel})`);
       this.root.classList.add('has-panel-art');
     }
     const art: [string, string, string][] = [
@@ -75,6 +76,7 @@ class UIManagerImpl {
       const url = textureURL(key);
       if (!url) continue;
       this.root.style.setProperty(cssVar, `url(${url})`);
+      document.documentElement.style.setProperty(cssVar, `url(${url})`);
       if (cls) this.root.classList.add(cls);
     }
     this.hud.applyIcons();

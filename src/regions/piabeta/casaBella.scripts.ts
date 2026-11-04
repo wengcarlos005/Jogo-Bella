@@ -54,13 +54,8 @@ export const casaScripts: Record<string, Script> = {
       await ctx.say('bella', 'Já escolhi. Se eu abrir de novo vou mudar de ideia pela quinta vez.');
       return;
     }
-    await ctx.say('bella', 'O eterno dilema: o que vestir num primeiro encontro?');
-    let id = 'pijama-oculos';
-    for (;;) {
-      id = await ctx.wardrobe(['casual', 'floral', 'linho', 'festa', 'inverno', 'pijama-oculos']);
-      if (id !== 'pijama-oculos') break;
-      await ctx.say('bella', 'De pijama e pantufa de coelhinho? Ele ia amar... mas não. Vamos de novo.');
-    }
+    await ctx.say('bella', 'O que vestir num primeiro encontro? ...Na verdade eu já sei.');
+    const id = await ctx.wardrobe(['casual']);
     ctx.sfx('pickup');
     const looks: Record<string, string> = {
       casual: 'Camiseta preta, calça larga e tênis. Bonita, confortável e a minha cara. Perfeito.',

@@ -25,13 +25,13 @@ const BUTTONS: [tab: string, label: string, icon: string][] = [
  */
 export class Sidebar {
   private top = h('header', { id: 'topbar', class: 'idle' });
-  private left = h('aside', { id: 'leftbar', class: 'idle' });
+  private left = h('footer', { id: 'hotbar', class: 'idle' });
   private right = h('aside', { id: 'rightbar', class: 'idle' });
   private bag = h('div', { class: 'sb-bag' });
   private active = false;
 
   constructor(private openMenu: (tab: string) => void) {
-    this.left.append(h('div', { class: 'sb-title' }, 'Mochila'), this.bag);
+    this.left.append(this.bag);
     document.body.append(this.top, this.left, this.right);
     EventBus.on('state:changed', () => this.refresh());
     EventBus.on('item:added', (id: string) => this.flash(id));
@@ -40,7 +40,6 @@ export class Sidebar {
   /** Cria os botões depois que as texturas carregaram. */
   build(): void {
     this.right.replaceChildren(
-      h('div', { class: 'sb-title' }, 'Menu'),
       ...BUTTONS.map(([tab, label, icon]) => {
         const url = textureURL(`ui-icon-${icon}`);
         return h(
@@ -72,10 +71,10 @@ export class Sidebar {
           { class: 'sb-item', 'data-id': def.id, title: `${def.name} — ${def.description}`, onclick: () => this.openMenu('inventario') },
           url ? h('img', { src: url, alt: def.name }) : def.name[0],
           qty > 1 ? h('span', { class: 'sb-qty' }, String(qty)) : null,
-          h('span', { class: 'sb-item-name' }, def.name),
+          h('span', { class: 'sb-tip' }, def.name),
         );
       }),
-      ...Array.from({ length: Math.max(0, 8 - items.length) }, () => h('div', { class: 'sb-item empty' })),
+      ...Array.from({ length: Math.max(0, 12 - items.length) }, () => h('div', { class: 'sb-item empty' })),
     );
     // barra de cima
     let place = '';

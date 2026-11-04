@@ -166,7 +166,7 @@ function isFoliage(r: number, g: number, b: number): boolean {
   const min = Math.min(r, g, b);
   const v = max / 255;
   const sat = max === 0 ? 0 : (max - min) / max;
-  if (v < 0.16) return true; // contorno
+  if (v < 0.07) return false;
   let h = 0;
   if (max !== min) {
     if (max === r) h = ((g - b) / (max - min)) % 6;
