@@ -748,11 +748,11 @@ export class PlaceholderFactory {
       px(c, dark, 1, 10, 26, 1);
       px(c, light, 9, 2, 3, 2);
       px(c, '#2a1f2e', 14, 0, 1, 1);
-      px(c, '#5a4a44', 14, 11, 1, 6);
-      px(c, '#5a4a44', 13, 16, 2, 1);
     };
-    this.prop('umbrella-bella', 28, 18, umbrella('#f27a9b', '#b8456a', '#ffc2d4'));
-    this.prop('umbrella-weng', 28, 18, umbrella('#2c3a6b', '#1b2447', '#5a6fae'));
+    // só a cobertura (o cabo é desenhado à parte, atrás do personagem)
+    this.prop('umbrella-bella', 28, 11, umbrella('#f27a9b', '#b8456a', '#ffc2d4'));
+    this.prop('umbrella-weng', 28, 11, umbrella('#2c3a6b', '#1b2447', '#5a6fae'));
+    this.prop('umbrella-shaft', 1, 16, (c) => px(c, '#4a3a34', 0, 0, 1, 16));
 
     // Balões de emoção 13x13
     const bubble = (c: Ctx) => {

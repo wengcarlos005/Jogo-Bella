@@ -4,6 +4,41 @@ import { CHAR_SCALE, PLAYER, RENDER_SCALE } from '@/config/gameConfig';
 
 const ROW: Record<Direction, number> = { down: 0, left: 1, right: 2, up: 3 };
 
+const headCache = new Map<string, number>();
+
+/**
+ * Mede (uma vez por textura) a fração do quadro ocupada pelo personagem,
+ * a partir da primeira linha com pixels opacos do quadro de frente.
+ */
+function measureHeadRatio(scene: Phaser.Scene, key: string): number {
+  const cached = headCache.get(key);
+  if (cached !== undefined) return cached;
+  let ratio = 0.8;
+  try {
+    const tex = scene.textures.get(key);
+    const frame = tex.get(0);
+    const src = tex.getSourceImage() as CanvasImageSource;
+    const c = document.createElement('canvas');
+    c.width = frame.cutWidth;
+    c.height = frame.cutHeight;
+    const ctx = c.getContext('2d', { willReadFrequently: true })!;
+    ctx.drawImage(src, frame.cutX, frame.cutY, frame.cutWidth, frame.cutHeight, 0, 0, frame.cutWidth, frame.cutHeight);
+    const data = ctx.getImageData(0, 0, c.width, c.height).data;
+    let top = 0;
+    outer: for (let y = 0; y < c.height; y++)
+      for (let x = 0; x < c.width; x++)
+        if (data[(y * c.width + x) * 4 + 3] > 40) {
+          top = y;
+          break outer;
+        }
+    ratio = (c.height - top) / c.height;
+  } catch {
+    /* mantém a estimativa */
+  }
+  headCache.set(key, ratio);
+  return ratio;
+}
+
 /** Cria as animações de uma spritesheet de personagem (layout 4x4). */
 export function ensureCharacterAnims(scene: Phaser.Scene, key: string): void {
   for (const dir of Object.keys(ROW) as Direction[]) {
@@ -61,7 +96,7 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     // = 1 pixel do canvas (que tem o dobro da resolução lógica).
     const s = (fh >= 64 ? 1 / RENDER_SCALE : 1) * CHAR_SCALE;
     // Fração do quadro ocupada pelo personagem (o resto é espaço vazio acima da cabeça).
-    this.headRatio = fh >= 64 ? 0.76 : 0.86;
+    this.headRatio = measureHeadRatio(this.scene, key);
     this.setScale(s);
     const b = PLAYER.body;
     const body = this.body as Phaser.Physics.Arcade.Body;

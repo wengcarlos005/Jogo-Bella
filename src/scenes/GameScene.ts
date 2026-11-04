@@ -45,7 +45,7 @@ export class GameScene extends Phaser.Scene {
   /** Objetos temporários criados por scripts (carro do Uber etc.). */
   tempProps = new Map<string, Phaser.GameObjects.Image>();
   /** Guarda-chuvas presos a personagens: 'up' (aberto) ou 'hide' (abaixado, escondendo o rosto). */
-  umbrellas = new Map<string, { img: Phaser.GameObjects.Image; mode: 'up' | 'hide' }>();
+  umbrellas = new Map<string, { img: Phaser.GameObjects.Image; shaft: Phaser.GameObjects.Image; mode: 'up' | 'hide' }>();
   weather!: WeatherSystem;
   interactions!: InteractionSystem;
   private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2 }[] = [];
@@ -512,6 +512,7 @@ export class GameScene extends Phaser.Scene {
     const cur = this.umbrellas.get(who);
     if (mode === 'off') {
       cur?.img.destroy();
+      cur?.shaft.destroy();
       this.umbrellas.delete(who);
       return;
     }
@@ -522,7 +523,8 @@ export class GameScene extends Phaser.Scene {
     const key = who === 'weng' ? 'umbrella-weng' : 'umbrella-bella';
     const img = this.add.image(0, 0, key).setOrigin(0.5, 1);
     img.setScale((img.width >= 64 ? 1 / RENDER_SCALE : 1) * CHAR_SCALE);
-    this.umbrellas.set(who, { img, mode });
+    const shaft = this.add.image(0, 0, 'umbrella-shaft').setOrigin(0.5, 0);
+    this.umbrellas.set(who, { img, shaft, mode });
   }
 
   private updateUmbrellas(): void {
@@ -530,14 +532,22 @@ export class GameScene extends Phaser.Scene {
       const a = this.findActor(who);
       if (!a || !a.visible) {
         u.img.setVisible(false);
+        u.shaft.setVisible(false);
         continue;
       }
+      // Cobertura (origem na borda de baixo) na frente do personagem;
+      // cabo atrás do personagem, descendo da cobertura até a mão.
+      // 'up': cobertura logo acima do cabelo. 'hide': abaixada, escondendo o rosto.
+      const canopyBottom = u.mode === 'up' ? a.headY + 4 : a.headY + a.bodyHeight * 0.45;
+      if (!u.img.visible || u.img.y === 0) u.img.y = canopyBottom;
       u.img.setVisible(true);
-      // 'up': aberto acima da cabeça; 'hide': abaixado, cobrindo o rosto
-      const targetY = u.mode === 'up' ? a.headY + a.bodyHeight * 0.32 : a.headY + a.bodyHeight * 0.62;
-      if (!u.img.visible || u.img.y === 0) u.img.y = targetY;
-      u.img.y += (targetY - u.img.y) * 0.25;
-      u.img.x = a.x + (a.facing === 'left' ? -2 : a.facing === 'right' ? 2 : 0);
+      u.img.y += (canopyBottom - u.img.y) * 0.25;
+      const side = { down: 3, up: -3, left: -3, right: 3 }[a.facing];
+      u.img.x = a.x + side;
+      const hand = a.y - a.bodyHeight * 0.38;
+      u.shaft.setVisible(true).setPosition(u.img.x, u.img.y - 1);
+      u.shaft.setDisplaySize(1, Math.max(2, hand - u.img.y + 1));
+      u.shaft.setDepth(a.depth - 1);
       u.img.setDepth(a.depth + 1);
     }
   }
