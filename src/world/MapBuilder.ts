@@ -90,6 +90,22 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     return { def: p, sprite, block };
   });
 
+  // Profundidade: recortes do cenário na frente de quem está "atrás" deles.
+  if (hasArt && def.art === 'native') {
+    // O cenário em public/ tem 2/3 da resolução do original (art-source).
+    const toTex = (v: number) => (v * 2) / 3;
+    for (const o of def.overlays ?? []) {
+      const img = scene.add.image(0, 0, bgKey).setOrigin(0).setScale(1 / RENDER_SCALE);
+      img.setCrop(toTex(o.x0), toTex(o.y0), toTex(o.x1 - o.x0), toTex(o.y1 - o.y0));
+      img.setDepth(o.base / 3);
+      if (o.ellipse) {
+        const g = scene.make.graphics({}, false);
+        g.fillStyle(0xffffff).fillEllipse((o.x0 + o.x1) / 6, (o.y0 + o.y1) / 6, (o.x1 - o.x0) / 3, (o.y1 - o.y0) / 3);
+        img.setMask(g.createGeometryMask());
+      }
+    }
+  }
+
   for (const b of def.blocks ?? []) {
     const r = tileRect(b);
     solids.add(scene.add.zone(r.centerX, r.centerY, r.width, r.height));

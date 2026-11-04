@@ -189,6 +189,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       scene.tempProps.delete(id);
     },
     illustration: (key, lines) => UI.illustration(key, lines),
+    backdrop: (key) => UI.backdrop(key),
 
     nerves(value, message) {
       const v = Math.max(0, Math.min(100, Math.round(value)));

@@ -42,11 +42,12 @@ const scripts: Record<string, Script> = {
     ctx.objective(Q, 'abrigo');
     await ctx.fadeOut(300);
     ctx.follow('weng', false);
-    ctx.place('player', 12.4, 6.3, 'right');
-    ctx.place('weng', 14.5, 6.3, 'left');
+    // dentro do coreto, no piso, entre as colunas da frente
+    ctx.place('player', 12.2, 5.6, 'right');
+    ctx.place('weng', 14.3, 5.6, 'left');
     await ctx.fadeIn(500);
     ctx.letterbox(true);
-    await ctx.focus(13.45, 6.0, 1.5, 1200);
+    await ctx.focus(13.25, 4.6, 1.5, 1200);
 
     await ctx.say('bella', 'Que chuva é essa?! Do nada!');
     await ctx.say('weng', 'Pelo menos a gente achou o coreto a tempo. Mais ou menos a tempo.');
@@ -66,10 +67,10 @@ const scripts: Record<string, Script> = {
       await ctx.choose('bella', '(...)', ['"Pode."', 'Responder com um sorriso']);
     }
 
-    await Promise.all([ctx.move('player', 13.0, 6.3, 14), ctx.move('weng', 13.9, 6.3, 14)]);
+    await Promise.all([ctx.move('player', 12.68, 5.6, 12), ctx.move('weng', 13.82, 5.6, 12)]);
     ctx.face('player', 'right');
     ctx.face('weng', 'left');
-    await ctx.focus(13.45, 6.0, 2.1, 2200);
+    await ctx.focus(13.25, 4.4, 2.1, 2200);
     ctx.hearts('bella', 14);
     ctx.hearts('weng', 14);
     await ctx.wait(1200);
@@ -185,6 +186,29 @@ export const parqueMap: MapDef = {
     R(545, 640, 605, 725),
     R(950, 650, 1010, 765),
     R(30, 690, 100, 815),
+  ],
+
+  overlays: [
+    // portão e arco de flores
+    { x0: 520, y0: 740, x1: 610, y1: 950, base: 945 },
+    { x0: 868, y0: 740, x1: 958, y1: 950, base: 945 },
+    { x0: 590, y0: 655, x1: 700, y1: 800, base: 930 },
+    { x0: 800, y0: 660, x1: 925, y1: 800, base: 930 },
+    { x0: 660, y0: 645, x1: 830, y1: 715, base: 930 },
+    { x0: 0, y0: 830, x1: 520, y1: 935, base: 930 },
+    { x0: 958, y0: 830, x1: 1536, y1: 935, base: 930 },
+    // copas das árvores
+    { x0: 425, y0: 525, x1: 725, y1: 700, base: 725, ellipse: true },
+    { x0: 830, y0: 520, x1: 1135, y1: 720, base: 765, ellipse: true },
+    { x0: -90, y0: 540, x1: 190, y1: 720, base: 815, ellipse: true },
+    // coreto: telhado e colunas da frente
+    { x0: 505, y0: 30, x1: 845, y1: 205, base: 240 },
+    { x0: 588, y0: 200, x1: 618, y1: 358, base: 350 },
+    { x0: 708, y0: 200, x1: 738, y1: 358, base: 350 },
+    // postes
+    { x0: 385, y0: 520, x1: 450, y1: 640, base: 640 },
+    { x0: 1035, y0: 715, x1: 1085, y1: 862, base: 862 },
+    { x0: 1450, y0: 560, x1: 1510, y1: 682, base: 682 },
   ],
 
   hotspots: [

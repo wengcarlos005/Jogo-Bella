@@ -94,6 +94,12 @@ export interface MapDef {
   props?: PropPlacement[];
   /** Colisões extras em retângulos (unidades de tile, fracionários). Ideal para cenários pintados. */
   blocks?: TileRect[];
+  /**
+   * Profundidade em cenários pintados: recortes do próprio cenário redesenhados
+   * NA FRENTE dos personagens que estiverem acima (atrás) da linha `base`.
+   * Coordenadas em pixels da imagem ORIGINAL (art-source). `ellipse` recorta em oval (copas).
+   */
+  overlays?: { x0: number; y0: number; x1: number; y1: number; base: number; ellipse?: boolean }[];
   /** Interações invisíveis sobre o cenário. */
   hotspots?: HotspotDef[];
   /**

@@ -61,6 +61,8 @@ export interface ScriptContext {
   prop(id: string, key: string, tx: number, ty: number, frame?: number): void;
   moveProp(id: string, tx: number, ty: number, ms: number): Promise<void>;
   removeProp(id: string): void;
+  /** Ilustração de fundo em tela cheia; os diálogos continuam por cima. null remove. */
+  backdrop(key: string | null): Promise<void>;
   /** Ilustração em tela cheia com legendas (avança com interagir). */
   illustration(key: string, lines: string[]): Promise<void>;
   /**

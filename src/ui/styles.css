@@ -813,3 +813,130 @@ html, body {
 .item-name { font-family: var(--font-pixel); font-size: clamp(18px, calc(var(--u) * 12), 36px); line-height: 1.05; }
 .item-desc { font-weight: 700; font-size: clamp(12px, calc(var(--u) * 6.5), 20px); color: var(--ink-soft); }
 .item-pop .btn { min-width: 40%; margin-top: calc(var(--u) * 2); }
+
+/* ---------- Viagem (Uber): cena noturna em movimento ---------- */
+.travel-card.tv { z-index: 9; background: #0f0d26; overflow: hidden; display: block; }
+.tv-sky {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(1px 1px at 12% 18%, #fff8 50%, transparent 51%),
+    radial-gradient(1px 1px at 33% 9%, #fff9 50%, transparent 51%),
+    radial-gradient(1px 1px at 58% 22%, #fff7 50%, transparent 51%),
+    radial-gradient(1px 1px at 81% 12%, #fff9 50%, transparent 51%),
+    radial-gradient(1px 1px at 92% 30%, #fff6 50%, transparent 51%),
+    linear-gradient(#141238, #2a2160 70%, #3b2a6a);
+}
+.tv-city {
+  position: absolute; left: 0; right: 0; top: 8%; height: 62%;
+  background-repeat: repeat-x;
+  background-size: auto 210%;
+  background-position: 0 4%;
+  image-rendering: auto;
+  filter: brightness(0.75) saturate(1.1);
+  animation: tv-scroll 9s linear infinite;
+  mask-image: linear-gradient(transparent, #000 18%);
+}
+@keyframes tv-scroll { from { background-position-x: 0; } to { background-position-x: calc(var(--u) * -680); } }
+.tv-road { position: absolute; left: 0; right: 0; bottom: 0; height: 32%; background: linear-gradient(#3a3946, #2a2933); border-top: calc(var(--u) * 3) solid #8d8576; }
+.tv-lines {
+  position: absolute; left: 0; right: 0; top: 46%; height: calc(var(--u) * 3);
+  background: repeating-linear-gradient(90deg, #f2d36b 0 calc(var(--u) * 22), transparent calc(var(--u) * 22) calc(var(--u) * 44));
+  animation: tv-lines 0.45s linear infinite;
+}
+@keyframes tv-lines { to { background-position-x: calc(var(--u) * -44); } }
+.tv-lamps { position: absolute; inset: 0; pointer-events: none; }
+.tv-lamp {
+  position: absolute; bottom: 31%; width: calc(var(--u) * 3); height: calc(var(--u) * 70);
+  background: #2a2933; animation: tv-lamp 2.2s linear infinite;
+}
+.tv-lamp::before {
+  content: ''; position: absolute; top: calc(var(--u) * -2); left: calc(var(--u) * -6);
+  width: calc(var(--u) * 15); height: calc(var(--u) * 6); border-radius: 40%;
+  background: #ffe9a3; box-shadow: 0 0 calc(var(--u) * 20) calc(var(--u) * 8) rgba(255, 210, 120, 0.45);
+}
+@keyframes tv-lamp { from { left: 110%; } to { left: -10%; } }
+.tv-car {
+  position: absolute; left: 50%; bottom: 13%;
+  width: calc(var(--u) * 150); aspect-ratio: 192 / 128;
+  transform: translateX(-50%);
+  background-size: 400% 100%;
+  background-position: 33.333% 0;
+  image-rendering: pixelated;
+  animation: tv-bump 0.35s ease-in-out infinite;
+  filter: drop-shadow(0 calc(var(--u) * 3) calc(var(--u) * 2) rgba(0, 0, 0, 0.5));
+}
+@keyframes tv-bump { 50% { transform: translate(-50%, calc(var(--u) * -1)); } }
+.tv-rain {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.55;
+  background-image: repeating-linear-gradient(105deg, transparent 0 calc(var(--u) * 9), rgba(191, 230, 245, 0.55) calc(var(--u) * 9) calc(var(--u) * 9.6));
+  background-size: calc(var(--u) * 40) calc(var(--u) * 40);
+  animation: tv-rain 0.35s linear infinite;
+}
+@keyframes tv-rain { to { background-position: calc(var(--u) * -12) calc(var(--u) * 40); } }
+.tv-label {
+  position: absolute; left: 50%; top: calc(var(--u) * 14); transform: translateX(-50%);
+  font-family: var(--font-pixel); color: var(--ink);
+  font-size: clamp(16px, calc(var(--u) * 11), 34px);
+  padding: calc(var(--u) * 3) calc(var(--u) * 12); white-space: nowrap;
+}
+
+/* ---------- Ilustração de fundo (cenas especiais com diálogo) ---------- */
+#ui .backdrop { position: absolute; inset: 0; z-index: 6; background: #000; opacity: 0; transition: opacity 600ms; pointer-events: none; }
+#ui .backdrop.show { opacity: 1; }
+#ui .backdrop img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; image-rendering: auto; }
+
+/* ---------- Minigame do hambúrguer: layout novo ---------- */
+.bg-panel { width: min(96%, calc(var(--u) * 440)); padding: calc(var(--u) * 4) calc(var(--u) * 6) calc(var(--u) * 5); gap: calc(var(--u) * 3); }
+.bg-title {
+  align-self: center;
+  background: var(--red); color: #fff;
+  padding: calc(var(--u) * 1) calc(var(--u) * 14);
+  border-radius: calc(var(--u) * 2);
+  font-size: clamp(16px, calc(var(--u) * 10), 30px);
+  box-shadow: 0 calc(var(--u) * 1.5) 0 #7a2b3d;
+}
+.bg-main { gap: calc(var(--u) * 5); align-items: stretch; }
+.bg-stage {
+  flex: 1;
+  position: relative;
+  border-radius: calc(var(--u) * 3);
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 15%, rgba(255, 220, 150, 0.35), transparent 70%),
+    linear-gradient(#8c2f2f 0 55%, #6e4526 55% 60%, #b9814f 60% 100%);
+  border: calc(var(--u) * 1) solid var(--border);
+  min-height: calc(var(--u) * 112);
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  padding-bottom: calc(var(--u) * 4);
+  overflow: hidden;
+}
+.bg-plate {
+  flex: none; width: 100%; min-height: calc(var(--u) * 88);
+  background: radial-gradient(ellipse 34% 11% at 50% 88%, #f4f0e6 0 75%, #cfc4b0 76% 100%, transparent 101%);
+  padding-bottom: calc(var(--u) * 7);
+}
+.bg-layer { width: calc(var(--u) * 58); margin-top: calc(var(--u) * -24); }
+.bg-msg {
+  position: absolute; top: calc(var(--u) * 4); left: 50%; transform: translateX(-50%);
+  width: 86%; min-height: 0;
+  color: var(--cream); text-shadow: 0 1px 0 #000;
+  font-size: clamp(11px, calc(var(--u) * 6), 19px);
+}
+.bg-msg:empty { display: none; }
+.bg-ticket {
+  flex: 0 0 30%;
+  background: #fffdf6;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 calc(var(--u) * 2) 0 rgba(0, 0, 0, 0.2);
+  transform: rotate(1.5deg);
+  padding: calc(var(--u) * 5) calc(var(--u) * 5) calc(var(--u) * 8);
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(var(--u) * 8) 100%;
+  font-size: clamp(11px, calc(var(--u) * 6), 18px);
+}
+.bg-ticket-head { text-align: center; border-bottom: calc(var(--u) * 0.6) dashed #c9a14a; padding-bottom: calc(var(--u) * 2); margin-bottom: calc(var(--u) * 3); }
+.bg-buttons { grid-template-columns: repeat(10, 1fr); gap: calc(var(--u) * 1.5); }
+.bg-btn { padding: calc(var(--u) * 1.5) calc(var(--u) * 0.5); border-radius: calc(var(--u) * 2); }
+.bg-btn img { max-width: calc(var(--u) * 26); }
+.bg-name { font-size: clamp(8px, calc(var(--u) * 4.2), 13px); }
+.bg-key { font-size: 9px; }
+#ui .toasts { z-index: 7; }

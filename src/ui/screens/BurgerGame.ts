@@ -67,8 +67,7 @@ export function playBurgerGame(parent: HTMLElement, opts: BurgerOptions): Promis
       'div',
       { class: 'bg-panel panel' },
       h('div', { class: 'bg-title' }, opts.title),
-      h('div', { class: 'bg-main' }, ticket, plate),
-      msg,
+      h('div', { class: 'bg-main' }, h('div', { class: 'bg-stage' }, plate, msg), ticket),
       buttons,
       actions,
     );

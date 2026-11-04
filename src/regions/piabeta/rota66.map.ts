@@ -79,13 +79,9 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', 'Nossa mesinha. Ainda tem migalha de batata aqui.');
       return;
     }
-    await ctx.fadeOut(400);
+    // Cena da mesa: ilustração dos dois sentados, diálogos por cima.
     ctx.follow('weng', false);
-    ctx.place('player', 1.9, 11.7, 'right');
-    ctx.place('weng', 5.0, 11.7, 'left');
-    await ctx.fadeIn(400);
-    ctx.letterbox(true);
-    await ctx.focus(3.5, 10.9, 1.35, 800);
+    await ctx.backdrop('memory-pia-02');
     await ctx.narrate('Os lanches chegam. O cheiro é incrível. O nervosismo também.');
     await ctx.say('weng', 'E aí? Aprovado?');
     const c1 = await ctx.choose('bella', '(Primeira mordida...)', ['"Melhor hambúrguer da minha vida."', '"Hmm... preciso de mais uma mordida pra decidir."', 'Fazer um joinha de boca cheia']);
@@ -100,7 +96,8 @@ const scripts: Record<string, Script> = {
     await ctx.emote('weng', 'question');
     ctx.take('vale-beijo');
     ctx.take('chocolates');
-    ctx.sfx('pickup');
+    await ctx.showItem('vale-beijo', 'Você deu para o Weng', 'Vale Beijo & Vale Abraço', 'Feitos à mão. Válidos por tempo indeterminado.');
+    await ctx.showItem('chocolates', 'Você deu para o Weng', 'Chocolates', 'Um montão deles. O de morango já tem dono.');
     await ctx.say('weng', '...Chocolates! Um monte de chocolates! E isso aqui é... um Vale Beijo? E um Vale Abraço?!');
     await ctx.emote('weng', 'heart');
     const cg = await ctx.choose('bella', '(Ele tá olhando os vales sem piscar...)', ['"Válidos por tempo indeterminado."', '"Os chocolates são pra dividir, tá?"', '"Gostou? Fui eu que fiz."']);
@@ -126,13 +123,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Ei... quer dar uma volta depois? A gente pode ir andando por Fragoso até o parque.');
     await ctx.say('bella', 'Quero. Acho que uma caminhada vai me fazer bem.');
     await ctx.give('burger-rota66');
-    await ctx.unfocus(700);
-    ctx.letterbox(false);
-    await ctx.fadeOut(400);
     ctx.place('player', 3.7, 13.4, 'down');
     ctx.place('weng', 5.8, 13.4, 'down');
     ctx.follow('weng', true);
-    await ctx.fadeIn(400);
+    await ctx.backdrop(null);
     ctx.objective(Q, 'mesa');
   },
 

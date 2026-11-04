@@ -120,13 +120,55 @@ class UIManagerImpl {
 
   /** Cartão de viagem (ex.: trajeto de Uber, avião). */
   async travel(label: string, icon = '🚗', ms = 2600): Promise<void> {
-    const card = h('div', { class: 'travel-card' }, h('div', { class: 'car' }, icon), h('div', { class: 'road' }), h('div', { class: 'label' }, label));
+    this.dialogue.close();
+    const car = textureURL('uber-car');
+    const bg = textureURL('map-piabeta-fragoso-bg') ?? textureURL('map-piabeta-rua-bg');
+    const lamps = h('div', { class: 'tv-lamps' }, ...Array.from({ length: 4 }, (_, i) => h('div', { class: 'tv-lamp', style: `animation-delay:${-i * 0.55}s` })));
+    const rain = h('div', { class: 'tv-rain' });
+    const card = h(
+      'div',
+      { class: 'travel-card tv' },
+      h('div', { class: 'tv-sky' }),
+      bg ? h('div', { class: 'tv-city', style: `background-image:url(${bg})` }) : null,
+      lamps,
+      h('div', { class: 'tv-road' }, h('div', { class: 'tv-lines' })),
+      car
+        ? h('div', { class: 'tv-car', style: `background-image:url(${car})` })
+        : h('div', { class: 'car' }, icon),
+      rain,
+      h('div', { class: 'tv-label panel' }, label),
+    );
     this.root.append(card);
     requestAnimationFrame(() => card.classList.add('show'));
     await new Promise((r) => setTimeout(r, ms));
     card.classList.remove('show');
     await new Promise((r) => setTimeout(r, 500));
     card.remove();
+  }
+
+  private backdropEl: HTMLElement | null = null;
+
+  /** Ilustração de fundo em tela cheia, com os diálogos por cima. null remove. */
+  async backdrop(key: string | null): Promise<void> {
+    if (!key) {
+      const el = this.backdropEl;
+      this.backdropEl = null;
+      if (!el) return;
+      el.classList.remove('show');
+      await new Promise((r) => setTimeout(r, 600));
+      el.remove();
+      this.hud.el.classList.remove('hidden');
+      return;
+    }
+    const url = textureURL(key);
+    if (!url) return;
+    const el = h('div', { class: 'backdrop' }, h('img', { src: url, alt: '' }));
+    this.backdropEl?.remove();
+    this.backdropEl = el;
+    this.root.append(el);
+    this.hud.el.classList.add('hidden');
+    requestAnimationFrame(() => el.classList.add('show'));
+    await new Promise((r) => setTimeout(r, 700));
   }
 
   /** Ilustração em tela cheia com legendas; cada legenda avança com interagir/toque. */

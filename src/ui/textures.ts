@@ -12,7 +12,7 @@ export function textureURL(key: string | undefined): string | null {
   if (!key || !game || !game.textures.exists(key)) return null;
   let url = cache.get(key);
   if (!url) {
-    url = game.textures.getBase64(key);
+    url = game.textures.getBase64(key, '__BASE');
     cache.set(key, url);
   }
   return url;
