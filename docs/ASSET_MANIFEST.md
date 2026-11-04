@@ -99,21 +99,25 @@ Só a roupa casual da Bella tem os óculos rosados.
 - **MAP-003 Rua de Piabetá:** "Cenário de pixel art visto de cima, rua residencial brasileira de bairro tranquilo, fim de tarde ensolarado, sem personagens. Faixa de cima: três construções lado a lado — casa da Bella (telhado laranja, muro baixo de madeira, jardinzinho e caixa de correio vermelha), casa da vizinha (telhado azul, paredes verde-água) e uma hamburgueria com letreiro vermelho de hambúrguer e calçada larga; entre a casa azul e a hamburgueria, uma trilha de terra subindo para o norte. Meio: calçada, meio-fio, rua de asfalto com faixa amarela tracejada, um carro estacionado. Faixa de baixo: pracinha com grama, flores, árvores, dois bancos de madeira, postes de luz e caminhos de terra em cruz, cercada por cerca viva."
 
 ### LOTE 2 — Piabetá completo (Fase 3)
-| ID | Arquivo | Categoria | Dimensões | Estado |
-|---|---|---|---|---|
-| MAP-005 | `maps/piabeta-rota66-bg.png` | Interior da Rota 66 (diner americano) | 3:2 | planejado |
-| MAP-008 | `maps/piabeta-rota66-fora-bg.png` | Fachada da Rota 66 à noite (chegada de Uber) | 3:2 | planejado |
-| OBJ-020 | `objects/uber-car.png` | Carro do Uber (vista de cima/lado, 4 direções) | — | planejado |
-| MAP-006 | `maps/piabeta-parque-bg.png` | Cenário (parque arborizado) | 640×480 | planejado |
-| MAP-007 | `maps/piabeta-parque-fg.png` | Copas das árvores | 640×480 | planejado |
-| OBJ-001..010 | `objects/burger-*.png` | Ingredientes do minigame (pão, carne, queijo, alface, tomate, cebola, bacon, molho, picles, pão de cima) | 32×16 cada | planejado |
-| UI-010 | `ui/burger-order-card.png` | Ficha de pedido | 96×128 | planejado |
-| CIN-001 | `cinematics/primeiro-beijo.png` | Cena do beijo na chuva | 480×270 | planejado |
-| MEM-001..003 | `cinematics/memory-pia-0X.png` | Ilustrações do álbum | 320×200 | planejado |
-| CHAR-003 | `characters/bella-actions.png` | Sentar, acenar, interagir (4 dir.) | 128×96 | planejado |
-| CHAR-004 | `characters/weng-actions.png` | idem | 128×96 | planejado |
-| UI-001 | `ui/title-art.png` | Ilustração do título (casal) | 320×180 | planejado |
-| NPC-004 | `npcs/atendente-burger-walk.png` | NPC | 128×128 | planejado |
+| ID | Arquivo | Categoria | Estado |
+|---|---|---|---|
+| MAP-005 | `maps/piabeta-rota66-bg.png` | Interior da Rota 66 (versão 2; a v1 está em art-source) | **integrado** |
+| MAP-008 | `maps/piabeta-rota66-fora-bg.png` | Fachada da Rota 66 à noite | **integrado** |
+| MAP-006 | `maps/piabeta-parque-bg.png` | Parque com coreto, chafariz e lago | **integrado** |
+| OBJ-001..010 | `objects/burger-*.png` | Ingredientes do minigame (recortados de uma folha) | **integrado** |
+| OBJ-020 | `objects/uber-car.png` | Carro do Uber, 4 direções (quadros 192×128) | **integrado** |
+| MEM-001 | `cinematics/memory-pia-01.png` | Memória "O encontro marcado" (provisória: casa) | integrado (trocar por ilustração) |
+| MEM-002 | `cinematics/memory-pia-02.png` | Memória "A Rota 66" (provisória: fachada) | integrado (trocar por ilustração) |
+| MEM-003 | `cinematics/memory-pia-03.png` | Primeiro beijo no coreto, na chuva | **integrado** |
+| UI-001 | `ui/title-art.png` | Capa: casal olhando a lua | **integrado** |
+| UI-003 | `ui/logo.png` | Logo "A Lua está Bella" | **integrado** |
+| UI-004 | `ui/panel.png` | Moldura 9-slice de painéis/botões/diálogo | **integrado** |
+| NPC-001 | `npcs/mae-bella-walk.png` | Mãe da Bella | **pendente** |
+| NPC-004 | `npcs/atendente-walk.png` | Atendente da Rota 66 | **pendente** |
+| UI-005 | `ui/dialogue-box.png` | Caixa de diálogo com moldura de retrato e lua | **integrado** |
+| UI-006..008 | `ui/btn-normal/hover/primary.png` | Botões (normal, selecionado, destaque) | **integrado** |
+| UI-010..015 | `ui/icon-*.png` | Ícones do HUD (álbum, mochila, mapa, opções, salvar, lua) | **integrado** |
+| CHAR-030 | `characters/*-actions.png` | Sentar / acenar (Bella e Weng) | pendente |
 
 ### LOTE 3 — Duque de Caxias (Fase 4)
 Cenários: bairro/praça (960×640), casa do casal (interior 320×240), mercado (320×240), estação (480×270). Móveis de decoração (~20 objetos, 16–48px). NPCs de vizinhança (6 folhas 4×4). Ícones de inventário (16×16). UI-002 mapa-múndi ilustrado (480×270).

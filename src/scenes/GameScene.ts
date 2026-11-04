@@ -42,6 +42,8 @@ export class GameScene extends Phaser.Scene {
   built!: BuiltMap;
   player!: Player;
   npcs = new Map<string, NpcEntry>();
+  /** Objetos temporários criados por scripts (carro do Uber etc.). */
+  tempProps = new Map<string, Phaser.GameObjects.Image>();
   weather!: WeatherSystem;
   interactions!: InteractionSystem;
   private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2 }[] = [];
@@ -60,6 +62,7 @@ export class GameScene extends Phaser.Scene {
   init(data: GameSceneData): void {
     this.def = getMap(data.mapId);
     this.npcs = new Map();
+    this.tempProps = new Map();
     this.markers = [];
     this.scriptRunning = false;
     this.transitioning = false;
@@ -355,6 +358,12 @@ export class GameScene extends Phaser.Scene {
       InputSystem.pop('script');
       this.scriptRunning = false;
     }
+  }
+
+  /** Mostra a tela de memória já (dentro de um script) e tira da fila. */
+  async showMemoryNow(id: string): Promise<void> {
+    this.pendingMemories = this.pendingMemories.filter((m) => m !== id);
+    await UI.memory(id);
   }
 
   get busy(): boolean {

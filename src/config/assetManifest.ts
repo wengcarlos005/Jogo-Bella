@@ -47,12 +47,23 @@ export const ASSETS: AssetEntry[] = [
   char('NPC-002', 'pai-bella', 'npcs/pai-bella-walk.png', 96),
   char('NPC-003', 'vizinha', 'npcs/vizinha-walk.png', 96),
 
+  char('NPC-004', 'atendente', 'npcs/atendente-walk.png', 96),
+
+  // Minigame do hambúrguer (ingredientes recortados de objects/burger-ingredientes)
+  ...['pao-baixo', 'carne', 'queijo', 'alface', 'tomate', 'cebola', 'bacon', 'picles', 'molho', 'pao-cima'].map(
+    (n, i): AssetEntry => ({ id: `OBJ-${String(i + 1).padStart(3, '0')}`, key: `burger-${n}`, file: `assets/objects/burger-${n}.png`, kind: 'image' }),
+  ),
+
+  // Veículos (HD: quadros 192x128 — esquerda, direita, frente, costas)
+  { id: 'OBJ-020', key: 'uber-car', file: 'assets/objects/uber-car.png', kind: 'spritesheet', frameWidth: 192, frameHeight: 128 },
+
   // Retratos de diálogo (96x96)
   { id: 'PORT-001', key: 'portrait-bella', file: 'assets/portraits/bella-neutral.png', kind: 'image' },
   { id: 'PORT-002', key: 'portrait-weng', file: 'assets/portraits/weng-neutral.png', kind: 'image' },
   { id: 'PORT-003', key: 'portrait-mae-bella', file: 'assets/portraits/mae-bella.png', kind: 'image' },
   { id: 'PORT-004', key: 'portrait-pai-bella', file: 'assets/portraits/pai-bella.png', kind: 'image' },
   { id: 'PORT-005', key: 'portrait-vizinha', file: 'assets/portraits/vizinha.png', kind: 'image' },
+  { id: 'PORT-006', key: 'portrait-atendente', file: 'assets/portraits/atendente.png', kind: 'image' },
 
   // Cenários pintados (opcionais) — se existirem, substituem os tiles visuais
   { id: 'MAP-001', key: 'map-piabeta-casa-bella-bg', file: 'assets/maps/piabeta-casa-bella-bg.png', kind: 'image' },
@@ -72,6 +83,14 @@ export const ASSETS: AssetEntry[] = [
   { id: 'UI-001', key: 'ui-title-art', file: 'assets/ui/title-art.png', kind: 'image' },
   { id: 'UI-002', key: 'ui-world-map', file: 'assets/ui/world-map.png', kind: 'image' },
   { id: 'UI-003', key: 'ui-logo', file: 'assets/ui/logo.png', kind: 'image' },
+  { id: 'UI-004', key: 'ui-panel', file: 'assets/ui/panel.png', kind: 'image' },
+  { id: 'UI-005', key: 'ui-dialogue-box', file: 'assets/ui/dialogue-box.png', kind: 'image' },
+  { id: 'UI-006', key: 'ui-btn-normal', file: 'assets/ui/btn-normal.png', kind: 'image' },
+  { id: 'UI-007', key: 'ui-btn-hover', file: 'assets/ui/btn-hover.png', kind: 'image' },
+  { id: 'UI-008', key: 'ui-btn-primary', file: 'assets/ui/btn-primary.png', kind: 'image' },
+  ...['album', 'mochila', 'mapa', 'opcoes', 'salvar', 'lua'].map(
+    (n, i): AssetEntry => ({ id: `UI-${String(10 + i).padStart(3, '0')}`, key: `ui-icon-${n}`, file: `assets/ui/icon-${n}.png`, kind: 'image' }),
+  ),
 
   // Áudio (opcional)
   { id: 'AUD-001', key: 'music-tema-principal', file: 'assets/audio/music/tema-principal.ogg', kind: 'audio' },

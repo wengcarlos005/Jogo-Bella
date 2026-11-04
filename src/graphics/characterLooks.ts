@@ -69,6 +69,17 @@ export const CHARACTER_LOOKS: Record<string, CharacterLook> = {
     glasses: '#3b3a44',
     portraitBg: '#dbe8d4',
   },
+  atendente: {
+    skin: '#d9a07a',
+    hair: 'short',
+    hairColor: '#3a2620',
+    hairShade: '#563a30',
+    shirt: '#f4f0e6',
+    jacket: '#c9415a',
+    pants: '#2a2a3a',
+    shoes: '#2a1f2e',
+    portraitBg: '#f6d9e0',
+  },
   vizinha: {
     skin: '#c99272',
     hair: 'bun',

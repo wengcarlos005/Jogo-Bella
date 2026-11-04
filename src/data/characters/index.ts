@@ -13,6 +13,7 @@ export const SPEAKERS: Record<string, SpeakerDef> = {
   'mae-bella': { name: PERSONAL.bellaMom.name, portrait: 'portrait-mae-bella' },
   'pai-bella': { name: PERSONAL.bellaStepdad.name, portrait: 'portrait-pai-bella' }, // padrasto
   vizinha: { name: 'Dona Cida', portrait: 'portrait-vizinha' },
+  atendente: { name: 'Atendente', portrait: 'portrait-atendente' },
   narrador: { name: '' },
   celular: { name: 'Celular' },
 };

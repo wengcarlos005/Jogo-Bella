@@ -43,6 +43,14 @@ export const ITEMS: Record<string, ItemDef> = {
     description: 'Uma florzinha colhida no caminho.',
     icon: 'icon-flor',
   },
+  'burger-rota66': {
+    id: 'burger-rota66',
+    name: 'Guardanapo da Rota 66',
+    category: 'lembrancas',
+    description: 'Guardado de recordação do primeiro lanche juntos. Tem uma manchinha de molho.',
+    icon: 'burger-pao-cima',
+    unique: true,
+  },
   'bilhete-misterioso': {
     id: 'bilhete-misterioso',
     name: 'Bilhete dobrado',

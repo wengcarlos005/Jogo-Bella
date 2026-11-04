@@ -8,6 +8,8 @@ import { MemoryAlbumSystem } from './MemoryAlbumSystem';
 import { AudioSystem } from './AudioSystem';
 import { UI } from '@/ui/UIManager';
 import { NPC } from '@/entities/NPC';
+import Phaser from 'phaser';
+import { RENDER_SCALE } from '@/config/gameConfig';
 
 const DIRS: Direction[] = ['down', 'up', 'left', 'right'];
 
@@ -49,10 +51,11 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     objectiveDone: (q, o) => QuestSystem.isObjectiveDone(q, o),
     async memory(id) {
       MemoryAlbumSystem.unlock(id);
+      await scene.showMemoryNow(id);
     },
 
     wait: (ms) => new Promise((r) => scene.time.delayedCall(ms, r)),
-    fadeOut: (ms = 400) => UI.fade(1, ms),
+    fadeOut: (ms = 400, color) => UI.fade(1, ms, color),
     fadeIn: (ms = 400) => UI.fade(0, ms),
     shake: (ms = 250) => scene.cameras.main.shake(ms, 0.006),
     sfx: (name) => AudioSystem.play(name),
@@ -110,6 +113,79 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       (a.body as Phaser.Physics.Arcade.Body).reset(p.x, p.y);
       if (facing) a.face(facing);
       if (a === scene.player) scene.player.trail.length = 0;
+    },
+
+    burger: (opts) => UI.burger(opts),
+
+    focus(tx, ty, zoom = 1.4, ms = 900) {
+      const cam = scene.cameras.main;
+      const p = scene.tile(tx, ty);
+      cam.stopFollow();
+      cam.pan(p.x, p.y - 12, ms, 'Sine.easeInOut');
+      cam.zoomTo(RENDER_SCALE * zoom, ms, 'Sine.easeInOut');
+      return new Promise((r) => scene.time.delayedCall(ms, r));
+    },
+
+    unfocus(ms = 700) {
+      const cam = scene.cameras.main;
+      cam.zoomTo(RENDER_SCALE, ms, 'Sine.easeInOut');
+      cam.pan(scene.player.x, scene.player.y - 8, ms, 'Sine.easeInOut');
+      return new Promise((r) =>
+        scene.time.delayedCall(ms, () => {
+          cam.startFollow(scene.player, true, 0.14, 0.14, 0, -8);
+          r(undefined);
+        }),
+      );
+    },
+
+    letterbox: (on) => UI.letterbox(on),
+
+    hearts(who, count = 10) {
+      const a = actor(who);
+      if (!a) return;
+      for (let i = 0; i < count; i++) {
+        const img = scene.add.image(a.x + Phaser.Math.Between(-10, 10), a.y - 30, 'fx-heart').setDepth(160_000);
+        scene.tweens.add({
+          targets: img,
+          x: img.x + Phaser.Math.Between(-24, 24),
+          y: img.y - Phaser.Math.Between(20, 50),
+          alpha: 0,
+          scale: { from: 1, to: 1.6 },
+          duration: Phaser.Math.Between(900, 1600),
+          delay: i * 70,
+          onComplete: () => img.destroy(),
+        });
+      }
+    },
+
+    travel: (label, icon, ms) => UI.travel(label, icon, ms),
+    chapterCard: (k, t, s, b) => UI.chapterCard(k, t, s, b),
+    unlockRegion(id) {
+      if (!GameState.data.regionsUnlocked.includes(id)) GameState.data.regionsUnlocked.push(id);
+    },
+
+    prop(id, key, tx, ty, frame = 0) {
+      scene.tempProps.get(id)?.destroy();
+      const img = scene.add.image(tx * 16, ty * 16, key, frame).setOrigin(0.5, 1);
+      if (img.height >= 64) img.setScale(1 / RENDER_SCALE);
+      img.setDepth(img.y);
+      scene.tempProps.set(id, img);
+    },
+    moveProp(id, tx, ty, ms) {
+      const img = scene.tempProps.get(id);
+      if (!img) return Promise.resolve();
+      return new Promise((r) =>
+        scene.tweens.add({ targets: img, x: tx * 16, y: ty * 16, duration: ms, ease: 'Sine.easeInOut', onUpdate: () => img.setDepth(img.y), onComplete: () => r() }),
+      );
+    },
+    removeProp(id) {
+      scene.tempProps.get(id)?.destroy();
+      scene.tempProps.delete(id);
+    },
+    illustration: (key, lines) => UI.illustration(key, lines),
+
+    visible(who, on) {
+      actor(who)?.setVisible(on);
     },
 
     outfit(id) {

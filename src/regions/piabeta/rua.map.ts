@@ -75,15 +75,17 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', '...Você tá rindo de mim ou comigo?');
       await ctx.say('bella', 'Com você. Talvez um pouquinho de você.');
     }
-    await ctx.wait(400);
+    await ctx.wait(300);
+    ctx.prop('uber', 'uber-car', 36, 11.4, 0);
+    await ctx.moveProp('uber', 15.5, 11.4, 2400);
     ctx.sfx('horn');
     await ctx.emote('weng', 'exclaim');
     await ctx.say('weng', 'É o nosso! Placa confere. Primeiro as damas.');
     ctx.objective('pia-m2', 'uber');
+    ctx.sfx('door');
     await ctx.fadeOut(600);
-    await ctx.narrate(`A caminho da ${ROTA}...`);
-    await ctx.narrate(`(A chegada na ${ROTA}, com o minigame de montar o pedido, chega na Fase 3. A história para aqui por enquanto!)`);
-    await ctx.fadeIn(600);
+    await ctx.travel(`A caminho da ${ROTA}...`, '🚗', 2800);
+    await ctx.teleport('piabeta-rota66-fora', 'from-uber');
   },
 
   async vizinha(ctx) {

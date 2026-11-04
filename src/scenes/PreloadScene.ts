@@ -27,6 +27,12 @@ export class PreloadScene extends Phaser.Scene {
       else if (a.kind === 'image') this.load.image(a.key, a.file);
       else AudioSystem.registerFile(a.key, a.file);
     }
+    // Cenários pintados: qualquer maps/<id>-bg.png ou -fg.png é carregado automaticamente.
+    const known = new Set(ASSETS.map((a) => a.file));
+    for (const f of files) {
+      const m = /^assets\/maps\/(.+-(?:bg|fg))\.png$/.exec(f);
+      if (m && !known.has(f)) this.load.image(`map-${m[1]}`, f);
+    }
     const loaded = ASSETS.filter((a) => files.has(a.file)).map((a) => a.id);
     console.info(`[assets] ${loaded.length}/${ASSETS.length} arquivos reais. Demais: placeholders.`, loaded);
   }

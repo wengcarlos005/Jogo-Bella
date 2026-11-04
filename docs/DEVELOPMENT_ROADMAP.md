@@ -4,8 +4,8 @@
 |---|---|---|
 | 1 | Planejamento: GDD, arquitetura, missões, assets, roadmap | ✅ |
 | 2 | Protótipo funcional: motor, menu, movimento, câmera, colisões, interação, diálogos, missões, inventário, álbum, salvamento, toque, clima | ✅ |
-| 3 | Vertical slice Piabetá: hamburgueria + minigame, parque, chuva, primeiro beijo, arte do Lote 1–2 integrada | ⏳ próxima |
-| 4 | Duque de Caxias: hub, casa personalizável, jardinagem, culinária, jogo da memória, mapa-múndi, sistema de minigames genérico | ⏳ |
+| 3 | Vertical slice Piabetá: Uber, Rota 66 (fachada + interior), 2 minigames de hambúrguer, parque, chuva, primeiro beijo, fim do prólogo | ✅ |
+| 4 | Duque de Caxias: hub, casa personalizável, jardinagem, culinária, jogo da memória, mapa-múndi, sistema de minigames genérico | ⏳ próxima |
 | 5 | Ano 1: Petrópolis, Araruama, Rio das Ostras, Niterói, Lapa, Cabo Frio (câmera fotográfica, pesca, puzzles, festas) | ⏳ |
 | 6 | Ano 2: Botafogo, Seropédica (formatura) | ⏳ |
 | 7 | Ano 3: Curitiba (aeroporto, voo, hotel, 3 parques, gastronomia) | ⏳ |

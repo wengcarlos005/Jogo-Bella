@@ -1,0 +1,216 @@
+import { T } from '@/world/tiles';
+import type { MapDef, TileRect } from '@/world/MapTypes';
+import type { Script } from '@/core/script';
+import { QuestSystem } from '@/systems/QuestSystem';
+import { PERSONAL, dateOrPlaceholder } from '@/data/personal';
+
+const Q = 'pia-m3';
+const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
+const objActive = (o: string) => QuestSystem.isActive(Q) && !objDone(o);
+
+/** Retângulo no cenário ORIGINAL (art-source/maps/piabeta-parque.png, 1536x1024). 48 px = 1 tile. */
+const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
+
+const scripts: Record<string, Script> = {
+  async entrar(ctx) {
+    if (ctx.objectiveDone(Q, 'passear') && !ctx.objectiveDone(Q, 'beijo')) ctx.weather('rain');
+    if (ctx.objectiveDone(Q, 'beijo')) ctx.weather('sunset');
+    if (!ctx.questActive(Q) || ctx.objectiveDone(Q, 'parque')) return;
+    ctx.objective(Q, 'parque');
+    await ctx.wait(300);
+    await ctx.say('weng', 'Olha só esse lugar. Com essas luzinhas acesas fica ainda mais bonito.');
+    await ctx.say('bella', 'Parece cenário de filme. Primeiro a jukebox, agora isso...');
+    await ctx.say('weng', 'Eu me esforcei, tá? Vamos andar um pouco?');
+  },
+
+  async chuva(ctx) {
+    ctx.objective(Q, 'passear');
+    await ctx.say('weng', 'Sabe o que eu mais gostei de hoje?');
+    await ctx.say('bella', 'O hambúrguer?');
+    await ctx.say('weng', 'Quase. Foi a parte em que você riu de mim no Uber.');
+    await ctx.emote('bella', 'question');
+    ctx.weather('rain');
+    ctx.shake(200);
+    await ctx.wait(900);
+    await ctx.emote('bella', 'exclaim');
+    await ctx.say('bella', 'Isso é... chuva?!');
+    await ctx.say('weng', 'É chuva! Corre, o coreto! Lá em cima!');
+    ctx.toast('Corra para o coreto!');
+  },
+
+  async beijo(ctx) {
+    ctx.objective(Q, 'abrigo');
+    await ctx.fadeOut(300);
+    ctx.follow('weng', false);
+    ctx.place('player', 12.4, 6.3, 'right');
+    ctx.place('weng', 14.5, 6.3, 'left');
+    await ctx.fadeIn(500);
+    ctx.letterbox(true);
+    await ctx.focus(13.45, 6.0, 1.5, 1200);
+
+    await ctx.say('bella', 'Que chuva é essa?! Do nada!');
+    await ctx.say('weng', 'Pelo menos a gente achou o coreto a tempo. Mais ou menos a tempo.');
+    await ctx.say('bella', 'Eu tô encharcada. E o meu cabelo...');
+    await ctx.say('weng', 'Tá linda mesmo assim.');
+    const c1 = await ctx.choose('bella', '(...)', ['Rir de nervoso', 'Dar um empurrãozinho nele', 'Ficar em silêncio, olhando pra ele']);
+    if (c1 === 0) await ctx.say('weng', 'Viu? Você ri e eu fico sem saber o que falar.');
+    else if (c1 === 1) await ctx.say('weng', 'Ei! Eu tô sendo romântico aqui!');
+    else await ctx.emote('weng', 'sweat');
+
+    await ctx.narrate('A chuva caía forte lá fora. Mas, ali dentro, o mundo parecia ter parado.');
+    await ctx.say('weng', 'Bella... posso te falar uma coisa?');
+    await ctx.say('weng', 'Hoje foi o melhor dia que eu tive em muito tempo.');
+    await ctx.choose('bella', '(O coração disparou)', ['"Pra mim também."', 'Chegar mais perto']);
+
+    await Promise.all([ctx.move('player', 13.0, 6.3, 14), ctx.move('weng', 13.9, 6.3, 14)]);
+    ctx.face('player', 'right');
+    ctx.face('weng', 'left');
+    await ctx.focus(13.45, 6.0, 2.1, 2200);
+    ctx.hearts('bella', 14);
+    ctx.hearts('weng', 14);
+    await ctx.wait(1200);
+    await ctx.fadeOut(1800, '#fff3f6');
+    ctx.objective(Q, 'beijo');
+    await ctx.illustration('memory-pia-03', ['O primeiro beijo.', `Piabetá, ${dateOrPlaceholder(PERSONAL.dates.firstKiss)}. Debaixo de chuva.`]);
+
+    ctx.weather('clear');
+    await ctx.unfocus(10);
+    ctx.letterbox(false);
+    await ctx.fadeIn(1500);
+    await ctx.say('weng', '...A chuva passou.');
+    await ctx.say('bella', 'Passou nada. Eu nem percebi.');
+    await ctx.emote('weng', 'heart');
+    await ctx.memory('mem-pia-03');
+    ctx.unlockRegion('duque-de-caxias');
+    ctx.follow('weng', true);
+    await ctx.chapterCard('Fim do Prólogo', 'Piabetá', 'Onde tudo começou. Próximo capítulo: Duque de Caxias (em construção).');
+  },
+
+  async coreto(ctx) {
+    if (objActive('abrigo') && objDone('passear')) {
+      await ctx.say('weng', 'Sobe, sobe! Pela escadinha!');
+      return;
+    }
+    if (objDone('beijo')) {
+      await ctx.say('bella', 'O nosso coreto.');
+      return;
+    }
+    await ctx.say('bella', 'Um coreto todo iluminado. Que lindo.');
+  },
+  async chafariz(ctx) {
+    if (ctx.flag('desejo-chafariz')) {
+      await ctx.say('bella', 'Já fiz meu pedido. E não conto!');
+      return;
+    }
+    const c = await ctx.choose('bella', 'Um chafariz... jogar uma moedinha e fazer um pedido?', ['Jogar a moeda', 'Agora não']);
+    if (c === 1) return;
+    ctx.setFlag('desejo-chafariz');
+    ctx.sfx('pickup');
+    await ctx.say('weng', 'O que você pediu?');
+    await ctx.say('bella', 'Se eu contar, não se realiza.');
+    await ctx.emote('weng', 'heart');
+  },
+  async lago(ctx) {
+    await ctx.say('bella', 'Um laguinho com vitórias-régias e uma pontezinha. Esse parque pensou em tudo.');
+  },
+  async banco(ctx) {
+    await ctx.say('weng', 'Um banco na luz do poste. Clássico.');
+  },
+  async weng(ctx) {
+    if (objActive('passear')) await ctx.say('weng', 'Vamos seguindo o caminho, pro meio do parque.');
+    else if (objActive('abrigo')) await ctx.say('weng', 'Corre! O coreto, lá em cima!');
+    else await ctx.say('weng', 'Melhor primeiro encontro de todos.');
+  },
+};
+
+/** Prólogo — parque arborizado ao lado da Rota 66 (cenário pintado). */
+export const parqueMap: MapDef = {
+  id: 'piabeta-parque',
+  region: 'piabeta',
+  name: 'Parque',
+  music: 'parque',
+  background: '#3f6a2e',
+  art: 'native',
+  legend: { '.': T.GRASS },
+  ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
+
+  blocks: [
+    // fundo de árvores + bordas
+    R(0, 0, 1536, 150),
+    R(0, 150, 70, 830),
+    R(1490, 150, 1536, 830),
+    R(0, 1005, 1536, 1100),
+    // grade da frente (portão em x 650–830)
+    R(0, 830, 650, 925),
+    R(830, 830, 1536, 925),
+    // coreto: telhado/fundo e laterais (entra pela escadinha)
+    R(505, 150, 840, 280),
+    R(505, 180, 555, 400),
+    R(790, 180, 840, 400),
+    R(495, 330, 588, 410),
+    R(758, 330, 852, 410),
+    R(425, 210, 505, 330),
+    R(840, 230, 910, 340),
+    // canto superior esquerdo: ipê, banco, lixeira, poste
+    R(110, 150, 190, 290),
+    R(200, 235, 350, 290),
+    R(355, 225, 392, 265),
+    // chafariz
+    R(85, 400, 370, 545),
+    // lago e pedras
+    R(1040, 140, 1395, 395),
+    R(1285, 330, 1365, 410),
+    // postes
+    R(395, 600, 440, 640),
+    R(930, 410, 968, 448),
+    R(1460, 640, 1500, 682),
+    R(1040, 820, 1080, 862),
+    // bancos e lixeira
+    R(255, 625, 395, 665),
+    R(985, 420, 1120, 460),
+    R(1300, 640, 1435, 680),
+    R(1250, 630, 1292, 682),
+    // canteiros
+    R(1250, 445, 1410, 555),
+    R(760, 458, 900, 545),
+    R(325, 678, 460, 790),
+    R(1125, 672, 1262, 762),
+    R(1155, 752, 1310, 832),
+    R(90, 745, 262, 830),
+    // troncos
+    R(545, 640, 605, 725),
+    R(950, 650, 1010, 765),
+    R(30, 690, 100, 815),
+  ],
+
+  hotspots: [
+    { rect: R(505, 30, 840, 432), interact: 'coreto', label: 'Coreto', markerIf: () => objActive('abrigo') && objDone('passear') },
+    { rect: R(80, 380, 380, 560), interact: 'chafariz', label: 'Chafariz' },
+    { rect: R(1040, 130, 1400, 400), interact: 'lago', label: 'Lago' },
+    { rect: R(255, 575, 395, 665), interact: 'banco', label: 'Banco' },
+    { rect: R(985, 370, 1120, 460), interact: 'banco', label: 'Banco' },
+  ],
+
+  spawns: {
+    'from-rota66': { tx: 14.9, ty: 19.1, facing: 'up' },
+  },
+  exits: [{ rect: R(0, 925, 30, 1005), toMap: 'piabeta-rota66-fora', toSpawn: 'from-parque' }],
+  triggers: [
+    {
+      id: 'chuva',
+      rect: R(580, 470, 940, 610),
+      script: 'chuva',
+      once: true,
+      enabledIf: () => objActive('passear'),
+    },
+    {
+      id: 'beijo',
+      rect: R(560, 285, 790, 395),
+      script: 'beijo',
+      once: true,
+      enabledIf: () => objDone('passear') && objActive('abrigo'),
+    },
+  ],
+  scripts,
+  onEnter: 'entrar',
+};

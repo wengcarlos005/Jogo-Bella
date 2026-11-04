@@ -27,7 +27,7 @@ export interface ScriptContext {
   memory(id: string): Promise<void>;
 
   wait(ms: number): Promise<void>;
-  fadeOut(ms?: number): Promise<void>;
+  fadeOut(ms?: number, color?: string): Promise<void>;
   fadeIn(ms?: number): Promise<void>;
   shake(ms?: number): void;
   sfx(name: Sfx): void;
@@ -42,6 +42,26 @@ export interface ScriptContext {
   place(who: string, tx: number, ty: number, facing?: Direction): void;
   /** Troca a roupa da Bella nesta região (ids em data/outfits.ts). */
   outfit(id: string): void;
+  /** Minigame do hambúrguer. */
+  burger(opts: import('@/ui/screens/BurgerGame').BurgerOptions): Promise<import('@/ui/screens/BurgerGame').BurgerResult>;
+  /** Câmera de cinema: foca no tile (tx, ty) com zoom relativo (1 = normal). */
+  focus(tx: number, ty: number, zoom?: number, ms?: number): Promise<void>;
+  /** Volta a câmera para seguir a Bella. */
+  unfocus(ms?: number): Promise<void>;
+  letterbox(on: boolean): void;
+  /** Explosão de corações sobre um personagem. */
+  hearts(who: string, count?: number): void;
+  travel(label: string, icon?: string, ms?: number): Promise<void>;
+  chapterCard(kicker: string, title: string, sub: string, button?: string): Promise<void>;
+  unlockRegion(id: import('./types').RegionId): void;
+  /** Cria um objeto temporário de cena (ex.: o carro do Uber). Base-centro em (tx*16, ty*16). */
+  prop(id: string, key: string, tx: number, ty: number, frame?: number): void;
+  moveProp(id: string, tx: number, ty: number, ms: number): Promise<void>;
+  removeProp(id: string): void;
+  /** Ilustração em tela cheia com legendas (avança com interagir). */
+  illustration(key: string, lines: string[]): Promise<void>;
+  /** Mostra/esconde um personagem (ex.: dentro do carro). */
+  visible(who: string, on: boolean): void;
   /** Weng (ou outro NPC) passa a seguir a Bella. */
   follow(who: string, on: boolean): void;
   /** Mostra/esconde NPCs conforme as condições do mapa. */

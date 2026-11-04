@@ -3,6 +3,7 @@ import { EventBus } from '@/core/EventBus';
 import { GameState } from '@/core/GameState';
 import { QuestSystem } from '@/systems/QuestSystem';
 import { ICON } from '../icons';
+import { textureURL } from '../textures';
 
 export interface HUDActions {
   openMenu(tab?: string): void;
@@ -18,20 +19,37 @@ export class HUD {
   private lastObjective = '';
 
   constructor(parent: HTMLElement, actions: HUDActions) {
-    const btn = (icon: string, title: string, tab: string) =>
-      h('button', { class: 'icon-btn', title, 'aria-label': title, html: icon, onclick: () => actions.openMenu(tab) });
+    const btn = (icon: string, title: string, tab: string, art: string) =>
+      h('button', { class: 'icon-btn', title, 'aria-label': title, 'data-art': art, html: icon, onclick: () => actions.openMenu(tab) });
     this.card.addEventListener('click', () => actions.openMenu('missoes'));
     this.el = h(
       'div',
       { class: 'hud hidden' },
       this.card,
-      h('div', { class: 'hud-buttons' }, btn(ICON.album, 'Álbum', 'album'), btn(ICON.bag, 'Inventário', 'inventario'), btn(ICON.map, 'Mapa', 'mapa'), btn(ICON.menu, 'Menu', 'missoes')),
+      h(
+        'div',
+        { class: 'hud-buttons' },
+        btn(ICON.album, 'Álbum', 'album', 'album'),
+        btn(ICON.bag, 'Inventário', 'inventario', 'mochila'),
+        btn(ICON.map, 'Mapa', 'mapa', 'mapa'),
+        btn(ICON.menu, 'Menu', 'missoes', 'lua'),
+      ),
       this.prompt,
       this.banner,
     );
     parent.append(this.el);
     EventBus.on('state:changed', () => this.refresh());
     EventBus.on('quest:objective', () => this.card.classList.remove('flash'));
+  }
+
+  /** Troca os ícones SVG pelos ícones ilustrados (ui/icon-*.png), se existirem. */
+  applyIcons(): void {
+    this.el.querySelectorAll<HTMLButtonElement>('.icon-btn[data-art]').forEach((b) => {
+      const url = textureURL(`ui-icon-${b.dataset.art}`);
+      if (!url) return;
+      b.classList.add('art');
+      b.replaceChildren(h('img', { src: url, alt: '' }));
+    });
   }
 
   show(on: boolean): void {
