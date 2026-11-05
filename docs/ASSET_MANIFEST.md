@@ -141,7 +141,7 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | MAP-014 | Shopping da Multidão (interior: corredor de lojinhas de cabelo, casa, doces) | maps/duque-multidao-bg.png | pedido |
 | ICON-020.. | Achadinhos: piranha de cabelo, creme de cabelo, scrunchie, potinho organizador, vela cheirosa, pano de prato fofo, paçoca, bala de goma, chocolate | ui/icon-achado-*.png | ✅ recortados |
 | MAP-017 | Quintal da casa da Bella com churrasqueira (dia) | maps/piabeta-quintal-bg.png | pedido |
-| MAP-018 | Praça do 2º encontro (fim de tarde) com o restaurante mexicano ao lado | maps/piabeta-praca2-bg.png | pedido |
+| MAP-018 | Rua ao lado da praça do primeiro beijo com a fachada do restaurante mexicano (a praça é o parque que já existe) | maps/piabeta-mexicano-fora-bg.png | pedido |
 | MAP-019 | Restaurante mexicano (interior) | maps/piabeta-mexicano-bg.png | pedido |
 | CIN-015 | Os dois de chapéu mexicano brindando a bebida de cortesia | cinematics/mexicano.png | pedido |
 | MAP-015 | Cinema do Caxias Shopping (saguão) | art-source/maps/duque-cinema.webp | recebido, entra com o 3º encontro |
