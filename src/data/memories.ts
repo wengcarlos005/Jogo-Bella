@@ -81,7 +81,7 @@ export const MEMORIES: MemoryDef[] = [
   },
   {
     id: 'mem-dq-04',
-    region: 'duque-de-caxias',
+    region: 'piabeta',
     title: 'Chapéus mexicanos',
     year: 'Ano 1',
     text: 'Segundo encontro: churrasco com a minha mãe e o Alexandre, filme no sofá, a caminhada até a nossa praça e o restaurante mexicano que deu bebida de cortesia. A gente de chapéu gigante, rindo de tudo.',

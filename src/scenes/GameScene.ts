@@ -64,6 +64,7 @@ export class GameScene extends Phaser.Scene {
 
   init(data: GameSceneData): void {
     this.def = getMap(data.mapId);
+    this.data.set('charScale', this.def.charScale ?? 1);
     this.npcs = new Map();
     this.tempProps = new Map();
     this.umbrellas = new Map();
@@ -704,6 +705,11 @@ export class GameScene extends Phaser.Scene {
     // Um recorte só cobre quem está DE FATO atrás do objeto (pés entre o topo e a base).
     // Quem está mais ao norte (acima do objeto) passa por cima, sem corte.
     for (const o of this.built.overlays) {
+      if (o.when) {
+        const on = o.when();
+        o.img.setVisible(on);
+        if (!on) continue;
+      }
       let depth = o.base;
       for (const a of [this.player, this.npcs.get('weng')?.npc]) {
         if (!a || !a.visible) continue;

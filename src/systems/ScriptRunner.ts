@@ -162,6 +162,11 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       return new Promise((r) => scene.time.delayedCall(ms + 20, () => { cam.centerOn(p.x, p.y - 12); r(undefined); }));
     },
 
+    scale(who, factor) {
+      const a = actor(who);
+      if (a) a.setScale(a.baseScale * factor);
+    },
+
     pose(who, key, frame = 0) {
       const a = actor(who);
       if (a) a.pose(key, frame);
@@ -299,7 +304,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
             else if (tick % 22 === 3) pair!.setFrame(0);
             else if (tick % 7 === 0) {
               pair!.setFrame(1);
-              scene.time.delayedCall(170, () => pair?.active && pair.frame.name === '1' && pair.setFrame(0));
+              scene.time.delayedCall(170, () => pair?.active && String(pair.frame.name) === '1' && pair.setFrame(0));
             }
           },
         });
@@ -404,13 +409,15 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       scene.weather.slow(true);
       AudioSystem.play('memory');
       // 2) chegam mais perto, devagar; a Bella fica na pontinha dos pés
+      const gap = 15 * (b.scaleX / b.baseScale);
       await Promise.all([
-        tw({ targets: b, x: midX - 13, duration: 1100, ease: 'Sine.easeInOut' }),
-        tw({ targets: w, x: midX + 13, duration: 1100, ease: 'Sine.easeInOut' }),
+        tw({ targets: b, x: midX - gap - 3, duration: 1100, ease: 'Sine.easeInOut' }),
+        tw({ targets: w, x: midX + gap + 3, duration: 1100, ease: 'Sine.easeInOut' }),
       ]);
+      // ela na pontinha dos pés, ele se inclina pra ela (sem encolher, sem nariz com nariz)
       await Promise.all([
-        tw({ targets: b, y: b.y - 2, x: midX - 10.5, duration: 600, ease: 'Sine.easeOut' }),
-        tw({ targets: w, x: midX + 10.5, scaleY: w.scaleY * 0.985, duration: 600, ease: 'Sine.easeOut' }),
+        tw({ targets: b, y: b.y - 1.5, x: midX - gap, angle: 3, duration: 650, ease: 'Sine.easeOut' }),
+        tw({ targets: w, x: midX + gap, angle: -5, duration: 650, ease: 'Sine.easeOut' }),
       ]);
       // 3) o beijo: brilho rosa e um coração grande que pulsa atrás dos dois
       const glow = scene.add.image(midX, headY, 'fx-glow').setTint(0xff7aa8).setBlendMode(Phaser.BlendModes.ADD).setDepth(b.depth - 2).setAlpha(0).setDisplaySize(10, 10);
@@ -439,6 +446,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       scene.weather.slow(false);
       glow.destroy();
       big.destroy();
+      b.setAngle(0);
+      w.setAngle(0);
     },
 
     hasArt: (key) => scene.textures.exists(key),

@@ -62,6 +62,7 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
   facing: Direction = 'down';
   charKey: string;
   headRatio = 0.86;
+  baseScale = 1;
 
   /** Y (mundo) do topo da cabeça desenhada. */
   get headY(): number {
@@ -94,10 +95,12 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     const fh = this.frame.height;
     // Folhas HD (quadros ≥ 64px) são exibidas em meia escala: 1 pixel da arte
     // = 1 pixel do canvas (que tem o dobro da resolução lógica).
-    const s = (fh >= 64 ? 1 / RENDER_SCALE : 1) * CHAR_SCALE;
+    const mapScale = (this.scene.data?.get('charScale') as number | undefined) ?? 1;
+    const s = (fh >= 64 ? 1 / RENDER_SCALE : 1) * CHAR_SCALE * mapScale;
     // Fração do quadro ocupada pelo personagem (o resto é espaço vazio acima da cabeça).
     this.headRatio = measureHeadRatio(this.scene, key);
     this.setScale(s);
+    this.baseScale = s;
     const b = PLAYER.body;
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.setSize(b.width / s, b.height / s);

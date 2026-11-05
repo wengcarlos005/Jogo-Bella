@@ -44,7 +44,8 @@ const scripts: Record<string, Script> = {
     await ctx.fadeOut(600);
     await ctx.narrate('E ali, de chapéu gigante e rindo de tudo, a Bella teve certeza: era ele.');
     await ctx.narrate('O terceiro encontro seria o do pedido de namoro... (essa parte da história chega em breve).');
-    await ctx.chapterCard('Capítulo 1', 'Duque de Caxias', 'Já namorando: a primeira vez no apê do Weng.', 'Continuar');
+    await ctx.chapterCard('Fim do Capítulo 1', 'Piabetá', 'O segundo encontro.', 'Continuar');
+    await ctx.chapterCard('Capítulo 2', 'Duque de Caxias', 'Nosso cantinho. Já namorando: a primeira vez no apê do Weng.', 'Começar');
     await ctx.teleport('duque-apto', 'porta');
   },
   async cardapio(ctx) {

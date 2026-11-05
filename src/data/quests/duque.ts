@@ -3,13 +3,13 @@ import type { QuestDef } from './index';
 export const DUQUE_QUESTS: QuestDef[] = [
   {
     id: 'dq-e2',
-    region: 'duque-de-caxias',
-    chapter: 'Capítulo 1',
+    region: 'piabeta',
+    chapter: 'Capítulo 1 · Piabetá',
     title: 'O segundo encontro',
     kind: 'principal',
     description: 'Churrasco na casa da Bella com a mãe e o Alexandre, filme no sofá e um passeio até a praça do primeiro beijo.',
     objectives: [
-      { id: 'churrasco', text: 'Ajudar o Alexandre na churrasqueira', hint: 'A churrasqueira fica no canto esquerdo do quintal.' },
+      { id: 'churrasco', text: 'O Weng ajuda o Alexandre na churrasqueira', hint: 'A churrasqueira fica no canto esquerdo do quintal.' },
       { id: 'mesa', text: 'Sentar à mesa com a família', hint: 'A mesa de toalha xadrez, no meio do quintal.' },
       { id: 'filme', text: 'Ver um filme no sofá', hint: 'Entre pela porta da cozinha, no fundo do quintal.' },
       { id: 'passeio', text: 'Passear até a praça do primeiro beijo', hint: 'Saia pelo portão. A praça fica depois de Fragoso.' },
@@ -20,7 +20,7 @@ export const DUQUE_QUESTS: QuestDef[] = [
   {
     id: 'dq-m1',
     region: 'duque-de-caxias',
-    chapter: 'Capítulo 1',
+    chapter: 'Capítulo 2',
     title: 'Nosso cantinho',
     kind: 'principal',
     description: 'A primeira vez da Bella no apê do Weng. Só falta a Meli aprovar a visita.',

@@ -26,6 +26,7 @@ export interface BuiltOverlay {
   base: number;
   /** Fica translúcido quando alguém passa atrás (copas grandes). */
   fade: boolean;
+  when?: () => boolean;
 }
 
 function parseLayer(def: MapDef, rows: string[], label: string): number[][] {
@@ -124,6 +125,24 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
         ctx.drawImage(src, cx, cy, cw, ch, 0, 0, cw, ch);
         const data = ctx.getImageData(0, 0, cw, ch);
         const d = data.data;
+        // 'column' (postes): em cada linha, mantém só o trecho entre o contorno escuro da esquerda e o da direita
+        let colL: Int16Array | null = null;
+        let colR: Int16Array | null = null;
+        if (o.cut === 'column') {
+          colL = new Int16Array(ch).fill(-1);
+          colR = new Int16Array(ch).fill(-1);
+          const dark = (x: number, y: number) => {
+            const q = (y * cw + x) * 4;
+            return Math.max(d[q], d[q + 1], d[q + 2]) < 80;
+          };
+          for (let y = 0; y < ch; y++) {
+            let l = -1;
+            let r = -1;
+            for (let x = 0; x < cw; x++) if (dark(x, y)) { l = x; break; }
+            for (let x = cw - 1; x >= 0; x--) if (dark(x, y)) { r = x; break; }
+            if (l >= 0 && r - l >= 2) { colL[y] = l; colR[y] = r; }
+          }
+        }
         for (let p = 0; p < d.length; p += 4) {
           const x = (p / 4) % cw;
           const y = Math.floor(p / 4 / cw);
@@ -138,6 +157,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
           if (keep && o.cut === 'lamp') keep = isLamp(d[p], d[p + 1], d[p + 2]);
           if (keep && o.cut === 'dark') keep = Math.max(d[p], d[p + 1], d[p + 2]) < 95;
           if (keep && o.cut === 'booth') keep = isBooth(d[p], d[p + 1], d[p + 2]);
+          if (keep && colL && colR) keep = colL[y] >= 0 && x >= colL[y] && x <= colR[y];
           if (!keep) d[p + 3] = 0;
         }
         ctx.putImageData(data, 0, 0);
@@ -165,6 +185,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
         rect: new Phaser.Geom.Rectangle(o.x0 / 3, o.y0 / 3, (o.x1 - o.x0) / 3, (o.y1 - o.y0) / 3),
         base: o.base / 3,
         fade: o.fade ?? false,
+        when: o.when,
       });
     });
   }

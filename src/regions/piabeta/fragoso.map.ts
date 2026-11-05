@@ -121,16 +121,15 @@ export const fragosoMap: MapDef = {
     R(0, 0, 1500, 322), // casas e muros de cima
     R(1500, 0, 1536, 1024), // árvores da direita
     // terreno do meio: plantas/árvores (topo) + muro (frente)
-    R(0, 445, 1192, 600),
+    R(0, 470, 1192, 600), // terreno com plantas (dá pra encostar nas folhas)
     R(0, 600, 700, 702), // muro da esquerda (até a faixa de grama, ninguém entra na parede)
     R(700, 600, 1205, 660), // muro do gato
     R(1192, 445, 1205, 660),
     // casas de baixo (telhados)
-    R(0, 792, 1536, 1024), // telhados (dá pra descer até a beira da rua)
-    R(1380, 700, 1536, 792), // folhagem do canto
+    R(0, 780, 1536, 1024), // telhados (ninguém anda em cima)
+    R(1380, 700, 1536, 780), // folhagem do canto
     R(1405, 575, 1536, 700), // arbustos à direita da curva
     R(0, 392, 122, 445), // arbustos do canto de cima à esquerda (a calçada de cima fica livre)
-    R(255, 372, 505, 445), // copa da árvore sobre a rua (sólida)
     // bases dos postes
     R(204, 712, 240, 745),
     R(1192, 660, 1228, 692),
@@ -140,8 +139,10 @@ export const fragosoMap: MapDef = {
   ],
   overlays: [
     // postes: quem passa atrás (ao norte da base) fica atrás da haste
-    { x0: 211, y0: 545, x1: 234, y1: 745, base: 744 }, // só a haste (sem faixa de calçada junto)
-    { x0: 1193, y0: 440, x1: 1215, y1: 692, base: 690 },
+    { x0: 200, y0: 545, x1: 246, y1: 745, base: 744, cut: 'column' }, // só a haste (recorte exato)
+    { x0: 1188, y0: 440, x1: 1226, y1: 692, base: 690, cut: 'column' },
+    // plantas do terreno: as folhas ficam na frente dos pés de quem encosta nelas
+    { x0: 0, y0: 420, x1: 1192, y1: 600, base: 600, cut: 'foliage' },
     // copa da árvore: fica translúcida quando alguém passa atrás
     { x0: 250, y0: 360, x1: 510, y1: 445, base: 445, cut: 'foliage', fade: true },
   ],

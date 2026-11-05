@@ -101,7 +101,7 @@ export const rota66ForaMap: MapDef = {
   },
 
   hotspots: [
-    { rect: R(330, 140, 920, 320), interact: 'neon', label: 'Letreiro' },
+    { rect: R(330, 140, 920, 640), interact: 'neon', label: 'Letreiro' },
     { rect: R(1080, 440, 1185, 684), interact: 'placa', label: 'Placa' },
     { rect: R(215, 585, 385, 702), interact: 'banco', label: 'Sentar' },
   ],

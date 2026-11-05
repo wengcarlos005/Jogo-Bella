@@ -21,19 +21,29 @@ const scripts: Record<string, Script> = {
     if (!ctx.questActive(Q) && !QuestSystem.isDone(Q)) ctx.startQuest(Q);
     ctx.refresh();
     await ctx.narrate('Algumas semanas depois do primeiro beijo.');
-    await ctx.narrate('Segundo encontro: churrasco no quintal da Bella, em Piabetá.');
+    await ctx.narrate('Segundo encontro: churrasco no quintal da Bella.');
     await ctx.say('mae-bella', 'Chegou o Weng! Entra, querido, fica à vontade. O Alexandre já acendeu a churrasqueira.');
     await ctx.say('pai-bella', '...Sabe virar carne?');
     await ctx.emote('weng', 'sweat');
     await ctx.say('weng', 'Sei! Quer dizer... sei aprender rápido.');
     await ctx.say('bella', '(Isso é um teste. O Alexandre tá testando ele.)');
-    ctx.toast(`Ajude o ${ALE} na churrasqueira`);
+    ctx.toast(`Leve o Weng até a churrasqueira do ${ALE}`);
   },
 
   async churrasqueira(ctx) {
     if (objActive('churrasco')) {
-      await ctx.say('pai-bella', 'Toma o pegador. Vira quando tiver no ponto.');
-      const r = await ctx.grill({ title: 'Na churrasqueira', helper: 'Alexandre' });
+      await ctx.say('pai-bella', 'Weng. Vem cá. Toma o pegador.');
+      await ctx.emote('weng', 'exclaim');
+      await ctx.say('weng', 'Eu? Agora? Tá. Tá bom. Eu consigo.');
+      // o Weng vai pra churrasqueira; a Bella fica olhando, torcendo
+      ctx.follow('weng', false);
+      await ctx.move('pai-bella', 9.3, 11.6, 45);
+      await ctx.move('weng', 7.2, 11.5, 50);
+      ctx.face('weng', 'left');
+      ctx.face('pai-bella', 'left');
+      ctx.face('player', 'weng');
+      await ctx.say('bella', '(Vai, Weng! Você consegue! ...Eu acho.)');
+      const r = await ctx.grill({ title: 'O Weng na churrasqueira', helper: 'Alexandre' });
       ctx.setFlag('dq-churrasco-estrelas', r.stars);
       if (r.stars === 3) {
         await ctx.emote('pai-bella', 'heart');
@@ -43,6 +53,7 @@ const scripts: Record<string, Script> = {
         await ctx.say('pai-bella', 'Hm. Com treino melhora.');
         await ctx.say('weng', '(Pelo menos ele não me expulsou.)');
       }
+      ctx.follow('weng', true);
       ctx.objective(Q, 'churrasco');
       await ctx.say('mae-bella', 'Tá pronto? Então vem todo mundo pra mesa!');
       ctx.toast('Sente-se à mesa com a família');
@@ -55,11 +66,11 @@ const scripts: Record<string, Script> = {
     if (objActive('mesa') && objDone('churrasco')) {
       await ctx.fadeOut(250);
       ctx.follow('weng', false);
-      ctx.place('player', 12.2, 13.9, 'up');
-      ctx.place('weng', 15.6, 13.9, 'up');
+      ctx.place('player', 12.6, 16.0, 'up');
+      ctx.place('weng', 15.0, 16.0, 'up');
       ctx.place('mae-bella', 10.6, 9.4, 'right');
       ctx.place('pai-bella', 17.6, 9.6, 'left');
-      await ctx.frame(14, 12, 0);
+      await ctx.frame(14, 13.6, 0);
       await ctx.fadeIn(300);
       await ctx.say('mae-bella', 'Então, Weng, me conta: você trabalha com o quê? Estuda o quê? Gosta de quê?');
       await ctx.say('bella', 'Mãe! Uma pergunta de cada vez.');
@@ -155,6 +166,7 @@ export const quintalMap: MapDef = {
   region: 'piabeta',
   name: 'Quintal da Bella',
   music: 'casa',
+  charScale: 1.3,
   background: '#3a2a1e',
   art: 'native',
   legend: { '.': T.GRASS },
@@ -171,7 +183,7 @@ export const quintalMap: MapDef = {
     R(0, 470, 105, 845), // arbusto da esquerda
     R(0, 700, 185, 845),
     R(440, 365, 870, 800), // mesa com cadeiras
-    R(1150, 540, 1195, 592), // poste do varal
+    R(1150, 425, 1400, 592), // varal: entre o muro e o varal não se anda (as roupas ficam sempre atrás de quem passa na frente)
     R(1390, 0, 1536, 565), // tronco da árvore
     R(1290, 590, 1536, 830), // floreira
     R(0, 845, 604, 1024), // muro de baixo (portão em x 604–905)
@@ -179,7 +191,7 @@ export const quintalMap: MapDef = {
     R(604, 885, 905, 1024),
   ],
 
-  overlays: [{ x0: 1240, y0: 0, x1: 1536, y1: 340, base: 560, cut: 'foliage', fade: true }],
+  overlays: [{ x0: 1390, y0: 0, x1: 1536, y1: 340, base: 565, cut: 'foliage', fade: true }],
 
   hotspots: [
     { rect: R(150, 330, 335, 600), interact: 'churrasqueira', label: 'Churrasqueira', markerIf: () => objActive('churrasco') },
@@ -193,10 +205,10 @@ export const quintalMap: MapDef = {
 
   npcs: [
     { id: 'pai-bella', sprite: 'pai-bella', tx: 7.4, ty: 11.6, facing: 'up', interact: 'pai' },
-    { id: 'mae-bella', sprite: 'mae-bella', tx: 19.2, ty: 9.9, facing: 'down', interact: 'mae' },
+    { id: 'mae-bella', sprite: 'mae-bella', tx: 18.7, ty: 11.6, facing: 'left', interact: 'mae' },
   ],
   spawns: {
-    porta: { tx: 19.6, ty: 9.3, facing: 'down' },
+    porta: { tx: 19.6, ty: 9.6, facing: 'down' },
   },
   scripts,
   onEnter: 'chegada',

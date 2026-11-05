@@ -54,8 +54,10 @@ const scripts: Record<string, Script> = {
     await ctx.fadeOut(300);
     ctx.follow('weng', false);
     // dentro do coreto, no piso, entre as colunas da frente
-    ctx.place('player', 12.75, 5.45, 'right');
-    ctx.place('weng', 14.35, 5.45, 'left');
+    ctx.place('player', 12.75, 5.85, 'right');
+    ctx.place('weng', 14.35, 5.85, 'left');
+    ctx.scale('player', 0.86);
+    ctx.scale('weng', 0.86);
     await ctx.fadeIn(500);
     ctx.letterbox(true);
     await ctx.focus(13.5, 4.9, 1.5, 1200);
@@ -78,7 +80,7 @@ const scripts: Record<string, Script> = {
       await ctx.choose('bella', '(...)', ['"Pode."', 'Responder com um sorriso']);
     }
 
-    await Promise.all([ctx.move('player', 13.2, 5.45, 12), ctx.move('weng', 13.85, 5.45, 12)]);
+    await Promise.all([ctx.move('player', 13.22, 5.85, 12), ctx.move('weng', 13.83, 5.85, 12)]);
     ctx.face('player', 'right');
     ctx.face('weng', 'left');
     await ctx.focus(13.5, 4.7, 2.1, 2200);
@@ -88,6 +90,8 @@ const scripts: Record<string, Script> = {
     await ctx.illustration('memory-pia-03', ['O primeiro beijo.', `Piabetá, ${dateOrPlaceholder(PERSONAL.dates.firstKiss)}. Debaixo de chuva.`]);
 
     ctx.weather('clear');
+    ctx.scale('player', 1);
+    ctx.scale('weng', 1);
     await ctx.unfocus(10);
     ctx.letterbox(false);
     await ctx.fadeIn(1500);
@@ -98,7 +102,7 @@ const scripts: Record<string, Script> = {
     ctx.unlockRegion('duque-de-caxias');
     ctx.follow('weng', true);
     await ctx.chapterCard('Fim do Prólogo', 'Piabetá', 'Onde tudo começou.', 'Continuar');
-    await ctx.chapterCard('Capítulo 1', 'Duque de Caxias', 'Nosso cantinho', 'Começar');
+    await ctx.chapterCard('Capítulo 1', 'Piabetá', 'O segundo encontro', 'Começar');
     ctx.startQuest('dq-e2');
     await ctx.teleport('piabeta-quintal', 'porta');
   },
@@ -162,36 +166,44 @@ export const parqueMap: MapDef = {
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
   blocks: [
-    // fundo de árvores + bordas
+    // fundo de árvores + bordas (só o necessário; as copas ficam por cima)
     R(0, 0, 1536, 150),
-    R(0, 150, 70, 830),
-    R(1490, 150, 1536, 690), // borda direita (passagem para a rua do mexicano em y 690–830)
+    R(0, 150, 40, 385),
+    R(1500, 480, 1536, 690),
     R(0, 1005, 1536, 1100),
-    // pilares do portão (com lampião) e as folhas do portão abertas: ninguém sobe neles
+    // pilares do portão e as folhas do portão abertas
     R(576, 788, 640, 952),
     R(860, 788, 930, 952),
     R(640, 770, 678, 945),
     R(826, 770, 860, 945),
+    // pés do arco de flores (a passagem do meio fica livre)
+    R(560, 724, 668, 790),
+    R(832, 724, 935, 790),
     // grade da frente (portão em x 650–830)
     R(0, 830, 650, 925),
     R(830, 830, 1536, 925),
-    // coreto: telhado/fundo e laterais (entra pela escadinha)
-    R(505, 150, 840, 300), // coreto: telhado e interior (só a cena do beijo entra)
+    // coreto: telhado/interior (só a cena do beijo entra) e laterais
+    R(505, 150, 840, 300),
     R(505, 180, 555, 400),
     R(790, 180, 840, 400),
     R(495, 330, 588, 410),
     R(758, 330, 852, 410),
-    R(432, 272, 503, 330),
-    R(845, 292, 908, 340),
-    // canto superior esquerdo: ipê, banco, lixeira, poste
-    R(110, 150, 190, 290),
+    R(428, 240, 505, 332), // flores à esquerda do coreto
+    R(842, 262, 910, 342), // flores à direita do coreto
+    // canto superior esquerdo: ipê (tronco), banco, lixeira, poste
+    R(130, 230, 180, 290),
     R(200, 235, 350, 290),
     R(355, 225, 392, 265),
-    // chafariz
-    R(80, 428, 326, 540),
-    // lago e pedras
-    R(1040, 140, 1395, 395),
-    R(1285, 330, 1365, 410),
+    // chafariz: só a metade da frente da bacia (dá pra passar por trás)
+    R(88, 478, 310, 546),
+    R(0, 580, 95, 622), // moita à esquerda do chafariz
+    // lago e ponte: dá pra subir na ponte; a água e as pedras bloqueiam
+    R(1040, 150, 1245, 250),
+    R(1240, 150, 1452, 212), // corrimão de trás da ponte
+    R(1040, 250, 1400, 372),
+    R(1180, 372, 1255, 420), // pedras da margem
+    R(1300, 372, 1378, 430), // samambaia
+    R(1455, 420, 1520, 480), // tronco da árvore do lago
     // postes
     R(395, 600, 440, 640),
     R(930, 410, 968, 448),
@@ -202,45 +214,53 @@ export const parqueMap: MapDef = {
     R(985, 420, 1120, 460),
     R(1300, 640, 1435, 680),
     R(1250, 630, 1292, 682),
-    // canteiros
-    R(1258, 505, 1402, 552),
-    R(768, 505, 892, 542),
-    R(318, 738, 466, 792),
-    R(1128, 718, 1260, 760),
-    R(1158, 792, 1308, 830),
-    R(92, 788, 260, 828),
-    // árvores: copa inteira sólida (ninguém anda dentro da árvore)
-    // só o tronco é sólido: dá pra passar por baixo da copa (a copa fica na frente, translúcida)
+    // canteiros: do topo das flores (+25) até a borda de baixo
+    R(1255, 470, 1405, 553),
+    R(765, 482, 895, 543),
+    R(320, 700, 465, 792),
+    R(1128, 692, 1260, 762),
+    R(1158, 772, 1308, 830),
+    R(92, 765, 260, 828),
+    // árvores: só o tronco é sólido (a copa fica por cima, translúcida)
     R(528, 690, 594, 732),
-    R(600, 718, 650, 752), // moita de flores ao lado do tronco (o caminho do arco fica livre)
     R(946, 722, 1014, 768),
     R(0, 718, 64, 818),
     R(0, 772, 182, 830), // moita embaixo da árvore do canto
-    // atrás dos postes
-    R(395, 585, 440, 640),
-    R(1040, 790, 1082, 862),
-    R(1458, 625, 1500, 682),
   ],
 
   overlays: [
-    // pilares e lampiões do portão: na frente de quem está logo atrás deles
+    // pilares e lampiões do portão
     { x0: 576, y0: 740, x1: 640, y1: 952, base: 950 },
     { x0: 860, y0: 740, x1: 930, y1: 952, base: 950 },
     // copas das árvores: na frente de quem está atrás do tronco, translúcidas
     { x0: 430, y0: 490, x1: 725, y1: 700, base: 730, cut: 'foliage', fade: true },
     { x0: 835, y0: 480, x1: 1135, y1: 735, base: 766, cut: 'foliage', fade: true },
     { x0: 0, y0: 500, x1: 195, y1: 832, base: 830, cut: 'foliage', fade: true },
-    // canteiros e moitas: a parte de cima fica na frente de quem passa atrás
+    { x0: 1360, y0: 150, x1: 1536, y1: 470, base: 480, cut: 'foliage', fade: true }, // árvore do lago
+    // canteiros: as flores ficam na frente de quem passa atrás
     { x0: 1248, y0: 440, x1: 1412, y1: 556, base: 554, cut: 'foliage' },
     { x0: 758, y0: 455, x1: 902, y1: 546, base: 544, cut: 'foliage' },
-    { x0: 310, y0: 675, x1: 474, y1: 796, base: 794, cut: 'foliage' },
-    { x0: 1120, y0: 668, x1: 1266, y1: 764, base: 762, cut: 'foliage' },
+    { x0: 314, y0: 672, x1: 470, y1: 798, base: 794, ellipse: true },
+    { x0: 1120, y0: 664, x1: 1266, y1: 768, base: 764, ellipse: true },
     { x0: 1150, y0: 748, x1: 1314, y1: 834, base: 832, cut: 'foliage' },
     { x0: 85, y0: 742, x1: 266, y1: 832, base: 830, cut: 'foliage' },
-    { x0: 422, y0: 205, x1: 508, y1: 332, base: 330, cut: 'foliage' },
-    { x0: 838, y0: 225, x1: 912, y1: 342, base: 340, cut: 'foliage' },
-    // topo do arco de flores (só sobre a passagem)
-    { x0: 655, y0: 640, x1: 840, y1: 705, base: 930, cut: 'foliage', fade: true },
+    { x0: 422, y0: 205, x1: 508, y1: 334, base: 332, cut: 'foliage' },
+    { x0: 838, y0: 225, x1: 912, y1: 344, base: 342, cut: 'foliage' },
+    { x0: 0, y0: 520, x1: 112, y1: 624, base: 622, cut: 'foliage' },
+    // chafariz: bacia (oval) e a parte de cima (coluna)
+    { x0: 77, y0: 425, x1: 318, y1: 552, base: 548, ellipse: true },
+    { x0: 160, y0: 318, x1: 252, y1: 470, base: 548, cut: 'column' },
+    // ponte: fatiada (o corrimão da frente passa na frente das pernas de quem está nela)
+    { x0: 1238, y0: 140, x1: 1452, y1: 274, base: 272, cut: 'furniture', slice: true },
+    // postes (só a haste)
+    { x0: 404, y0: 470, x1: 432, y1: 640, base: 640, cut: 'column' },
+    { x0: 936, y0: 290, x1: 964, y1: 448, base: 448, cut: 'column' },
+    { x0: 1464, y0: 512, x1: 1496, y1: 682, base: 682, cut: 'column' },
+    { x0: 1046, y0: 700, x1: 1076, y1: 862, base: 862, cut: 'column' },
+    // arco de flores inteiro (pés e topo), translúcido quando alguém passa por baixo
+    { x0: 550, y0: 630, x1: 945, y1: 792, base: 792, cut: 'foliage', fade: true },
+    // telhado do coreto por cima das cabeças, só na cena do beijo
+    { x0: 505, y0: 25, x1: 840, y1: 214, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
   ],
 
   // Noite (o passeio é depois do lanche): véu escuro + postes e lanternas acesos

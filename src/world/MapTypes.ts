@@ -110,12 +110,14 @@ export interface MapDef {
     ellipse?: boolean;
     fade?: boolean;
     /** 'foliage': mantém só folhas, flores e contornos (tira chão, asfalto, pedra). */
-    cut?: 'foliage' | 'furniture' | 'lamp' | 'dark' | 'booth';
+    cut?: 'foliage' | 'furniture' | 'lamp' | 'dark' | 'booth' | 'column';
     /**
      * Móveis baixos (sofás, mesas): fatia o recorte em faixas horizontais, cada uma com a
      * própria profundidade. Quem passa AO LADO não é cortado; quem passa ATRÁS é.
      */
     slice?: boolean;
+    /** Só aparece quando a condição for verdadeira (ex.: telhado do coreto na cena do beijo). */
+    when?: () => boolean;
   }[];
   /** Interações invisíveis sobre o cenário. */
   hotspots?: HotspotDef[];
@@ -150,6 +152,8 @@ export interface MapDef {
   onEnter?: string;
   music?: string;
   indoor?: boolean;
+  /** Tamanho dos personagens neste mapa (cenários desenhados mais de perto). Padrão 1. */
+  charScale?: number;
   /** Cor de fundo fora do mapa. */
   background?: string;
 }

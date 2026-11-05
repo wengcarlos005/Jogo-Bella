@@ -56,6 +56,8 @@ export interface ScriptContext {
   acai(opts: import('@/ui/screens/AcaiGame').AcaiOptions): Promise<import('@/ui/screens/AcaiGame').AcaiResult>;
   focus(tx: number, ty: number, zoom?: number, ms?: number): Promise<void>;
   /** Volta a câmera para seguir a Bella. */
+  /** Escala de um personagem em relação ao normal (1 = normal). */
+  scale(who: string, factor: number): void;
   /** Põe um personagem numa pose de outra folha (ex.: 'meli-poses', 1 = dormindo). null volta ao normal. */
   pose(who: string, key: string | null, frame?: number): void;
   /**

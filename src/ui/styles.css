@@ -567,6 +567,11 @@ html, body {
   text-shadow: 0 2px 0 #000, 0 0 12px rgba(0, 0, 0, 0.8);
   text-align: center;
   opacity: 0;
+  background: rgba(20, 10, 34, 0.72);
+  border: calc(var(--u) * 0.8) solid rgba(255, 215, 94, 0.7);
+  border-radius: calc(var(--u) * 6);
+  line-height: 1.35;
+  max-width: 88%;
 }
 .ill-caption.in { animation: cap-in 900ms ease forwards; }
 @keyframes cap-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
