@@ -238,7 +238,8 @@ export const parqueMap: MapDef = {
     { x0: 860, y0: 740, x1: 930, y1: 952, base: 950 },
     // copas das árvores: na frente de quem está atrás do tronco, translúcidas
     { x0: 430, y0: 490, x1: 725, y1: 760, base: 760, cut: 'foliage', fade: true, tall: true },
-    { x0: 835, y0: 480, x1: 1135, y1: 790, base: 790, cut: 'foliage', fade: true, tall: true },
+    { x0: 905, y0: 480, x1: 1135, y1: 790, base: 790, cut: 'foliage', fade: true, tall: true },
+    { x0: 835, y0: 550, x1: 905, y1: 790, base: 790, cut: 'foliage', fade: true, tall: true },
     { x0: 0, y0: 500, x1: 195, y1: 832, base: 830, cut: 'foliage', fade: true, tall: true },
     { x0: 1360, y0: 150, x1: 1536, y1: 480, base: 480, cut: 'foliage', fade: true, tall: true }, // árvore do lago
     // canteiros: as flores ficam na frente de quem passa atrás

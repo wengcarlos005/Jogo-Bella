@@ -17,6 +17,7 @@ const lower = (ctx: ScriptContext, to: number) => ctx.nerves(Math.min(nerves(), 
 
 const scripts: Record<string, Script> = {
   async entrar(ctx) {
+    if (ctx.questActive('dq-e2')) ctx.weather('sunset');
     if (ctx.flag('fragoso-intro') || !ctx.questActive(Q)) return;
     ctx.setFlag('fragoso-intro');
     if (nerves() === 0) ctx.nerves(70);
@@ -145,17 +146,21 @@ export const fragosoMap: MapDef = {
   ],
   overlays: [
     // postes: quem passa atrás (ao norte da base) fica atrás da haste
-    { x0: 200, y0: 540, x1: 322, y1: 745, base: 744, cut: 'column', tall: true }, // poste + luminária (recorte exato)
-    { x0: 1180, y0: 405, x1: 1300, y1: 692, base: 690, cut: 'column', tall: true },
+    // postes: haste estreita (sem fio nem chão) + luminária pelo contorno
+    { x0: 206, y0: 540, x1: 242, y1: 745, base: 744, cut: 'column', tall: true },
+    { x0: 258, y0: 598, x1: 324, y1: 660, base: 744, cut: 'outline', tall: true },
+    { x0: 1188, y0: 405, x1: 1226, y1: 692, base: 690, cut: 'column', tall: true },
+    { x0: 1236, y0: 420, x1: 1302, y1: 478, base: 690, cut: 'outline', tall: true },
     // plantas do terreno: as folhas ficam na frente dos pés de quem encosta nelas
     { x0: 0, y0: 770, x1: 205, y1: 900, base: 900, cut: 'foliage', fade: true }, // moitas do canto de baixo
     { x0: 1290, y0: 700, x1: 1536, y1: 900, base: 900, cut: 'foliage', fade: true },
     // copa da árvore: fica translúcida quando alguém passa atrás
-    { x0: 250, y0: 360, x1: 510, y1: 445, base: 445, cut: 'foliage', fade: true },
+    { x0: 240, y0: 330, x1: 520, y1: 600, base: 600, cut: 'foliage', fade: true, tall: true },
   ],
 
   lighting: {
     darkness: 0.4,
+    when: () => !QuestSystem.isActive('dq-e2'),
     lights: [
       { x: 195, y: 130, r: 260 },
       { x: 1251, y: 153, r: 260 },
