@@ -129,8 +129,8 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 |---|---|---|---|
 | MAP-010 | Apartamento do Weng (interior, 1536×1024) | maps/duque-apto-bg.png | ✅ no jogo |
 | CHAR-020 | Meli, gata laranja (4×4 andando + folha de poses) | pets/meli-walk.png, pets/meli-poses.png | ✅ no jogo |
-| CHAR-021 | Avó do Weng (4×4 + retrato) | characters/avo-weng.png | pedido |
-| CHAR-022 | Avô do Weng (4×4 + retrato) | characters/avo2-weng.png | pedido |
+| CHAR-021 | Vó do Weng | npcs/vof-weng-walk.png | ✅ no jogo (apê) |
+| CHAR-022 | Vô do Weng | npcs/vom-weng-walk.png | ✅ no jogo (apê) |
 | CHAR-023 | Pombo, gato preto (andando + poses) | pets/pombo-walk.png, pets/pombo-poses.png | ✅ no jogo (casa da Bella) |
 | CHAR-024 | Lala, gata branca com manchas marrons (4×4 + poses; manchas recoloridas de laranja para marrom) | pets/lala-walk.png, pets/lala-poses.png | ✅ no jogo (casa da Bella) |
 | MAP-011 | Rua do Weng: portaria, praça com o Teatro Raul Cortez, avenida e o Shopping da Multidão (uma arte só) | maps/duque-rua-bg.png | ✅ no jogo |
@@ -153,7 +153,7 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CIN-014 | Fazendo as pazes depois da briga | cinematics/pazes.png | depois |
 | CHAR-025 | Avó da Bella (4×4 + retrato) | characters/avo-bella.png | pedido |
 | CHAR-026 | Tia Jaque (4×4 + retrato) | characters/tia-jaque.png | pedido |
-| CHAR-027 | Kelly, prima da Bella (4×4 + retrato) | characters/kelly.png | pedido |
+| CHAR-027 | Kelly, prima da Bella | npcs/kelly-walk.png | ✅ no jogo (churrasco) |
 
 ### LOTE 4–6 — Viagens do Ano 1 e 2 (Fases 5–6)
 Por cidade: 2–4 cenários pintados + camadas frontais, 3–6 NPCs, objetos-chave dos minigames, 3–4 ilustrações de memória. Lista detalhada será gerada no início de cada fase.
@@ -168,3 +168,6 @@ Parque ao pôr do sol (variação de MAP-006), envelope (animação 4 quadros 48
 
 ## 2. Arte provisória em uso (gerada por código)
 Tudo listado acima ainda não recebido é desenhado pelo `PlaceholderFactory` com a mesma chave e as mesmas dimensões: tileset base (30 tiles), 5 personagens, 5 retratos, ~25 objetos, 5 ícones, balões de emoção, chuva, marcador de objetivo e ilustrações de memória.
+
+| UI-020 | Kit da barra de cima, plaquinhas, corações, porta-retrato, barra de itens | ui/hud-*.png | ✅ no jogo |
+| UI-021 | Botões do menu com moldura | ui/hud-btn-*.png | ✅ no jogo |

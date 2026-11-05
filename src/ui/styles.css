@@ -1894,3 +1894,34 @@ html.title-mode #game canvas { opacity: 0; }
 .ub-ob.sprite { border: 0 !important; height: auto !important; border-radius: 0 !important; box-shadow: none !important; filter: drop-shadow(0 calc(var(--u) * 0.8) 0 rgba(0, 0, 0, 0.35)) !important; opacity: 1; background-color: transparent !important; }
 .ub-ob.sprite::after { display: none !important; }
 .ub-ob.sprite.ub-gone { opacity: 0.3; }
+
+/* ================= Kit de interface ilustrado (barra de cima, plaquinhas, corações, botões, barra de itens) ================= */
+html.hud-kit #topbar { background: var(--hud-topbar) center / 100% 100% no-repeat !important; padding-left: calc(var(--gap) + 3.5%); padding-right: calc(var(--side) + var(--gap) + 3.5%); }
+html.hud-kit .tb-place, html.hud-kit .tb-quest, html.hud-kit .tb-mem, html.hud-kit .tb-nerves {
+  background: none !important; border: none !important; box-shadow: none !important; border-radius: 0 !important;
+  color: #4a2347 !important; text-shadow: 0 1px 0 #fff3d6;
+}
+html.hud-kit .tb-place { background: var(--hud-plaque) center / 100% 100% no-repeat !important; padding: 7px 26px !important; }
+html.hud-kit .tb-moon { color: #b8862a; }
+html.hud-kit .tb-quest { background: var(--hud-scroll) center / 100% 100% no-repeat !important; padding: 8px 46px !important; }
+html.hud-kit .tb-quest::before, html.hud-kit .tb-quest::after { display: none; }
+html.hud-kit .tb-qheart { color: #e0457a; }
+html.hud-kit .tb-quest b { color: #b83a6a !important; }
+html.hud-kit .tb-mem { background: var(--hud-plaque) center / 100% 100% no-repeat !important; padding: 7px 22px 7px 14px !important; }
+html.hud-kit .tb-mem .tb-album { width: 1.7em; height: 1.7em; background: var(--hud-frame) center / contain no-repeat !important; border-radius: 0; vertical-align: middle; margin-right: 4px; }
+html.hud-kit .tb-mem b { color: #b83a6a !important; }
+html.hud-kit .tb-nerves { background: var(--hud-plaque) center / 100% 100% no-repeat !important; padding: 6px 20px !important; gap: 8px; }
+html.hud-kit .nerves-hearts span { display: inline-block; width: 1.25em; height: 1.15em; background: var(--hud-heart-empty) center / contain no-repeat; margin-right: 1px; }
+html.hud-kit .nerves-hearts span.on { background-image: var(--hud-heart-full); }
+html.hud-kit .tb-nerves-txt { color: #b83a6a; font-weight: 900; }
+/* botões da direita: a moldura já vem desenhada na arte */
+html.hud-kit #rightbar .sb-btn.sb-kit {
+  background: none !important; border: none !important; border-image: none !important; box-shadow: none !important;
+  height: auto !important; flex: 0 0 auto; padding: 0 !important; display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+html.hud-kit #rightbar .sb-btn.sb-kit img { width: 100%; height: auto; max-width: none; filter: drop-shadow(0 3px 0 rgba(40, 10, 30, 0.45)); transition: transform 180ms cubic-bezier(.2, 1.8, .4, 1); }
+html.hud-kit #rightbar .sb-btn.sb-kit:hover img { transform: translateY(-3px) scale(1.04) rotate(-1.5deg); }
+html.hud-kit #rightbar .sb-btn.sb-kit .sb-label { color: #ffe9b0; text-shadow: 0 2px 0 #2a1027; font-family: var(--font-pixel); font-weight: 500; }
+/* barra de itens */
+html.hud-kit #hotbar .sb-bag { background: var(--hud-hotbar) center / 100% 100% no-repeat !important; border: none !important; box-shadow: none !important; padding: 1.1% 2.2% !important; }
+html.hud-kit .tb-quest { max-width: 48vw !important; padding: 8px 52px !important; white-space: nowrap; text-overflow: ellipsis; overflow: hidden !important; }

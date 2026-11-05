@@ -40,16 +40,20 @@ export class Sidebar {
 
   /** Cria os botões depois que as texturas carregaram. */
   build(): void {
+    // peças do kit de interface (assets/ui/hud-*.png) como variáveis de CSS
+    const ui = (f: string) => `url("${new URL(`assets/ui/${f}`, document.baseURI).href}")`;
+    const de = document.documentElement.style;
+    for (const k of ['topbar', 'plaque', 'scroll', 'frame', 'hotbar', 'heart-full', 'heart-empty', 'heart-half']) de.setProperty(`--hud-${k}`, ui(`hud-${k}.png`));
+    document.documentElement.classList.add('hud-kit');
     this.right.replaceChildren(
-      ...BUTTONS.map(([tab, label, icon]) => {
-        const url = textureURL(`ui-icon-${icon}`);
-        return h(
+      ...BUTTONS.map(([tab, label, icon]) =>
+        h(
           'button',
-          { class: 'sb-btn', title: label, onclick: () => this.active && this.openMenu(tab) },
-          url ? h('img', { src: url, alt: '' }) : h('span', { class: 'sb-fallback' }, label[0]),
+          { class: 'sb-btn sb-kit', title: label, 'aria-label': label, onclick: () => this.active && this.openMenu(tab) },
+          h('img', { src: new URL(`assets/ui/hud-btn-${icon}.png`, document.baseURI).href, alt: '' }),
           h('span', { class: 'sb-label' }, label),
-        );
-      }),
+        ),
+      ),
     );
     this.refresh();
   }
@@ -105,7 +109,7 @@ export class Sidebar {
         ? h(
             'div',
             { class: 'tb-nerves' },
-            h('span', { class: `nerves-hearts ${nerves >= 60 ? 'fast' : nerves >= 30 ? 'mid' : ''}` }, ...Array.from({ length: 5 }, (_, i) => h('span', { class: i < filled ? 'on' : '' }, '♥'))),
+            h('span', { class: `nerves-hearts ${nerves >= 60 ? 'fast' : nerves >= 30 ? 'mid' : ''}` }, ...Array.from({ length: 5 }, (_, i) => h('span', { class: i < filled ? 'on' : '' }))),
             h('span', { class: 'tb-nerves-txt' }, nerves >= 80 ? 'Muito nervosa' : nerves >= 50 ? 'Nervosa' : nerves >= 20 ? 'Quase calma' : 'Tranquila'),
           )
         : '';
@@ -115,7 +119,7 @@ export class Sidebar {
       h('div', { class: 'tb-spacer' }),
       obj ? h('div', { class: 'tb-quest' }, h('span', { class: 'tb-qheart' }, '♥'), h('b', {}, `${QuestSystem.def(tracked!).title}: `), obj.text) : '',
       h('div', { class: 'tb-spacer' }),
-      h('div', { class: 'tb-mem' }, h('span', { class: 'tb-album' }, '❀'), 'Lembranças ', h('b', {}, `${n}/${MEMORY_GOAL}`)),
+      h('div', { class: 'tb-mem' }, h('span', { class: 'tb-album' }), 'Lembranças ', h('b', {}, `${n}/${MEMORY_GOAL}`)),
     );
   }
 
