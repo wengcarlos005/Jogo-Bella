@@ -4,6 +4,7 @@ import { ASSETS } from '@/config/assetManifest';
 import { PlaceholderFactory } from '@/graphics/PlaceholderFactory';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE } from '@/config/gameConfig';
+import { loaderProgress } from '@/ui/screens/TitleFx';
 
 /**
  * Carrega SOMENTE os arquivos de arte/áudio que existem de verdade em
@@ -17,9 +18,8 @@ export class PreloadScene extends Phaser.Scene {
   preload(): void {
     const files = new Set(available);
     this.cameras.main.setZoom(RENDER_SCALE).centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2);
-    const bar = this.add.rectangle(GAME_WIDTH / 2 - 80, GAME_HEIGHT / 2, 0, 6, 0xf27a9b).setOrigin(0, 0.5);
-    this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 164, 10).setStrokeStyle(1, 0xfbf3e2);
-    this.load.on('progress', (p: number) => (bar.width = 160 * p));
+    // a tela de carregamento é DOM (TitleFx): lua enchendo + barra de corações
+    this.load.on('progress', (p: number) => loaderProgress(p));
 
     for (const a of ASSETS) {
       if (!files.has(a.file)) continue;

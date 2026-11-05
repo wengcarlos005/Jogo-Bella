@@ -1514,3 +1514,109 @@ html, body {
 .gr-cursor { position: absolute; top: -10%; bottom: -10%; width: calc(var(--u) * 2.5); margin-left: calc(var(--u) * -1.25); background: #fff; border: calc(var(--u) * 0.6) solid #222; border-radius: 3px; }
 .gr-labels { display: flex; justify-content: space-between; font-size: clamp(9px, calc(var(--u) * 4.4), 13px); color: var(--ink-soft); font-weight: 800; }
 .gr-score { text-align: center; font-weight: 800; color: var(--red); }
+
+/* ================= Abertura: tela cheia, carregamento e efeitos ================= */
+html.title-mode #game { top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; }
+html.title-mode #frame, html.title-mode #sky, html.title-mode #topbar, html.title-mode #rightbar, html.title-mode #hotbar { display: none !important; }
+html.title-mode #game canvas { border-radius: 0; }
+#title-back {
+  position: fixed; inset: -40px; z-index: 0; pointer-events: none;
+  background-size: cover; background-position: center;
+  filter: blur(22px) brightness(0.55) saturate(1.2);
+  animation: txBack 18s ease-in-out infinite alternate;
+}
+@keyframes txBack { to { transform: scale(1.08) translateX(-1%); } }
+html.title-mode #game, html.title-mode #ui { z-index: 1; }
+
+.tx-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 2; }
+.tf-spot { z-index: 3; overflow: hidden; }
+.tx-star { position: absolute; width: 0.35vmin; height: 0.35vmin; border-radius: 50%; background: #fff; box-shadow: 0 0 1vmin 0.2vmin #fff8; animation: txTw 3s ease-in-out infinite; }
+@keyframes txTw { 0%, 100% { opacity: 0.15; transform: scale(0.6); } 50% { opacity: 1; transform: scale(1.4); } }
+.tx-shoot { position: absolute; width: 14vmin; height: 0.3vmin; background: linear-gradient(90deg, transparent, #fff); border-radius: 2px; transform: rotate(-24deg); opacity: 0; animation: txShoot 1.3s ease-out forwards; }
+@keyframes txShoot { 10% { opacity: 1; } 100% { opacity: 0; transform: rotate(-24deg) translateX(-30vmin); } }
+.tx-glow { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; mix-blend-mode: screen; }
+.tx-glow.moon { width: 20%; aspect-ratio: 1; background: radial-gradient(circle, rgba(255, 230, 160, 0.45), transparent 62%); animation: txPulse 4.5s ease-in-out infinite; }
+.tx-glow.lamp { width: 7%; aspect-ratio: 1; background: radial-gradient(circle, rgba(255, 200, 100, 0.7), transparent 65%); animation: txFlick 2.2s steps(2) infinite; }
+.tx-glow.lamp.b { width: 9%; animation-duration: 2.9s; }
+.tx-glow.lamp.c { width: 5%; animation-duration: 1.7s; }
+@keyframes txPulse { 50% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.7; } }
+@keyframes txFlick { 0%, 100% { opacity: 1; } 40% { opacity: 0.75; } 70% { opacity: 0.92; } }
+.tx-fly { position: absolute; width: 0.7vmin; height: 0.7vmin; border-radius: 50%; background: #fff3a0; box-shadow: 0 0 1.4vmin 0.5vmin #ffd75e99; animation: txFly 8s ease-in-out infinite; }
+@keyframes txFly {
+  0% { transform: translate(0, 0); opacity: 0; }
+  20% { opacity: 1; }
+  50% { transform: translate(3vw, -4vh); opacity: 0.4; }
+  80% { opacity: 1; }
+  100% { transform: translate(-2vw, -8vh); opacity: 0; }
+}
+.tx-petal { position: absolute; width: 1.2vmin; height: 0.8vmin; border-radius: 60% 0 60% 0; background: #ff9cc8; box-shadow: inset -0.2vmin -0.2vmin 0 #e86aa6; animation: txPetal 7s linear forwards; }
+@keyframes txPetal {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translate(var(--dx), 70vh) rotate(540deg); opacity: 0; }
+}
+.tx-heart { position: absolute; color: #ff7eb6; font-size: 2.4vmin; text-shadow: 0 0 1vmin #ff7eb6aa; animation: txHeart 3s ease-out forwards; }
+.tx-heart.small { font-size: 1.5vmin; }
+@keyframes txHeart { 0% { transform: translate(-50%, 0) scale(0.4); opacity: 0; } 20% { opacity: 1; transform: translate(-50%, -2vh) scale(1); } 100% { transform: translate(calc(-50% + var(--dx)), -14vh) scale(0.8); opacity: 0; } }
+.tx-bubble { position: absolute; width: 4%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(255, 126, 182, 0.45), transparent 65%); animation: txPulse 1.6s ease-in-out infinite; mix-blend-mode: screen; }
+.tx-shine-logo {
+  position: absolute; left: 5%; top: 8%; width: 32%; height: 36%;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%) no-repeat;
+  background-size: 250% 100%; mix-blend-mode: overlay; animation: txShine 5s ease-in-out infinite;
+}
+@keyframes txShine { 0%, 55% { background-position: 150% 0; } 100% { background-position: -150% 0; } }
+.tf-spot::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.7) 48%, transparent 66%) no-repeat;
+  background-size: 260% 100%; background-position: 160% 0; opacity: 0;
+}
+.tf-spot.tx-sweep::after { animation: txSweep 0.85s ease-out; }
+@keyframes txSweep { 0% { opacity: 1; background-position: 160% 0; } 100% { opacity: 1; background-position: -160% 0; } }
+.tf-spot.sel { animation: txSel 1.6s ease-in-out infinite; }
+@keyframes txSel { 50% { box-shadow: 0 0 0 3px #ffe9a8, 0 0 34px 12px rgba(255, 215, 94, 0.75); } }
+.tx-burst { position: absolute; transform: translate(-50%, -50%); animation: txBurst 1.6s cubic-bezier(.15, .8, .3, 1) forwards; text-shadow: 0 0 1vmin currentColor; }
+@keyframes txBurst {
+  0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--r)) scale(1); opacity: 0; }
+}
+.title-full.tx-intro .tf-art { animation: txArtIn 0.9s cubic-bezier(.2, 1.4, .4, 1); }
+@keyframes txArtIn { from { transform: scale(1.12); filter: blur(10px) brightness(2); } }
+.tx-flash { position: absolute; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(circle at 30% 30%, #fff, #ffd0e6 40%, rgba(255, 126, 182, 0) 75%); animation: txFlash 1.2s ease-out forwards; }
+@keyframes txFlash { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+/* tela de carregamento */
+#loader {
+  position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.6vmin;
+  background: radial-gradient(ellipse at 50% 30%, #4a3a78, #241a4a 55%, #120c26);
+  color: #fbf3e2; font-family: 'Pixelify Sans', system-ui, sans-serif; overflow: hidden;
+  transition: opacity 0.8s, transform 0.8s;
+}
+#loader.out { opacity: 0; transform: scale(1.15); pointer-events: none; }
+.ld-stars { position: absolute; inset: 0; }
+.ld-stars i { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; background: #fff; animation: txTw 2.6s ease-in-out infinite; }
+.ld-moon { position: relative; width: 20vmin; height: 20vmin; animation: ldFloat 3s ease-in-out infinite; }
+.ld-moon-clip { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; }
+.ld-moon-glow { position: absolute; inset: -40%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 220, 130, calc(0.15 + var(--p, 0) * 0.45)), transparent 60%); }
+.ld-moon-disc { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff6cf, #ffd75e 60%, #e6a93a); box-shadow: 0 0 4vmin #ffd75e88; }
+/* sombra que vai encolhendo: a lua "enche" com o progresso */
+.ld-moon-shadow { position: absolute; inset: -2%; border-radius: 50%; background: #2a1f52; transform: translateX(calc(30% + var(--p, 0) * 75%)); transition: transform 0.3s; }
+@keyframes ldFloat { 50% { transform: translateY(-1.2vmin) rotate(-4deg); } }
+.ld-title { font-size: 6vmin; letter-spacing: 0.3vmin; text-shadow: 0 0.5vmin 0 #8a3a6a, 0 0 3vmin #ff7eb655; }
+.ld-title span { display: inline-block; animation: ldWave 1.8s ease-in-out infinite; }
+@keyframes ldWave { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-1.2vmin); color: #ffd75e; } }
+.ld-bar { position: relative; width: min(60vw, 420px); height: 3.6vmin; border-radius: 99px; background: rgba(0, 0, 0, 0.35); border: 0.4vmin solid #ffd75e; overflow: hidden; }
+.ld-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(90deg, #ff7eb6, #ffb3d6, #ffd75e); transition: width 0.25s; box-shadow: 0 0 2vmin #ff7eb6; }
+.ld-hearts { position: absolute; inset: 0; display: flex; justify-content: space-around; align-items: center; font-size: 2.2vmin; color: rgba(255, 255, 255, 0.55); }
+.ld-pct { font-size: 3vmin; color: #ffd75e; }
+.ld-tip { font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 2.6vmin; opacity: 0.85; min-height: 1.4em; }
+.ld-tip.in { animation: ldTip 0.4s ease-out; }
+@keyframes ldTip { from { opacity: 0; transform: translateY(1vmin); } }
+
+/* título cobrindo a janela inteira (sem faixas): a arte corta um pouco em cima/embaixo ou nas laterais */
+html.title-mode .screen.title-full {
+  position: fixed; inset: auto; left: 50%; top: 50%;
+  width: max(100vw, 177.68vh); height: max(56.28vw, 100vh);
+  transform: translate(-50%, -50%);
+}
+html.title-mode .screen.title-full .version { right: calc(50% - 50vw + 12px); bottom: calc(50% - 50vh + 8px); }

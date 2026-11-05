@@ -1,3 +1,4 @@
+import { showLoader } from './ui/screens/TitleFx';
 import Phaser from 'phaser';
 import '@fontsource/pixelify-sans/400.css';
 import '@fontsource/pixelify-sans/600.css';
@@ -18,6 +19,7 @@ import type { SaveData } from './core/types';
 
 SettingsStore.load();
 InputSystem.init();
+showLoader();
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,

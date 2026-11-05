@@ -1,3 +1,4 @@
+import { decorateTitle, hideLoader } from './TitleFx';
 import { h, formatDate, formatPlaytime } from '@/utils/dom';
 import { SaveSystem, AUTOSAVE_SLOT } from '@/systems/SaveSystem';
 import { InputSystem } from '@/systems/InputSystem';
@@ -28,6 +29,7 @@ export class TitleScreen {
       this.openFull(full, latest);
       return;
     }
+    hideLoader();
     const logo = textureURL('ui-logo');
     const hearts = h('div', { class: 'title-hearts' }, ...Array.from({ length: 9 }, (_, i) => h('span', { class: i < 3 ? '' : 'off' }, '♥')));
     const list = h('div', { class: 'menu-list' });
@@ -122,7 +124,11 @@ export class TitleScreen {
       h('div', { class: 'version' }, `v${VERSION}`),
     );
     this.parent.append(this.el);
+    hideLoader();
+    this.undoFx = decorateTitle(this.el, art, buttons);
   }
+
+  private undoFx: (() => void) | null = null;
 
   private async openLoad(): Promise<void> {
     const sums = await SaveSystem.summaries(ALL_SLOTS);
@@ -151,6 +157,8 @@ export class TitleScreen {
   }
 
   close(): void {
+    this.undoFx?.();
+    this.undoFx = null;
     for (const [ev, fn] of this.keyHandlers) InputSystem.off(ev, fn);
     this.keyHandlers = [];
     if (!this.el) return;
