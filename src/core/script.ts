@@ -50,6 +50,7 @@ export interface ScriptContext {
   /** Minigame do hambúrguer. */
   burger(opts: import('@/ui/screens/BurgerGame').BurgerOptions): Promise<import('@/ui/screens/BurgerGame').BurgerResult>;
   /** Câmera de cinema: foca no tile (tx, ty) com zoom relativo (1 = normal). */
+  grill(opts?: { title?: string; helper?: string }): Promise<import('@/ui/screens/GrillGame').GrillResult>;
   cards(opts?: { title?: string; rounds?: number }): Promise<import('@/ui/screens/CardGame').CardResult>;
   acai(opts: import('@/ui/screens/AcaiGame').AcaiOptions): Promise<import('@/ui/screens/AcaiGame').AcaiResult>;
   focus(tx: number, ty: number, zoom?: number, ms?: number): Promise<void>;

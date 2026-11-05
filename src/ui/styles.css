@@ -1486,3 +1486,31 @@ html, body {
 .cg-left { font-size: clamp(10px, calc(var(--u) * 5), 14px); opacity: 0.8; }
 .cg-msg { text-align: center; font-weight: 800; min-height: 1.4em; font-size: clamp(12px, calc(var(--u) * 6.5), 20px); }
 .cg-rules { text-align: center; color: var(--ink-soft); font-size: clamp(9px, calc(var(--u) * 4.5), 13px); }
+
+/* ---------- Minigame da churrasqueira ---------- */
+.gr-title { background: #b5452c; box-shadow: 0 calc(var(--u) * 1.5) 0 #6e2414; }
+.gr-main { display: flex; gap: calc(var(--u) * 5); align-items: stretch; }
+.gr-grill {
+  position: relative; flex: 0 0 44%; aspect-ratio: 126 / 106; border-radius: calc(var(--u) * 3);
+  border: calc(var(--u) * 1) solid var(--border); background-color: #3a2418;
+  background-size: 812.7% auto; background-position: 11.9% 46.3%; background-repeat: no-repeat;
+  image-rendering: pixelated; overflow: hidden;
+}
+.gr-grill.gr-flip { animation: grFlip 380ms ease-out; }
+@keyframes grFlip { 30% { transform: translateY(-4%) rotate(-1deg); filter: brightness(1.25); } }
+.gr-smoke { position: absolute; left: 40%; top: 10%; width: 30%; height: 60%; }
+.gr-smoke span { position: absolute; bottom: 0; width: 30%; aspect-ratio: 1; border-radius: 50%; background: rgba(255, 255, 255, 0.35); animation: grSmoke 2.4s linear infinite; }
+.gr-smoke span:nth-child(2) { left: 35%; animation-delay: 0.8s; }
+.gr-smoke span:nth-child(3) { left: 70%; animation-delay: 1.6s; }
+@keyframes grSmoke { from { transform: translateY(0) scale(0.6); opacity: 0.7; } to { transform: translateY(-160%) scale(1.6); opacity: 0; } }
+.gr-side { flex: 1; display: flex; flex-direction: column; gap: calc(var(--u) * 2.5); justify-content: center; }
+.gr-meat { font-family: var(--font-pixel); color: #b5452c; font-size: clamp(16px, calc(var(--u) * 11), 34px); text-align: center; }
+.gr-bar { position: relative; display: flex; height: calc(var(--u) * 12); border-radius: calc(var(--u) * 6); overflow: hidden; border: calc(var(--u) * 1) solid var(--border);
+  background: linear-gradient(90deg, #f3b7b7 0 30%, transparent 30% 70%, #4a2a20 70% 100%); }
+.gr-zone { position: absolute; top: 0; bottom: 0; }
+.gr-zone.q1 { left: 30%; width: 11%; background: #f2cf62; }
+.gr-zone.ok { left: 41%; width: 18%; background: #6fc46a; }
+.gr-zone.q2 { left: 59%; width: 11%; background: #f2cf62; }
+.gr-cursor { position: absolute; top: -10%; bottom: -10%; width: calc(var(--u) * 2.5); margin-left: calc(var(--u) * -1.25); background: #fff; border: calc(var(--u) * 0.6) solid #222; border-radius: 3px; }
+.gr-labels { display: flex; justify-content: space-between; font-size: clamp(9px, calc(var(--u) * 4.4), 13px); color: var(--ink-soft); font-weight: 800; }
+.gr-score { text-align: center; font-weight: 800; color: var(--red); }

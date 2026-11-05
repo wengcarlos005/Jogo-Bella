@@ -121,6 +121,10 @@ export const ASSETS: AssetEntry[] = [
   ...['verso', 'meli', 'pombo', 'lala', 'acai', 'coracao', 'chocolate', 'novelo'].map(
     (n, i): AssetEntry => ({ id: `MG-C${String(i + 1).padStart(2, '0')}`, key: `carta-${n}`, file: `assets/minigames/carta-${n}.png`, kind: 'image' }),
   ),
+  { id: 'MAP-017', key: 'map-piabeta-quintal-bg', file: 'assets/maps/piabeta-quintal-bg.png', kind: 'image' },
+  { id: 'MAP-018', key: 'map-piabeta-mexicano-fora-bg', file: 'assets/maps/piabeta-mexicano-fora-bg.png', kind: 'image' },
+  { id: 'CIN-015', key: 'memory-dq-04', file: 'assets/cinematics/mexicano-chapeus.png', kind: 'image' },
+  { id: 'CIN-014', key: 'cena-pazes', file: 'assets/cinematics/pazes.png', kind: 'image' },
   { id: 'CIN-013', key: 'cena-primeira-noite', file: 'assets/cinematics/primeira-noite.png', kind: 'image' },
   { id: 'ICO-020', key: 'icon-acai', file: 'assets/ui/icon-acai.png', kind: 'image' },
   ...['piranha', 'creme', 'scrunchie', 'pote', 'vela', 'pano', 'pacoca', 'balas', 'chocolate'].map(

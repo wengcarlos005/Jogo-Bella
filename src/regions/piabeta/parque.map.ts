@@ -15,6 +15,17 @@ const scripts: Record<string, Script> = {
   async entrar(ctx) {
     if (ctx.objectiveDone(Q, 'passear') && !ctx.objectiveDone(Q, 'beijo')) ctx.weather('rain');
     if (ctx.objectiveDone(Q, 'beijo')) ctx.weather('sunset');
+    if (ctx.questActive('dq-e2') && !ctx.objectiveDone('dq-e2', 'passeio')) {
+      ctx.objective('dq-e2', 'passeio');
+      await ctx.wait(300);
+      await ctx.say('bella', 'A nossa praça. Olha o coreto ali...');
+      await ctx.say('weng', 'Foi ali. Debaixo da chuva.');
+      await ctx.emote('bella', 'heart');
+      await ctx.say('bella', 'Eu lembro de cada segundo.');
+      await ctx.say('weng', 'Tem um restaurante mexicano aqui do lado, saindo pela direita. Bora conhecer?');
+      ctx.toast('Saia da praça pela direita');
+      return;
+    }
     if (!ctx.questActive(Q) || ctx.objectiveDone(Q, 'parque')) return;
     ctx.objective(Q, 'parque');
     await ctx.wait(300);
@@ -86,7 +97,10 @@ const scripts: Record<string, Script> = {
     await ctx.memory('mem-pia-03');
     ctx.unlockRegion('duque-de-caxias');
     ctx.follow('weng', true);
-    await ctx.chapterCard('Fim do Prólogo', 'Piabetá', 'Onde tudo começou. Próximo capítulo: Duque de Caxias (em construção).');
+    await ctx.chapterCard('Fim do Prólogo', 'Piabetá', 'Onde tudo começou.', 'Continuar');
+    await ctx.chapterCard('Capítulo 1', 'Duque de Caxias', 'Nosso cantinho', 'Começar');
+    ctx.startQuest('dq-e2');
+    await ctx.teleport('piabeta-quintal', 'porta');
   },
 
   async coreto(ctx) {
@@ -151,7 +165,7 @@ export const parqueMap: MapDef = {
     // fundo de árvores + bordas
     R(0, 0, 1536, 150),
     R(0, 150, 70, 830),
-    R(1490, 150, 1536, 830),
+    R(1490, 150, 1536, 690), // borda direita (passagem para a rua do mexicano em y 690–830)
     R(0, 1005, 1536, 1100),
     // grade da frente (portão em x 650–830)
     R(0, 830, 650, 925),
@@ -232,8 +246,17 @@ export const parqueMap: MapDef = {
 
   spawns: {
     'from-rota66': { tx: 14.9, ty: 19.1, facing: 'up' },
+    'from-mexicano': { tx: 30.4, ty: 15.0, facing: 'left' },
   },
-  exits: [{ rect: R(650, 985, 830, 1005), toMap: 'piabeta-fragoso', toSpawn: 'from-parque' }],
+  exits: [
+    { rect: R(650, 985, 830, 1005), toMap: 'piabeta-fragoso', toSpawn: 'from-parque' },
+    {
+      rect: R(1515, 690, 1536, 830),
+      toMap: 'piabeta-mexicano-fora',
+      toSpawn: 'from-parque',
+      blockedIf: () => (QuestSystem.isDone('pia-m3') ? false : 'Hoje o caminho é outro.'),
+    },
+  ],
   triggers: [
     {
       id: 'chuva',

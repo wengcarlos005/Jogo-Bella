@@ -1,3 +1,4 @@
+import { playGrillGame, type GrillResult } from './screens/GrillGame';
 import { playCardGame, type CardResult } from './screens/CardGame';
 import { playAcaiGame, type AcaiOptions, type AcaiResult } from './screens/AcaiGame';
 import type Phaser from 'phaser';
@@ -129,6 +130,10 @@ class UIManagerImpl {
 
   acai(opts: AcaiOptions): Promise<AcaiResult> {
     return playAcaiGame(this.root, opts);
+  }
+
+  grill(opts: { title?: string; helper?: string } = {}): Promise<GrillResult> {
+    return playGrillGame(this.root, opts);
   }
 
   cards(opts: { title?: string; rounds?: number } = {}): Promise<CardResult> {

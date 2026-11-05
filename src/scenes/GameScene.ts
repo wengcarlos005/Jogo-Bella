@@ -615,6 +615,11 @@ export class GameScene extends Phaser.Scene {
       UI.toasts.show('Essa região ainda está em construção!');
       return;
     }
+    if (region === 'duque-de-caxias' && !QuestSystem.isDone('dq-e2')) {
+      if (!QuestSystem.isActive('dq-e2')) QuestSystem.start('dq-e2');
+      void this.goTo('piabeta-quintal', 'porta');
+      return;
+    }
     void this.goTo(meta.entryMap, meta.entrySpawn);
   }
 

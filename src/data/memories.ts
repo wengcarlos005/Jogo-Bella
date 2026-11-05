@@ -79,6 +79,14 @@ export const MEMORIES: MemoryDef[] = [
     text: 'O Weng jurava que era imbatível nas cartas. Até jogar comigo.',
     image: 'memory-dq-03',
   },
+  {
+    id: 'mem-dq-04',
+    region: 'duque-de-caxias',
+    title: 'Chapéus mexicanos',
+    year: 'Ano 1',
+    text: 'Segundo encontro: churrasco com a minha mãe e o Alexandre, filme no sofá, a caminhada até a nossa praça e o restaurante mexicano que deu bebida de cortesia. A gente de chapéu gigante, rindo de tudo.',
+    image: 'memory-dq-04',
+  },
 ];
 
 export const MEMORY_GOAL = 50;
