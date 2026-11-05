@@ -144,7 +144,7 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | MAP-018 | Praça do 2º encontro (fim de tarde) com o restaurante mexicano ao lado | maps/piabeta-praca2-bg.png | pedido |
 | MAP-019 | Restaurante mexicano (interior) | maps/piabeta-mexicano-bg.png | pedido |
 | CIN-015 | Os dois de chapéu mexicano brindando a bebida de cortesia | cinematics/mexicano.png | pedido |
-| MAP-015 | Cinema do shopping (saguão + entrada da sala) | maps/duque-cinema-bg.png | depois |
+| MAP-015 | Cinema do Caxias Shopping (saguão + entrada da sala + corredor do shopping) | maps/duque-cinema-bg.png | pedido |
 | MAP-016 | Quarto da Bella decorado para o pedido (variação do quarto: luzes, fotos, origamis, carta, chocolates) | maps/piabeta-quarto-pedido-bg.png | pedido |
 | CIN-011 | O pedido de namoro (Weng com o buquê atrás dela, quarto iluminado) | cinematics/pedido.png | pedido |
 | CIN-012 | Páscoa (chocolates + cartinha de coelho) | cinematics/pascoa.png | depois |
