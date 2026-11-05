@@ -141,10 +141,9 @@ const scripts: Record<string, Script> = {
   },
 
   async uber(ctx) {
-    // os dois esperam juntos na beira da calçada
+    // os dois esperam juntos na beira da calçada, depois do carro vermelho estacionado
     ctx.follow('weng', false);
-    const t = ctx.playerTile();
-    const px = Math.max(4, Math.min(t.x, 10.5));
+    const px = 13.2;
     await Promise.all([ctx.move('player', px, 8.6, 45), ctx.move('weng', px + 1.6, 8.6, 45)]);
     ctx.face('player', 'right');
     ctx.face('weng', 'left');
@@ -161,39 +160,37 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', '...Você tá rindo de mim ou comigo?');
       await ctx.say('bella', 'Com você. Talvez um pouquinho de você.');
     }
-    // o carro aparece lá no fim da rua, vem devagar na chuva e encosta
+    // o carro aparece no fim da rua (faixa de baixo), vem devagar na chuva e encosta na frente deles
     ctx.face('player', 'right');
     ctx.face('weng', 'right');
     await ctx.emote('weng', 'exclaim');
     await ctx.say('weng', 'Olha ele ali! O carro com o farol piscando.');
     const carX = px + 1.4;
-    ctx.prop('uber', 'uber-car', 38, 11.4, 0);
-    await ctx.moveProp('uber', carX + 7, 11.4, 2600);
-    await ctx.moveProp('uber', carX, 11.4, 1500);
+    const lane = 12.6;
+    ctx.prop('uber', 'uber-car', 38, lane, 0);
+    await ctx.moveProp('uber', carX + 7, lane, 2600);
+    await ctx.moveProp('uber', carX, lane, 1500);
     ctx.sfx('horn');
-    await ctx.say('weng', 'É o nosso! Placa confere.');
-    // andam até a porta do carro
-    await Promise.all([ctx.move('player', carX - 0.4, 9.7, 38), ctx.move('weng', carX + 1.4, 9.4, 38)]);
     ctx.face('player', 'down');
-    ctx.face('weng', 'left');
-    await ctx.say('weng', 'Primeiro as damas.');
-    ctx.sfx('door');
+    ctx.face('weng', 'down');
+    await ctx.say('weng', 'É o nosso! Placa confere. Primeiro as damas.');
     await ctx.emote('bella', 'heart');
     await ctx.say('bella', 'Que cavalheiro.');
-    ctx.umbrella('bella', 'off');
-    ctx.visible('player', false);
-    ctx.objective('pia-m2', 'uber');
-    await ctx.wait(350);
-    await ctx.move('weng', carX + 2.4, 9.7, 40);
-    ctx.umbrella('weng', 'off');
-    ctx.visible('weng', false);
+    // entram no carro com a tela escurecendo (sem atravessar o carro)
     ctx.sfx('door');
-    await ctx.wait(500);
-    // o carro sai pela esquerda
-    await ctx.moveProp('uber', -8, 11.4, 2800);
+    await ctx.fadeOut(450);
+    ctx.umbrella('bella', 'off');
+    ctx.umbrella('weng', 'off');
+    ctx.visible('player', false);
+    ctx.visible('weng', false);
+    ctx.objective('pia-m2', 'uber');
+    await ctx.wait(250);
+    ctx.sfx('door');
+    await ctx.fadeIn(450);
+    await ctx.moveProp('uber', -8, lane, 2600);
     ctx.removeProp('uber');
-    await ctx.fadeOut(600);
-    await ctx.travel(`A caminho da ${ROTA}...`, '🚗', 3200);
+    const r = await ctx.uberRide({ destino: ROTA });
+    ctx.setFlag('uber-batidas', r.hits);
     ctx.visible('player', true);
     ctx.visible('weng', true);
     ctx.follow('weng', true);

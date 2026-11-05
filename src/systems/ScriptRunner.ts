@@ -150,13 +150,14 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     acai: (opts) => UI.acai(opts),
     cards: (opts) => UI.cards(opts),
     grill: (opts) => UI.grill(opts),
+    uberRide: (opts) => UI.uberRide(opts),
 
     focus(tx, ty, zoom = 1.4, ms = 900) {
       const cam = scene.cameras.main;
       const p = scene.tile(tx, ty);
       cam.stopFollow();
       cam.pan(p.x, p.y - 12, ms, 'Sine.easeInOut');
-      cam.zoomTo(RENDER_SCALE * zoom, ms, 'Sine.easeInOut');
+      cam.zoomTo(scene.baseZoom * zoom, ms, 'Sine.easeInOut');
       // garante o enquadramento final (respeitando as bordas do mapa)
       return new Promise((r) => scene.time.delayedCall(ms + 20, () => { cam.centerOn(p.x, p.y - 12); r(undefined); }));
     },
@@ -188,7 +189,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         cam.setBounds(saved.x, saved.y, saved.width, saved.height);
         scene.data.remove('camBounds');
       }
-      cam.zoomTo(RENDER_SCALE, ms, 'Sine.easeInOut');
+      cam.zoomTo(scene.baseZoom, ms, 'Sine.easeInOut');
       cam.pan(scene.player.x, scene.player.y - 8, ms, 'Sine.easeInOut');
       return new Promise((r) =>
         scene.time.delayedCall(ms, () => {

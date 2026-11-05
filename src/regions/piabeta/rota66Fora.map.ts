@@ -114,7 +114,7 @@ export const rota66ForaMap: MapDef = {
   exits: [
     { rect: R(605, 600, 762, 645), toMap: 'piabeta-rota66', toSpawn: 'from-fora', sfx: 'door' },
     {
-      rect: R(0, 705, 40, 805),
+      rect: R(0, 700, 40, 1000),
       toMap: 'piabeta-fragoso',
       toSpawn: 'from-rota66',
       blockedIf: () => (QuestSystem.isDone('pia-m2') || !QuestSystem.isActive('pia-m2') ? false : `${PERSONAL.weng.name}: "Primeiro o lanche!"`),

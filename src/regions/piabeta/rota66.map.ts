@@ -15,7 +15,7 @@ const objActive = (o: string) => QuestSystem.isActive(Q) && !objDone(o);
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
 /** Pedido "de sempre" do Weng (de baixo para cima). Troque pelo pedido real dele! */
-const WENG_ORDER: IngredientId[] = ['pao-baixo', 'carne', 'queijo', 'bacon', 'alface', 'molho', 'pao-cima'];
+const WENG_ORDER: IngredientId[] = ['pao-baixo', 'carne', 'queijo', 'picles', 'alface', 'molho', 'pao-cima'];
 
 const scripts: Record<string, Script> = {
   async chegada(ctx) {
@@ -57,7 +57,7 @@ const scripts: Record<string, Script> = {
   },
 
   async pedidoWeng(ctx) {
-    await ctx.say('weng', `Pão, hambúrguer, queijo, bacon, alface, molho e pão. O de sempre.`);
+    await ctx.say('weng', `Pão, hambúrguer, queijo, picles, alface, molho e pão. Sem bacon. O de sempre.`);
     const r = await ctx.burger({ mode: 'memoria', title: `O lanche do ${W}`, order: WENG_ORDER, helper: W, showMs: 5000 });
     ctx.setFlag('burger-weng-estrelas', r.stars);
     if (r.stars === 3) {
@@ -108,12 +108,12 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Pra mim? Sério?');
     await ctx.say('bella', 'Sério. Agora fecha os olhos. E sem espiar!');
     await ctx.say('weng', 'Fechados. Juro.');
-    // só agora, de olhos fechados, aparece o presente
-    await ctx.fadeOut(500);
+    await ctx.say('bella', 'Pode abrir!');
+    // só agora, depois do "pode abrir", aparece o presente
+    await ctx.fadeOut(400);
     await ctx.backdrop('memory-pia-02');
     void mesaArt;
     await ctx.fadeIn(600);
-    await ctx.say('bella', 'Pode abrir!');
     ctx.take('vale-beijo');
     ctx.take('chocolates');
     await ctx.showItem('vale-beijo', 'Você deu para o Weng', 'Vale Beijo & Vale Abraço', 'Feitos à mão. Válidos por tempo indeterminado.');
@@ -211,10 +211,11 @@ export const rota66Map: MapDef = {
     R(112, 380, 300, 470),
     R(88, 540, 292, 650),
     // plantas
-    R(352, 598, 428, 662),
-    R(1156, 598, 1230, 664),
-    R(0, 700, 100, 760),
-    R(1440, 640, 1536, 760),
+    R(368, 620, 422, 662),
+    R(1152, 620, 1205, 664),
+    R(28, 738, 88, 780),
+    R(1470, 692, 1536, 742),
+    R(1448, 752, 1512, 790),
     // cabines do meio
     R(430, 488, 724, 665), // do topo do encosto até a frente: ninguém sobe no sofá
     R(876, 488, 1164, 665),
@@ -249,12 +250,13 @@ export const rota66Map: MapDef = {
     { x0: 1385, y0: 679, x1: 1432, y1: 906, base: 905, cut: 'booth', slice: true },
     { x0: 137, y0: 503, x1: 252, y1: 568, base: 650, cut: 'furniture', slice: true }, // mesinha da janela: tampo
     { x0: 118, y0: 568, x1: 262, y1: 650, base: 650, cut: 'furniture', slice: true }, // assentos e pés (os encostos ficam atrás)
-    { x0: 342, y0: 492, x1: 438, y1: 600, base: 662, cut: 'foliage' }, // plantas
-    { x0: 1148, y0: 492, x1: 1244, y1: 600, base: 664, cut: 'foliage' },
-    { x0: 0, y0: 636, x1: 106, y1: 745, base: 760, cut: 'foliage' },
-    { x0: 1430, y0: 545, x1: 1536, y1: 690, base: 760, cut: 'foliage' },
-    { x0: 532, y0: 792, x1: 638, y1: 915, base: 975, cut: 'foliage' },
-    { x0: 900, y0: 792, x1: 1004, y1: 915, base: 975, cut: 'foliage' },
+    { x0: 336, y0: 488, x1: 430, y1: 662, base: 662, cut: 'furniture' }, // plantas (folhas e vaso; base = fundo do vaso)
+    { x0: 1138, y0: 488, x1: 1232, y1: 664, base: 664, cut: 'furniture' },
+    { x0: 0, y0: 636, x1: 112, y1: 780, base: 780, cut: 'furniture' },
+    { x0: 1446, y0: 540, x1: 1536, y1: 742, base: 742, cut: 'furniture' },
+    { x0: 1426, y0: 690, x1: 1514, y1: 792, base: 790, cut: 'furniture' },
+    { x0: 530, y0: 790, x1: 640, y1: 988, base: 985, cut: 'furniture' },
+    { x0: 898, y0: 790, x1: 1006, y1: 988, base: 985, cut: 'furniture' },
   ],
 
   hotspots: [

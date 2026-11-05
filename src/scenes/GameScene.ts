@@ -175,13 +175,16 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  baseZoom = RENDER_SCALE;
+  private wengOverlapMs = 0;
+
   private setupCamera(): void {
     const cam = this.cameras.main;
-    cam.setZoom(RENDER_SCALE);
     const { widthPx: w, heightPx: h } = this.built;
-    const bx = w < GAME_WIDTH ? -(GAME_WIDTH - w) / 2 : 0;
-    const by = h < GAME_HEIGHT ? -(GAME_HEIGHT - h) / 2 : 0;
-    cam.setBounds(bx, by, Math.max(w, GAME_WIDTH), Math.max(h, GAME_HEIGHT));
+    // cenário mais estreito/baixo que a tela: aproxima só o necessário pra não sobrar faixa preta
+    this.baseZoom = RENDER_SCALE * Math.max(1, GAME_WIDTH / w, GAME_HEIGHT / h);
+    cam.setZoom(this.baseZoom);
+    cam.setBounds(0, 0, w, h);
     cam.startFollow(this.player, false, CAMERA.lerp, CAMERA.lerp, 0, -8);
     cam.setDeadzone(10, 8);
     cam.setRoundPixels(true);
@@ -684,6 +687,19 @@ export class GameScene extends Phaser.Scene {
     this.player.update();
     this.cornerAssist();
     for (const { npc } of this.npcs.values()) npc.update(time, delta);
+    // o Weng nunca fica "dentro" da Bella: se encavalar, ele vai pro lado livre mais próximo
+    const wg = this.npcs.get('weng')?.npc;
+    if (wg && wg.visible && wg.behavior === 'follow' && !this.busy) {
+      const dx = Math.abs(wg.x - this.player.x);
+      const dy = Math.abs(wg.y - this.player.y);
+      this.wengOverlapMs = dx < 13 && dy < 9 ? this.wengOverlapMs + delta : 0;
+      if (this.wengOverlapMs > 300) {
+        const [ox, oy] = this.followerSpot();
+        wg.setPosition(this.player.x + ox, this.player.y + oy);
+        (wg.body as Phaser.Physics.Arcade.Body).reset(wg.x, wg.y);
+        this.wengOverlapMs = 0;
+      }
+    }
     this.weather.update(this.cameras.main);
     // Um recorte só cobre quem está DE FATO atrás do objeto (pés entre o topo e a base).
     // Quem está mais ao norte (acima do objeto) passa por cima, sem corte.

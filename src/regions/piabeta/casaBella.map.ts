@@ -53,7 +53,7 @@ export const casaBellaMap: MapDef = {
     R(1496, 0, 1536, 1024), // direita
     // Quarto: parede do fundo + divisória com a cozinha
     R(0, 0, 875, 235),
-    R(838, 0, 878, 488),
+    R(826, 0, 892, 488),
     // Cozinha: parede, geladeira, fogão e bancada
     R(875, 0, 1536, 300),
     // Divisória do meio + paredes da sala (passagens em x 155–270 e 910–1030)
