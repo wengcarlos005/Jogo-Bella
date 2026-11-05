@@ -114,6 +114,7 @@ export const ASSETS: AssetEntry[] = [
   { id: 'UI-001', key: 'ui-title-art', file: 'assets/ui/title-art.png', kind: 'image' },
   { id: 'UI-002', key: 'ui-world-map', file: 'assets/ui/world-map.png', kind: 'image' },
   { id: 'UI-003', key: 'ui-logo', file: 'assets/ui/logo.png', kind: 'image' },
+  { id: 'UI-009', key: 'ui-bg', file: 'assets/ui/bg.png', kind: 'image' },
   { id: 'UI-004', key: 'ui-panel', file: 'assets/ui/panel.png', kind: 'image' },
   { id: 'UI-005', key: 'ui-dialogue-box', file: 'assets/ui/dialogue-box.png', kind: 'image' },
   { id: 'UI-006', key: 'ui-btn-normal', file: 'assets/ui/btn-normal.png', kind: 'image' },

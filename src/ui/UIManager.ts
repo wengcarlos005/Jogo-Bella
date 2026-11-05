@@ -34,6 +34,7 @@ class UIManagerImpl {
   init(game: Phaser.Game, pauseActions: PauseActions, titleActions: TitleActions): void {
     this.game = game;
     bindTextures(game);
+    document.body.append(h('div', { id: 'frame' }), h('div', { id: 'sky' }));
     this.root = document.getElementById('ui')!;
     this.sidebar = new Sidebar((tab) => this.openMenu(tab as PauseTab));
     this.hud = new HUD(this.root, { openMenu: (tab) => this.openMenu((tab as PauseTab) ?? 'missoes') });
@@ -81,6 +82,9 @@ class UIManagerImpl {
     }
     this.hud.applyIcons();
     this.sidebar.build();
+    // fundo ilustrado opcional (ui/bg.png)
+    const bg = textureURL('ui-bg');
+    if (bg) document.documentElement.style.setProperty('--page-bg', `url(${bg})`);
   }
 
   /** Alinha #ui ao retângulo do canvas e calcula a unidade --u. */
@@ -90,6 +94,12 @@ class UIManagerImpl {
     const r = canvas.getBoundingClientRect();
     Object.assign(this.root.style, { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px` });
     this.root.style.setProperty('--u', `${r.width / GAME_WIDTH}px`);
+    // posição real da tela do jogo, para a moldura e a barra de itens
+    const de = document.documentElement.style;
+    de.setProperty('--cv-l', `${r.left}px`);
+    de.setProperty('--cv-t', `${r.top}px`);
+    de.setProperty('--cv-w', `${r.width}px`);
+    de.setProperty('--cv-h', `${r.height}px`);
   }
 
   openMenu(tab: PauseTab = 'missoes'): void {

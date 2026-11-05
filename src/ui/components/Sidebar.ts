@@ -102,8 +102,10 @@ export class Sidebar {
     this.top.replaceChildren(
       h('div', { class: 'tb-place' }, h('span', { class: 'tb-moon' }, '☾'), place),
       heart,
-      h('div', { class: 'tb-quest' }, obj ? h('span', {}, h('b', {}, `${QuestSystem.def(tracked!).title}: `), obj.text) : ''),
-      h('div', { class: 'tb-mem' }, '♥ Lembranças ', h('b', {}, `${n}/${MEMORY_GOAL}`)),
+      h('div', { class: 'tb-spacer' }),
+      obj ? h('div', { class: 'tb-quest' }, h('span', { class: 'tb-qheart' }, '♥'), h('b', {}, `${QuestSystem.def(tracked!).title}: `), obj.text) : '',
+      h('div', { class: 'tb-spacer' }),
+      h('div', { class: 'tb-mem' }, h('span', { class: 'tb-album' }, '❀'), 'Lembranças ', h('b', {}, `${n}/${MEMORY_GOAL}`)),
     );
   }
 

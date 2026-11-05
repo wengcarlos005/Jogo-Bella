@@ -1270,3 +1270,74 @@ html, body {
   animation: tv-rain 0.4s linear infinite;
   mask-image: linear-gradient(#000 0 60%, transparent 80%);
 }
+
+/* ================= Tela emoldurada (estilo da referência) ================= */
+:root { --top: clamp(52px, 7.2vh, 70px); --side: clamp(118px, 9.6vw, 168px); --bot: clamp(64px, 9vh, 82px); --gap: clamp(14px, 1.6vw, 26px); }
+html, body {
+  background:
+    var(--page-bg, none) center / cover no-repeat,
+    radial-gradient(1.5px 1.5px at 12% 22%, #fff9 50%, transparent 51%) 0 0 / 230px 190px,
+    radial-gradient(1px 1px at 63% 71%, #fffb 50%, transparent 51%) 0 0 / 170px 150px,
+    radial-gradient(2px 2px at 40% 40%, #ffd75e99 50%, transparent 51%) 0 0 / 310px 260px,
+    radial-gradient(ellipse at 50% 0%, #4a3a78 0%, #2a2150 45%, #17122e 100%);
+}
+#topbar, #rightbar, #hotbar { background: none !important; border: none !important; box-shadow: none !important; }
+#game { top: var(--top); left: var(--gap); right: calc(var(--side) + var(--gap)); bottom: calc(var(--bot) * 0.45 + 6px); }
+#game canvas { border-radius: 12px; }
+
+/* moldura de madeira em volta da tela do jogo */
+#frame {
+  position: fixed; z-index: 5; pointer-events: none;
+  left: calc(var(--cv-l) - 11px); top: calc(var(--cv-t) - 11px);
+  width: calc(var(--cv-w) + 22px); height: calc(var(--cv-h) + 22px);
+  border-radius: 20px;
+  border: 7px solid #7a3e3a;
+  box-shadow:
+    inset 0 0 0 3px #d9a35a,
+    inset 0 0 0 5px #4a2226,
+    0 0 0 3px #4a2226,
+    0 10px 24px rgba(0, 0, 0, 0.55),
+    0 0 40px rgba(242, 122, 155, 0.18);
+}
+
+/* barra de cima: selos separados */
+#topbar { gap: 14px; padding: 0 calc(var(--side) + var(--gap)) 0 var(--gap); align-items: center; }
+.tb-spacer { flex: 1; }
+.tb-place, .tb-quest, .tb-mem, .tb-nerves {
+  display: flex; align-items: center; gap: 8px; flex: none;
+  background: linear-gradient(#3a2d66, #2a2050);
+  color: #fbf3e2; border: 3px solid #d9a35a; border-radius: 999px;
+  padding: 5px 18px; box-shadow: 0 3px 0 #1a1230, inset 0 0 0 2px #4a2226;
+  font-size: clamp(12px, 1.15vw, 18px); font-weight: 700; white-space: nowrap;
+}
+.tb-place { font-family: var(--font-pixel); font-size: clamp(13px, 1.25vw, 19px); }
+.tb-moon { color: var(--gold); font-size: 1.3em; margin: 0; }
+.tb-nerves { background: none; border: none; box-shadow: none; padding: 0; }
+.tb-quest { position: relative; max-width: 44vw; overflow: hidden; text-overflow: ellipsis; padding: 6px 26px; }
+.tb-quest b { color: var(--gold); }
+.tb-qheart { color: var(--gold); }
+.tb-quest::before, .tb-quest::after { content: ''; position: absolute; top: 50%; width: 10px; height: 10px; background: var(--rose); transform: translateY(-50%) rotate(45deg); }
+.tb-quest::before { left: 7px; } .tb-quest::after { right: 7px; }
+.tb-mem b { color: var(--rose); font-family: var(--font-pixel); font-size: 1.15em; }
+.tb-album { color: var(--rose); }
+
+/* botões da direita: cartões grandes */
+#rightbar { top: var(--top); bottom: var(--gap); width: var(--side); right: 6px; padding: 4px 10px; gap: 10px; justify-content: flex-start; }
+#rightbar .sb-btn { flex: 0 1 auto; height: min(15.2%, 118px); max-height: none; border-width: 9px; border-image-width: 9px; }
+#rightbar .sb-btn img { height: 62%; width: auto; max-width: 78%; }
+#rightbar .sb-label { font-size: clamp(12px, 1.05vw, 17px); font-weight: 800; }
+
+/* barra de itens encaixada na borda de baixo da moldura */
+#hotbar {
+  left: calc(var(--cv-l) + var(--cv-w) / 2); right: auto; transform: translateX(-50%);
+  top: calc(var(--cv-t) + var(--cv-h) - var(--bot) * 0.55); bottom: auto;
+  height: var(--bot); z-index: 21; width: auto;
+}
+#hotbar .sb-bag {
+  height: calc(var(--bot) - 10px); padding: 6px 10px; gap: 6px;
+  background: linear-gradient(#a0623b, #7a4528); border: 3px solid #4a2226; border-radius: 16px;
+  box-shadow: inset 0 0 0 2px #d9a35a, 0 6px 14px rgba(0, 0, 0, 0.5);
+}
+#hotbar .sb-item { border-radius: 9px; }
+/* o diálogo sobe para não ficar atrás da barra de itens */
+#ui.has-dialogue-art .dialogue { bottom: calc(var(--bot) * 0.55 + 4px); }
