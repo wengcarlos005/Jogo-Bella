@@ -15,8 +15,9 @@ export const casaScripts: Record<string, Script> = {
   async entrar(ctx) {
     // 2º encontro: depois do churrasco, filme no sofá da sala
     if (ctx.questActive('dq-e2') && ctx.objectiveDone('dq-e2', 'mesa') && !ctx.objectiveDone('dq-e2', 'filme')) {
-      ctx.place('mae-bella', 22.4, 9.9, 'left');
-      ctx.place('pai-bella', 20.0, 9.9, 'right');
+      // na cozinha, cada um num canto (sem cadeira e sem ficar um em cima do outro)
+      ctx.place('pai-bella', 19.6, 7.2, 'down');
+      ctx.place('mae-bella', 28.0, 9.4, 'left');
       ctx.follow('weng', true);
       ctx.place('weng', 16.2, 15.6, 'up');
       await ctx.wait(300);

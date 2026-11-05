@@ -109,15 +109,39 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Sério. Agora fecha os olhos. E sem espiar!');
     await ctx.say('weng', 'Fechados. Juro.');
     await ctx.say('bella', 'Pode abrir!');
-    // só agora, depois do "pode abrir", aparece o presente
+    // a Bella escolhe os presentes na barra de itens
+    const ZOEIRA: Record<string, string> = {
+      'colar-pingente': 'Seu colar da sorte? Não, esse é seu. Já me dá sorte só de olhar pra ele.',
+      'oculos-rosa': 'Seus óculos? Mas aí você não vai conseguir ver meu rosto lindo.',
+      celular: 'Seu celular? Eu ia amar ler suas conversas sobre mim... brincadeira. (Não é brincadeira.)',
+      'rosa-rosa': 'A rosa que EU te dei? Devolvendo já no primeiro encontro? Meu coração não aguenta.',
+      guardanapo: 'Um guardanapo... usado? Bella, eu sei que eu como feito criança, mas assim é demais.',
+      'flor-do-quintal': 'Uma florzinha da pracinha! Linda... mas acho que essa é da Dona Cida.',
+      'burger-rota66': 'Metade do seu hambúrguer? Isso sim é prova de amor. Mas não era isso, né?',
+    };
+    // se ela não pegou o presente no guarda-roupa, ele já estava na bolsa (a mãe colocou)
+    if (!ctx.has('vale-beijo')) await ctx.give('vale-beijo', 1, true);
+    if (!ctx.has('chocolates')) await ctx.give('chocolates', 1, true);
+    const dados = new Set<string>();
+    let erros = 0;
+    while (dados.size < 2) {
+      const id = await ctx.pickItem(dados.size === 0 ? 'Escolha o presente do Weng na barra de itens' : 'Tem mais! Escolha o outro presente');
+      if ((id === 'vale-beijo' || id === 'chocolates') && !dados.has(id)) {
+        dados.add(id);
+        ctx.take(id);
+        ctx.sfx('pickup');
+        ctx.hearts('weng', 5);
+        if (dados.size === 1) await ctx.say('weng', id === 'vale-beijo' ? 'Isso é... um Vale Beijo? E um Vale Abraço?! Tem mais coisa aí?' : 'CHOCOLATE! E ainda tem mais? Você tá me mimando.');
+        continue;
+      }
+      erros++;
+      await ctx.emote('weng', 'question');
+      await ctx.say('weng', ZOEIRA[id] ?? (erros > 2 ? 'Bella, eu te amo, mas acho que você se perdeu na bolsa.' : 'Hmm... é isso mesmo o presente?'));
+    }
     await ctx.fadeOut(400);
     await ctx.backdrop('memory-pia-02');
     void mesaArt;
     await ctx.fadeIn(600);
-    ctx.take('vale-beijo');
-    ctx.take('chocolates');
-    await ctx.showItem('vale-beijo', 'Você deu para o Weng', 'Vale Beijo & Vale Abraço', 'Feitos à mão. Válidos por tempo indeterminado.');
-    await ctx.showItem('chocolates', 'Você deu para o Weng', 'Chocolates', 'Um montão deles. O de morango já tem dono.');
     await ctx.say('weng', '...Chocolates! Um monte de chocolates! E isso aqui é... um Vale Beijo? E um Vale Abraço?!');
     await ctx.emote('weng', 'heart');
     const cg = await ctx.choose('bella', '(Ele tá olhando os vales sem piscar...)', ['"Válidos por tempo indeterminado."', '"Os chocolates são pra dividir, tá?"', '"Gostou? Fui eu que fiz."']);

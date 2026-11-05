@@ -38,6 +38,8 @@ export interface HotspotDef {
   interact: string;
   label?: string;
   markerIf?: () => boolean;
+  /** Onde fica o marcador (fração da área: x 0..1, y 0..1) e se aponta pra direita. Padrão: centro, em cima, pra baixo. */
+  marker?: { x?: number; y?: number; dir?: 'down' | 'right' };
   enabledIf?: () => boolean;
 }
 

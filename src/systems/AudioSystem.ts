@@ -10,7 +10,8 @@ export type Sfx =
   | 'menu'
   | 'quest'
   | 'memory'
-  | 'horn';
+  | 'horn'
+  | 'msg';
 
 type Note = [freq: number, dur: number, type?: OscillatorType];
 
@@ -21,6 +22,7 @@ type Note = [freq: number, dur: number, type?: OscillatorType];
  */
 const SYNTH: Record<Sfx, Note[]> = {
   blip: [[880, 0.025, 'square']],
+  msg: [[1320, 0.05, 'sine'], [1760, 0.1, 'sine']],
   confirm: [[660, 0.06, 'square'], [990, 0.08, 'square']],
   cancel: [[440, 0.06, 'square'], [330, 0.08, 'square']],
   pickup: [[784, 0.07, 'triangle'], [988, 0.07, 'triangle'], [1319, 0.12, 'triangle']],

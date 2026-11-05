@@ -27,6 +27,19 @@ export class Sidebar {
   private top = h('header', { id: 'topbar', class: 'idle' });
   private left = h('footer', { id: 'hotbar', class: 'idle' });
   private tip = h('div', { class: 'sb-float-tip' });
+  private pickTip = h('div', { class: 'sb-pick-tip' });
+  private pickResolve: ((id: string) => void) | null = null;
+
+  /** Espera o jogador clicar num item da barra de itens (ex.: escolher um presente). */
+  pick(prompt: string): Promise<string> {
+    const done = new Promise<string>((r) => (this.pickResolve = r));
+    // durante a escolha, os itens de missão (presentes, etc.) também aparecem na barra
+    this.refresh(true);
+    this.left.classList.add('picking');
+    this.pickTip.textContent = prompt;
+    document.body.append(this.pickTip);
+    return done;
+  }
   private right = h('aside', { id: 'rightbar', class: 'idle' });
   private bag = h('div', { class: 'sb-bag' });
   private active = false;
@@ -64,16 +77,33 @@ export class Sidebar {
     this.refresh();
   }
 
-  refresh(): void {
-    if (!this.active) return;
+  refresh(force = false): void {
+    if (!this.active && !force) return;
     // mochila
-    const items = InventorySystem.list().filter((e) => e.def.category !== 'missao');
+    const items = InventorySystem.list().filter((e) => this.pickResolve || e.def.category !== 'missao');
     this.bag.replaceChildren(
       ...items.map(({ def, qty }) => {
         const url = textureURL(def.icon);
         const btn = h(
           'button',
-          { class: 'sb-item', 'data-id': def.id, 'aria-label': def.name, onclick: () => this.openMenu('inventario') },
+          {
+            class: 'sb-item',
+            'data-id': def.id,
+            'aria-label': def.name,
+            onclick: () => {
+              if (this.pickResolve) {
+                const r = this.pickResolve;
+                this.pickResolve = null;
+                this.left.classList.remove('picking');
+                this.pickTip.remove();
+                this.tip.classList.remove('show');
+                r(def.id);
+                this.refresh(true);
+                return;
+              }
+              this.openMenu('inventario');
+            },
+          },
           url ? h('img', { src: url, alt: def.name }) : def.name[0],
           qty > 1 ? h('span', { class: 'sb-qty' }, String(qty)) : null,
         );

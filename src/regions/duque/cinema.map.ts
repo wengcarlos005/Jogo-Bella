@@ -12,11 +12,40 @@ const scripts: Record<string, Script> = {
     ctx.follow('weng', true);
     if (ctx.flag('dq-cine-1')) return;
     ctx.setFlag('dq-cine-1');
-    ctx.place('player', 15.4, 8.6, 'down');
-    ctx.place('weng', 17.0, 8.6, 'down');
-    await ctx.narrate('Caxias Shopping. A sessão de Five Nights at Freddy\'s acabou de terminar.');
-    ctx.face('player', 'right');
-    ctx.face('weng', 'left');
+    // chegam pelo corredor do shopping, lá embaixo
+    ctx.follow('weng', false);
+    ctx.place('player', 14.6, 18.6, 'up');
+    ctx.place('weng', 16.4, 18.6, 'up');
+    await ctx.narrate('Caxias Shopping. Sábado à noite.');
+    await ctx.say('bella', 'Cheiro de pipoca. Esse é o melhor cheiro do mundo.');
+    ctx.face('weng', 'bella');
+    await ctx.say('weng', 'Já comprei os ingressos. Sala 3, Five Nights at Freddy\'s.');
+    await ctx.emote('weng', 'sweat');
+    await ctx.say('weng', '(E ela não pode desconfiar de NADA do que vem depois.)');
+    ctx.face('player', 'weng');
+    await ctx.say('bella', 'Você tá estranho. Tá com medo do filme?');
+    await ctx.say('weng', 'Eu? Medo? De um urso animatrônico? ...Um pouco.');
+    ctx.follow('weng', true);
+    ctx.toast('Pegue a pipoca no balcão da direita');
+  },
+
+  async filme(ctx) {
+    ctx.objective(Q, 'filme');
+    await ctx.fadeOut(600);
+    ctx.letterbox(true);
+    await ctx.narrate('Sala 3. As luzes se apagam...');
+    ctx.shake(400);
+    ctx.sfx('cancel');
+    await ctx.say('bella', 'AAAAH! (aperta o braço do Weng)');
+    await ctx.say('weng', '(Ela tá segurando meu braço. Melhor filme da minha vida.)');
+    ctx.shake(300);
+    await ctx.say('bella', 'Não olha pra mim! Olha pro filme!');
+    await ctx.say('weng', 'Tem filme passando?');
+    await ctx.narrate('Duas horas, um balde de pipoca e quarenta e três apertões depois...');
+    ctx.letterbox(false);
+    ctx.place('player', 15.4, 8.6, 'right');
+    ctx.place('weng', 17.0, 8.6, 'left');
+    await ctx.fadeIn(600);
     await ctx.say('weng', 'E aí? Deu medo?');
     await ctx.say('bella', 'Medo nenhum. Eu só apertei o seu braço umas... quarenta vezes.');
     await ctx.say('weng', 'Quarenta e três. Eu contei.');
@@ -24,6 +53,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Bora tomar alguma coisa antes de ir embora?');
     await ctx.emote('weng', 'sweat');
     await ctx.say('weng', '(Ela não pode desconfiar de nada. Age normal, Weng. Normal.)');
+    ctx.follow('weng', true);
     ctx.toast('Vá até a saída do cinema');
   },
 
@@ -32,13 +62,26 @@ const scripts: Record<string, Script> = {
       await ctx.teleport('duque-rua', 'from-multidao');
       return;
     }
+    if (!ctx.objectiveDone(Q, 'filme')) {
+      await ctx.say('bella', 'Ei! A gente nem viu o filme ainda. E a pipoca?!');
+      await ctx.move('player', ctx.playerTile().x, 18.4, 60);
+      return;
+    }
     ctx.objective(Q, 'saida');
-    ctx.sfx('blip');
+    // a câmera sobe pra ver os dois acima da caixa de diálogo
+    const t = ctx.playerTile();
+    await ctx.frame(t.x, t.y, 400);
+    ctx.sfx('msg');
     await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', 'Meu celular tá tocando. É a minha mãe.');
-    await ctx.say('mae-tel', 'Bella, vem pra casa agora! A sua irmã tá passando mal!');
-    await ctx.say('bella', 'Como assim, mãe?! O que ela tem?');
-    await ctx.say('mae-tel', '...E a sua avó também! Vem logo, filha!');
+    await ctx.say('mae-tel', 'BELLA! Vem pra casa AGORA! A sua irmã caiu da escada, rolou e saiu voando!');
+    await ctx.emote('bella', 'exclaim');
+    await ctx.say('bella', 'COMO ASSIM SAIU VOANDO, MÃE?!');
+    await ctx.say('mae-tel', '...E a sua avó também! Caiu da escada, rolou e saiu voando! As duas!');
+    await ctx.say('bella', 'As DUAS?! Mãe, que história é essa?!');
+    await ctx.say('mae-tel', 'Não discute! Vem logo, filha! Tchau!');
+    await ctx.emote('weng', 'sweat');
+    await ctx.say('weng', '(Sogra... criatividade nota mil. Credibilidade nota zero.)');
     await ctx.say('bella', 'Ai, gente... tá bom. Tô indo.');
     ctx.face('player', 'weng');
     await ctx.emote('bella', 'sweat');
@@ -56,6 +99,18 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Sala 3, sessão das 19:30. A gente escolheu a de terror. Corajosos.');
   },
   async pipoca(ctx) {
+    if (QuestSystem.isActive(Q) && !ctx.objectiveDone(Q, 'filme')) {
+      await ctx.say('atendente-cine', 'Boa noite! Vai querer qual?');
+      const c = await ctx.choose('bella', '(O balde é enorme...)', ['"Uma grande, com bastante manteiga!"', '"Uma grande e um refri de 1 litro!"']);
+      await ctx.say('atendente-cine', c === 0 ? 'Saindo uma grande, caprichada na manteiga!' : 'Grande e refrigerante gigante. Corajosos!');
+      ctx.sfx('pickup');
+      await ctx.emote('bella', 'heart');
+      await ctx.say('weng', 'Aposto que acaba antes do filme começar.');
+      await ctx.say('bella', 'Clássico.');
+      await ctx.say('weng', 'Bora? A sessão já vai começar.');
+      await scripts.filme(ctx);
+      return;
+    }
     await ctx.say('weng', 'Pipoca grande. Que a gente comeu antes do filme começar.');
     await ctx.say('bella', 'Clássico.');
   },
@@ -107,7 +162,7 @@ export const cinemaMap: MapDef = {
 
   hotspots: [
     { rect: R(170, 330, 600, 590), interact: 'bilheteria', label: 'Bilheteria' },
-    { rect: R(955, 330, 1395, 530), interact: 'pipoca', label: 'Pipoca' },
+    { rect: R(955, 330, 1395, 530), interact: 'pipoca', label: 'Pipoca', markerIf: () => QuestSystem.isActive(Q) && !QuestSystem.isObjectiveDone(Q, 'filme') },
     { rect: R(0, 200, 190, 660), interact: 'cartaz', label: 'Cartaz' },
   ],
 

@@ -53,6 +53,7 @@ export const ASSETS: AssetEntry[] = [
   char('NPC-003', 'vizinha', 'npcs/vizinha-walk.png', 136),
 
   char('NPC-004', 'atendente', 'npcs/atendente-walk.png', 136),
+  char('NPC-020', 'garcom', 'npcs/garcom-walk.png', 136),
   char('NPC-010', 'vof-weng', 'npcs/vof-weng-walk.png', 136),
   char('NPC-011', 'vom-weng', 'npcs/vom-weng-walk.png', 136),
   char('NPC-012', 'kelly', 'npcs/kelly-walk.png', 136),
@@ -95,6 +96,7 @@ export const ASSETS: AssetEntry[] = [
   { id: 'PORT-004', key: 'portrait-pai-bella', file: 'assets/portraits/pai-bella.png', kind: 'image' },
   { id: 'PORT-005', key: 'portrait-vizinha', file: 'assets/portraits/vizinha.png', kind: 'image' },
   { id: 'PORT-006', key: 'portrait-atendente', file: 'assets/portraits/atendente.png', kind: 'image' },
+  { id: 'PORT-020', key: 'portrait-garcom', file: 'assets/portraits/garcom.png', kind: 'image' },
 
   // Cenários pintados (opcionais) — se existirem, substituem os tiles visuais
   // Bichinhos: folha 4x4 (quadros 64x64, exibidos em meia escala) + faixa de poses (96x64):

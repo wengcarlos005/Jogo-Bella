@@ -38,6 +38,9 @@ interface NpcEntry {
  * Cena de exploração. Cada mapa é carregado reiniciando esta cena com
  * outro MapDef — o motor é o mesmo para todas as cidades.
  */
+/** NPCs que ainda não têm arte própria usam a folha de outro enquanto isso. */
+const SPRITE_FALLBACK: Record<string, string> = { garcom: 'atendente' };
+
 export class GameScene extends Phaser.Scene {
   def!: MapDef;
   built!: BuiltMap;
@@ -49,7 +52,7 @@ export class GameScene extends Phaser.Scene {
   umbrellas = new Map<string, { img: Phaser.GameObjects.Image; shaft: Phaser.GameObjects.Image; mode: 'up' | 'hide' }>();
   weather!: WeatherSystem;
   interactions!: InteractionSystem;
-  private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2 }[] = [];
+  private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2; right?: boolean }[] = [];
   private scriptRunning = false;
   private transitioning = false;
   private blockedCooldown = 0;
@@ -207,7 +210,7 @@ export class GameScene extends Phaser.Scene {
    * cai no placeholder (chave original).
    */
   spriteFor(key: string): string {
-    if (key !== 'bella' && key !== 'weng') return key;
+    if (key !== 'bella' && key !== 'weng') return this.textures.exists(key) ? key : (SPRITE_FALLBACK[key] ?? key);
     const region = this.def.region;
     const override = key === 'bella' ? GameState.data.regionOutfits[region] : undefined;
     const id = override ?? REGION_OUTFIT[key][region];
@@ -578,7 +581,11 @@ export class GameScene extends Phaser.Scene {
         run: () => this.runScript(h.interact),
         anchor: () => ({ x: r.centerX, y: r.y - 2 }),
       });
-      if (h.markerIf) this.addMarker(h.markerIf, () => ({ x: r.centerX, y: r.y - 4 }), () => true);
+      if (h.markerIf) {
+        const m = h.marker;
+        const at = m ? { x: r.x + (m.x ?? 0.5) * r.width, y: r.y + (m.y ?? 0) * r.height - 4 } : { x: r.centerX, y: r.y - 4 };
+        this.addMarker(h.markerIf, () => at, () => true, m?.dir === 'right');
+      }
     });
   }
 
@@ -598,9 +605,11 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  private addMarker(cond: () => boolean, anchor: () => Vec2, visible: () => boolean): void {
+  private addMarker(cond: () => boolean, anchor: () => Vec2, visible: () => boolean, right = false): void {
     const sprite = this.add.image(0, 0, 'fx-marker').setDepth(150_000).setVisible(false);
-    this.markers.push({ sprite, cond: () => visible() && cond(), anchor });
+    // seta deitada apontando pra direita (ex.: "o restaurante é pra lá")
+    if (right) sprite.setRotation(-Math.PI / 2);
+    this.markers.push({ sprite, cond: () => visible() && cond(), anchor, right });
   }
 
   /** Reavalia visibleIf de props e NPCs (chamado quando flags mudam). */
@@ -797,7 +806,9 @@ export class GameScene extends Phaser.Scene {
       m.sprite.setVisible(on);
       if (on) {
         const a = m.anchor();
-        m.sprite.setPosition(Math.round(a.x), Math.round(a.y - 2 + Math.abs(Math.sin(time / 260)) * -5));
+        const bob = Math.abs(Math.sin(time / 260)) * 5;
+        if (m.right) m.sprite.setPosition(Math.round(a.x + bob), Math.round(a.y));
+        else m.sprite.setPosition(Math.round(a.x), Math.round(a.y - 2 - bob));
         m.sprite.setScale(1 + Math.max(0, Math.sin(time / 260)) * 0.12);
       }
     }

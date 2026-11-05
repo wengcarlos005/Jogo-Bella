@@ -107,6 +107,21 @@ const scripts: Record<string, Script> = {
     ctx.follow('weng', true);
     await ctx.chapterCard('Fim do Prólogo', 'Piabetá', 'Onde tudo começou.', 'Continuar');
     await ctx.chapterCard('Capítulo 1', 'Piabetá', 'O segundo encontro', 'Começar');
+    await ctx.phone({ contact: 'Weng ♥', avatar: 'portrait-weng', clock: '23:48', caption: 'Naquela mesma noite...' }, [
+      { from: 'them', text: 'Chegou em casa?' },
+      { from: 'me', text: 'Cheguei. Encharcada kkkkk' },
+      { from: 'them', text: 'Eu também. Mas valeu cada gota.' },
+      { from: 'me', text: 'Bobo 🙈' },
+      { from: 'info', text: 'Alguns dias depois' },
+      { from: 'me', text: 'Domingo vai ter churrasco aqui em casa.' },
+      { from: 'me', text: 'Minha mãe quer te conhecer direito. O Alexandre também.' },
+      { from: 'me', text: 'Ele já tá afiando a faca kkkkk' },
+      { from: 'them', text: '...isso é piada, né?' },
+      { from: 'me', text: '😇' },
+      { from: 'them', text: 'Bella.' },
+      { from: 'me', text: 'Vem uma da tarde! Traz fome.' },
+      { from: 'them', text: 'Levo fome. E coragem.' },
+    ]);
     ctx.startQuest('dq-e2');
     await ctx.teleport('piabeta-quintal', 'porta');
   },
@@ -257,8 +272,7 @@ export const parqueMap: MapDef = {
     { x0: 838, y0: 225, x1: 912, y1: 344, base: 342, cut: 'foliage', fade: true },
     { x0: 0, y0: 520, x1: 112, y1: 624, base: 622, cut: 'foliage', fade: true },
     // chafariz: bacia (oval) e a parte de cima (coluna)
-    { x0: 77, y0: 425, x1: 318, y1: 552, base: 548, ellipse: true },
-    { x0: 160, y0: 318, x1: 252, y1: 470, base: 548, cut: 'column' },
+    { x0: 72, y0: 312, x1: 322, y1: 556, base: 548, cut: 'outline' }, // chafariz inteiro pelo contorno
     // ponte: fatiada (o corrimão da frente passa na frente das pernas de quem está nela)
     { x0: 1238, y0: 140, x1: 1452, y1: 274, base: 272, cut: 'furniture', slice: true },
     // postes (só a haste)
@@ -269,10 +283,12 @@ export const parqueMap: MapDef = {
     // arco de flores inteiro (pés e topo), translúcido quando alguém passa por baixo
     { x0: 550, y0: 630, x1: 945, y1: 792, base: 792, cut: 'foliage', fade: true, tall: true, fadeX: [668, 832] },
     // pilastras e guarda-corpo da frente do coreto, na frente dos dois durante a cena do beijo
-    { x0: 586, y0: 196, x1: 634, y1: 354, base: 3000, cut: 'column', when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
-    { x0: 710, y0: 196, x1: 764, y1: 354, base: 3000, cut: 'column', when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    { x0: 589, y0: 205, x1: 612, y1: 362, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    { x0: 605, y0: 300, x1: 630, y1: 362, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    { x0: 729, y0: 205, x1: 754, y1: 362, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    { x0: 711, y0: 300, x1: 736, y1: 362, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
     // telhado do coreto por cima das cabeças, só na cena do beijo
-    { x0: 505, y0: 25, x1: 840, y1: 214, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    { x0: 505, y0: 25, x1: 840, y1: 206, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
   ],
 
   // Noite (o passeio é depois do lanche): véu escuro + postes e lanternas acesos
@@ -296,6 +312,7 @@ export const parqueMap: MapDef = {
       rect: R(1470, 690, 1536, 830),
       interact: 'placaMex',
       label: 'Restaurante →',
+      marker: { x: 0.25, y: -0.35, dir: 'right' },
       markerIf: () => QuestSystem.isActive('dq-e2') && QuestSystem.isObjectiveDone('dq-e2', 'passeio') && !QuestSystem.isObjectiveDone('dq-e2', 'mexicano'),
     },
     { rect: R(505, 30, 840, 432), interact: 'coreto', label: 'Coreto', markerIf: () => objActive('abrigo') && objDone('passear') },

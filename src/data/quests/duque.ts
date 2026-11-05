@@ -9,6 +9,7 @@ export const DUQUE_QUESTS: QuestDef[] = [
     kind: 'principal',
     description: 'Cinema no Caxias Shopping. Five Nights at Freddy\'s. O que pode dar errado?',
     objectives: [
+      { id: 'filme', text: 'Pegar a pipoca e ver o filme', hint: 'O balcão da pipoca fica à direita do saguão.' },
       { id: 'saida', text: 'Sair do cinema', hint: 'A saída fica lá embaixo, depois do tapete vermelho.' },
       { id: 'casa', text: 'Voltar pra casa', hint: 'Sua mãe disse que é urgente...' },
       { id: 'quarto', text: 'Ir até o seu quarto', hint: 'O quarto fica em cima, à esquerda. Tá tudo apagado...' },

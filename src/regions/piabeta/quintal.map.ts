@@ -18,15 +18,38 @@ const scripts: Record<string, Script> = {
     if (objDone('filme') && objActive('passeio')) ctx.toast('Saia pelo portão para passear');
     if (ctx.flag('dq-e2-intro')) return;
     ctx.setFlag('dq-e2-intro');
-    // os dois chegam pela porta da cozinha, um do lado do outro (sem grudar)
-    ctx.place('player', 19.0, 10.9, 'down');
-    ctx.place('weng', 21.0, 10.9, 'down');
+    // Domingo: a Bella já está no quintal; a campainha toca e ela corre abrir o portão pro Weng
+    ctx.follow('weng', false);
+    ctx.place('player', 20.4, 10.6, 'down');
+    ctx.place('weng', 15.6, 18.6, 'up');
     ctx.setFlag('weng-segue');
     if (!ctx.questActive(Q) && !QuestSystem.isDone(Q)) ctx.startQuest(Q);
     ctx.refresh();
-    await ctx.narrate('Algumas semanas depois do primeiro beijo.');
-    await ctx.narrate('Segundo encontro: churrasco no quintal da Bella.');
+    ctx.visible('weng', false);
+    await ctx.narrate('Domingo, uma da tarde. Cheiro de carvão no ar.');
+    await ctx.say('pai-bella', '(assobiando, abanando a churrasqueira)');
+    await ctx.wait(300);
+    ctx.sfx('doorbell');
+    await ctx.emote('bella', 'exclaim');
+    await ctx.say('bella', 'É ele! MÃE! O WENG CHEGOU!');
+    await ctx.say('mae-bella', 'Então vai abrir, menina! Tá esperando o quê?');
+    await ctx.move('player', 19.6, 17.3, 70);
+    await ctx.move('player', 16.9, 17.3, 70);
+    ctx.face('player', 'down');
+    ctx.sfx('door');
+    ctx.visible('weng', true);
+    await ctx.move('weng', 15.4, 17.5, 40);
+    ctx.face('weng', 'bella');
+    ctx.face('player', 'weng');
+    await ctx.say('weng', 'Oi! Trouxe um refri. E um pudim.');
+    await ctx.say('bella', 'Um PUDIM? Você pesquisou "o que levar no churrasco da família dela"?');
+    await ctx.emote('weng', 'sweat');
+    await ctx.say('weng', 'Talvez. O primeiro resultado dizia "leve pudim".');
+    ctx.hearts('player', 4);
+    await ctx.say('bella', 'Vem, entra! Todo mundo tá te esperando.');
+    ctx.follow('weng', true);
     await ctx.say('mae-bella', 'Chegou o Weng! Entra, querido, fica à vontade. O Alexandre já acendeu a churrasqueira.');
+    await ctx.say('mae-bella', 'Ai, trouxe pudim! Alexandre, ele trouxe PUDIM!');
     await ctx.say('pai-bella', '...Sabe virar carne?');
     await ctx.emote('weng', 'sweat');
     await ctx.say('weng', 'Sei! Quer dizer... sei aprender rápido.');
@@ -41,7 +64,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Eu? Agora? Tá. Tá bom. Eu consigo.');
       // o Weng vai pra churrasqueira; a Bella fica olhando, torcendo
       ctx.follow('weng', false);
-      await ctx.move('pai-bella', 9.3, 11.6, 45);
+      await ctx.move('pai-bella', 8.6, 13.2, 45);
       await ctx.move('weng', 7.2, 11.5, 50);
       ctx.face('weng', 'left');
       ctx.face('pai-bella', 'left');
@@ -99,8 +122,10 @@ const scripts: Record<string, Script> = {
         await ctx.backdrop(null);
       }
       await ctx.unfocus(400);
-      ctx.place('mae-bella', 9.8, 12.6, 'right');
-      ctx.place('pai-bella', 7.4, 12.6, 'right');
+      // cada um no seu canto, fora da mesa e das cadeiras: o Alexandre volta pra churrasqueira,
+      // a mãe fica no caminho de pedra, do outro lado da mesa
+      ctx.place('mae-bella', 21.4, 14.4, 'left');
+      ctx.place('pai-bella', 7.7, 13.0, 'right');
       ctx.follow('weng', true);
       if (mesaArt) await ctx.fadeIn(400);
       ctx.objective(Q, 'mesa');
@@ -218,9 +243,9 @@ export const quintalMap: MapDef = {
   ],
 
   npcs: [
-    { id: 'avo-bella', sprite: 'avo-bella', tx: 24.5, ty: 13.6, facing: 'left', interact: 'avoBella', behavior: 'wander', wanderRadius: 1.6, wanderAxis: 'both' },
-    { id: 'pai-bella', sprite: 'pai-bella', tx: 7.4, ty: 11.6, facing: 'up', interact: 'pai' },
-    { id: 'mae-bella', sprite: 'mae-bella', tx: 18.4, ty: 14.6, facing: 'left', interact: 'mae', behavior: 'wander', wanderRadius: 2.4, wanderAxis: 'both' },
+    { id: 'avo-bella', sprite: 'avo-bella', tx: 24.8, ty: 12.4, facing: 'left', interact: 'avoBella', behavior: 'wander', wanderRadius: 1.2, wanderAxis: 'both' },
+    { id: 'pai-bella', sprite: 'pai-bella', tx: 7.7, ty: 13.0, facing: 'up', interact: 'pai' },
+    { id: 'mae-bella', sprite: 'mae-bella', tx: 21.4, ty: 14.6, facing: 'left', interact: 'mae', behavior: 'wander', wanderRadius: 1.2, wanderAxis: 'y' },
   ],
   spawns: {
     porta: { tx: 19.6, ty: 9.6, facing: 'down' },

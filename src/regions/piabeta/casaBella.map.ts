@@ -136,7 +136,7 @@ export const casaBellaMap: MapDef = {
     // Lala, a gata da Bella, dormindo no chão do quarto
     { id: 'lala', sprite: 'lala', tx: 14.1, ty: 8.2, facing: 'down', interact: 'lala', pose: { key: 'lala-poses', frame: 1 } },
     { id: 'mae-bella', sprite: 'mae-bella', tx: 23.6, ty: 16.4, facing: 'down', interact: 'mae', behavior: 'wander', wanderRadius: 2.2, wanderAxis: 'x', markerIf: () => objActive('mae') && GameState.is('weng-entrou') },
-    { id: 'pai-bella', sprite: 'pai-bella', tx: 21.2, ty: 9.9, facing: 'down', interact: 'pai', behavior: 'wander', wanderRadius: 1.6, wanderAxis: 'x', markerIf: () => objActive('pai') && GameState.is('weng-entrou') },
+    { id: 'pai-bella', sprite: 'pai-bella', tx: 19.8, ty: 7.6, facing: 'down', interact: 'pai', behavior: 'wander', wanderRadius: 1.0, wanderAxis: 'x', markerIf: () => objActive('pai') && GameState.is('weng-entrou') },
     {
       id: 'weng',
       sprite: 'weng',

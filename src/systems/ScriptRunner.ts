@@ -152,6 +152,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     acai: (opts) => UI.acai(opts),
     cards: (opts) => UI.cards(opts),
     grill: (opts) => UI.grill(opts),
+    phone: (opts, msgs) => UI.phone(opts, msgs),
+    pickItem: (prompt) => UI.pickItem(prompt),
     uberRide: (opts) => UI.uberRide(opts),
 
     focus(tx, ty, zoom = 1.4, ms = 900) {

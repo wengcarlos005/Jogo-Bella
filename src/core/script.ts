@@ -51,7 +51,11 @@ export interface ScriptContext {
   burger(opts: import('@/ui/screens/BurgerGame').BurgerOptions): Promise<import('@/ui/screens/BurgerGame').BurgerResult>;
   /** Câmera de cinema: foca no tile (tx, ty) com zoom relativo (1 = normal). */
   uberRide(opts?: { title?: string; destino?: string }): Promise<import('@/ui/screens/UberGame').UberResult>;
+  /** A Bella escolhe um item clicando na barra de itens; devolve o id. */
+  pickItem(prompt: string): Promise<string>;
   grill(opts?: { title?: string; helper?: string }): Promise<import('@/ui/screens/GrillGame').GrillResult>;
+  /** Conversa no celular (transições entre cenas). */
+  phone(opts: import('@/ui/screens/PhoneChat').PhoneOptions, msgs: import('@/ui/screens/PhoneChat').PhoneMsg[]): Promise<void>;
   cards(opts?: { title?: string; rounds?: number }): Promise<import('@/ui/screens/CardGame').CardResult>;
   acai(opts: import('@/ui/screens/AcaiGame').AcaiOptions): Promise<import('@/ui/screens/AcaiGame').AcaiResult>;
   focus(tx: number, ty: number, zoom?: number, ms?: number): Promise<void>;

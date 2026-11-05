@@ -1,6 +1,7 @@
 import { playUberGame, type UberResult } from './screens/UberGame';
 import { playGrillGame, type GrillResult } from './screens/GrillGame';
 import { playCardGame, type CardResult } from './screens/CardGame';
+import { playPhoneChat, type PhoneMsg, type PhoneOptions } from './screens/PhoneChat';
 import { playAcaiGame, type AcaiOptions, type AcaiResult } from './screens/AcaiGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -125,6 +126,11 @@ class UIManagerImpl {
     return new Promise((r) => setTimeout(r, ms));
   }
 
+  pickItem(prompt: string): Promise<string> {
+    this.dialogue.close();
+    return this.sidebar.pick(prompt);
+  }
+
   burger(opts: BurgerOptions): Promise<BurgerResult> {
     return playBurgerGame(this.root, opts);
   }
@@ -135,6 +141,11 @@ class UIManagerImpl {
 
   uberRide(opts: { title?: string; destino?: string } = {}): Promise<UberResult> {
     return playUberGame(this.root, opts);
+  }
+
+  phone(opts: PhoneOptions, msgs: PhoneMsg[]): Promise<void> {
+    this.dialogue.close();
+    return playPhoneChat(this.root, opts, msgs);
   }
 
   grill(opts: { title?: string; helper?: string } = {}): Promise<GrillResult> {

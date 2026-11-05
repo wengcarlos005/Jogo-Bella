@@ -29,6 +29,7 @@ const scripts: Record<string, Script> = {
     ctx.follow('weng', false);
     ctx.place('player', 14.0, 10.6, 'right');
     ctx.place('weng', 18.0, 10.6, 'left');
+    ctx.place('garcom', 12.8, 12.6, 'right');
     await ctx.backdrop('memory-dq-04');
     await ctx.say('garcom', '¡Bienvenidos! Primeira vez aqui? Então vocês ganham uma bebida de cortesia da casa!');
     await ctx.say('bella', 'De graça?! Hoje é o nosso dia.');
@@ -45,9 +46,39 @@ const scripts: Record<string, Script> = {
     await ctx.memory('mem-dq-04');
     await ctx.fadeOut(600);
     await ctx.narrate('E ali, de chapéu gigante e rindo de tudo, a Bella teve certeza: era ele.');
+    await ctx.narrate('O Weng também teve. Tanto que, uns dias depois, mandou mensagem pra uma pessoa muito importante...');
+    await ctx.phone({ contact: 'Mãe da Bella', avatar: 'portrait-mae-bella', clock: '21:13', caption: 'No celular do Weng' }, [
+      { from: 'me', text: 'Oi, tia! Aqui é o Weng. Tudo bem? Posso pedir uma ajuda?' },
+      { from: 'them', text: 'Oi, querido!! Claro! Aconteceu alguma coisa??' },
+      { from: 'me', text: 'Eu quero pedir a Bella em namoro.' },
+      { from: 'me', text: 'No quarto dela. Tudo decorado. Surpresa.' },
+      { from: 'them', text: 'AAAAAAAAAAAA' },
+      { from: 'them', text: 'ALEXANDRE VEM CÁ' },
+      { from: 'them', text: 'Pode contar comigo!! Leva ela no cinema que eu dou um jeito de ela voltar pra casa na hora certa' },
+      { from: 'me', text: 'Que jeito?' },
+      { from: 'them', text: 'Confia 😎' },
+    ]);
+    await ctx.phone({ contact: 'Bella ♥', avatar: 'portrait-bella', clock: '21:40', caption: 'Logo depois...' }, [
+      { from: 'me', text: 'Sábado: cinema no Caxias Shopping?' },
+      { from: 'them', text: 'SIM!! Qual filme?' },
+      { from: 'me', text: "Five Nights at Freddy's. Se você tiver coragem." },
+      { from: 'them', text: 'Eu nasci com coragem.' },
+      { from: 'them', text: '(mas vou apertar seu braço o filme inteiro, tá avisado)' },
+      { from: 'me', text: 'Combinado ♥' },
+    ]);
     await ctx.chapterCard('Terceiro encontro', 'Caxias Shopping', 'Cinema, uma ligação inesperada e uma surpresa.', 'Continuar');
     ctx.startQuest('dq-e3');
     await ctx.teleport('duque-cinema', 'sala');
+  },
+
+  async garcom(ctx) {
+    if (objActive('mexicano')) {
+      await ctx.say('garcom', '¡Hola, hola! Mesa pra dois? A do meio tá livre, com vista pro cacto.');
+      await ctx.say('bella', 'Ele falou "hola"! Weng, ele falou "hola"!');
+      await ctx.say('weng', 'Eu ouvi. Já tô me sentindo em Cancún.');
+      return;
+    }
+    await ctx.say('garcom', '¿Más bebida de la casa? A primeira foi cortesia... a segunda é por amor. E por conta de vocês.');
   },
 
   async bar(ctx) {
@@ -57,7 +88,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Um cabideiro só de chapéu mexicano. Esse lugar me entende.');
   },
   async saida(ctx) {
-    await ctx.teleport('piabeta-mexicano-fora', 'from-parque');
+    await ctx.teleport('piabeta-mexicano-fora', 'from-dentro');
   },
 };
 
@@ -103,6 +134,13 @@ export const mexicanoMap: MapDef = {
     { x0: 20, y0: 655, x1: 185, y1: 838, base: 835, cut: 'outline', fade: true },
     { x0: 1400, y0: 668, x1: 1500, y1: 838, base: 835, cut: 'outline', fade: true },
     { x0: 100, y0: 285, x1: 595, y1: 505, base: 500, cut: 'furniture', slice: true },
+    // porta de entrada (batentes e folhas abertas): sempre por cima de quem passa, transparente
+    { x0: 620, y0: 745, x1: 852, y1: 965, base: 1000, front: true },
+  ],
+
+  npcs: [
+    // garçom: fica entre o balcão e as mesas, indo e voltando
+    { id: 'garcom', sprite: 'garcom', tx: 12.6, ty: 11.4, facing: 'down', interact: 'garcom', behavior: 'wander', wanderRadius: 1.0, wanderAxis: 'y' },
   ],
 
   hotspots: [
@@ -112,7 +150,7 @@ export const mexicanoMap: MapDef = {
   ],
 
   spawns: {
-    porta: { tx: 14.9, ty: 17.4, facing: 'up' },
+    porta: { tx: 14.9, ty: 15.8, facing: 'up' },
   },
   triggers: [{ id: 'saida', rect: R(650, 925, 830, 960), script: 'saida' }],
   scripts,
