@@ -359,6 +359,7 @@ export class GameScene extends Phaser.Scene {
 
   private refreshRainWindows(): void {
     const on = this.def.rainWindows?.when() ?? false;
+    AudioSystem.setMuffledRain(on);
     for (const o of this.rainWindowObjs) (o as unknown as Phaser.GameObjects.Components.Visible).setVisible(on);
   }
 

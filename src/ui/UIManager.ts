@@ -3,7 +3,7 @@ import { playCardGame, type CardResult } from './screens/CardGame';
 import { playAcaiGame, type AcaiOptions, type AcaiResult } from './screens/AcaiGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
-import { GAME_WIDTH } from '@/config/gameConfig';
+import { UI_WIDTH } from '@/config/gameConfig';
 import { DialogueBox } from './components/DialogueBox';
 import { HUD } from './components/HUD';
 import { Toasts } from './components/Toasts';
@@ -96,7 +96,7 @@ class UIManagerImpl {
     if (!canvas) return;
     const r = canvas.getBoundingClientRect();
     Object.assign(this.root.style, { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px` });
-    this.root.style.setProperty('--u', `${r.width / GAME_WIDTH}px`);
+    this.root.style.setProperty('--u', `${r.width / UI_WIDTH}px`);
     // posição real da tela do jogo, para a moldura e a barra de itens
     const de = document.documentElement.style;
     de.setProperty('--cv-l', `${r.left}px`);

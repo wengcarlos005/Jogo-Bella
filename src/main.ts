@@ -49,6 +49,7 @@ UI.init(
     quitToTitle: async () => {
       await SaveSystem.autosave();
       AudioSystem.setRain(false);
+      AudioSystem.setMuffledRain(false);
       game.scene.stop('Game');
       game.scene.start('Menu');
     },

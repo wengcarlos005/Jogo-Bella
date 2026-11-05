@@ -43,6 +43,7 @@ export const casaBellaMap: MapDef = {
     rects: [
       R(310, 74, 372, 96), R(382, 74, 444, 96), R(310, 103, 372, 143), R(382, 103, 444, 143), // quarto
       R(1206, 74, 1270, 96), R(1281, 74, 1344, 96), R(1206, 103, 1270, 138), R(1281, 103, 1344, 138), // cozinha
+      R(373, 918, 434, 967), R(443, 918, 504, 967), R(1032, 918, 1098, 967), R(1101, 918, 1166, 967), // sala (parede de baixo)
     ],
   },
 
@@ -82,8 +83,8 @@ export const casaBellaMap: MapDef = {
 
   props: [
     // porta-guarda-chuvas ao lado da porta (o rosa some quando a Bella pega)
-    { key: 'prop-umbrella-stand', tx: 13.2, ty: 18.1, scale: 0.24, block: [2, 36, 19, 12], visibleIf: () => !objDone('guarda-chuva') },
-    { key: 'prop-umbrella-stand-empty', tx: 13.2, ty: 18.1, scale: 0.24, block: false, visibleIf: () => objDone('guarda-chuva') },
+    { key: 'prop-umbrella-stand', tx: 13.2, ty: 18.1, scale: 0.24, block: [0, 24, 23, 25], visibleIf: () => !objDone('guarda-chuva') },
+    { key: 'prop-umbrella-stand-empty', tx: 13.2, ty: 18.1, scale: 0.24, block: [0, 24, 23, 25], visibleIf: () => objDone('guarda-chuva') },
   ],
 
   // (a chuva nas janelas já está desenhada no cenário)
