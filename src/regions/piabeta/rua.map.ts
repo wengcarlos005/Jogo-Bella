@@ -324,8 +324,11 @@ export const ruaMap: MapDef = {
   ],
 
   // Profundidade (o que passa NA FRENTE de quem está atrás)
+  props: [
+    { key: 'rua-carro-vermelho', tx: 250 / 48, ty: 536 / 48 - 1, scale: 0.5, block: false },
+  ],
+
   overlays: [
-    { x0: 255, y0: 405, x1: 505, y1: 540, base: 533, cut: 'furniture' }, // carro
     { x0: 128, y0: 372, x1: 212, y1: 468, base: 470, cut: 'lamp' }, // poste esquerdo (luminária)
     { x0: 122, y0: 468, x1: 162, y1: 640, base: 638, cut: 'lamp' }, // poste esquerdo (haste)
     { x0: 1418, y0: 372, x1: 1502, y1: 468, base: 470, cut: 'lamp' }, // poste direito (luminária)
