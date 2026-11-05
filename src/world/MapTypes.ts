@@ -110,12 +110,14 @@ export interface MapDef {
     ellipse?: boolean;
     fade?: boolean;
     /** 'foliage': mantém só folhas, flores e contornos (tira chão, asfalto, pedra). */
-    cut?: 'foliage' | 'furniture' | 'lamp' | 'dark' | 'booth' | 'column';
+    cut?: 'foliage' | 'furniture' | 'lamp' | 'dark' | 'booth' | 'column' | 'outline';
     /**
      * Móveis baixos (sofás, mesas): fatia o recorte em faixas horizontais, cada uma com a
      * própria profundidade. Quem passa AO LADO não é cortado; quem passa ATRÁS é.
      */
     slice?: boolean;
+    /** Sempre na frente dos personagens (portas, molduras), translúcido quando alguém está atrás. */
+    front?: boolean;
     /** Só aparece quando a condição for verdadeira (ex.: telhado do coreto na cena do beijo). */
     when?: () => boolean;
   }[];

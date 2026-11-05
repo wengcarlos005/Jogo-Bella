@@ -27,6 +27,7 @@ export interface BuiltOverlay {
   /** Fica translúcido quando alguém passa atrás (copas grandes). */
   fade: boolean;
   when?: () => boolean;
+  front?: boolean;
 }
 
 function parseLayer(def: MapDef, rows: string[], label: string): number[][] {
@@ -126,6 +127,25 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
         const data = ctx.getImageData(0, 0, cw, ch);
         const d = data.data;
         // 'column' (postes): em cada linha, mantém só o trecho entre o contorno escuro da esquerda e o da direita
+        // 'outline': tudo o que está dentro do contorno escuro do objeto (o chão em volta sai)
+        let outside: Uint8Array | null = null;
+        if (o.cut === 'outline') {
+          outside = new Uint8Array(cw * ch);
+          const stack: number[] = [];
+          const isDark = (i: number) => Math.max(d[i * 4], d[i * 4 + 1], d[i * 4 + 2]) < 75;
+          for (let x = 0; x < cw; x++) stack.push(x, (ch - 1) * cw + x);
+          for (let y = 0; y < ch; y++) stack.push(y * cw, y * cw + cw - 1);
+          while (stack.length) {
+            const i = stack.pop()!;
+            if (outside[i] || isDark(i)) continue;
+            outside[i] = 1;
+            const x = i % cw;
+            if (x > 0) stack.push(i - 1);
+            if (x < cw - 1) stack.push(i + 1);
+            if (i >= cw) stack.push(i - cw);
+            if (i < cw * (ch - 1)) stack.push(i + cw);
+          }
+        }
         let colL: Int16Array | null = null;
         let colR: Int16Array | null = null;
         if (o.cut === 'column') {
@@ -158,6 +178,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
           if (keep && o.cut === 'dark') keep = Math.max(d[p], d[p + 1], d[p + 2]) < 95;
           if (keep && o.cut === 'booth') keep = isBooth(d[p], d[p + 1], d[p + 2]);
           if (keep && colL && colR) keep = colL[y] >= 0 && x >= colL[y] && x <= colR[y];
+          if (keep && outside) keep = !outside[p / 4];
           if (!keep) d[p + 3] = 0;
         }
         ctx.putImageData(data, 0, 0);
@@ -184,8 +205,9 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
         img,
         rect: new Phaser.Geom.Rectangle(o.x0 / 3, o.y0 / 3, (o.x1 - o.x0) / 3, (o.y1 - o.y0) / 3),
         base: o.base / 3,
-        fade: o.fade ?? false,
+        fade: o.fade ?? o.front ?? false,
         when: o.when,
+        front: o.front,
       });
     });
   }

@@ -1880,3 +1880,17 @@ html.title-mode #game canvas { opacity: 0; }
 .pm-keys { display: grid; grid-template-columns: repeat(2, 1fr); gap: calc(var(--u) * 2.5); }
 .pm-key { display: flex; align-items: center; gap: calc(var(--u) * 3); font-weight: 800; color: #6e5a46; }
 .pm-key kbd { font-family: var(--font-pixel); background: #fff; border: calc(var(--u) * 0.8) solid #c9a98a; border-bottom-width: calc(var(--u) * 2); border-radius: calc(var(--u) * 2); padding: calc(var(--u) * 0.5) calc(var(--u) * 3); color: #4a2347; font-size: 0.85em; }
+
+.sb-float-tip {
+  position: fixed; z-index: 60; transform: translate(-50%, -100%) scale(0.9); opacity: 0; pointer-events: none;
+  transition: opacity 120ms, transform 160ms cubic-bezier(.2, 1.6, .4, 1);
+  background: #fffaf0; color: #4a3030; border: 3px solid #6e4526; border-radius: 6px; padding: 5px 10px; box-shadow: 0 3px 0 #2a1a10;
+  display: flex; flex-direction: column; align-items: center; max-width: 260px; text-align: center;
+}
+.sb-float-tip.show { opacity: 1; transform: translate(-50%, -100%) scale(1); }
+.sb-float-tip b { font-family: var(--font-pixel); color: #b83a6a; font-size: 15px; font-weight: 500; }
+.sb-float-tip span { font-size: 12px; font-weight: 700; color: #6e5a46; line-height: 1.25; }
+/* obstáculos em sprite: anula o desenho antigo em CSS (cone de borda, poça em gradiente) */
+.ub-ob.sprite { border: 0 !important; height: auto !important; border-radius: 0 !important; box-shadow: none !important; filter: drop-shadow(0 calc(var(--u) * 0.8) 0 rgba(0, 0, 0, 0.35)) !important; opacity: 1; background-color: transparent !important; }
+.ub-ob.sprite::after { display: none !important; }
+.ub-ob.sprite.ub-gone { opacity: 0.3; }

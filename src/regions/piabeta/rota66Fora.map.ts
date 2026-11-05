@@ -39,6 +39,20 @@ const scripts: Record<string, Script> = {
     }
   },
 
+  async direita(ctx) {
+    const falas: [string, string][] = [
+      ['weng', 'Acho que Fragoso não é por aí não...'],
+      ['bella', 'Ops. Essa não é a esquerda, né?'],
+      ['weng', 'Pra lá é só mais rua e chuva. A gente vai pela esquerda!'],
+    ];
+    const n = Number(ctx.flag('fora-direita-n') ? 1 : 0);
+    const [who, txt] = falas[(Math.floor(Math.random() * 3) + n) % 3];
+    ctx.setFlag('fora-direita-n');
+    await ctx.say(who, txt);
+    const t = ctx.playerTile();
+    await ctx.move('player', t.x - 1.6, t.y, 60);
+  },
+
   async neon(ctx) {
     await ctx.say('bella', `"${ROTA}" em neon. Com o hambúrguer piscando do lado. Amei.`);
   },
@@ -123,6 +137,7 @@ export const rota66ForaMap: MapDef = {
     },
   ],
   hideActorsOnEnter: () => QuestSystem.isActive('pia-m2') && !QuestSystem.isObjectiveDone('pia-m2', 'chegar'),
+  triggers: [{ id: 'direita', rect: R(1488, 700, 1536, 1000), script: 'direita' }],
   scripts,
   onEnter: 'entrar',
 };

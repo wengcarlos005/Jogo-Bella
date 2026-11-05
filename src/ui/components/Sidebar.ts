@@ -26,13 +26,14 @@ const BUTTONS: [tab: string, label: string, icon: string][] = [
 export class Sidebar {
   private top = h('header', { id: 'topbar', class: 'idle' });
   private left = h('footer', { id: 'hotbar', class: 'idle' });
+  private tip = h('div', { class: 'sb-float-tip' });
   private right = h('aside', { id: 'rightbar', class: 'idle' });
   private bag = h('div', { class: 'sb-bag' });
   private active = false;
 
   constructor(private openMenu: (tab: string) => void) {
     this.left.append(this.bag);
-    document.body.append(this.top, this.left, this.right);
+    document.body.append(this.top, this.left, this.right, this.tip);
     EventBus.on('state:changed', () => this.refresh());
     EventBus.on('item:added', (id: string) => this.flash(id));
   }
@@ -66,13 +67,22 @@ export class Sidebar {
     this.bag.replaceChildren(
       ...items.map(({ def, qty }) => {
         const url = textureURL(def.icon);
-        return h(
+        const btn = h(
           'button',
-          { class: 'sb-item', 'data-id': def.id, title: `${def.name} — ${def.description}`, onclick: () => this.openMenu('inventario') },
+          { class: 'sb-item', 'data-id': def.id, 'aria-label': def.name, onclick: () => this.openMenu('inventario') },
           url ? h('img', { src: url, alt: def.name }) : def.name[0],
           qty > 1 ? h('span', { class: 'sb-qty' }, String(qty)) : null,
-          h('span', { class: 'sb-tip' }, def.name),
         );
+        // nome do item numa etiqueta flutuante (a barra corta o que passa da borda)
+        btn.addEventListener('pointerenter', () => {
+          const r = btn.getBoundingClientRect();
+          this.tip.replaceChildren(h('b', {}, def.name), h('span', {}, def.description));
+          this.tip.style.left = `${r.left + r.width / 2}px`;
+          this.tip.style.top = `${r.top - 8}px`;
+          this.tip.classList.add('show');
+        });
+        btn.addEventListener('pointerleave', () => this.tip.classList.remove('show'));
+        return btn;
       }),
       ...Array.from({ length: Math.max(0, 12 - items.length) }, () => h('div', { class: 'sb-item empty' })),
     );

@@ -198,7 +198,7 @@ export const rota66Map: MapDef = {
     R(0, 0, 90, 1024),
     R(1460, 0, 1536, 1024),
     R(0, 0, 1536, 300),
-    R(90, 300, 410, 345),
+    R(90, 300, 410, 380), // parede da janela até o encosto das cadeiras de cima
     // bomba de gasolina decorativa
     R(408, 300, 502, 392),
     // balcão + banquetas
@@ -208,8 +208,8 @@ export const rota66Map: MapDef = {
     R(1248, 300, 1305, 385),
     R(1298, 300, 1442, 428),
     // mesinhas da janela (a de baixo é a "mesa para dois")
-    R(112, 380, 300, 470),
-    R(88, 540, 292, 650),
+    R(100, 360, 310, 476), // mesinha de cima + cadeiras (ninguém sobe na mesa)
+    R(84, 500, 300, 652), // mesinha de baixo + cadeiras
     // plantas
     R(368, 620, 422, 662),
     R(1152, 620, 1205, 664),
@@ -238,7 +238,7 @@ export const rota66Map: MapDef = {
   // Profundidade: cabines, plantas e mesas na frente de quem passa atrás delas
   overlays: [
     // porta de vidro: na frente de quem encosta nela por dentro
-    { x0: 640, y0: 872, x1: 895, y1: 1000, base: 1000 },
+    { x0: 640, y0: 872, x1: 895, y1: 1000, base: 1000, front: true },
     // Cabines recortadas peça por peça (assento esq., encosto do meio, assento dir.),
     // começando no topo de cada peça: o chão em volta nunca fica na frente de ninguém.
     { x0: 434, y0: 465, x1: 482, y1: 668, base: 665, cut: 'booth', slice: true }, // cabine do meio (esq.)
@@ -255,13 +255,13 @@ export const rota66Map: MapDef = {
     { x0: 1385, y0: 679, x1: 1432, y1: 906, base: 905, cut: 'booth', slice: true },
     { x0: 137, y0: 503, x1: 252, y1: 568, base: 650, cut: 'furniture', slice: true }, // mesinha da janela: tampo
     { x0: 118, y0: 568, x1: 262, y1: 650, base: 650, cut: 'furniture', slice: true }, // assentos e pés (os encostos ficam atrás)
-    { x0: 336, y0: 488, x1: 430, y1: 662, base: 662, cut: 'furniture' }, // plantas (folhas e vaso; base = fundo do vaso)
-    { x0: 1138, y0: 488, x1: 1232, y1: 664, base: 664, cut: 'furniture' },
-    { x0: 0, y0: 636, x1: 112, y1: 780, base: 780, cut: 'furniture' },
-    { x0: 1446, y0: 540, x1: 1536, y1: 742, base: 742, cut: 'furniture' },
-    { x0: 1426, y0: 690, x1: 1514, y1: 792, base: 790, cut: 'furniture' },
-    { x0: 530, y0: 790, x1: 640, y1: 988, base: 985, cut: 'furniture' },
-    { x0: 898, y0: 790, x1: 1006, y1: 988, base: 985, cut: 'furniture' },
+    { x0: 336, y0: 488, x1: 430, y1: 662, base: 662, cut: 'outline', fade: true }, // plantas (folhas e vaso; base = fundo do vaso)
+    { x0: 1138, y0: 488, x1: 1232, y1: 664, base: 664, cut: 'outline', fade: true },
+    { x0: 0, y0: 636, x1: 112, y1: 780, base: 780, cut: 'outline', fade: true },
+    { x0: 1446, y0: 540, x1: 1536, y1: 742, base: 742, cut: 'outline', fade: true },
+    { x0: 1426, y0: 690, x1: 1514, y1: 792, base: 790, cut: 'outline', fade: true },
+    { x0: 530, y0: 790, x1: 640, y1: 988, base: 985, cut: 'outline', fade: true },
+    { x0: 898, y0: 790, x1: 1006, y1: 988, base: 985, cut: 'outline', fade: true },
   ],
 
   hotspots: [

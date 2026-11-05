@@ -70,7 +70,7 @@ export const casaBellaMap: MapDef = {
     R(538, 230, 640, 322), // espelho + planta
     R(635, 230, 818, 320), // guarda-roupa
     // Cozinha
-    R(1045, 296, 1282, 470), // mesa + cadeiras (encostada na bancada: ninguém sobe na cadeira de cima)
+    R(1045, 362, 1282, 470), // mesa + cadeiras (corredor livre entre o fogão e a cadeira de cima; a cadeira fica na frente de quem passa atrás)
     R(1408, 300, 1496, 388), // planta
     // Sala
     R(60, 700, 138, 735), // planta (vaso)
@@ -92,9 +92,10 @@ export const casaBellaMap: MapDef = {
   // Profundidade: TV e planta da sala na frente de quem passa atrás
   overlays: [
     { x0: 246, y0: 645, x1: 294, y1: 800, base: 882, cut: 'dark' }, // só a tela escura da TV
-    { x0: 1360, y0: 660, x1: 1492, y1: 815, base: 808, cut: 'foliage' }, // planta
+    { x0: 1360, y0: 660, x1: 1492, y1: 815, base: 808, cut: 'outline' }, // planta (recorte pelo contorno)
+    { x0: 40, y0: 605, x1: 165, y1: 745, base: 738, cut: 'outline' }, // planta do canto da sala
     // cozinha: cadeiras dos lados e de baixo, e a planta do canto
-    { x0: 1040, y0: 325, x1: 1290, y1: 475, base: 472, cut: 'furniture', slice: true },
+    { x0: 1040, y0: 312, x1: 1290, y1: 475, base: 472, cut: 'furniture', slice: true },
     { x0: 1400, y0: 235, x1: 1500, y1: 392, base: 390, cut: 'furniture' },
     // vasos na parede de baixo: na frente de quem passa atrás deles
     { x0: 130, y0: 878, x1: 226, y1: 1012, base: 1010, cut: 'furniture' },
@@ -132,8 +133,8 @@ export const casaBellaMap: MapDef = {
   npcs: [
     // Lala, a gata da Bella, dormindo no chão do quarto
     { id: 'lala', sprite: 'lala', tx: 14.1, ty: 8.2, facing: 'down', interact: 'lala', pose: { key: 'lala-poses', frame: 1 } },
-    { id: 'mae-bella', sprite: 'mae-bella', tx: 12.8, ty: 15.7, facing: 'down', interact: 'mae', markerIf: () => objActive('mae') && GameState.is('weng-entrou') },
-    { id: 'pai-bella', sprite: 'pai-bella', tx: 20.4, ty: 8.4, facing: 'right', interact: 'pai', markerIf: () => objActive('pai') && GameState.is('weng-entrou') },
+    { id: 'mae-bella', sprite: 'mae-bella', tx: 23.6, ty: 16.4, facing: 'down', interact: 'mae', behavior: 'wander', wanderRadius: 2.2, wanderAxis: 'x', markerIf: () => objActive('mae') && GameState.is('weng-entrou') },
+    { id: 'pai-bella', sprite: 'pai-bella', tx: 21.2, ty: 9.9, facing: 'down', interact: 'pai', behavior: 'wander', wanderRadius: 1.6, wanderAxis: 'x', markerIf: () => objActive('pai') && GameState.is('weng-entrou') },
     {
       id: 'weng',
       sprite: 'weng',
