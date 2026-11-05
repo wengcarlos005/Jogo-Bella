@@ -1588,29 +1588,43 @@ html.title-mode #game, html.title-mode #ui { z-index: 1; }
 
 /* tela de carregamento */
 #loader {
-  position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.6vmin;
-  background: radial-gradient(ellipse at 50% 30%, #4a3a78, #241a4a 55%, #120c26);
-  color: #fbf3e2; font-family: 'Pixelify Sans', system-ui, sans-serif; overflow: hidden;
-  transition: opacity 0.8s, transform 0.8s;
+  position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3vmin;
+  background: #120c26; color: #fbf3e2; overflow: hidden; transition: opacity 0.8s, transform 0.8s;
 }
-#loader.out { opacity: 0; transform: scale(1.15); pointer-events: none; }
+#loader.out { opacity: 0; transform: scale(1.12); pointer-events: none; }
+.ld-back { position: absolute; inset: -40px; background-size: cover; background-position: center; filter: blur(16px) brightness(0.45) saturate(1.2); animation: txBack 14s ease-in-out infinite alternate; }
 .ld-stars { position: absolute; inset: 0; }
-.ld-stars i { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; background: #fff; animation: txTw 2.6s ease-in-out infinite; }
-.ld-moon { position: relative; width: 20vmin; height: 20vmin; animation: ldFloat 3s ease-in-out infinite; }
+.ld-stars i { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; background: #fff; box-shadow: 0 0 6px #fff; animation: txTw 2.6s ease-in-out infinite; }
+.ld-moon { display: none; position: absolute; top: 7vh; right: 12vw; width: 13vmin; height: 13vmin; animation: ldFloat 4s ease-in-out infinite; }
+.ld-moon-glow { position: absolute; inset: -60%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 220, 130, calc(0.18 + var(--p, 0) * 0.4)), transparent 62%); }
 .ld-moon-clip { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; }
-.ld-moon-glow { position: absolute; inset: -40%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 220, 130, calc(0.15 + var(--p, 0) * 0.45)), transparent 60%); }
-.ld-moon-disc { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff6cf, #ffd75e 60%, #e6a93a); box-shadow: 0 0 4vmin #ffd75e88; }
-/* sombra que vai encolhendo: a lua "enche" com o progresso */
-.ld-moon-shadow { position: absolute; inset: -2%; border-radius: 50%; background: #2a1f52; transform: translateX(calc(30% + var(--p, 0) * 75%)); transition: transform 0.3s; }
+.ld-moon-disc { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff6cf, #ffd75e 60%, #e6a93a); }
+.ld-moon-shadow { position: absolute; inset: -2%; border-radius: 50%; background: #1d1640; transform: translateX(calc(30% + var(--p, 0) * 75%)); transition: transform 0.3s; }
 @keyframes ldFloat { 50% { transform: translateY(-1.2vmin) rotate(-4deg); } }
-.ld-title { font-size: 6vmin; letter-spacing: 0.3vmin; text-shadow: 0 0.5vmin 0 #8a3a6a, 0 0 3vmin #ff7eb655; }
-.ld-title span { display: inline-block; animation: ldWave 1.8s ease-in-out infinite; }
-@keyframes ldWave { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-1.2vmin); color: #ffd75e; } }
-.ld-bar { position: relative; width: min(60vw, 420px); height: 3.6vmin; border-radius: 99px; background: rgba(0, 0, 0, 0.35); border: 0.4vmin solid #ffd75e; overflow: hidden; }
-.ld-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(90deg, #ff7eb6, #ffb3d6, #ffd75e); transition: width 0.25s; box-shadow: 0 0 2vmin #ff7eb6; }
-.ld-hearts { position: absolute; inset: 0; display: flex; justify-content: space-around; align-items: center; font-size: 2.2vmin; color: rgba(255, 255, 255, 0.55); }
-.ld-pct { font-size: 3vmin; color: #ffd75e; }
-.ld-tip { font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 2.6vmin; opacity: 0.85; min-height: 1.4em; }
+.ld-logo { position: relative; width: min(62vw, 60vmin); image-rendering: auto; filter: drop-shadow(0 1vmin 2.4vmin rgba(0, 0, 0, 0.55)); animation: ldLogo 3.4s ease-in-out infinite; }
+@keyframes ldLogo { 50% { transform: translateY(-1vmin) scale(1.015); } }
+.ld-track { --sz: 11vmin; position: relative; width: min(64vw, 600px); height: calc(var(--sz) + 3vmin); margin-top: 1vmin; }
+.ld-road {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 2.6vmin; border-radius: 99px; overflow: hidden;
+  background: rgba(20, 10, 40, 0.75); border: 0.45vmin solid #ffd75e; box-shadow: 0 0 2vmin rgba(255, 215, 94, 0.35);
+}
+.ld-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(90deg, #ff7eb6, #ffb3d6, #ffd75e); transition: width 0.25s; }
+.ld-fill::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 1.6vmin, rgba(255, 255, 255, 0.35) 1.6vmin 2.2vmin); animation: ldStripe 0.8s linear infinite; }
+@keyframes ldStripe { to { background-position: 2.2vmin 0; } }
+.ld-bella, .ld-weng { position: absolute; bottom: 1.2vmin; width: var(--sz); height: var(--sz); background-size: calc(var(--sz) * 4) calc(var(--sz) * 4); image-rendering: pixelated; transform: translateX(-50%); }
+.ld-bella { left: 0; background-position-y: calc(var(--sz) * -2); animation: ldWalk 0.6s steps(4) infinite; transition: left 0.25s linear; }
+@keyframes ldWalk { from { background-position-x: 0; } to { background-position-x: calc(var(--sz) * -4); } }
+.ld-weng { left: 100%; background-position: 0 calc(var(--sz) * -1); transform: translateX(-30%); }
+.ld-trail { position: absolute; inset: 0; pointer-events: none; }
+.ld-trail i { position: absolute; bottom: 4vmin; color: #ff7eb6; font-style: normal; font-size: 2.2vmin; text-shadow: 0 0 1vmin #ff7eb6; animation: ldTrail 1.6s ease-out forwards; }
+@keyframes ldTrail { from { transform: translate(-50%, 0) scale(0.6); opacity: 1; } to { transform: translate(-50%, -6vmin) scale(1.2); opacity: 0; } }
+.ld-love { position: absolute; left: 92%; bottom: calc(var(--sz) + 0.5vmin); transform: translate(-50%, 0) scale(0); color: #ff5f9e; font-size: 6vmin; text-shadow: 0 0 2vmin #ff7eb6; }
+#loader.done .ld-bella { animation: none; background-position-x: 0; }
+#loader.done .ld-love { animation: ldLove 0.7s cubic-bezier(.2, 1.8, .4, 1) forwards; }
+@keyframes ldLove { to { transform: translate(-50%, 0) scale(1); } }
+.ld-info { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.6vmin; }
+.ld-pct { font-family: 'Pixelify Sans', system-ui, sans-serif; font-size: 3.4vmin; color: #ffd75e; text-shadow: 0 0.3vmin 0 #6a2a4a; }
+.ld-tip { font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 2.5vmin; color: #fbf3e2; text-shadow: 0 0.2vmin 0.6vmin rgba(0, 0, 0, 0.7); min-height: 1.4em; }
 .ld-tip.in { animation: ldTip 0.4s ease-out; }
 @keyframes ldTip { from { opacity: 0; transform: translateY(1vmin); } }
 
@@ -1656,3 +1670,5 @@ html.title-mode .screen.title-full .tf-art { object-fit: fill; }
 .bg-steam { z-index: 3; }
 .bg-msg { z-index: 4; }
 html.title-mode #game canvas { opacity: 0; }
+
+.title-full.tx-wait .tf-art { opacity: 0; }

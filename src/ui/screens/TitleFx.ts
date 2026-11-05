@@ -20,6 +20,9 @@ let loader: HTMLElement | null = null;
 let fill: HTMLElement | null = null;
 let pct: HTMLElement | null = null;
 let tipTimer = 0;
+let bella: HTMLElement | null = null;
+let trail: HTMLElement | null = null;
+let lastHeart = 0;
 
 /** Mostra a tela de carregamento (chamado logo no início). */
 export function showLoader(): void {
@@ -33,10 +36,10 @@ export function showLoader(): void {
     s.style.setProperty('--s', `${1 + Math.random() * 2}px`);
     stars.append(s);
   }
-  const title = h('div', { class: 'ld-title' }, ...[...'A Lua está Bella'].map((c, i) => h('span', { style: `animation-delay:${i * 0.07}s` }, c === ' ' ? ' ' : c)));
+  const asset = (f: string) => new URL(`assets/${f}`, document.baseURI).href;
   fill = h('div', { class: 'ld-fill' });
   pct = h('div', { class: 'ld-pct' }, '0%');
-  const tip = h('div', { class: 'ld-tip' }, TIPS[0]);
+  const tip = h('div', { class: 'ld-tip in' }, TIPS[0]);
   let t = 0;
   tipTimer = window.setInterval(() => {
     t = (t + 1) % TIPS.length;
@@ -44,37 +47,92 @@ export function showLoader(): void {
     void tip.offsetWidth;
     tip.textContent = TIPS[t];
     tip.classList.add('in');
-  }, 1300);
+  }, 1500);
+  // a Bella anda pela barra até o Weng, deixando coraçõezinhos pelo caminho
+  bella = h('div', { class: 'ld-bella', style: `background-image:url("${asset('characters/bella-casual.png')}")` });
+  const weng = h('div', { class: 'ld-weng', style: `background-image:url("${asset('characters/weng-casual.png')}")` });
+  trail = h('div', { class: 'ld-trail' });
   loader = h(
     'div',
     { id: 'loader' },
+    h('div', { class: 'ld-back', style: `background-image:url("${asset('ui/title-full.png')}")` }),
     stars,
     h('div', { class: 'ld-moon' }, h('div', { class: 'ld-moon-glow' }), h('div', { class: 'ld-moon-clip' }, h('div', { class: 'ld-moon-disc' }), h('div', { class: 'ld-moon-shadow' }))),
-    title,
-    h('div', { class: 'ld-bar' }, fill, h('div', { class: 'ld-hearts' }, ...Array.from({ length: 10 }, () => h('span', {}, '♥')))),
-    pct,
-    tip,
+    h('img', { class: 'ld-logo', src: asset('ui/logo.png'), alt: 'A Lua está Bella' }),
+    h('div', { class: 'ld-track' }, h('div', { class: 'ld-road' }, fill), trail, bella, weng, h('div', { class: 'ld-love' }, '♥')),
+    h('div', { class: 'ld-info' }, pct, tip),
   );
   document.body.append(loader);
 }
 
-export function loaderProgress(p: number): void {
+let target = 0;
+let shown = 0;
+let started = 0;
+let wantHide = false;
+let raf = 0;
+const MIN_MS = 2300;
+let onGone: (() => void)[] = [];
+
+function render(p: number): void {
   if (!fill || !pct) return;
   const v = Math.round(p * 100);
   fill.style.width = `${v}%`;
   pct.textContent = `${v}%`;
   loader?.style.setProperty('--p', String(p));
+  if (bella) bella.style.left = `${p * 84}%`;
+  if (trail && v - lastHeart >= 7) {
+    lastHeart = v;
+    const hrt = h('i', {}, '♥');
+    hrt.style.left = `${p * 84}%`;
+    trail.append(hrt);
+    setTimeout(() => hrt.remove(), 1600);
+  }
 }
 
-/** Some com a tela de carregamento num clarão (o boom continua na tela de título). */
-export function hideLoader(): void {
+function loop(): void {
   if (!loader) return;
-  loaderProgress(1);
+  if (!started) started = performance.now();
+  // a barra anda suave: nunca na frente do carregamento real, e leva pelo menos MIN_MS
+  const cap = Math.min(1, (performance.now() - started) / MIN_MS);
+  shown += (Math.min(target, cap) - shown) * 0.18;
+  if (Math.min(target, cap) - shown < 0.004) shown = Math.min(target, cap);
+  render(shown);
+  if (wantHide && shown >= 0.999) {
+    finish();
+    return;
+  }
+  raf = requestAnimationFrame(loop);
+}
+
+export function loaderProgress(p: number): void {
+  target = Math.max(target, p);
+  if (!raf) raf = requestAnimationFrame(loop);
+}
+
+function finish(): void {
+  if (!loader) return;
+  cancelAnimationFrame(raf);
   clearInterval(tipTimer);
+  render(1);
   const el = loader;
   loader = null;
-  el.classList.add('out');
-  setTimeout(() => el.remove(), 900);
+  el.classList.add('done');
+  setTimeout(() => {
+    el.classList.add('out');
+    onGone.forEach((f) => f());
+    onGone = [];
+  }, 700);
+  setTimeout(() => el.remove(), 1500);
+}
+
+/** Termina o carregamento: a Bella chega no Weng, coração, e a tela some num clarão. */
+export function hideLoader(): Promise<void> {
+  if (!loader) return Promise.resolve();
+  const p = new Promise<void>((r) => onGone.push(r));
+  target = 1;
+  wantHide = true;
+  if (!raf) raf = requestAnimationFrame(loop);
+  return p;
 }
 
 /** Explosão de corações e estrelas a partir de um ponto (% da tela de título). */
@@ -101,7 +159,7 @@ function burst(layer: HTMLElement, x: number, y: number, n = 34): void {
  * Anima a tela de título ilustrada. Devolve uma função de limpeza.
  * `buttons` são as áreas clicáveis (para o brilho em cascata).
  */
-export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLElement[]): () => void {
+export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLElement[], ready: Promise<void> = Promise.resolve()): () => void {
   const timers: number[] = [];
   const every = (ms: number, fn: () => void) => timers.push(window.setInterval(fn, ms));
   const later = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
@@ -177,21 +235,26 @@ export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLEleme
     setTimeout(() => c.remove(), 3200);
   });
 
-  // --- o boom de entrada ---
-  root.classList.add('tx-intro');
-  const flash = h('div', { class: 'tx-flash' });
-  root.append(flash);
-  later(260, () => burst(fx, 76.5, 26, 40));
-  later(520, () => burst(fx, 30, 40, 26));
-  later(900, () => root.classList.remove('tx-intro'));
-  later(1500, () => flash.remove());
-  // brilho em cascata nos botões
-  buttons.forEach((b, i) =>
-    later(900 + i * 160, () => {
-      b.classList.add('tx-sweep');
-      later(900, () => b.classList.remove('tx-sweep'));
-    }),
-  );
+  // --- o boom de entrada (quando o carregamento terminar de sumir) ---
+  root.classList.add('tx-wait');
+  void ready.then(() => {
+    root.classList.remove('tx-wait');
+    root.classList.add('tx-intro');
+    const flash = h('div', { class: 'tx-flash' });
+    root.append(flash);
+    later(260, () => burst(fx, 76.5, 26, 40));
+    later(520, () => burst(fx, 30, 40, 26));
+    later(900, () => root.classList.remove('tx-intro'));
+    later(1500, () => flash.remove());
+    // brilho em cascata nos botões
+    buttons.forEach((b, i) =>
+      later(900 + i * 160, () => {
+        b.classList.add('tx-sweep');
+        later(900, () => b.classList.remove('tx-sweep'));
+      }),
+    );
+  });
+
   // botão: brilho de vez em quando no selecionado
   every(4200, () => {
     const b = buttons.find((x) => x.classList.contains('sel'));

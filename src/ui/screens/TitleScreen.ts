@@ -124,8 +124,8 @@ export class TitleScreen {
       h('div', { class: 'version' }, `v${VERSION}`),
     );
     this.parent.append(this.el);
-    hideLoader();
-    this.undoFx = decorateTitle(this.el, art, buttons);
+    const ready = hideLoader();
+    this.undoFx = decorateTitle(this.el, art, buttons, ready);
   }
 
   private undoFx: (() => void) | null = null;
