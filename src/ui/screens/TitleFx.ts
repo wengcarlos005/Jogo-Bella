@@ -122,7 +122,11 @@ export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLEleme
     h('div', { class: 'tx-glow lamp', style: 'left:86%;top:15.5%' }),
     h('div', { class: 'tx-glow lamp b', style: 'left:91.5%;top:30%' }),
     h('div', { class: 'tx-glow lamp c', style: 'left:48.4%;top:61.5%' }),
-    h('div', { class: 'tx-shine-logo' }),
+    (() => {
+      // brilho só dentro das letras/lua do logo (máscara no formato do logo)
+      const mask = new URL('assets/ui/title-logo-mask.png', document.baseURI).href;
+      return h('div', { class: 'tx-shine-logo', style: `-webkit-mask-image:url("${mask}");mask-image:url("${mask}")` });
+    })(),
     h('div', { class: 'tx-bubble', style: 'left:44%;top:71%' }),
   );
   // vaga-lumes
