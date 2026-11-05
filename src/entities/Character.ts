@@ -172,8 +172,27 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
 
   face(dir: Direction): void {
     this.facing = dir;
+    if (this.posed) return;
     this.anims.stop();
     this.setFrame(ROW[dir] * 4);
+  }
+
+  /** Pose parada vinda de outra folha (ex.: gato dormindo). null volta à folha de andar. */
+  posed = false;
+  private poseFrom: string | null = null;
+  pose(key: string | null, frame = 0): void {
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    if (key) {
+      if (!this.posed) this.poseFrom = this.charKey;
+      this.posed = true;
+      this.anims.stop();
+      body.setVelocity(0, 0);
+      this.setTexture(key, frame);
+    } else if (this.posed) {
+      this.posed = false;
+      this.setTexture(this.poseFrom ?? this.charKey, ROW[this.facing] * 4);
+      this.poseFrom = null;
+    }
   }
 
   faceTowards(x: number, y: number): void {
@@ -184,6 +203,7 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
 
   /** Atualiza animação conforme a velocidade atual. */
   animateFromVelocity(speedScale = 1, keepFacing = false): void {
+    if (this.posed) return;
     const body = this.body as Phaser.Physics.Arcade.Body;
     const { x, y } = body.velocity;
     if (Math.abs(x) < 4 && Math.abs(y) < 4) {

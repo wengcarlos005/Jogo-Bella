@@ -83,6 +83,21 @@ export const ITEMS: Record<string, ItemDef> = {
     icon: 'icon-bilhete',
     unique: true,
   },
+  sache: {
+    id: 'sache',
+    name: 'Sachê de peixe',
+    category: 'especiais',
+    description: 'O sachê preferido da Meli. Basta abrir que ela aparece do nada.',
+    icon: 'icon-sache',
+  },
+  novelo: {
+    id: 'novelo',
+    name: 'Novelo de lã',
+    category: 'especiais',
+    description: 'Um novelo azul do cesto da sala. Brinquedo oficial da Meli.',
+    icon: 'icon-novelo',
+    unique: true,
+  },
 };
 
 export const CATEGORY_LABEL: Record<ItemCategory, string> = {

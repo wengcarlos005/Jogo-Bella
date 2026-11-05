@@ -127,8 +127,8 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 
 | ID | Arte | Arquivo | Status |
 |---|---|---|---|
-| MAP-010 | Apartamento do Weng (interior, 1536×1024) | maps/duque-apto-bg.png | pedido |
-| CHAR-020 | Meli, gata laranja (4×4 andando + folha de poses) | characters/meli.png, meli-poses.png | pedido |
+| MAP-010 | Apartamento do Weng (interior, 1536×1024) | maps/duque-apto-bg.png | ✅ no jogo |
+| CHAR-020 | Meli, gata laranja (4×4 andando + folha de poses) | pets/meli-walk.png, pets/meli-poses.png | ✅ no jogo |
 | CHAR-021 | Avó do Weng (4×4 + retrato) | characters/avo-weng.png | pedido |
 | CHAR-022 | Avô do Weng (4×4 + retrato) | characters/avo2-weng.png | pedido |
 | CHAR-023 | Pombo, gato preto (4×4 + poses) | characters/pombo.png | pedido |

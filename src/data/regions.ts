@@ -16,7 +16,7 @@ export interface RegionMeta {
 /** Ordem cronológica obrigatória. Não reordene. */
 export const REGIONS: RegionMeta[] = [
   { id: 'piabeta', name: 'Piabetá', chapter: 'Prólogo', year: 'O começo', subtitle: 'Onde tudo começou', entryMap: 'piabeta-rua', entrySpawn: 'from-casa', worldPos: { x: 0.36, y: 0.30 } },
-  { id: 'duque-de-caxias', name: 'Duque de Caxias', chapter: 'Capítulo 1', year: 'Ano 1', subtitle: 'Onde a gente vive junto', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.30, y: 0.45 } },
+  { id: 'duque-de-caxias', name: 'Duque de Caxias', chapter: 'Capítulo 1', year: 'Ano 1', subtitle: 'Nosso cantinho', entryMap: 'duque-apto', entrySpawn: 'porta', worldPos: { x: 0.30, y: 0.45 } },
   { id: 'petropolis', name: 'Petrópolis', chapter: 'Capítulo 2', year: 'Ano 1', subtitle: 'A primeira viagem', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.40, y: 0.14 } },
   { id: 'araruama', name: 'Araruama', chapter: 'Capítulo 3', year: 'Ano 1', subtitle: 'Ano-novo em família', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.74, y: 0.52 } },
   { id: 'rio-das-ostras', name: 'Rio das Ostras', chapter: 'Capítulo 4', year: 'Ano 1', subtitle: 'Férias de verão', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.90, y: 0.34 } },

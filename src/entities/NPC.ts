@@ -62,6 +62,10 @@ export class NPC extends Character {
 
   update(_time: number, delta: number): void {
     const body = this.body as Phaser.Physics.Arcade.Body;
+    if (this.posed && !this.target) {
+      body.setVelocity(0, 0);
+      return;
+    }
 
     if (this.target) {
       const dx = this.target.x - this.x;

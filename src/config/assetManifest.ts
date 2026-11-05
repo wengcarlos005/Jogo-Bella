@@ -87,6 +87,11 @@ export const ASSETS: AssetEntry[] = [
   { id: 'PORT-006', key: 'portrait-atendente', file: 'assets/portraits/atendente.png', kind: 'image' },
 
   // Cenários pintados (opcionais) — se existirem, substituem os tiles visuais
+  // Bichinhos: folha 4x4 (quadros 64x64, exibidos em meia escala) + faixa de poses (96x64):
+  // 0 sentada, 1 dormindo, 2 se espreguiçando, 3 recebendo carinho.
+  char('PET-001', 'meli', 'pets/meli-walk.png', 64),
+  { id: 'PET-001P', key: 'meli-poses', file: 'assets/pets/meli-poses.png', kind: 'spritesheet', frameWidth: 96, frameHeight: 64 },
+  { id: 'MAP-010', key: 'map-duque-apto-bg', file: 'assets/maps/duque-apto-bg.png', kind: 'image' },
   { id: 'MAP-001', key: 'map-piabeta-casa-bella-bg', file: 'assets/maps/piabeta-casa-bella-bg.png', kind: 'image' },
   { id: 'MAP-002', key: 'map-piabeta-casa-bella-fg', file: 'assets/maps/piabeta-casa-bella-fg.png', kind: 'image' },
   { id: 'MAP-003', key: 'map-piabeta-rua-bg', file: 'assets/maps/piabeta-rua-bg.png', kind: 'image' },

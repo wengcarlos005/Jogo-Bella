@@ -52,6 +52,8 @@ export interface ScriptContext {
   /** Câmera de cinema: foca no tile (tx, ty) com zoom relativo (1 = normal). */
   focus(tx: number, ty: number, zoom?: number, ms?: number): Promise<void>;
   /** Volta a câmera para seguir a Bella. */
+  /** Põe um personagem numa pose de outra folha (ex.: 'meli-poses', 1 = dormindo). null volta ao normal. */
+  pose(who: string, key: string | null, frame?: number): void;
   /**
    * Enquadra um grupo de personagens (pés na altura ty) acima da caixa de diálogo,
    * mesmo na borda de baixo do mapa. Desfaz com unfocus().

@@ -158,6 +158,11 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       return new Promise((r) => scene.time.delayedCall(ms + 20, () => { cam.centerOn(p.x, p.y - 12); r(undefined); }));
     },
 
+    pose(who, key, frame = 0) {
+      const a = actor(who);
+      if (a) a.pose(key, frame);
+    },
+
     frame(tx, ty, ms = 500) {
       const cam = scene.cameras.main;
       const p = scene.tile(tx, ty);
