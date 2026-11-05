@@ -210,12 +210,12 @@ export const casaScripts: Record<string, Script> = {
       // o Weng para de seguir durante a conversa para não andar por cima da mãe
       await ctx.fadeOut(200);
       ctx.follow('weng', false);
-      ctx.place('mae-bella', 9.6, 15.5, 'down');
-      ctx.place('player', 8.1, 17.8, 'up');
-      ctx.place('weng', 11.1, 17.8, 'up');
-      ctx.face('player', 'mae-bella');
-      ctx.face('weng', 'mae-bella');
-      await ctx.frame(9.6, 17.0, 0);
+      // a Bella ao lado da mãe, apresentando o Weng (virada pra ele); o Weng de frente pras duas
+      ctx.place('mae-bella', 10.0, 15.6, 'down');
+      ctx.place('player', 8.5, 16.2, 'right');
+      ctx.place('weng', 10.9, 17.8, 'up');
+      ctx.face('player', 'weng');
+      await ctx.frame(9.7, 16.0, 0);
       await ctx.fadeIn(250);
       await ctx.say('bella', 'Mãe, esse é o Weng.');
       await ctx.say('mae-bella', 'Ah, então você que é o Weng! Prazer, querido. A Bella fala de você.');

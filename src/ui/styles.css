@@ -1620,3 +1620,26 @@ html.title-mode .screen.title-full {
   transform: translate(-50%, -50%);
 }
 html.title-mode .screen.title-full .version { right: calc(50% - 50vw + 12px); bottom: calc(50% - 50vh + 8px); }
+
+/* Hambúrguer: o balcão de verdade da Rota 66 ao fundo, bancada de inox e prato com sombra */
+.bg-stage { background: #3a1416; }
+.bg-diner {
+  position: absolute; inset: 0; background-image: var(--diner); background-repeat: no-repeat;
+  background-size: 240% auto; background-position: 52% 14%; image-rendering: pixelated;
+  filter: blur(1.2px) brightness(0.78) saturate(1.1);
+}
+.bg-diner::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 70%, rgba(255, 200, 120, 0.25), transparent 70%), linear-gradient(transparent 40%, rgba(30, 8, 10, 0.55)); }
+.bg-counter {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 34%;
+  background: linear-gradient(#f2f2f2 0 6%, #c9ccd2 6% 10%, #e6e8ec 10% 40%, #b9bdc4 40% 44%, #9e2a2e 44% 100%);
+  box-shadow: 0 calc(var(--u) * -1) 0 rgba(0, 0, 0, 0.25);
+}
+.bg-counter::after { content: ''; position: absolute; left: 0; right: 0; top: 44%; bottom: 0; background: repeating-linear-gradient(90deg, transparent 0 calc(var(--u) * 10), rgba(255, 255, 255, 0.08) calc(var(--u) * 10) calc(var(--u) * 11)); }
+.bg-plate {
+  position: relative; z-index: 2;
+  background: radial-gradient(ellipse 36% 9% at 50% 93%, rgba(0, 0, 0, 0.28) 0 80%, transparent 100%),
+              radial-gradient(ellipse 34% 10% at 50% 89%, #ffffff 0 62%, #e9e4da 64% 82%, #b9b1a2 84% 100%, transparent 101%);
+}
+.bg-neon { z-index: 2; color: #ffe1e1; text-shadow: 0 0 4px #ff4d6d, 0 0 12px #ff2a55, 0 0 22px #ff2a55; animation: acNeon 2.6s ease-in-out infinite; }
+.bg-steam { z-index: 3; }
+.bg-msg { z-index: 4; }

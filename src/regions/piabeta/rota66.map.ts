@@ -89,10 +89,10 @@ const scripts: Record<string, Script> = {
     ctx.prop('lanche-weng', 'burger-full', 4.48, 11.35, 0, 0.08, 200_000);
     ctx.letterbox(true);
     await ctx.focus(3.56, 10.6, 1.6, 10);
-    await ctx.fadeIn(500);
-    // arte dedicada da mesa (cinematics/rota66-mesa.png), se existir
+    // arte dedicada da mesa: entra ainda com a tela escura, sem mostrar os bonecos em pé por cima das cadeiras
     const mesaArt = ctx.hasArt('cena-rota66-mesa');
     if (mesaArt) await ctx.backdrop('cena-rota66-mesa');
+    await ctx.fadeIn(500);
     await ctx.narrate('Os lanches chegam. O cheiro é incrível. O nervosismo também.');
     await ctx.say('weng', 'E aí? Aprovado?');
     const c1 = await ctx.choose('bella', '(Primeira mordida...)', ['"Melhor hambúrguer da minha vida."', '"Hmm... preciso de mais uma mordida pra decidir."', 'Fazer um joinha de boca cheia']);
@@ -103,10 +103,17 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Vou considerar isso um cinco estrelas.');
     }
     // Presente da Bella: Vale Beijo, Vale Abraço e chocolates
-    await ctx.say('bella', 'Ah! Eu também trouxe uma coisa pra você. Fecha os olhos.');
+    await ctx.say('bella', 'Ah! Eu também trouxe uma coisa pra você.');
+    await ctx.emote('weng', 'question');
+    await ctx.say('weng', 'Pra mim? Sério?');
+    await ctx.say('bella', 'Sério. Agora fecha os olhos. E sem espiar!');
+    await ctx.say('weng', 'Fechados. Juro.');
+    // só agora, de olhos fechados, aparece o presente
+    await ctx.fadeOut(500);
     await ctx.backdrop('memory-pia-02');
     void mesaArt;
-    await ctx.emote('weng', 'question');
+    await ctx.fadeIn(600);
+    await ctx.say('bella', 'Pode abrir!');
     ctx.take('vale-beijo');
     ctx.take('chocolates');
     await ctx.showItem('vale-beijo', 'Você deu para o Weng', 'Vale Beijo & Vale Abraço', 'Feitos à mão. Válidos por tempo indeterminado.');

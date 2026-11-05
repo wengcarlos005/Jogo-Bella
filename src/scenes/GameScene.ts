@@ -226,6 +226,15 @@ export class GameScene extends Phaser.Scene {
       npc.face(def.facing ?? 'down');
       npc.behavior = def.behavior ?? 'idle';
       if (def.pose && this.textures.exists(def.pose.key)) npc.pose(def.pose.key, def.pose.frame);
+      // corpo largo nos NPCs (não só nos pés): a Bella para encostada neles, sem atravessar
+      if (def.id !== 'weng') {
+        const body = npc.body as Phaser.Physics.Arcade.Body;
+        const sc = npc.scaleX;
+        const bw = def.pose ? 14 : 24;
+        body.setSize(bw / sc, 9 / sc);
+        body.setOffset((npc.frame.width - bw / sc) / 2, npc.frame.height - 10 / sc);
+        body.setImmovable(true);
+      }
       if (def.wanderRadius !== undefined) npc.wanderRadius = def.wanderRadius * TILE;
       if (def.wanderAxis) npc.wanderAxis = def.wanderAxis;
       npc.interactScript = def.interact;
@@ -249,15 +258,40 @@ export class GameScene extends Phaser.Scene {
     this.refreshVisibility();
   }
 
+  /**
+   * Onde o Weng aparece ao entrar num mapa: ao lado da Bella (direita, esquerda),
+   * ou atrás/à frente, o primeiro lugar sem parede, porta ou móvel.
+   */
+  private followerSpot(): [number, number] {
+    const f = this.player.facing;
+    const behind: [number, number] = ({ down: [0, -18], up: [0, 18], left: [18, 0], right: [-18, 0] } as Record<string, [number, number]>)[f];
+    const cands: [number, number][] = [[20, -2], [-20, -2], [24, 0], [-24, 0], behind, [-behind[0], -behind[1]]];
+    const { widthPx: W, heightPx: H } = this.built;
+    const free = (x: number, y: number) => {
+      if (x < 8 || x > W - 8 || y < 8 || y > H - 2) return false;
+      let hit = false;
+      this.physics.world.staticBodies.iterate((b) => {
+        const sb = b as Phaser.Physics.Arcade.StaticBody;
+        if (!hit && sb.enable && x + 6 > sb.x && x - 6 < sb.x + sb.width && y + 1 > sb.y && y - 6 < sb.y + sb.height) hit = true;
+        return true;
+      });
+      if (hit) return false;
+      const tile = this.built.collision.getTileAtWorldXY(x, y - 2);
+      return !tile || !tile.collides;
+    };
+    for (const c of cands) if (free(this.player.x + c[0], this.player.y + c[1])) return c;
+    return behind;
+  }
+
   /** Cria o Weng como seguidor se ele não estiver no mapa. */
   attachFollower(placeBehind = false): void {
     let entry = this.npcs.get('weng');
+    const back = this.followerSpot();
     if (entry && placeBehind) {
-      const back = { down: [0, -18], up: [0, 18], left: [18, 0], right: [-18, 0] }[this.player.facing];
       entry.npc.setPosition(this.player.x + back[0], this.player.y + back[1]);
+      (entry.npc.body as Phaser.Physics.Arcade.Body).reset(entry.npc.x, entry.npc.y);
     }
     if (!entry) {
-      const back = { down: [0, -18], up: [0, 18], left: [18, 0], right: [-18, 0] }[this.player.facing];
       const npc = new NPC(this, this.player.x + back[0], this.player.y + back[1], this.spriteFor('weng'), 'weng');
       npc.interactScript = 'weng';
       this.addNpcColliders(npc);
