@@ -131,7 +131,7 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CHAR-020 | Meli, gata laranja (4×4 andando + folha de poses) | pets/meli-walk.png, pets/meli-poses.png | ✅ no jogo |
 | CHAR-021 | Avó do Weng (4×4 + retrato) | characters/avo-weng.png | pedido |
 | CHAR-022 | Avô do Weng (4×4 + retrato) | characters/avo2-weng.png | pedido |
-| CHAR-023 | Pombo, gato preto (andando; poses pendentes) | pets/pombo-walk.png | ✅ no jogo (casa da Bella) |
+| CHAR-023 | Pombo, gato preto (andando + poses) | pets/pombo-walk.png, pets/pombo-poses.png | ✅ no jogo (casa da Bella) |
 | CHAR-024 | Lala, gata branca com manchas marrons (4×4 + poses; manchas recoloridas de laranja para marrom) | pets/lala-walk.png, pets/lala-poses.png | ✅ no jogo (casa da Bella) |
 | MAP-011 | Rua do Weng: portaria, praça com o Teatro Raul Cortez, avenida e o Shopping da Multidão (uma arte só) | maps/duque-rua-bg.png | ✅ no jogo |
 | CIN-010 | Vista da janela | cinematics/duque-janela.png | ✅ no jogo |

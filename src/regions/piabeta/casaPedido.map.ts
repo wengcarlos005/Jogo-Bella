@@ -62,6 +62,10 @@ const scripts: Record<string, Script> = {
     await ctx.teleport('duque-apto', 'porta');
   },
 
+  async pombo(ctx) {
+    await ctx.say('bella', 'O Pombo dormindo no meio da sala... ele sabia de tudo, né?');
+  },
+
   async cartinha(ctx) {
     await ctx.say('bella', 'Uma cartinha com coração no envelope. Com a letra dele.');
   },
@@ -129,6 +133,8 @@ export const casaPedidoMap: MapDef = {
     { rect: R(120, 300, 230, 380), interact: 'cartinha', label: 'Cartinha' },
     { rect: R(340, 340, 480, 430), interact: 'chocolates', label: 'Chocolates' },
   ],
+
+  npcs: [{ id: 'pombo', sprite: 'pombo', tx: 21.5, ty: 17.0, facing: 'down', interact: 'pombo', pose: { key: 'pombo-poses', frame: 1 } }],
 
   spawns: {
     porta: { tx: 15.0, ty: 17.6, facing: 'up' },

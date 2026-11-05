@@ -198,6 +198,7 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async pombo(ctx) {
+    ctx.pose('pombo', 'pombo-poses', 0);
     await ctx.emote('pombo', 'question');
     await ctx.say('pombo', 'Mrrr.');
     await ctx.say('bella', ctx.flag('weng-entrou') ? 'Esse é o Pombo. Ele julga todo mundo. Não leva pro pessoal.' : 'Pombo, para de me olhar com essa cara de julgamento.');
@@ -206,6 +207,13 @@ export const casaScripts: Record<string, Script> = {
       await ctx.say('weng', 'Ele tá me encarando. Ele tá me encarando muito.');
       await ctx.say('bella', 'Ele tá decidindo se gosta de você.');
     }
+    // carinho: ele finge que não gosta, mas ronrona
+    ctx.pose('pombo', 'pombo-poses', 3);
+    ctx.hearts('pombo', 4);
+    await ctx.say('pombo', 'Prrr... (só um pouquinho)');
+    ctx.pose('pombo', 'pombo-poses', 2);
+    await ctx.wait(700);
+    ctx.pose('pombo', null);
   },
 
   async lala(ctx) {
