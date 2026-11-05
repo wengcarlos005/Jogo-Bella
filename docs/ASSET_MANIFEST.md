@@ -133,7 +133,8 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CHAR-022 | Avô do Weng (4×4 + retrato) | characters/avo2-weng.png | pedido |
 | CHAR-023 | Pombo, gato preto (4×4 + poses) | characters/pombo.png | pedido |
 | CHAR-024 | Lala, gata branca com manchas marrons (4×4 + poses) | characters/lala.png | pedido |
-| MAP-011 | Rua do Weng: portaria do prédio, Shopping da Multidão do outro lado da rua, Praça do Pacificador com o Teatro Raul Cortez (Niemeyer) | maps/duque-rua-bg.png | pedido |
+| MAP-011 | Calçada do prédio do Weng (Av. Dr. Manoel Teles): fachada antiga, loja de cosméticos turquesa, loja de ternos, entrada do condomínio, calçada de pedra portuguesa em ondas; ref. art-source/ref/predio-weng-fachada.jpg | maps/duque-predio-bg.png | pedido |
+| MAP-011b | Frente do Shopping da Multidão (do outro lado da avenida): fachada azul, pilares vermelhos, entrada larga; ref. art-source/ref/shopping-multidao-fachada.jpg | maps/duque-multidao-fora-bg.png | pedido |
 | CIN-010 | Vista da janela: o casal olhando o Teatro Raul Cortez iluminado de cima, à noite | cinematics/duque-janela.png | pedido |
 | MAP-012 | Açaiteria (interior) | maps/duque-acai-bg.png | depois |
 | MAP-013 | Mercado (interior) | maps/duque-mercado-bg.png | depois |

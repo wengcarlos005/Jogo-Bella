@@ -7,15 +7,18 @@ Fatos reais (do Weng):
 - Juntos eles jogam (Taco Gato, Exploding Kittens), assistem séries e filmes, cozinham e passeiam (shopping, açaí cheio de complementos, mercado).
 - Família da Bella em Piabetá (mesmo condomínio de casas): a avó mora em cima da casa da mãe, a tia Jaque mora numa casa do condomínio, a Kelly é prima dela (filha adotiva da avó).
 
-## Cenas (ordem a confirmar com o Weng)
+## Cenas (ordem cronológica)
 
-1. **Primeira visita ao apê.** Avós ainda na China, apê só do Weng. A Meli desconfiada: ganhar a confiança dela (sachê, carinho, brinquedo). Vista do teatro pela janela.
-2. **Rotina (base livre):** jogar cartas (minijogo de reflexo inspirado no Taco Gato; minijogo de cartas de sorte inspirado no Exploding Kittens, com regras e arte próprias), cozinhar juntos, montar o açaí dela (bem cheio de complementos), Shopping da Multidão ("Achadinhos": orçamento curto + listinha), mercado.
-3. **O pedido de namoro (a surpresa).** Cinema no shopping (Five Nights at Freddy's). Na saída, a mãe liga dizendo que a irmã, e depois que a avó, está passando mal: a Bella volta emburrada para Piabetá. No quarto: luzes, fotos dos dois, origamis, a cartinha e chocolates; o Weng aparece atrás dela com um buquê enquanto toca "Yellow". Ele se declara (não conseguia mais se ver sem ela; o anel ainda não tinha chegado). Ela, toda envergonhada, responde "aceito" rápido demais, e os dois dizem "te amo" pela primeira vez.
-4. **Páscoa.** A Bella dá muito chocolate para ele, e até para a irmã dele. Ele dá chocolates e uma cartinha de coelho da Páscoa.
-5. **A primeira noite** no apê.
-6. **A briga boba:** jeito de falar, comparar a vida deles com vidas do TikTok. Missão de reconciliação (conversar, ouvir, se desculpar; escolhas de fala que importam).
-7. **O aniversário dela:** o Weng planeja a viagem para Petrópolis (fecha o capítulo e abre o próximo).
+A Bella **só vai ao apartamento do Weng depois do pedido de namoro.**
+
+1. **Ainda ficando:** encontros fora de casa (a confirmar quais: cinema, açaí, Shopping da Multidão...).
+2. **O pedido de namoro (a surpresa).** Cinema no shopping (Five Nights at Freddy's). Na saída, a mãe liga dizendo que a irmã, e depois que a avó, está passando mal: a Bella volta emburrada para Piabetá. No quarto: luzes, fotos dos dois, origamis, a cartinha e chocolates; o Weng aparece atrás dela com um buquê enquanto toca "Yellow". Ele se declara (não conseguia mais se ver sem ela; o anel ainda não tinha chegado). Ela, toda envergonhada, responde "aceito" rápido demais, e os dois dizem "te amo" pela primeira vez.
+3. **Primeira visita ao apê, já namorando.** Avós na China, apê só do Weng. A Meli desconfiada: ganhar a confiança dela (sachê, carinho, brinquedo). Vista do teatro pela janela.
+4. **Rotina (base livre):** jogar cartas (minijogos inspirados no Taco Gato e no Exploding Kittens, com regras e arte próprias), cozinhar juntos, montar o açaí dela (bem cheio de complementos), Shopping da Multidão ("Achadinhos": orçamento curto + listinha), mercado.
+5. **Páscoa.** A Bella dá muito chocolate para ele, e até para a irmã dele. Ele dá chocolates e uma cartinha de coelho da Páscoa.
+6. **A primeira noite** no apê.
+7. **A briga boba:** jeito de falar, comparar a vida deles com vidas do TikTok. Missão de reconciliação (conversar, ouvir, se desculpar; escolhas de fala que importam).
+8. **O aniversário dela:** o Weng planeja a viagem para Petrópolis (fecha o capítulo e abre o próximo).
 
 ## Observações
 - A música "Yellow" não vai embutida no jogo (direitos autorais). A cena toca `public/assets/audio/pedido.mp3` se o arquivo existir (o Weng pode colocar o dele); senão, uma música romântica própria.
