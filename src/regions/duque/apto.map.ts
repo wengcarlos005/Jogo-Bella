@@ -619,7 +619,8 @@ export const aptoMap: MapDef = {
         ctx.objective('dq-m5', 'convite');
         ctx.unlockRegion('petropolis');
         await ctx.chapterCard('Fim do Capítulo 2', 'Duque de Caxias', 'Nosso cantinho.', 'Continuar');
-        await ctx.chapterCard('Capítulo 3', 'Petrópolis', 'O aniversário dela. Em breve!', 'Continuar');
+        await ctx.chapterCard('Capítulo 3', 'Petrópolis', 'O aniversário dela.', 'Começar');
+        await ctx.teleport('pt-hotel-fora', 'portao');
         return;
       }
       await ctx.say('weng', 'Que foi? Tá me olhando com cara de quem quer açaí.');

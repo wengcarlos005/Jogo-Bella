@@ -131,6 +131,7 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
         el.classList.add(kind);
       }
       el.style.top = `${LANE_Y[l]}%`;
+      el.style.left = '110%'; // nasce fora da tela (sem piscar no canto esquerdo)
       track.append(el);
       obstacles.push({ el, lane: l, x: 110, kind, hit: false });
     };

@@ -226,7 +226,7 @@ export const rota66Map: MapDef = {
     R(1005, 840, 1455, 905),
     // floreiras e plantas da frente
     R(0, 905, 645, 1100),
-    R(645, 884, 890, 1100), // porta de vidro (não dá pra pisar em cima)
+    R(640, 790, 895, 1100), // porta de vidro inteira (ninguém fica em cima dela)
     R(890, 905, 1536, 1100),
     R(540, 880, 625, 975),
     R(905, 880, 995, 975),
@@ -238,7 +238,7 @@ export const rota66Map: MapDef = {
   // Profundidade: cabines, plantas e mesas na frente de quem passa atrás delas
   overlays: [
     // porta de vidro: na frente de quem encosta nela por dentro
-    { x0: 640, y0: 872, x1: 895, y1: 1000, base: 1000, front: true },
+    { x0: 640, y0: 785, x1: 895, y1: 1000, base: 1000, front: true },
     // Cabines recortadas peça por peça (assento esq., encosto do meio, assento dir.),
     // começando no topo de cada peça: o chão em volta nunca fica na frente de ninguém.
     { x0: 434, y0: 465, x1: 482, y1: 668, base: 665, cut: 'booth', slice: true }, // cabine do meio (esq.)
@@ -274,11 +274,11 @@ export const rota66Map: MapDef = {
 
   npcs: [{ id: 'atendente', sprite: 'atendente', tx: 16.2, ty: 10.9, facing: 'down', interact: 'atendente' }],
   spawns: {
-    'from-fora': { tx: 15.5, ty: 17.0, facing: 'up' },
+    'from-fora': { tx: 15.5, ty: 14.6, facing: 'up' },
   },
   exits: [
     {
-      rect: R(645, 866, 890, 884), // encostar na porta de vidro = sair
+      rect: R(645, 772, 890, 790), // encostar na porta de vidro = sair
       toMap: 'piabeta-rota66-fora',
       toSpawn: 'from-rota66',
       sfx: 'door',
