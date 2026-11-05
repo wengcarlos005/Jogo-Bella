@@ -33,6 +33,7 @@ const FLOWER_BEDS: TileRect[] = [
   R(600, 865, 750, 950), // vermelhas (centro-esquerda)
   R(1410, 770, 1530, 860), // vermelhas (direita)
   R(1430, 870, 1530, 935), // lilases (direita)
+  R(885, 882, 1005, 950), // lilases (centro-direita, perto do meio-fio)
 ];
 
 const flowerHotspots: HotspotDef[] = FLOWER_BEDS.map((rect, i) => ({
@@ -231,10 +232,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'O carro do vizinho. Sempre estacionado exatamente aqui.');
   },
   async banco(ctx) {
-    await ctx.sit(555, 712, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']], { key: 'bench-rua', x: 555, y: 780 });
+    await ctx.sit(555, 748, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']], { key: 'bench-rua', x: 555, y: 780 });
   },
   async banco2(ctx) {
-    await ctx.sit(1063, 712, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']], { key: 'bench-rua', x: 1063, y: 780 });
+    await ctx.sit(1063, 748, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']], { key: 'bench-rua', x: 1063, y: 780 });
   },
 };
 
@@ -263,8 +264,8 @@ export const ruaMap: MapDef = {
     R(1612, 0, 1700, 1100),
     R(0, 950, 1700, 1100),
     // postes (base e a calçada logo ao sul da luminária)
-    R(118, 455, 212, 640),
-    R(1418, 455, 1512, 640),
+    R(122, 610, 162, 640), // pé do poste esquerdo (só a base; a haste e a luminária não bloqueiam)
+    R(1468, 610, 1508, 640), // pé do poste direito
     // carro (corpo)
     R(265, 470, 497, 533),
     // pracinha: cerca viva com a passagem do meio (x 770–848)
@@ -288,12 +289,17 @@ export const ruaMap: MapDef = {
   // Profundidade (o que passa NA FRENTE de quem está atrás)
   overlays: [
     { x0: 255, y0: 405, x1: 505, y1: 540, base: 533, cut: 'furniture' }, // carro
-    { x0: 128, y0: 372, x1: 212, y1: 468, base: 638, cut: 'lamp' }, // poste esquerdo (luminária)
+    { x0: 128, y0: 372, x1: 212, y1: 468, base: 470, cut: 'lamp' }, // poste esquerdo (luminária)
     { x0: 122, y0: 468, x1: 162, y1: 640, base: 638, cut: 'lamp' }, // poste esquerdo (haste)
-    { x0: 1418, y0: 372, x1: 1502, y1: 468, base: 638, cut: 'lamp' }, // poste direito (luminária)
+    { x0: 1418, y0: 372, x1: 1502, y1: 468, base: 470, cut: 'lamp' }, // poste direito (luminária)
     { x0: 1468, y0: 468, x1: 1508, y1: 640, base: 638, cut: 'lamp' }, // poste direito (haste)
     { x0: 478, y0: 722, x1: 632, y1: 780, base: 776, cut: 'furniture' }, // banco esq. (assento da frente e pés)
     { x0: 985, y0: 722, x1: 1142, y1: 780, base: 776, cut: 'furniture' }, // banco dir. (assento da frente e pés)
+    // canteiros da beira da pracinha: as flores ficam na frente dos pés de quem pisa atrás delas
+    { x0: 76, y0: 845, x1: 204, y1: 918, base: 916, cut: 'foliage' },
+    { x0: 596, y0: 860, x1: 754, y1: 952, base: 950, cut: 'foliage' },
+    { x0: 880, y0: 880, x1: 1008, y1: 950, base: 948, cut: 'foliage' },
+    { x0: 1424, y0: 864, x1: 1538, y1: 928, base: 926, cut: 'foliage' },
   ],
 
   hotspots: [

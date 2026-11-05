@@ -291,7 +291,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
           loop: true,
           callback: () => {
             tick++;
-            if (tick % 22 === 0) pair!.setFrame(2);
+            if (tick % 22 === 0) pair!.setFrame(3);
             else if (tick % 22 === 3) pair!.setFrame(0);
             else if (tick % 7 === 0) {
               pair!.setFrame(1);
@@ -338,12 +338,27 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       pl.standUp();
       const back = pair ? 0 : 12;
       if (!pair) pl.setPosition(pl.x, sy + back);
+      // levanta na frente do banco: desce até achar chão livre (nunca dentro do banco)
+      const freeY = (x: number, y: number) => {
+        const solid = (yy: number) => {
+          let hit = false;
+          scene.physics.world.staticBodies.iterate((b) => {
+            const sb = b as Phaser.Physics.Arcade.StaticBody;
+            if (!hit && sb.enable && x + 5 > sb.x && x - 5 < sb.x + sb.width && yy + 1 > sb.y && yy - 5 < sb.y + sb.height) hit = true;
+            return true;
+          });
+          return hit;
+        };
+        for (let d = 0; d <= 48; d += 2) if (!solid(y + d)) return y + d;
+        return y;
+      };
+      pl.setPosition(pl.x, freeY(pl.x, pl.y));
       (pl.body as Phaser.Physics.Arcade.Body).reset(pl.x, pl.y);
       pl.face('down');
       pl.scripted = false;
       if (withWeng) {
         weng!.standUp();
-        weng!.setPosition(weng!.x, (pair ? pl.y : sy + back));
+        weng!.setPosition(weng!.x, freeY(weng!.x, pair ? pl.y : sy + back));
         (weng!.body as Phaser.Physics.Arcade.Body).reset(weng!.x, weng!.y);
         pl.trail.length = 0;
         weng!.follow(pl);
