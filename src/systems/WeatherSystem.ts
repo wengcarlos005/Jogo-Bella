@@ -56,7 +56,7 @@ export class WeatherSystem {
     } else {
       this.rain.stop();
       AudioSystem.setRain(false);
-      if (kind === 'sunset') tween(0xff8a3d, 0.22);
+      if (kind === 'sunset') tween(0xffa860, 0.1);
       else if (kind === 'night') tween(0x141a48, 0.42);
       else tween(0x000000, 0);
     }

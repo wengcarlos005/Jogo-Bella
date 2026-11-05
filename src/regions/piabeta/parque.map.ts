@@ -15,6 +15,7 @@ const scripts: Record<string, Script> = {
   async entrar(ctx) {
     if (ctx.objectiveDone(Q, 'passear') && !ctx.objectiveDone(Q, 'beijo')) ctx.weather('rain');
     if (ctx.objectiveDone(Q, 'beijo')) ctx.weather('sunset');
+    if (ctx.questActive('dq-e2')) ctx.weather('sunset');
     if (ctx.questActive('dq-e2') && !ctx.objectiveDone('dq-e2', 'passeio')) {
       ctx.objective('dq-e2', 'passeio');
       await ctx.wait(300);
@@ -266,6 +267,7 @@ export const parqueMap: MapDef = {
   // Noite (o passeio é depois do lanche): véu escuro + postes e lanternas acesos
   lighting: {
     darkness: 0.6,
+    when: () => !QuestSystem.isActive('dq-e2'),
     lights: [
       { x: 416, y: 508, r: 230 },
       { x: 959, y: 334, r: 230 },

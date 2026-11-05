@@ -15,6 +15,7 @@ const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0
 const scripts: Record<string, Script> = {
   async chegada(ctx) {
     ctx.follow('weng', true);
+    if (objDone('filme') && objActive('passeio')) ctx.toast('Saia pelo portão para passear');
     if (ctx.flag('dq-e2-intro')) return;
     ctx.setFlag('dq-e2-intro');
     ctx.setFlag('weng-segue');
@@ -71,6 +72,8 @@ const scripts: Record<string, Script> = {
       ctx.place('mae-bella', 10.6, 9.4, 'right');
       ctx.place('pai-bella', 17.6, 9.6, 'left');
       await ctx.frame(14, 13.6, 0);
+      const mesaArt = ctx.hasArt('cena-churrasco-mesa');
+      if (mesaArt) await ctx.backdrop('cena-churrasco-mesa');
       await ctx.fadeIn(300);
       await ctx.say('mae-bella', 'Então, Weng, me conta: você trabalha com o quê? Estuda o quê? Gosta de quê?');
       await ctx.say('bella', 'Mãe! Uma pergunta de cada vez.');
@@ -88,10 +91,15 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Ainda não. Ela me ignora.');
       await ctx.say('pai-bella', 'Comigo ela fez isso por dois anos. Boa sorte.');
       ctx.hearts('player', 6);
+      if (mesaArt) {
+        await ctx.fadeOut(400);
+        await ctx.backdrop(null);
+      }
       await ctx.unfocus(400);
       ctx.place('mae-bella', 9.8, 12.6, 'right');
       ctx.place('pai-bella', 7.4, 12.6, 'right');
       ctx.follow('weng', true);
+      if (mesaArt) await ctx.fadeIn(400);
       ctx.objective(Q, 'mesa');
       await ctx.say('bella', 'Weng, vem! Vamos ver um filme lá dentro.');
       ctx.toast('Entre pela porta da cozinha');
@@ -102,20 +110,11 @@ const scripts: Record<string, Script> = {
 
   async porta(ctx) {
     if (objActive('filme') && objDone('mesa')) {
-      await ctx.fadeOut(500);
-      ctx.objective(Q, 'filme');
-      await ctx.narrate('Na sala, um filme qualquer passando na TV. Ninguém prestou muita atenção.');
-      await ctx.say('bella', 'Weng... você tá vendo o filme ou olhando pra mim?');
-      await ctx.say('weng', 'Tem filme passando?');
-      await ctx.say('mae-bella', '(da cozinha) Querem pipoca?!');
-      await ctx.say('bella', 'NÃO, MÃE, OBRIGADA!');
-      await ctx.narrate('O fim da tarde chegou rápido. E eles resolveram sair para caminhar.');
-      await ctx.say('weng', 'Bora passear? Quero ir na nossa praça.');
-      await ctx.say('bella', 'A do coreto? São uns 25 minutos a pé, passando por Fragoso.');
-      await ctx.say('weng', 'Com você, 25 minutos passam em 5.');
-      await ctx.fadeIn(400);
-      ctx.toast('Saia pelo portão para passear');
+      await ctx.teleport('piabeta-casa-bella', 'from-quintal');
       return;
+    }
+    if (objActive('passeio') && objDone('filme') && !ctx.flag('dq-filme-fala')) {
+      ctx.setFlag('dq-filme-fala');
     }
     if (objActive('mesa')) {
       await ctx.say('bella', 'Depois a gente entra. Primeiro, comida!');

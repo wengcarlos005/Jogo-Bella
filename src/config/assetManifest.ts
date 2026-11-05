@@ -124,6 +124,7 @@ export const ASSETS: AssetEntry[] = [
   { id: 'MAP-017', key: 'map-piabeta-quintal-bg', file: 'assets/maps/piabeta-quintal-bg.png', kind: 'image' },
   { id: 'MAP-018', key: 'map-piabeta-mexicano-fora-bg', file: 'assets/maps/piabeta-mexicano-fora-bg.png', kind: 'image' },
   { id: 'CIN-015', key: 'memory-dq-04', file: 'assets/cinematics/mexicano-chapeus.png', kind: 'image' },
+  { id: 'CIN-016', key: 'cena-churrasco-mesa', file: 'assets/cinematics/churrasco-mesa.png', kind: 'image' },
   { id: 'CIN-014', key: 'cena-pazes', file: 'assets/cinematics/pazes.png', kind: 'image' },
   { id: 'CIN-013', key: 'cena-primeira-noite', file: 'assets/cinematics/primeira-noite.png', kind: 'image' },
   { id: 'ICO-020', key: 'icon-acai', file: 'assets/ui/icon-acai.png', kind: 'image' },

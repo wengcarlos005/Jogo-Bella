@@ -13,6 +13,29 @@ const CHAMADO = PERSONAL.bellaStepdad.chamado;
 
 export const casaScripts: Record<string, Script> = {
   async entrar(ctx) {
+    // 2º encontro: depois do churrasco, filme no sofá da sala
+    if (ctx.questActive('dq-e2') && ctx.objectiveDone('dq-e2', 'mesa') && !ctx.objectiveDone('dq-e2', 'filme')) {
+      ctx.place('mae-bella', 21.6, 8.6, 'left');
+      ctx.place('pai-bella', 19.6, 8.4, 'right');
+      ctx.follow('weng', true);
+      ctx.place('weng', 16.2, 15.6, 'up');
+      await ctx.wait(300);
+      await ctx.say('bella', 'Senta aqui. Esse sofá é o melhor lugar da casa.');
+      await ctx.sit(730, 714, [
+        ['narrador', 'Um filme qualquer passando na TV. Ninguém prestou muita atenção.'],
+        ['bella', 'Weng... você tá vendo o filme ou olhando pra mim?'],
+        ['weng', 'Tem filme passando?'],
+        ['mae-bella', '(da cozinha) Querem pipoca?!'],
+        ['bella', 'NÃO, MÃE, OBRIGADA!'],
+        ['weng', 'Bora passear depois? Quero ir na nossa praça.'],
+        ['bella', 'A do coreto? São uns 25 minutos a pé, passando por Fragoso.'],
+        ['weng', 'Com você, 25 minutos passam em 5.'],
+      ]);
+      ctx.objective('dq-e2', 'filme');
+      await ctx.fadeOut(400);
+      await ctx.teleport('piabeta-quintal', 'porta');
+      return;
+    }
     if (ctx.flag('intro-vista')) return casaScripts.voltou(ctx);
     ctx.setFlag('intro-vista');
     ctx.startQuest(Q);

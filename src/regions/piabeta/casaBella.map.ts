@@ -39,7 +39,7 @@ export const casaBellaMap: MapDef = {
   // Gotas caindo nos vidros das janelas do quarto e da cozinha (a arte já é chuvosa).
   rainWindows: {
     glass: false,
-    when: () => true,
+    when: () => !QuestSystem.isActive('dq-e2'),
     rects: [
       R(310, 74, 372, 96), R(382, 74, 444, 96), R(310, 103, 372, 143), R(382, 103, 444, 143), // quarto
       R(1206, 74, 1270, 96), R(1281, 74, 1344, 96), R(1206, 103, 1270, 138), R(1281, 103, 1344, 138), // cozinha
@@ -141,12 +141,13 @@ export const casaBellaMap: MapDef = {
       ty: 16.8,
       facing: 'up',
       interact: 'weng',
-      visibleIf: () => GameState.is('weng-entrou') && !objDone('sair'),
+      visibleIf: () => (GameState.is('weng-entrou') && !objDone('sair')) || QuestSystem.isActive('dq-e2'),
     },
   ],
   spawns: {
     start: { tx: 6.8, ty: 7.6, facing: 'down' },
     'from-rua': { tx: 15, ty: 17.5, facing: 'up' },
+    'from-quintal': { tx: 14.6, ty: 15.6, facing: 'up' },
   },
   exits: [
     {
