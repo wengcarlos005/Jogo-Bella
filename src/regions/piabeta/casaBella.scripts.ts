@@ -255,9 +255,13 @@ export const casaScripts: Record<string, Script> = {
     if (!ctx.objectiveDone(Q, 'pai')) {
       await ctx.fadeOut(200);
       ctx.follow('weng', false);
-      ctx.place('player', 18.8, 8.3, 'right');
-      ctx.place('pai-bella', 21.0, 8.3, 'left');
-      ctx.place('weng', 19.9, 10.1, 'up');
+      // triângulo ao lado da mesa (ninguém em cima de cadeira): o Alexandre na quina da mesa,
+      // a Bella e o Weng na frente dele, à mesma distância
+      ctx.place('pai-bella', 19.9, 7.0, 'down');
+      ctx.place('player', 18.8, 8.7, 'up');
+      ctx.place('weng', 21.0, 8.7, 'up');
+      ctx.face('player', 'pai-bella');
+      ctx.face('weng', 'pai-bella');
       await ctx.fadeIn(250);
       await ctx.say('bella', `${CHAMADO ? `${CHAMADO}, esse` : 'Esse'} é o Weng.`);
       ctx.face('weng', 'up');
@@ -293,7 +297,7 @@ export const casaScripts: Record<string, Script> = {
       await ctx.say('bella', 'Ainda não dá pra sentar. Falta apresentar o Weng pro Alexandre!');
       return;
     }
-    await ctx.sit(730, 700, ctx.flag('weng-segue') ? [['weng', 'Esse sofá é confortável demais. Perigoso.'], ['bella', 'É o sofá do cochilo de domingo.']] : [['bella', 'O sofá do cochilo de domingo. Hoje não tem cochilo, tem encontro!']]);
+    await ctx.sit(730, 714, ctx.flag('weng-segue') ? [['weng', 'Esse sofá é confortável demais. Perigoso.'], ['bella', 'É o sofá do cochilo de domingo.']] : [['bella', 'O sofá do cochilo de domingo. Hoje não tem cochilo, tem encontro!']]);
   },
   async geladeira(ctx) {
     await ctx.say('bella', 'Água gelada pra acalmar. Ok, não acalmou.');

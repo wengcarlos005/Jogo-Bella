@@ -269,10 +269,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'O carro do vizinho. Sempre estacionado exatamente aqui.');
   },
   async banco(ctx) {
-    await ctx.sit(555, 748, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']], { key: 'bench-rua', x: 555, y: 780, w: 144 });
+    await ctx.sit(555, 756, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']], { key: 'bench-rua', x: 555, y: 780, w: 144 });
   },
   async banco2(ctx) {
-    await ctx.sit(1063, 748, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']], { key: 'bench-rua', x: 1063, y: 780, w: 147 });
+    await ctx.sit(1063, 756, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']], { key: 'bench-rua', x: 1063, y: 780, w: 147 });
   },
 };
 
@@ -315,10 +315,13 @@ export const ruaMap: MapDef = {
     R(483, 688, 627, 776),
     R(990, 688, 1137, 776),
     R(927, 697, 973, 765),
-    R(170, 560, 450, 770), // árvore esquerda (copa sólida)
-    R(262, 770, 330, 885), // tronco esquerdo
-    R(1185, 570, 1495, 770), // árvore direita (copa)
-    R(1315, 770, 1372, 885), // tronco direito
+    R(262, 800, 330, 848), // tronco esquerdo (a copa fica por cima, dá pra passar por baixo)
+    R(1315, 800, 1372, 848), // tronco direito
+    // canteiros: sólidos desde as flores do topo (ninguém fica dentro das hortênsias)
+    R(76, 845, 205, 920),
+    R(596, 860, 754, 952),
+    R(880, 882, 1008, 950),
+    R(1424, 862, 1538, 930),
     // canteiros
     ...FLOWER_BEDS,
   ],
@@ -333,10 +336,9 @@ export const ruaMap: MapDef = {
     { x0: 478, y0: 722, x1: 632, y1: 780, base: 776, cut: 'furniture' }, // banco esq. (assento da frente e pés)
     { x0: 985, y0: 722, x1: 1142, y1: 780, base: 776, cut: 'furniture' }, // banco dir. (assento da frente e pés)
     // canteiros da beira da pracinha: as flores ficam na frente dos pés de quem pisa atrás delas
-    { x0: 76, y0: 845, x1: 204, y1: 918, base: 916, cut: 'foliage' },
-    { x0: 596, y0: 860, x1: 754, y1: 952, base: 950, cut: 'foliage' },
-    { x0: 880, y0: 880, x1: 1008, y1: 950, base: 948, cut: 'foliage' },
-    { x0: 1424, y0: 864, x1: 1538, y1: 928, base: 926, cut: 'foliage' },
+    // copas das árvores: na frente de quem passa atrás, translúcidas
+    { x0: 165, y0: 556, x1: 455, y1: 800, base: 848, cut: 'foliage', fade: true },
+    { x0: 1180, y0: 566, x1: 1500, y1: 800, base: 848, cut: 'foliage', fade: true },
   ],
 
   hotspots: [

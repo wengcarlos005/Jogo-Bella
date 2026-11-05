@@ -64,13 +64,13 @@ export const casaBellaMap: MapDef = {
     R(0, 912, 690, 1024),
     R(800, 912, 1536, 1024),
     // Quarto
-    R(40, 230, 258, 466), // cama (com folga dos lados para o cabelo não passar por cima)
+    R(40, 230, 258, 450), // cama (com folga dos lados para o cabelo não passar por cima)
     R(272, 230, 448, 338), // escrivaninha + cadeira
     R(458, 230, 538, 338), // penteadeira + banquinho
     R(538, 230, 640, 322), // espelho + planta
     R(635, 230, 818, 320), // guarda-roupa
     // Cozinha
-    R(1045, 318, 1282, 470), // mesa + cadeiras
+    R(1045, 296, 1282, 470), // mesa + cadeiras (encostada na bancada: ninguém sobe na cadeira de cima)
     R(1408, 300, 1496, 388), // planta
     // Sala
     R(60, 700, 138, 735), // planta (vaso)
@@ -93,6 +93,12 @@ export const casaBellaMap: MapDef = {
   overlays: [
     { x0: 246, y0: 645, x1: 294, y1: 800, base: 882, cut: 'dark' }, // só a tela escura da TV
     { x0: 1360, y0: 660, x1: 1492, y1: 815, base: 808, cut: 'foliage' }, // planta
+    // cozinha: cadeiras dos lados e de baixo, e a planta do canto
+    { x0: 1040, y0: 325, x1: 1290, y1: 475, base: 472, cut: 'furniture', slice: true },
+    { x0: 1400, y0: 235, x1: 1500, y1: 392, base: 390, cut: 'furniture' },
+    // vasos na parede de baixo: na frente de quem passa atrás deles
+    { x0: 130, y0: 878, x1: 226, y1: 1012, base: 1010, cut: 'furniture' },
+    { x0: 1295, y0: 872, x1: 1392, y1: 1006, base: 1004, cut: 'furniture' },
   ],
 
   hotspots: [
@@ -110,7 +116,7 @@ export const casaBellaMap: MapDef = {
     // Cozinha
     { rect: R(940, 85, 1062, 302), interact: 'geladeira', label: 'Geladeira' },
     { rect: R(1066, 160, 1160, 302), interact: 'fogao', label: 'Fogão' },
-    { rect: R(1160, 140, 1350, 302), interact: 'pia', label: 'Pia' },
+    { rect: R(1160, 140, 1400, 330), interact: 'pia', label: 'Pia' },
     // Sala
     { rect: R(215, 650, 318, 888), interact: 'tv', label: 'TV' },
     { rect: R(1062, 545, 1290, 758), interact: 'estante', label: 'Estante' },
