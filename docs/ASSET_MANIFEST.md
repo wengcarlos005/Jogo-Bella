@@ -133,8 +133,7 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CHAR-022 | Avô do Weng (4×4 + retrato) | characters/avo2-weng.png | pedido |
 | CHAR-023 | Pombo, gato preto (4×4 + poses) | characters/pombo.png | pedido |
 | CHAR-024 | Lala, gata branca com manchas marrons (4×4 + poses; manchas recoloridas de laranja para marrom) | pets/lala-walk.png, pets/lala-poses.png | ✅ no jogo (casa da Bella) |
-| MAP-011 | Calçada do prédio do Weng (Av. Dr. Manoel Teles): fachada antiga, loja de cosméticos turquesa, loja de ternos, entrada do condomínio, calçada de pedra portuguesa em ondas; ref. art-source/ref/predio-weng-fachada.jpg | maps/duque-predio-bg.png | pedido |
-| MAP-011b | Frente do Shopping da Multidão (do outro lado da avenida): fachada azul, pilares vermelhos, entrada larga; ref. art-source/ref/shopping-multidao-fachada.jpg | maps/duque-multidao-fora-bg.png | pedido |
+| MAP-011 | Rua do Weng: portaria, praça com o Teatro Raul Cortez, avenida e o Shopping da Multidão (uma arte só) | maps/duque-rua-bg.png | ✅ no jogo |
 | CIN-010 | Vista da janela: o casal olhando o Teatro Raul Cortez iluminado de cima, à noite | cinematics/duque-janela.png | pedido |
 | MAP-012 | Açaiteria (interior) | maps/duque-acai-bg.png | ✅ no jogo |
 | MAP-013 | Mercado (interior) | maps/duque-mercado-bg.png | depois |
@@ -148,7 +147,7 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | MAP-016 | Quarto da Bella decorado para o pedido (variação do quarto: luzes, fotos, origamis, carta, chocolates) | maps/piabeta-quarto-pedido-bg.png | pedido |
 | CIN-011 | O pedido de namoro (Weng com o buquê atrás dela, quarto iluminado) | cinematics/pedido.png | pedido |
 | CIN-012 | Páscoa (chocolates + cartinha de coelho) | cinematics/pascoa.png | depois |
-| CIN-013 | A primeira noite | cinematics/primeira-noite.png | depois |
+| CIN-013 | A primeira noite | cinematics/primeira-noite.png | ✅ recebido |
 | CIN-014 | Fazendo as pazes depois da briga | cinematics/pazes.png | depois |
 | CHAR-025 | Avó da Bella (4×4 + retrato) | characters/avo-bella.png | pedido |
 | CHAR-026 | Tia Jaque (4×4 + retrato) | characters/tia-jaque.png | pedido |

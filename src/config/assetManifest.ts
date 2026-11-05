@@ -126,6 +126,7 @@ export const ASSETS: AssetEntry[] = [
   ...['piranha', 'creme', 'scrunchie', 'pote', 'vela', 'pano', 'pacoca', 'balas', 'chocolate'].map(
     (n, i): AssetEntry => ({ id: `ICO-${String(21 + i).padStart(3, '0')}`, key: `icon-achado-${n}`, file: `assets/ui/icon-achado-${n}.png`, kind: 'image' }),
   ),
+  { id: 'MAP-011', key: 'map-duque-rua-bg', file: 'assets/maps/duque-rua-bg.png', kind: 'image' },
   { id: 'MAP-012', key: 'map-duque-acai-bg', file: 'assets/maps/duque-acai-bg.png', kind: 'image' },
   { id: 'MEM-003', key: 'memory-pia-03', file: 'assets/cinematics/memory-pia-03.png', kind: 'image' },
 

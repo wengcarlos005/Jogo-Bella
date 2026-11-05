@@ -77,7 +77,7 @@ const scripts: Record<string, Script> = {
 
   async saida(ctx) {
     if (ctx.flag('acai-hoje')) ctx.setFlag('acai-hoje', false);
-    await ctx.teleport('duque-apto', 'porta');
+    await ctx.teleport('duque-rua', 'from-acai');
   },
 };
 

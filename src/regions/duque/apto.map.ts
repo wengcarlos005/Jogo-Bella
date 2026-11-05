@@ -465,13 +465,7 @@ export const aptoMap: MapDef = {
         await ctx.move('player', P.porta.x, P.porta.y - 0.6, 60);
         return;
       }
-      const c = await ctx.choose('bella', 'Sair do apê?', ['Tomar um açaí', 'Ficar em casa']);
-      if (c === 1) {
-        await ctx.move('player', P.porta.x, P.porta.y - 0.6, 60);
-        return;
-      }
-      await ctx.say('weng', 'Bora! A açaiteria é logo ali.');
-      await ctx.teleport('duque-acai', 'porta');
+      await ctx.teleport('duque-rua', 'portaria');
     },
     async pista(ctx) {
       ctx.setFlag('dq-pista');
