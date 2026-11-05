@@ -73,21 +73,21 @@ export class TitleScreen {
       AudioSystem.play('confirm');
       fn();
     };
-    // posições medidas na arte (1672x941), em %
+    // posições medidas na arte (1672x941), em %. A arte é espelhada: logo e botões à direita
     const spots: { label: string; top: number; left: number; w: number; fn: (() => void) | null }[] = [
-      { label: 'Continuar', top: 46.8, left: 8.1, w: 25.4, fn: latest ? () => this.actions.load(latest) : null },
+      { label: 'Continuar', top: 46.8, left: 63.6, w: 25.4, fn: latest ? () => this.actions.load(latest) : null },
       {
         label: 'Novo jogo',
         top: 56.9,
-        left: 8.4,
+        left: 63.9,
         w: 24.5,
         fn: () => {
           if (latest && !confirm('Começar um novo jogo? Seu progresso salvo continua nos espaços de save.')) return;
           this.actions.newGame();
         },
       },
-      { label: 'Carregar', top: 65.9, left: 8.4, w: 24.5, fn: () => void this.openLoad() },
-      { label: 'Opções', top: 75.5, left: 8.4, w: 24.5, fn: () => this.actions.openSettings() },
+      { label: 'Carregar', top: 65.9, left: 63.9, w: 24.5, fn: () => void this.openLoad() },
+      { label: 'Opções', top: 75.5, left: 63.9, w: 24.5, fn: () => this.actions.openSettings() },
     ];
     const buttons = spots.map((s) =>
       h('button', {

@@ -1560,7 +1560,7 @@ html.title-mode #game, html.title-mode #ui { z-index: 1; }
 @keyframes txHeart { 0% { transform: translate(-50%, 0) scale(0.4); opacity: 0; } 20% { opacity: 1; transform: translate(-50%, -2vh) scale(1); } 100% { transform: translate(calc(-50% + var(--dx)), -14vh) scale(0.8); opacity: 0; } }
 .tx-bubble { position: absolute; width: 4%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(255, 126, 182, 0.45), transparent 65%); animation: txPulse 1.6s ease-in-out infinite; mix-blend-mode: screen; }
 .tx-shine-logo {
-  position: absolute; left: 5%; top: 8%; width: 32%; height: 36%;
+  position: absolute; left: 60.6%; top: 8%; width: 32%; height: 36%;
   background: linear-gradient(110deg, transparent 38%, rgba(255, 252, 230, 0.85) 50%, transparent 62%) no-repeat;
   background-size: 250% 100%; animation: txShine 5s ease-in-out infinite;
   -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;

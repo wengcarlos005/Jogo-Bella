@@ -110,7 +110,7 @@ export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLEleme
   // estrelas piscando no céu
   for (let i = 0; i < 26; i++) {
     const s = h('i', { class: 'tx-star' });
-    s.style.left = `${36 + Math.random() * 50}%`;
+    s.style.left = `${14 + Math.random() * 46}%`;
     s.style.top = `${2 + Math.random() * 38}%`;
     s.style.animationDelay = `${Math.random() * 4}s`;
     s.style.animationDuration = `${1.6 + Math.random() * 2.4}s`;
@@ -118,21 +118,21 @@ export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLEleme
   }
   // brilhos fixos: lua, lampiões, poste
   fx.append(
-    h('div', { class: 'tx-glow moon', style: 'left:74.5%;top:17%' }),
-    h('div', { class: 'tx-glow lamp', style: 'left:86%;top:15.5%' }),
-    h('div', { class: 'tx-glow lamp b', style: 'left:91.5%;top:30%' }),
-    h('div', { class: 'tx-glow lamp c', style: 'left:48.4%;top:61.5%' }),
+    h('div', { class: 'tx-glow moon', style: 'left:25.5%;top:17%' }),
+    h('div', { class: 'tx-glow lamp', style: 'left:14%;top:15.5%' }),
+    h('div', { class: 'tx-glow lamp b', style: 'left:8.5%;top:30%' }),
+    h('div', { class: 'tx-glow lamp c', style: 'left:51.6%;top:61.5%' }),
     (() => {
       // brilho só dentro das letras/lua do logo (máscara no formato do logo)
       const mask = new URL('assets/ui/title-logo-mask.png', document.baseURI).href;
       return h('div', { class: 'tx-shine-logo', style: `-webkit-mask-image:url("${mask}");mask-image:url("${mask}")` });
     })(),
-    h('div', { class: 'tx-bubble', style: 'left:44%;top:71%' }),
+    h('div', { class: 'tx-bubble', style: 'left:56%;top:71%' }),
   );
   // vaga-lumes
   for (let i = 0; i < 16; i++) {
     const f = h('i', { class: 'tx-fly' });
-    f.style.left = `${30 + Math.random() * 65}%`;
+    f.style.left = `${5 + Math.random() * 55}%`;
     f.style.top = `${48 + Math.random() * 40}%`;
     f.style.animationDelay = `${-Math.random() * 8}s`;
     f.style.animationDuration = `${6 + Math.random() * 6}s`;
@@ -143,7 +143,7 @@ export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLEleme
   // estrela cadente de vez em quando
   every(3800, () => {
     const s = h('i', { class: 'tx-shoot' });
-    s.style.left = `${40 + Math.random() * 35}%`;
+    s.style.left = `${22 + Math.random() * 35}%`;
     s.style.top = `${3 + Math.random() * 15}%`;
     fx.append(s);
     setTimeout(() => s.remove(), 1400);
@@ -151,9 +151,9 @@ export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLEleme
   // pétalas caindo da árvore
   every(520, () => {
     const p = h('i', { class: 'tx-petal' });
-    p.style.left = `${54 + Math.random() * 40}%`;
+    p.style.left = `${6 + Math.random() * 40}%`;
     p.style.top = `${Math.random() * 14}%`;
-    p.style.setProperty('--dx', `${-6 - Math.random() * 14}vw`);
+    p.style.setProperty('--dx', `${6 + Math.random() * 14}vw`);
     p.style.animationDuration = `${5 + Math.random() * 4}s`;
     fx.append(p);
     setTimeout(() => p.remove(), 9500);
@@ -161,7 +161,7 @@ export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLEleme
   // corações subindo do casal
   every(1600, () => {
     const c = h('i', { class: 'tx-heart' }, '♥');
-    c.style.left = `${66 + Math.random() * 6}%`;
+    c.style.left = `${28 + Math.random() * 6}%`;
     c.style.top = '42%';
     c.style.setProperty('--dx', `${(Math.random() - 0.5) * 6}vw`);
     fx.append(c);
@@ -170,7 +170,7 @@ export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLEleme
   // coraçõezinhos saindo do balão da gatinha
   every(2300, () => {
     const c = h('i', { class: 'tx-heart small' }, '♥');
-    c.style.left = '44%';
+    c.style.left = '56%';
     c.style.top = '68.5%';
     c.style.setProperty('--dx', `${(Math.random() - 0.5) * 3}vw`);
     fx.append(c);
@@ -181,8 +181,8 @@ export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLEleme
   root.classList.add('tx-intro');
   const flash = h('div', { class: 'tx-flash' });
   root.append(flash);
-  later(260, () => burst(fx, 21, 26, 40));
-  later(520, () => burst(fx, 70, 40, 26));
+  later(260, () => burst(fx, 76.5, 26, 40));
+  later(520, () => burst(fx, 30, 40, 26));
   later(900, () => root.classList.remove('tx-intro'));
   later(1500, () => flash.remove());
   // brilho em cascata nos botões
