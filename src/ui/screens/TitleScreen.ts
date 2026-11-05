@@ -23,6 +23,11 @@ export class TitleScreen {
     this.close();
     InputSystem.push('title');
     const latest = await SaveSystem.latest(ALL_SLOTS);
+    const full = textureURL('ui-title-full');
+    if (full) {
+      this.openFull(full, latest);
+      return;
+    }
     const logo = textureURL('ui-logo');
     const hearts = h('div', { class: 'title-hearts' }, ...Array.from({ length: 9 }, (_, i) => h('span', { class: i < 3 ? '' : 'off' }, '♥')));
     const list = h('div', { class: 'menu-list' });
@@ -57,6 +62,68 @@ export class TitleScreen {
     this.parent.append(this.el);
   }
 
+  private keyHandlers: [string, () => void][] = [];
+
+  /** Tela de título ilustrada: a arte já traz logo e botões; aqui só as áreas clicáveis. */
+  private openFull(art: string, latest: SaveData | null): void {
+    const choose = (fn: () => void) => () => {
+      AudioSystem.unlock();
+      AudioSystem.play('confirm');
+      fn();
+    };
+    // posições medidas na arte (1672x941), em %
+    const spots: { label: string; top: number; left: number; w: number; fn: (() => void) | null }[] = [
+      { label: 'Continuar', top: 46.8, left: 8.1, w: 25.4, fn: latest ? () => this.actions.load(latest) : null },
+      {
+        label: 'Novo jogo',
+        top: 56.9,
+        left: 8.4,
+        w: 24.5,
+        fn: () => {
+          if (latest && !confirm('Começar um novo jogo? Seu progresso salvo continua nos espaços de save.')) return;
+          this.actions.newGame();
+        },
+      },
+      { label: 'Carregar', top: 65.9, left: 8.4, w: 24.5, fn: () => void this.openLoad() },
+      { label: 'Opções', top: 75.5, left: 8.4, w: 24.5, fn: () => this.actions.openSettings() },
+    ];
+    const buttons = spots.map((s) =>
+      h('button', {
+        class: `tf-spot ${s.fn ? '' : 'off'}`,
+        'aria-label': s.label,
+        title: s.label,
+        style: `top:${s.top}%;left:${s.left}%;width:${s.w}%;height:8.4%`,
+        disabled: !s.fn,
+        onclick: s.fn ? choose(s.fn) : undefined,
+      }),
+    );
+    let sel = latest ? 0 : 1;
+    const render = () => buttons.forEach((b, i) => b.classList.toggle('sel', i === sel));
+    buttons.forEach((b, i) => b.addEventListener('mouseenter', () => { if (spots[i].fn) { sel = i; render(); } }));
+    const move = (d: number) => {
+      do sel = (sel + d + spots.length) % spots.length;
+      while (!spots[sel].fn);
+      AudioSystem.play('blip');
+      render();
+    };
+    this.keyHandlers = [
+      ['title:up', () => move(-1)],
+      ['title:down', () => move(1)],
+      ['title:interact', () => buttons[sel].click()],
+    ];
+    for (const [ev, fn] of this.keyHandlers) InputSystem.on(ev, fn);
+    render();
+    this.el = h(
+      'div',
+      { class: 'screen title-full' },
+      h('img', { class: 'tf-art', src: art, alt: GAME_TITLE }),
+      h('div', { class: 'tf-glow' }),
+      ...buttons,
+      h('div', { class: 'version' }, `v${VERSION}`),
+    );
+    this.parent.append(this.el);
+  }
+
   private async openLoad(): Promise<void> {
     const sums = await SaveSystem.summaries(ALL_SLOTS);
     const list = h('div', { class: 'slots', style: 'min-width:min(90%,520px)' });
@@ -84,6 +151,8 @@ export class TitleScreen {
   }
 
   close(): void {
+    for (const [ev, fn] of this.keyHandlers) InputSystem.off(ev, fn);
+    this.keyHandlers = [];
     if (!this.el) return;
     this.el.remove();
     this.el = null;
