@@ -53,6 +53,12 @@ export const ASSETS: AssetEntry[] = [
   char('NPC-003', 'vizinha', 'npcs/vizinha-walk.png', 136),
 
   char('NPC-004', 'atendente', 'npcs/atendente-walk.png', 136),
+  char('NPC-010', 'vof-weng', 'npcs/vof-weng-walk.png', 136),
+  char('NPC-011', 'vom-weng', 'npcs/vom-weng-walk.png', 136),
+  char('NPC-012', 'kelly', 'npcs/kelly-walk.png', 136),
+  { id: 'PORT-010', key: 'portrait-vof-weng', file: 'assets/portraits/vof-weng.png', kind: 'image' },
+  { id: 'PORT-011', key: 'portrait-vom-weng', file: 'assets/portraits/vom-weng.png', kind: 'image' },
+  { id: 'PORT-012', key: 'portrait-kelly', file: 'assets/portraits/kelly.png', kind: 'image' },
 
   // Minigame do hambúrguer (ingredientes recortados de objects/burger-ingredientes)
   ...['pao-baixo', 'carne', 'queijo', 'alface', 'tomate', 'cebola', 'bacon', 'picles', 'molho', 'pao-cima'].map(

@@ -545,6 +545,9 @@ export const aptoMap: MapDef = {
   ],
 
   npcs: [
+    // o Vô e a Vó voltam da China depois da briga boba
+    { id: 'vof-weng', sprite: 'vof-weng', tx: 5.2, ty: 16.0, facing: 'down', interact: 'vof', behavior: 'wander', wanderRadius: 2, wanderAxis: 'x', visibleIf: () => QuestSystem.isDone('dq-m4') },
+    { id: 'vom-weng', sprite: 'vom-weng', tx: 22.6, ty: 16.9, facing: 'left', interact: 'vom', behavior: 'wander', wanderRadius: 1.6, wanderAxis: 'x', visibleIf: () => QuestSystem.isDone('dq-m4') },
     {
       id: 'meli',
       sprite: 'meli',
@@ -567,6 +570,18 @@ export const aptoMap: MapDef = {
   ],
   scripts: {
     ...scripts,
+    async vof(ctx) {
+      const f = ['Come mais, menina! Tem bolinho na cozinha.', 'O Weng era um bebê gordinho, sabia? Tenho foto. Depois te mostro.', 'A Meli gosta mais de você do que de mim. Que traição.'];
+      const n = Number(ctx.flag('vof-n') ? 1 : 0) + (ctx.flag('vof-n2') ? 1 : 0);
+      ctx.setFlag(n === 0 ? 'vof-n' : 'vof-n2');
+      await ctx.say('vof-weng', f[Math.min(n, 2)]);
+    },
+    async vom(ctx) {
+      const f = ['Na China tava frio. Aqui tá esse calor de Caxias... já sinto saudade do frio.', 'Joga Bate-Gato com o Weng? Ele perde pra mim também.', 'Cuida bem do meu neto, hein.'];
+      const n = Number(ctx.flag('vom-n') ? 1 : 0) + (ctx.flag('vom-n2') ? 1 : 0);
+      ctx.setFlag(n === 0 ? 'vom-n' : 'vom-n2');
+      await ctx.say('vom-weng', f[Math.min(n, 2)]);
+    },
     async weng(ctx) {
       if (QuestSystem.isActive('dq-m4')) {
         await ctx.say('bella', 'Posso entrar?');
@@ -580,9 +595,14 @@ export const aptoMap: MapDef = {
         ctx.follow('weng', true);
         await ctx.memory('mem-dq-08');
         // o aniversário dela
-        await ctx.narrate('Algumas semanas depois. O aniversário da Bella estava chegando...');
+        await ctx.narrate('Algumas semanas depois. O Vô e a Vó voltaram da China. E o aniversário da Bella estava chegando...');
         ctx.startQuest('dq-m5');
+        ctx.refresh();
         await ctx.fadeIn(500);
+        await ctx.say('vof-weng', 'Bella! Finalmente te conheci pessoalmente! Vem cá, deixa eu te olhar. Tá magrinha, vou fazer um bolinho.');
+        await ctx.say('vom-weng', 'Seja bem-vinda. O Weng não para de falar de você.');
+        await ctx.emote('bella', 'heart');
+        await ctx.say('bella', 'Ai, que fofos! Eu é que tô feliz de conhecer vocês.');
         await ctx.say('weng', '(Hotel no alto do morro, restaurante chique, Quitandinha, piquenique... já tá tudo reservado. Agora é só contar.)');
         ctx.toast('Fale com o Weng');
         return;

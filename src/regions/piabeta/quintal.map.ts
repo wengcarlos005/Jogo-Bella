@@ -150,6 +150,19 @@ const scripts: Record<string, Script> = {
   async arvore(ctx) {
     await ctx.say('bella', 'O pé de abacate. Quando dá, dá pra vizinhança inteira.');
   },
+  async kelly(ctx) {
+    if (!ctx.flag('kelly-1')) {
+      ctx.setFlag('kelly-1');
+      await ctx.say('kelly', 'Então você que é o famoso Weng? A Bella não para de falar de você.');
+      await ctx.say('bella', 'KELLY!');
+      await ctx.say('kelly', 'Que foi? É verdade! Prazer, eu sou a Kelly, prima dela.');
+      await ctx.say('weng', 'Prazer! ...Ela fala de mim, é?');
+      await ctx.say('kelly', 'O tempo todo. Mas não conta que eu contei.');
+      return;
+    }
+    await ctx.say('kelly', 'Guarda um pedaço de picanha pra mim, hein!');
+  },
+
   async mae(ctx) {
     await ctx.say('mae-bella', 'Come mais, Weng! Tá magrinho.');
   },
@@ -206,6 +219,7 @@ export const quintalMap: MapDef = {
   ],
 
   npcs: [
+    { id: 'kelly', sprite: 'kelly', tx: 26.0, ty: 13.4, facing: 'left', interact: 'kelly', behavior: 'wander', wanderRadius: 1.8, wanderAxis: 'both' },
     { id: 'pai-bella', sprite: 'pai-bella', tx: 7.4, ty: 11.6, facing: 'up', interact: 'pai' },
     { id: 'mae-bella', sprite: 'mae-bella', tx: 18.4, ty: 14.6, facing: 'left', interact: 'mae', behavior: 'wander', wanderRadius: 2.4, wanderAxis: 'both' },
   ],
