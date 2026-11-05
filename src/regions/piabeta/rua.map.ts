@@ -197,6 +197,27 @@ const scripts: Record<string, Script> = {
     await ctx.teleport('piabeta-rota66-fora', 'from-uber');
   },
 
+  async tiaJaque(ctx) {
+    if (ctx.flag('weng-segue')) {
+      await ctx.say('tia-jaque', 'Olha só quem tá de namoradinho! Prazer, eu sou a tia Jaque. Moro aqui no condomínio.');
+      await ctx.say('weng', 'Prazer, tia Jaque!');
+      await ctx.say('tia-jaque', 'Tia já! Gostei dele, Bella. Cuida bem dela, hein?');
+      return;
+    }
+    await ctx.say('tia-jaque', 'Bella! Toda arrumada assim, vai aonde? ...Vai encontrar alguém, né? Eu sei, eu sei. Sua mãe me contou.');
+    await ctx.say('bella', 'Tia! A minha mãe conta tudo pra todo mundo!');
+  },
+
+  async kelly(ctx) {
+    if (ctx.flag('weng-segue')) {
+      await ctx.say('kelly', 'Então você é o famoso Weng? Prazer, Kelly, prima dela.');
+      await ctx.say('kelly', 'A Bella trocou de roupa umas cinco vezes por sua causa. Mas não conta que eu contei.');
+      await ctx.say('bella', 'KELLY!');
+      return;
+    }
+    await ctx.say('kelly', 'Ihh, a Bella tá nervosa! Respira, prima. Ele vai amar você.');
+  },
+
   async vizinha(ctx) {
     if (ctx.objectiveDone('pia-s1', 'entregar')) {
       await ctx.say('vizinha', 'Minhas florzinhas estão lindas no vaso! Obrigada, meu bem.');
@@ -362,6 +383,8 @@ export const ruaMap: MapDef = {
       interact: 'weng',
       visibleIf: () => GameState.is('weng-segue') || esperandoNaEsquina(),
     },
+    { id: 'tia-jaque', sprite: 'tia-jaque', tx: 3.4, ty: 8.4, facing: 'right', interact: 'tiaJaque', behavior: 'wander', wanderRadius: 1.4, wanderAxis: 'x' },
+    { id: 'kelly', sprite: 'kelly', tx: 16.2, ty: 15.0, facing: 'down', interact: 'kelly', behavior: 'wander', wanderRadius: 1.2, wanderAxis: 'x' },
     { id: 'vizinha', sprite: 'vizinha', tx: 14.7, ty: 7.8, facing: 'down', interact: 'vizinha', behavior: 'wander', wanderRadius: 3, wanderAxis: 'x' },
   ],
   spawns: {

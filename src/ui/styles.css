@@ -1925,3 +1925,4 @@ html.hud-kit #rightbar .sb-btn.sb-kit .sb-label { color: #ffe9b0; text-shadow: 0
 /* barra de itens */
 html.hud-kit #hotbar .sb-bag { background: var(--hud-hotbar) center / 100% 100% no-repeat !important; border: none !important; box-shadow: none !important; padding: 1.1% 2.2% !important; }
 html.hud-kit .tb-quest { max-width: 48vw !important; padding: 8px 52px !important; white-space: nowrap; text-overflow: ellipsis; overflow: hidden !important; }
+.ub-ob.sprite.veic { aspect-ratio: auto; height: calc(var(--u) * 34); background-position: center bottom; transform: translate(-50%, -88%); }

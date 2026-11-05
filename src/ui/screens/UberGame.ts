@@ -14,7 +14,8 @@ export interface UberResult {
   seconds: number;
 }
 
-type Kind = 'cone' | 'poca' | 'buraco' | 'carro' | 'caixa' | 'barreira';
+type Kind = 'cone' | 'poca' | 'buraco' | 'carro' | 'caixa' | 'barreira' | 'veiculo';
+const VEIC: [string, number][] = [['moto', 42], ['onibus', 90], ['gas', 71], ['fusca', 58], ['pipoca', 50], ['bike', 33]];
 interface Obstacle {
   el: HTMLElement;
   lane: number;
@@ -109,7 +110,7 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
     place();
 
     const spawn = () => {
-      const kinds: Kind[] = ['cone', 'poca', 'buraco', 'carro', 'carro', 'carro', 'poca', 'caixa', 'barreira'];
+      const kinds: Kind[] = ['cone', 'poca', 'buraco', 'carro', 'carro', 'veiculo', 'veiculo', 'veiculo', 'poca', 'caixa', 'barreira'];
       const kind = kinds[Math.floor(Math.random() * kinds.length)];
       const free = [0, 1, 2].filter((l) => !obstacles.some((o) => o.lane === l && o.x > 74));
       // nunca fecha as 3 faixas ao mesmo tempo
@@ -117,7 +118,12 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
       if (!free.length || busy.length >= 2) return;
       const l = free[Math.floor(Math.random() * free.length)];
       const el = h('div', { class: `ub-ob ${kind === 'carro' ? 'carro2' : 'sprite'}` });
-      if (kind === 'carro') {
+      if (kind === 'veiculo') {
+        const [vn, vw] = VEIC[Math.floor(Math.random() * VEIC.length)];
+        el.className = 'ub-ob sprite veic';
+        el.style.backgroundImage = `url("${asset(`uber-v-${vn}.png`)}")`;
+        el.style.width = `calc(var(--u) * ${vw})`;
+      } else if (kind === 'carro') {
         el.style.backgroundImage = `url("${traffic}")`;
         el.style.backgroundPositionX = `${(Math.floor(Math.random() * 7) / 6) * 100}%`;
       } else {
@@ -144,7 +150,7 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
       road.style.backgroundPositionX = `${-roadX}px`;
       const v = (46 + progress * 30) * speedMul; // % por segundo
       for (const o of obstacles) {
-        o.x -= v * dt * (o.kind === 'carro' ? 0.7 : 1);
+        o.x -= v * dt * (o.kind === 'carro' || o.kind === 'veiculo' ? 0.7 : 1);
         o.el.style.left = `${o.x}%`;
         if (!o.hit && o.lane === lane && o.x < 24 && o.x > 6) {
           o.hit = true;

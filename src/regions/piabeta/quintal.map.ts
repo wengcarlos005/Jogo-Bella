@@ -150,17 +150,16 @@ const scripts: Record<string, Script> = {
   async arvore(ctx) {
     await ctx.say('bella', 'O pé de abacate. Quando dá, dá pra vizinhança inteira.');
   },
-  async kelly(ctx) {
-    if (!ctx.flag('kelly-1')) {
-      ctx.setFlag('kelly-1');
-      await ctx.say('kelly', 'Então você que é o famoso Weng? A Bella não para de falar de você.');
-      await ctx.say('bella', 'KELLY!');
-      await ctx.say('kelly', 'Que foi? É verdade! Prazer, eu sou a Kelly, prima dela.');
-      await ctx.say('weng', 'Prazer! ...Ela fala de mim, é?');
-      await ctx.say('kelly', 'O tempo todo. Mas não conta que eu contei.');
+  async avoBella(ctx) {
+    if (!ctx.flag('avo-bella-1')) {
+      ctx.setFlag('avo-bella-1');
+      await ctx.say('avo-bella', 'Então esse é o rapaz! Desci lá de cima só pra te conhecer, viu?');
+      await ctx.say('weng', 'Muito prazer, senhora! A Bella fala muito da senhora.');
+      await ctx.say('avo-bella', 'Senhora não, meu filho. Pode me chamar de vó. Agora come, que você tá magrinho.');
+      await ctx.emote('bella', 'heart');
       return;
     }
-    await ctx.say('kelly', 'Guarda um pedaço de picanha pra mim, hein!');
+    await ctx.say('avo-bella', 'Pega mais farofa, querido. A farofa fui eu que fiz.');
   },
 
   async mae(ctx) {
@@ -219,7 +218,7 @@ export const quintalMap: MapDef = {
   ],
 
   npcs: [
-    { id: 'kelly', sprite: 'kelly', tx: 26.0, ty: 13.4, facing: 'left', interact: 'kelly', behavior: 'wander', wanderRadius: 1.8, wanderAxis: 'both' },
+    { id: 'avo-bella', sprite: 'avo-bella', tx: 24.5, ty: 13.6, facing: 'left', interact: 'avoBella', behavior: 'wander', wanderRadius: 1.6, wanderAxis: 'both' },
     { id: 'pai-bella', sprite: 'pai-bella', tx: 7.4, ty: 11.6, facing: 'up', interact: 'pai' },
     { id: 'mae-bella', sprite: 'mae-bella', tx: 18.4, ty: 14.6, facing: 'left', interact: 'mae', behavior: 'wander', wanderRadius: 2.4, wanderAxis: 'both' },
   ],

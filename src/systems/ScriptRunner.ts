@@ -292,7 +292,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         weng!.behavior = 'scripted';
         weng!.setVisible(false);
         // mesma largura do banco pintado no cenário (senão aparecem "dois bancos")
-        const BENCH_W: Record<string, number> = { 'bench-pq-ang-r': 114, 'bench-pq-front-lamp': 113, 'bench-pq-ang-l': 108, 'bench-pq-front-bin': 125, 'bench-rua': 111, 'bench-rua-bin': 124 };
+        const BENCH_W: Record<string, number> = { 'bench-pq-ang-r': 150, 'bench-pq-front-lamp': 166, 'bench-pq-ang-l': 139, 'bench-pq-front-bin': 185, 'bench-rua': 166, 'bench-rua-bin': 185 };
         const sc = couple.w && BENCH_W[couple.key] ? couple.w / 3 / BENCH_W[couple.key] : 1 / RENDER_SCALE;
         pair = scene.add.sprite(couple.x / 3, couple.y / 3, couple.key, 0).setOrigin(0.5, 1).setScale(sc);
         pair.setDepth(couple.y / 3 + 60);
@@ -302,11 +302,16 @@ export function createScriptContext(scene: GameScene): ScriptContext {
           loop: true,
           callback: () => {
             tick++;
-            if (tick % 22 === 0) pair!.setFrame(3);
-            else if (tick % 22 === 3) pair!.setFrame(0);
-            else if (tick % 7 === 0) {
+            // quadros: 0 normal, 1 piscadinha, 2 rindo, 3 ela encosta a cabeça nele
+            const f = String(pair!.frame.name);
+            if (tick % 18 === 0) pair!.setFrame(3);
+            else if (f === '3' && tick % 18 === 6) pair!.setFrame(0);
+            else if (f === '0' && tick % 11 === 0) {
+              pair!.setFrame(2);
+              scene.time.delayedCall(900, () => pair?.active && String(pair.frame.name) === '2' && pair.setFrame(0));
+            } else if (f === '0' && tick % 7 === 0) {
               pair!.setFrame(1);
-              scene.time.delayedCall(170, () => pair?.active && String(pair.frame.name) === '1' && pair.setFrame(0));
+              scene.time.delayedCall(260, () => pair?.active && String(pair.frame.name) === '1' && pair.setFrame(0));
             }
           },
         });
