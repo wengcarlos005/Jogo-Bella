@@ -74,8 +74,8 @@ export function playBurgerGame(parent: HTMLElement, opts: BurgerOptions): Promis
         { class: 'bg-main' },
         h(
           'div',
-          { class: 'bg-stage', style: diner ? `--diner:url(${diner})` : '' },
-          h('div', { class: 'bg-diner' }),
+          { class: 'bg-stage' },
+          h('div', { class: 'bg-diner', style: diner ? `background-image:url("${diner}")` : '' }),
           h('div', { class: 'bg-counter' }),
           h('div', { class: 'bg-neon' }, 'ROTA 66'),
           h('div', { class: 'bg-lamp' }),

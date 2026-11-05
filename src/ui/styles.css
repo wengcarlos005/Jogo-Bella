@@ -1624,7 +1624,7 @@ html.title-mode .screen.title-full .version { right: calc(50% - 50vw + 12px); bo
 /* Hambúrguer: o balcão de verdade da Rota 66 ao fundo, bancada de inox e prato com sombra */
 .bg-stage { background: #3a1416; }
 .bg-diner {
-  position: absolute; inset: 0; background-image: var(--diner); background-repeat: no-repeat;
+  position: absolute; inset: 0; background-repeat: no-repeat;
   background-size: 240% auto; background-position: 52% 14%; image-rendering: pixelated;
   filter: blur(1.2px) brightness(0.78) saturate(1.1);
 }
