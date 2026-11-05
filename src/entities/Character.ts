@@ -122,6 +122,12 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
       // pose sentada de verdade: pés no chão, um pouco abaixo do assento
       this.standKey = this.charKey;
       this.setTexture(sitKey, 0);
+      // A pose sentada do Weng é mais estreita/baixa que a da Bella (cabelo volumoso):
+      // aumenta um pouco para ele não parecer uma criança ao lado dela.
+      if (who === 'weng') {
+        this.sitScale = this.scaleX;
+        this.setScale(this.scaleX * 1.14);
+      }
       this.setPosition(x, seatY + 7);
       this.blinkTimer = this.scene.time.addEvent({
         delay: 2600,
@@ -144,6 +150,7 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
   }
 
   private standKey: string | null = null;
+  private sitScale: number | null = null;
   private blinkTimer: Phaser.Time.TimerEvent | null = null;
 
   standUp(): void {
@@ -154,6 +161,10 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     if (this.standKey) {
       this.setTexture(this.standKey, 0);
       this.standKey = null;
+      if (this.sitScale !== null) {
+        this.setScale(this.sitScale);
+        this.sitScale = null;
+      }
       this.face(this.facing);
     }
     this.setCrop();

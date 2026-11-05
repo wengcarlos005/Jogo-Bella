@@ -337,7 +337,7 @@ export class GameScene extends Phaser.Scene {
     if (!rw) return;
     for (const r of rw.rects) {
       const rect = tileRect(r);
-      const glass = this.add.rectangle(rect.x, rect.y, rect.width, rect.height, 0x5a6a86, 0.72).setOrigin(0).setDepth(-7);
+      const glass = this.add.rectangle(rect.x, rect.y, rect.width, rect.height, 0x5a6a86, rw.glass === false ? 0 : 0.72).setOrigin(0).setDepth(-7);
       const shape = this.make.graphics({}, false).fillRect(rect.x, rect.y, rect.width, rect.height);
       const drops = this.add.particles(0, 0, 'fx-rain', {
         x: { min: rect.x, max: rect.right },

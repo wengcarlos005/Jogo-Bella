@@ -134,7 +134,7 @@ export interface MapDef {
     when?: () => boolean;
   };
   /** Janelas (vidros) onde aparece chuva lá fora enquanto `when()` for verdadeiro. */
-  rainWindows?: { rects: TileRect[]; when: () => boolean };
+  rainWindows?: { rects: TileRect[]; when: () => boolean; /** false: a arte já tem o vidro chuvoso, só cai a chuva. */ glass?: boolean };
   /** Partículas de ambiente: poeira de luz, vaga-lumes, pétalas. */
   ambient?: 'dust' | 'fireflies' | 'petals';
   /** Se verdadeiro, Bella e Weng começam invisíveis (ex.: ainda dentro do carro). */

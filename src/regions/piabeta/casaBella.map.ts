@@ -36,6 +36,16 @@ export const casaBellaMap: MapDef = {
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => ROW),
 
+  // Gotas caindo nos vidros das janelas do quarto e da cozinha (a arte já é chuvosa).
+  rainWindows: {
+    glass: false,
+    when: () => true,
+    rects: [
+      R(310, 74, 372, 96), R(382, 74, 444, 96), R(310, 103, 372, 143), R(382, 103, 444, 143), // quarto
+      R(1206, 74, 1270, 96), R(1281, 74, 1344, 96), R(1206, 103, 1270, 138), R(1281, 103, 1344, 138), // cozinha
+    ],
+  },
+
   blocks: [
     // Paredes externas
     R(0, 0, 40, 1024), // esquerda

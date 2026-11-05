@@ -274,8 +274,10 @@ export const ruaMap: MapDef = {
     R(483, 688, 627, 776),
     R(990, 688, 1137, 776),
     R(927, 697, 973, 765),
-    R(170, 560, 450, 892), // árvore esquerda (copa sólida)
-    R(1185, 570, 1495, 892), // árvore direita
+    R(170, 560, 450, 770), // árvore esquerda (copa sólida)
+    R(262, 770, 330, 885), // tronco esquerdo
+    R(1185, 570, 1495, 770), // árvore direita (copa)
+    R(1315, 770, 1372, 885), // tronco direito
     // canteiros
     ...FLOWER_BEDS,
   ],
