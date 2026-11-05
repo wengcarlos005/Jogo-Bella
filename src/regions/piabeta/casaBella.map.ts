@@ -76,11 +76,7 @@ export const casaBellaMap: MapDef = {
     { key: 'prop-umbrella-stand-empty', tx: 13.2, ty: 18.1, scale: 0.24, block: false, visibleIf: () => objDone('guarda-chuva') },
   ],
 
-  // Lá fora está chovendo (do começo do encontro até o Uber)
-  rainWindows: {
-    rects: [R(305, 68, 452, 132), R(1198, 66, 1352, 136), R(368, 914, 508, 968), R(1025, 914, 1166, 968)],
-    when: () => QuestSystem.isActive('pia-m1'),
-  },
+  // (a chuva nas janelas já está desenhada no cenário)
 
   // Profundidade: TV e planta da sala na frente de quem passa atrás
   overlays: [

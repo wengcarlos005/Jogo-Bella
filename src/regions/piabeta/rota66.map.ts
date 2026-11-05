@@ -92,7 +92,7 @@ const scripts: Record<string, Script> = {
     await ctx.fadeIn(500);
     // arte dedicada da mesa (cinematics/rota66-mesa.png), se existir
     const mesaArt = ctx.hasArt('cena-rota66-mesa');
-    if (mesaArt) await ctx.backdrop('cena-rota66-mesa', true);
+    if (mesaArt) await ctx.backdrop('cena-rota66-mesa');
     await ctx.narrate('Os lanches chegam. O cheiro é incrível. O nervosismo também.');
     await ctx.say('weng', 'E aí? Aprovado?');
     const c1 = await ctx.choose('bella', '(Primeira mordida...)', ['"Melhor hambúrguer da minha vida."', '"Hmm... preciso de mais uma mordida pra decidir."', 'Fazer um joinha de boca cheia']);
@@ -104,7 +104,7 @@ const scripts: Record<string, Script> = {
     }
     // Presente da Bella: Vale Beijo, Vale Abraço e chocolates
     await ctx.say('bella', 'Ah! Eu também trouxe uma coisa pra você. Fecha os olhos.');
-    await ctx.backdrop('memory-pia-02', true);
+    await ctx.backdrop('memory-pia-02');
     void mesaArt;
     await ctx.emote('weng', 'question');
     ctx.take('vale-beijo');
