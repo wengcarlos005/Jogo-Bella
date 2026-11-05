@@ -14,7 +14,7 @@ export interface UberResult {
   seconds: number;
 }
 
-type Kind = 'cone' | 'poca' | 'buraco' | 'carro';
+type Kind = 'cone' | 'poca' | 'buraco' | 'carro' | 'caixa' | 'barreira';
 interface Obstacle {
   el: HTMLElement;
   lane: number;
@@ -43,7 +43,11 @@ const CALM_LINES = [
 export function playUberGame(parent: HTMLElement, opts: { title?: string; destino?: string } = {}): Promise<UberResult> {
   return new Promise((resolve) => {
     const car = textureURL('uber-car');
-    const city = textureURL('map-piabeta-fragoso-bg') ?? textureURL('map-piabeta-rua-bg');
+    const asset = (f: string) => new URL(`assets/minigames/${f}`, document.baseURI).href;
+    const roadImg = asset('uber-road.png');
+    const traffic = asset('uber-traffic.png');
+    // centro de cada faixa (% da altura da pista desenhada: 3 faixas de asfalto)
+    const LANE_Y = [45.4, 63.0, 80.9];
     let lane = 1;
     let progress = 0; // 0..1
     let speedMul = 1;
@@ -52,15 +56,16 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
     let last = 0;
     let started = 0;
     let spawnIn = 900;
+    let roadX = 0;
     let lineIn = 3500;
     let running = false;
     let done = false;
     let raf = 0;
     const obstacles: Obstacle[] = [];
 
-    const road = h('div', { class: 'ub-road' }, h('div', { class: 'ub-lines' }));
+    const road = h('div', { class: 'ub-road2', style: `background-image:url("${roadImg}")` });
     const player = h('div', { class: 'ub-car', style: car ? `background-image:url("${car}")` : '' });
-    const track = h('div', { class: 'ub-track' }, road, player);
+    const track = h('div', { class: 'ub-track2' }, road, player, h('div', { class: 'ub-night' }));
     const bar = h('div', { class: 'ub-fill' });
     const pin = h('div', { class: 'ub-pin' }, '🍔');
     const hitsEl = h('div', { class: 'ub-hits' }, 'Batidas: 0');
@@ -76,8 +81,6 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
       h(
         'div',
         { class: 'ub-stage' },
-        h('div', { class: 'ub-sky' }),
-        city ? h('div', { class: 'ub-city', style: `background-image:url("${city}")` }) : null,
         h('div', { class: 'ub-rain' }),
         track,
         h('div', { class: 'ub-ctrl' }, up, down),
@@ -92,7 +95,7 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
     InputSystem.releaseAll();
 
     const place = () => {
-      player.style.top = `${(lane + 0.5) * (100 / LANES)}%`;
+      player.style.top = `${LANE_Y[lane]}%`;
     };
     const move = (d: number) => {
       if (!running) return;
@@ -106,19 +109,24 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
     place();
 
     const spawn = () => {
-      const kinds: Kind[] = ['cone', 'poca', 'buraco', 'carro', 'carro', 'poca'];
+      const kinds: Kind[] = ['cone', 'poca', 'buraco', 'carro', 'carro', 'carro', 'poca', 'caixa', 'barreira'];
       const kind = kinds[Math.floor(Math.random() * kinds.length)];
-      const free = [0, 1, 2].filter((l) => !obstacles.some((o) => o.lane === l && o.x > 78));
-      if (!free.length) return;
+      const free = [0, 1, 2].filter((l) => !obstacles.some((o) => o.lane === l && o.x > 74));
+      // nunca fecha as 3 faixas ao mesmo tempo
+      const busy = [0, 1, 2].filter((l) => obstacles.some((o) => o.lane === l && o.x > 60 && o.x < 112));
+      if (!free.length || busy.length >= 2) return;
       const l = free[Math.floor(Math.random() * free.length)];
-      const el = h('div', { class: `ub-ob ${kind}` });
-      if (kind === 'carro' && car) {
-        el.style.backgroundImage = `url("${car}")`;
-        el.style.filter = `hue-rotate(${Math.floor(Math.random() * 360)}deg) saturate(2.2) brightness(0.9)`;
+      const el = h('div', { class: `ub-ob ${kind === 'carro' ? 'carro2' : 'sprite'}` });
+      if (kind === 'carro') {
+        el.style.backgroundImage = `url("${traffic}")`;
+        el.style.backgroundPositionX = `${(Math.floor(Math.random() * 7) / 6) * 100}%`;
+      } else {
+        el.style.backgroundImage = `url("${asset(`uber-${kind}.png`)}")`;
+        el.classList.add(kind);
       }
-      el.style.top = `${(l + 0.5) * (100 / LANES)}%`;
+      el.style.top = `${LANE_Y[l]}%`;
       track.append(el);
-      obstacles.push({ el, lane: l, x: 108, kind, hit: false });
+      obstacles.push({ el, lane: l, x: 110, kind, hit: false });
     };
 
     const tick = (t: number) => {
@@ -128,11 +136,12 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
       last = t;
       const slowed = t < slowUntil;
       speedMul += ((slowed ? 0.35 : 1) - speedMul) * 0.08;
-      // ~24 s sem batidas
-      progress = Math.min(1, progress + (dt / 24) * speedMul);
+      // ~36 s sem batidas
+      progress = Math.min(1, progress + (dt / 36) * speedMul);
       bar.style.width = `${progress * 100}%`;
       pin.style.left = `${progress * 100}%`;
-      road.style.setProperty('--off', `${(t / 6) * speedMul}px`);
+      roadX += dt * (220 + progress * 120) * speedMul;
+      road.style.backgroundPositionX = `${-roadX}px`;
       const v = (46 + progress * 30) * speedMul; // % por segundo
       for (const o of obstacles) {
         o.x -= v * dt * (o.kind === 'carro' ? 0.7 : 1);

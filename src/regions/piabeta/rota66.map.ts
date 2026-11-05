@@ -232,8 +232,13 @@ export const rota66Map: MapDef = {
     R(905, 880, 995, 975),
   ],
 
+  steam: [{ x: 880, y: 208 }, { x: 918, y: 206 }, { x: 958, y: 208 }, { x: 1012, y: 200 }],
+  rainWindows: { glass: false, when: () => true, rects: [R(0, 300, 50, 930)] },
+
   // Profundidade: cabines, plantas e mesas na frente de quem passa atrás delas
   overlays: [
+    // porta de vidro: na frente de quem encosta nela por dentro
+    { x0: 640, y0: 872, x1: 895, y1: 1000, base: 1000 },
     // Cabines recortadas peça por peça (assento esq., encosto do meio, assento dir.),
     // começando no topo de cada peça: o chão em volta nunca fica na frente de ninguém.
     { x0: 434, y0: 465, x1: 482, y1: 668, base: 665, cut: 'booth', slice: true }, // cabine do meio (esq.)
@@ -267,7 +272,7 @@ export const rota66Map: MapDef = {
     { rect: R(150, 60, 330, 330), interact: 'quadro', label: 'Neon' },
   ],
 
-  npcs: [{ id: 'atendente', sprite: 'atendente', tx: 15.3, ty: 9.0, facing: 'down', interact: 'atendente' }],
+  npcs: [{ id: 'atendente', sprite: 'atendente', tx: 16.2, ty: 10.9, facing: 'down', interact: 'atendente' }],
   spawns: {
     'from-fora': { tx: 15.5, ty: 17.0, facing: 'up' },
   },

@@ -94,7 +94,9 @@ export const rota66ForaMap: MapDef = {
     darkness: 0.28,
     lights: [
       { x: 105, y: 508, r: 240 },
-      { x: 640, y: 230, r: 300, color: 0xff6f9a },
+      { x: 640, y: 230, r: 300, color: 0xff6f9a, neon: true },
+      { x: 840, y: 250, r: 170, color: 0x6f8cff, neon: true },
+      { x: 430, y: 200, r: 150, color: 0xffc04a, neon: true },
       { x: 560, y: 450, r: 220 },
       { x: 920, y: 450, r: 220 },
     ],

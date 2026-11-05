@@ -110,6 +110,7 @@ export class GameScene extends Phaser.Scene {
     this.setupCamera();
     this.weather = new WeatherSystem(this);
     this.addAmbient(def.ambient ?? (def.indoor ? 'dust' : undefined));
+    this.addSteam();
     this.addRainWindows();
     this.addLighting();
 
@@ -234,7 +235,7 @@ export class GameScene extends Phaser.Scene {
       if (def.id !== 'weng') {
         const body = npc.body as Phaser.Physics.Arcade.Body;
         const sc = npc.scaleX;
-        const bw = def.pose ? 14 : 24;
+        const bw = def.pose ? 14 : 18;
         body.setSize(bw / sc, 9 / sc);
         body.setOffset((npc.frame.width - bw / sc) / 2, npc.frame.height - 10 / sc);
         body.setImmovable(true);
@@ -354,7 +355,22 @@ export class GameScene extends Phaser.Scene {
         .setAlpha(0.5)
         .setBlendMode(Phaser.BlendModes.ADD)
         .setDepth(199_501);
-      if (l.flicker !== false) {
+      if (l.neon) {
+        core.setVisible(false);
+        glow.setAlpha(0.55);
+        this.tweens.add({ targets: glow, alpha: { from: 0.3, to: 0.7 }, duration: Phaser.Math.Between(1300, 1900), yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+        // falhinha de neon de vez em quando
+        this.time.addEvent({
+          delay: Phaser.Math.Between(2600, 5200),
+          loop: true,
+          callback: () => {
+            glow.setAlpha(0.08);
+            this.time.delayedCall(70, () => glow.setAlpha(0.6));
+            this.time.delayedCall(140, () => glow.setAlpha(0.1));
+            this.time.delayedCall(210, () => glow.setAlpha(0.6));
+          },
+        });
+      } else if (l.flicker !== false) {
         this.tweens.add({ targets: glow, alpha: { from: 0.34, to: 0.46 }, duration: Phaser.Math.Between(900, 1600), yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
       }
       this.lightObjs.push(glow, core);
@@ -399,6 +415,30 @@ export class GameScene extends Phaser.Scene {
     const on = this.def.rainWindows?.when() ?? false;
     AudioSystem.setMuffledRain(on);
     for (const o of this.rainWindowObjs) (o as unknown as Phaser.GameObjects.Components.Visible).setVisible(on);
+  }
+
+  private addSteam(): void {
+    const pts = this.def.steam;
+    if (!pts?.length) return;
+    if (!this.textures.exists('fx-puff')) {
+      const g = this.make.graphics({}, false);
+      g.fillStyle(0xffffff, 0.5).fillCircle(6, 6, 6).fillStyle(0xffffff, 0.8).fillCircle(5, 5, 3.5);
+      g.generateTexture('fx-puff', 12, 12);
+      g.destroy();
+    }
+    for (const p of pts) {
+      this.add
+        .particles(p.x / 3, p.y / 3, 'fx-puff', {
+          x: { min: -3, max: 3 },
+          speedY: { min: -14, max: -8 },
+          speedX: { min: -3, max: 3 },
+          lifespan: { min: 1400, max: 2200 },
+          frequency: 260,
+          scale: { start: 0.25, end: 0.9 },
+          alpha: { start: 0.55, end: 0 },
+        })
+        .setDepth(p.y / 3 - 1);
+    }
   }
 
   private addAmbient(kind?: 'dust' | 'fireflies' | 'petals'): void {

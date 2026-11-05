@@ -139,11 +139,13 @@ export interface MapDef {
   lighting?: {
     darkness: number;
     color?: number;
-    lights: { x: number; y: number; r: number; color?: number; flicker?: boolean }[];
+    lights: { x: number; y: number; r: number; color?: number; flicker?: boolean; /** letreiro de neon: pulsa forte e falha de vez em quando */ neon?: boolean }[];
     when?: () => boolean;
   };
   /** Janelas (vidros) onde aparece chuva lá fora enquanto `when()` for verdadeiro. */
   rainWindows?: { rects: TileRect[]; when: () => boolean; /** false: a arte já tem o vidro chuvoso, só cai a chuva. */ glass?: boolean };
+  /** Vapor subindo (chapas, panelas, xícaras): pontos em px do cenário ORIGINAL. */
+  steam?: { x: number; y: number }[];
   /** Partículas de ambiente: poeira de luz, vaga-lumes, pétalas. */
   ambient?: 'dust' | 'fireflies' | 'petals';
   /** Se verdadeiro, Bella e Weng começam invisíveis (ex.: ainda dentro do carro). */

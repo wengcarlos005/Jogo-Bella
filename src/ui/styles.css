@@ -1725,3 +1725,17 @@ html.title-mode #game canvas { opacity: 0; }
 .ub-hits { font-weight: 800; color: var(--red); white-space: nowrap; }
 .ub-msg { text-align: center; font-weight: 800; min-height: 1.4em; font-size: clamp(11px, calc(var(--u) * 6), 18px); }
 .ub-time { font-weight: 800; color: var(--ink-soft); }
+
+/* corrida de Uber: rua de verdade, carros e obstáculos com contorno */
+.ub-stage { height: calc(var(--u) * 150); background: #1b1d33; }
+.ub-track2 { position: absolute; inset: 0; overflow: hidden; }
+.ub-road2 { position: absolute; inset: 0; background-repeat: repeat-x; background-size: auto 100%; image-rendering: pixelated; }
+.ub-night { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(rgba(16, 20, 60, 0.42), rgba(16, 20, 60, 0.32)); mix-blend-mode: multiply; }
+.ub-track2 .ub-car { width: calc(var(--u) * 64); transform: translate(-50%, -78%); z-index: 3; }
+.ub-ob.carro2 { position: absolute; width: calc(var(--u) * 64); aspect-ratio: 192 / 128; transform: translate(-50%, -78%); background-size: 700% 100%; image-rendering: pixelated; z-index: 2; }
+.ub-ob.sprite { position: absolute; background-size: contain; background-repeat: no-repeat; background-position: center bottom; image-rendering: pixelated; transform: translate(-50%, -85%); z-index: 2; }
+.ub-ob.sprite.cone { width: calc(var(--u) * 13); aspect-ratio: 20 / 22; }
+.ub-ob.sprite.poca { width: calc(var(--u) * 26); aspect-ratio: 32 / 16; transform: translate(-50%, -55%); }
+.ub-ob.sprite.buraco { width: calc(var(--u) * 21); aspect-ratio: 26 / 17; transform: translate(-50%, -55%); }
+.ub-ob.sprite.caixa { width: calc(var(--u) * 17); aspect-ratio: 26 / 19; }
+.ub-ob.sprite.barreira { width: calc(var(--u) * 24); aspect-ratio: 32 / 18; }
