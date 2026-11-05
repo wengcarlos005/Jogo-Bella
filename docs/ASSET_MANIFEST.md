@@ -121,8 +121,23 @@ Só a roupa casual da Bella tem os óculos rosados.
 | UI-010..015 | `ui/icon-*.png` | Ícones do HUD (álbum, mochila, mapa, opções, salvar, lua) | **integrado** |
 | CHAR-030 | `characters/*-actions.png` | Sentar / acenar (Bella e Weng) | pendente |
 
-### LOTE 3 — Duque de Caxias (Fase 4)
-Cenários: bairro/praça (960×640), casa do casal (interior 320×240), mercado (320×240), estação (480×270). Móveis de decoração (~20 objetos, 16–48px). NPCs de vizinhança (6 folhas 4×4). Ícones de inventário (16×16). UI-002 mapa-múndi ilustrado (480×270).
+### LOTE 3 — Duque de Caxias (Capítulo 1)
+Apartamento do Weng (mora com os avós e a gata Meli): sala grande no centro ligando 2 quartos, banheiro e cozinha; cama com capa de esteira de bambu.
+Gatas da Bella (Piabetá): Pombo (preto) e Lala (branca com manchas marrons). Passeios: açaí, mercado, shopping.
+
+| ID | Arte | Arquivo | Status |
+|---|---|---|---|
+| MAP-010 | Apartamento do Weng (interior, 1536×1024) | maps/duque-apto-bg.png | pedido |
+| CHAR-020 | Meli, gata laranja (4×4 andando + folha de poses) | characters/meli.png, meli-poses.png | pedido |
+| CHAR-021 | Avó do Weng (4×4 + retrato) | characters/avo-weng.png | pedido |
+| CHAR-022 | Avô do Weng (4×4 + retrato) | characters/avo2-weng.png | pedido |
+| CHAR-023 | Pombo, gato preto (4×4 + poses) | characters/pombo.png | pedido |
+| CHAR-024 | Lala, gata branca com manchas marrons (4×4 + poses) | characters/lala.png | pedido |
+| MAP-011 | Rua/entrada do prédio em Duque de Caxias | maps/duque-rua-bg.png | depois |
+| MAP-012 | Açaiteria (interior) | maps/duque-acai-bg.png | depois |
+| MAP-013 | Mercado (interior) | maps/duque-mercado-bg.png | depois |
+| MAP-014 | Shopping (praça de alimentação/corredor) | maps/duque-shopping-bg.png | depois |
+| CIN-010.. | Ilustrações: primeira noite, briga boba, surpresa, convite para Petrópolis | cinematics/duque-*.png | depois |
 
 ### LOTE 4–6 — Viagens do Ano 1 e 2 (Fases 5–6)
 Por cidade: 2–4 cenários pintados + camadas frontais, 3–6 NPCs, objetos-chave dos minigames, 3–4 ilustrações de memória. Lista detalhada será gerada no início de cada fase.
