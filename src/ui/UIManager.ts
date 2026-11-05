@@ -196,13 +196,15 @@ class UIManagerImpl {
     }
     const url = textureURL(key);
     if (!url) return;
-    const el = h('div', { class: `backdrop ${rainy ? 'rainy' : ''}` }, h('img', { src: url, alt: '' }), rainy ? h('div', { class: 'bd-rain' }) : null);
-    this.backdropEl?.remove();
+    const prev = this.backdropEl;
+    // troca de cena: a nova ilustração entra por cima com um brilho e um leve zoom (sem corte seco)
+    const el = h('div', { class: `backdrop ${rainy ? 'rainy' : ''} ${prev ? 'swap' : ''}` }, h('img', { src: url, alt: '' }), rainy ? h('div', { class: 'bd-rain' }) : null, h('div', { class: 'bd-flash' }));
     this.backdropEl = el;
     this.root.append(el);
     this.hud.el.classList.add('hidden');
     requestAnimationFrame(() => el.classList.add('show'));
-    await new Promise((r) => setTimeout(r, 700));
+    await new Promise((r) => setTimeout(r, prev ? 1000 : 700));
+    prev?.remove();
   }
 
   /** Ilustração em tela cheia com legendas; cada legenda avança com interagir/toque. */

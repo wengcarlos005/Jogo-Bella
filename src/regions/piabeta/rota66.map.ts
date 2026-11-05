@@ -143,6 +143,8 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Ei... quer dar uma volta depois? A gente pode ir andando por Fragoso até o parque.');
     await ctx.say('bella', 'Quero. Acho que uma caminhada vai me fazer bem.');
     await ctx.give('burger-rota66', 1, false, 'Você guardou de lembrança');
+    // sai da ilustração com a tela escura: ninguém aparece "sentado" em cima das cadeiras
+    await ctx.fadeOut(500);
     await ctx.backdrop(null);
     ctx.removeProp('lanche-bella');
     ctx.removeProp('lanche-weng');
@@ -153,6 +155,7 @@ const scripts: Record<string, Script> = {
     ctx.visible('player', true);
     ctx.visible('weng', true);
     ctx.follow('weng', true);
+    await ctx.fadeIn(500);
     ctx.objective(Q, 'mesa');
   },
 
@@ -213,12 +216,12 @@ export const rota66Map: MapDef = {
     R(0, 700, 100, 760),
     R(1440, 640, 1536, 760),
     // cabines do meio
-    R(430, 540, 722, 665),
-    R(880, 540, 1160, 665),
+    R(430, 488, 724, 665), // do topo do encosto até a frente: ninguém sobe no sofá
+    R(876, 488, 1164, 665),
     // cabines de baixo + divisórias de vidro
-    R(85, 740, 410, 905),
+    R(85, 700, 410, 905),
     R(85, 840, 535, 905),
-    R(1140, 740, 1460, 905),
+    R(1140, 702, 1460, 905),
     R(1005, 840, 1455, 905),
     // floreiras e plantas da frente
     R(0, 905, 645, 1100),

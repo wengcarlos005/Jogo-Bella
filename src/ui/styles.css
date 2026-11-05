@@ -1672,3 +1672,11 @@ html.title-mode .screen.title-full .tf-art { object-fit: fill; }
 html.title-mode #game canvas { opacity: 0; }
 
 .title-full.tx-wait .tf-art { opacity: 0; }
+
+/* transição entre ilustrações de evento */
+#ui .backdrop img { transition: transform 1.4s cubic-bezier(.2, .8, .3, 1); }
+#ui .backdrop:not(.show) img { transform: scale(1.06); }
+#ui .backdrop.swap { transition: opacity 900ms ease; }
+#ui .backdrop .bd-flash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: radial-gradient(circle at 50% 45%, #fff 0, #ffe0ee 35%, rgba(255, 200, 225, 0) 75%); }
+#ui .backdrop.swap.show .bd-flash { animation: bdFlash 1.1s ease-out; }
+@keyframes bdFlash { 0% { opacity: 0; } 25% { opacity: 0.85; } 100% { opacity: 0; } }
