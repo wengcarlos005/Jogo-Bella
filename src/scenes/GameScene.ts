@@ -763,13 +763,15 @@ export class GameScene extends Phaser.Scene {
       for (const a of [this.player, this.npcs.get('weng')?.npc]) {
         if (!a || !a.visible) continue;
         const overlapX = a.x + 9 > o.rect.x && a.x - 9 < o.rect.right;
-        if (overlapX && a.y < o.rect.y + 2) depth = Math.min(depth, a.y - 1);
+        if (!o.tall && overlapX && a.y < o.rect.y + 2) depth = Math.min(depth, a.y - 1);
       }
       o.img.setDepth(depth);
       if (o.fade) {
         // Stardew: copa fica transparente quando alguém está atrás dela
         const behind = [this.player, this.npcs.get('weng')?.npc].some(
-          (a) => a && a.visible && a.y < o.base && a.y > o.rect.y && a.x + 8 > o.rect.x && a.x - 8 < o.rect.right,
+          (a) =>
+            a && a.visible && a.y < o.base && a.headY < o.rect.bottom && a.x + 10 > o.rect.x && a.x - 10 < o.rect.right &&
+            (!o.fadeX || (a.x > o.fadeX[0] && a.x < o.fadeX[1])),
         );
         const target = behind ? 0.42 : 1;
         o.img.alpha += (target - o.img.alpha) * 0.2;

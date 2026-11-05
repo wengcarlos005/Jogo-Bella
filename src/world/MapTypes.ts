@@ -118,6 +118,10 @@ export interface MapDef {
     slice?: boolean;
     /** Sempre na frente dos personagens (portas, molduras), translúcido quando alguém está atrás. */
     front?: boolean;
+    /** Objetos altos (postes, árvores): a profundidade é sempre a base, mesmo com alguém ao norte. */
+    tall?: boolean;
+    /** Só fica translúcido quando alguém está nesta faixa x (px da arte), ex.: passagem do arco. */
+    fadeX?: [number, number];
     /** Só aparece quando a condição for verdadeira (ex.: telhado do coreto na cena do beijo). */
     when?: () => boolean;
   }[];

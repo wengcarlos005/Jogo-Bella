@@ -18,6 +18,9 @@ const scripts: Record<string, Script> = {
     if (objDone('filme') && objActive('passeio')) ctx.toast('Saia pelo portão para passear');
     if (ctx.flag('dq-e2-intro')) return;
     ctx.setFlag('dq-e2-intro');
+    // os dois chegam pela porta da cozinha, um do lado do outro (sem grudar)
+    ctx.place('player', 19.0, 10.9, 'down');
+    ctx.place('weng', 21.0, 10.9, 'down');
     ctx.setFlag('weng-segue');
     if (!ctx.questActive(Q) && !QuestSystem.isDone(Q)) ctx.startQuest(Q);
     ctx.refresh();
@@ -204,7 +207,7 @@ export const quintalMap: MapDef = {
 
   npcs: [
     { id: 'pai-bella', sprite: 'pai-bella', tx: 7.4, ty: 11.6, facing: 'up', interact: 'pai' },
-    { id: 'mae-bella', sprite: 'mae-bella', tx: 18.7, ty: 11.6, facing: 'left', interact: 'mae' },
+    { id: 'mae-bella', sprite: 'mae-bella', tx: 18.4, ty: 14.6, facing: 'left', interact: 'mae', behavior: 'wander', wanderRadius: 2.4, wanderAxis: 'both' },
   ],
   spawns: {
     porta: { tx: 19.6, ty: 9.6, facing: 'down' },

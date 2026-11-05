@@ -110,6 +110,8 @@ export const ASSETS: AssetEntry[] = [
   ...['colar', 'oculos', 'celular', 'guardanapo', 'flor'].map(
     (n, i): AssetEntry => ({ id: `ICO-${String(10 + i).padStart(3, '0')}`, key: `icon-${n}`, file: `assets/ui/icon-${n}.png`, kind: 'image' }),
   ),
+  { id: 'CHAR-K1', key: 'bella-kiss', file: 'assets/characters/bella-kiss.png', kind: 'image' },
+  { id: 'CHAR-K2', key: 'weng-kiss', file: 'assets/characters/weng-kiss.png', kind: 'image' },
   { id: 'OBJ-040', key: 'rua-carro-vermelho', file: 'assets/objects/rua-carro-vermelho.png', kind: 'image' },
   { id: 'OBJ-030', key: 'prop-umbrella-stand', file: 'assets/objects/umbrella-stand.png', kind: 'image' },
   { id: 'OBJ-031', key: 'prop-umbrella-stand-empty', file: 'assets/objects/umbrella-stand-empty.png', kind: 'image' },

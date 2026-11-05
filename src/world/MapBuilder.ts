@@ -28,6 +28,8 @@ export interface BuiltOverlay {
   fade: boolean;
   when?: () => boolean;
   front?: boolean;
+  tall?: boolean;
+  fadeX?: [number, number];
 }
 
 function parseLayer(def: MapDef, rows: string[], label: string): number[][] {
@@ -208,6 +210,8 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
         fade: o.fade ?? o.front ?? false,
         when: o.when,
         front: o.front,
+        tall: o.tall,
+        fadeX: o.fadeX ? [o.fadeX[0] / 3, o.fadeX[1] / 3] : undefined,
       });
     });
   }

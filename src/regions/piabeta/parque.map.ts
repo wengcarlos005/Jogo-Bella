@@ -93,6 +93,9 @@ const scripts: Record<string, Script> = {
     ctx.weather('clear');
     ctx.scale('player', 1);
     ctx.scale('weng', 1);
+    // depois do beijo: descem a escadinha e ficam na frente do coreto
+    ctx.place('player', 12.9, 8.4, 'down');
+    ctx.place('weng', 14.5, 8.4, 'down');
     await ctx.unfocus(10);
     ctx.letterbox(false);
     await ctx.fadeIn(1500);
@@ -218,9 +221,9 @@ export const parqueMap: MapDef = {
     // canteiros: do topo das flores (+25) até a borda de baixo
     R(1255, 470, 1405, 553),
     R(765, 482, 895, 543),
-    R(320, 700, 465, 792),
-    R(1128, 692, 1260, 762),
-    R(1158, 772, 1308, 830),
+    R(326, 748, 460, 792),
+    R(1134, 736, 1256, 762),
+    R(1166, 806, 1300, 830),
     R(92, 765, 260, 828),
     // árvores: só o tronco é sólido (a copa fica por cima, translúcida)
     R(528, 690, 594, 732),
@@ -234,16 +237,16 @@ export const parqueMap: MapDef = {
     { x0: 576, y0: 740, x1: 640, y1: 952, base: 950 },
     { x0: 860, y0: 740, x1: 930, y1: 952, base: 950 },
     // copas das árvores: na frente de quem está atrás do tronco, translúcidas
-    { x0: 430, y0: 490, x1: 725, y1: 700, base: 730, cut: 'foliage', fade: true },
-    { x0: 835, y0: 480, x1: 1135, y1: 735, base: 766, cut: 'foliage', fade: true },
-    { x0: 0, y0: 500, x1: 195, y1: 832, base: 830, cut: 'foliage', fade: true },
-    { x0: 1360, y0: 150, x1: 1536, y1: 470, base: 480, cut: 'foliage', fade: true }, // árvore do lago
+    { x0: 430, y0: 490, x1: 725, y1: 760, base: 760, cut: 'foliage', fade: true, tall: true },
+    { x0: 835, y0: 480, x1: 1135, y1: 790, base: 790, cut: 'foliage', fade: true, tall: true },
+    { x0: 0, y0: 500, x1: 195, y1: 832, base: 830, cut: 'foliage', fade: true, tall: true },
+    { x0: 1360, y0: 150, x1: 1536, y1: 480, base: 480, cut: 'foliage', fade: true, tall: true }, // árvore do lago
     // canteiros: as flores ficam na frente de quem passa atrás
     { x0: 1248, y0: 440, x1: 1412, y1: 556, base: 554, cut: 'foliage' },
     { x0: 758, y0: 455, x1: 902, y1: 546, base: 544, cut: 'foliage' },
-    { x0: 314, y0: 672, x1: 470, y1: 798, base: 794, ellipse: true },
-    { x0: 1120, y0: 664, x1: 1266, y1: 768, base: 764, ellipse: true },
-    { x0: 1150, y0: 748, x1: 1314, y1: 834, base: 832, cut: 'foliage' },
+    { x0: 314, y0: 672, x1: 470, y1: 798, base: 794, cut: 'outline' },
+    { x0: 1120, y0: 664, x1: 1266, y1: 768, base: 764, cut: 'outline' },
+    { x0: 1150, y0: 748, x1: 1314, y1: 834, base: 832, cut: 'outline' },
     { x0: 85, y0: 742, x1: 266, y1: 832, base: 830, cut: 'foliage' },
     { x0: 422, y0: 205, x1: 508, y1: 334, base: 332, cut: 'foliage' },
     { x0: 838, y0: 225, x1: 912, y1: 344, base: 342, cut: 'foliage' },
@@ -254,12 +257,15 @@ export const parqueMap: MapDef = {
     // ponte: fatiada (o corrimão da frente passa na frente das pernas de quem está nela)
     { x0: 1238, y0: 140, x1: 1452, y1: 274, base: 272, cut: 'furniture', slice: true },
     // postes (só a haste)
-    { x0: 404, y0: 470, x1: 432, y1: 640, base: 640, cut: 'column' },
-    { x0: 936, y0: 290, x1: 964, y1: 448, base: 448, cut: 'column' },
-    { x0: 1464, y0: 512, x1: 1496, y1: 682, base: 682, cut: 'column' },
-    { x0: 1046, y0: 700, x1: 1076, y1: 862, base: 862, cut: 'column' },
+    { x0: 396, y0: 470, x1: 440, y1: 640, base: 640, cut: 'column', tall: true },
+    { x0: 928, y0: 290, x1: 970, y1: 448, base: 448, cut: 'column', tall: true },
+    { x0: 1456, y0: 512, x1: 1502, y1: 682, base: 682, cut: 'column', tall: true },
+    { x0: 1038, y0: 700, x1: 1084, y1: 862, base: 862, cut: 'column', tall: true },
     // arco de flores inteiro (pés e topo), translúcido quando alguém passa por baixo
-    { x0: 550, y0: 630, x1: 945, y1: 792, base: 792, cut: 'foliage', fade: true },
+    { x0: 550, y0: 630, x1: 945, y1: 792, base: 792, cut: 'foliage', fade: true, tall: true, fadeX: [668, 832] },
+    // pilastras e guarda-corpo da frente do coreto, na frente dos dois durante a cena do beijo
+    { x0: 586, y0: 196, x1: 634, y1: 354, base: 3000, cut: 'column', when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    { x0: 710, y0: 196, x1: 764, y1: 354, base: 3000, cut: 'column', when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
     // telhado do coreto por cima das cabeças, só na cena do beijo
     { x0: 505, y0: 25, x1: 840, y1: 214, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
   ],

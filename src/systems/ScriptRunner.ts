@@ -409,7 +409,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       scene.weather.slow(true);
       AudioSystem.play('memory');
       // 2) chegam mais perto, devagar; a Bella fica na pontinha dos pés
-      const gap = 15 * (b.scaleX / b.baseScale);
+      const k = b.scaleX / b.baseScale;
+      const gap = 13 * k;
       await Promise.all([
         tw({ targets: b, x: midX - gap - 3, duration: 1100, ease: 'Sine.easeInOut' }),
         tw({ targets: w, x: midX + gap + 3, duration: 1100, ease: 'Sine.easeInOut' }),
@@ -419,6 +420,11 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         tw({ targets: b, y: b.y - 1.5, x: midX - gap, angle: 3, duration: 650, ease: 'Sine.easeOut' }),
         tw({ targets: w, x: midX + gap, angle: -5, duration: 650, ease: 'Sine.easeOut' }),
       ]);
+      // olhos fechados
+      b.face('right');
+      w.face('left');
+      if (scene.textures.exists('bella-kiss')) b.setTexture('bella-kiss');
+      if (scene.textures.exists('weng-kiss')) w.setTexture('weng-kiss');
       // 3) o beijo: brilho rosa e um coração grande que pulsa atrás dos dois
       const glow = scene.add.image(midX, headY, 'fx-glow').setTint(0xff7aa8).setBlendMode(Phaser.BlendModes.ADD).setDepth(b.depth - 2).setAlpha(0).setDisplaySize(10, 10);
       const big = scene.add.image(midX, headY - 10, 'fx-bigheart').setDepth(b.depth - 1).setScale(0).setAlpha(0.9);
@@ -448,6 +454,10 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       big.destroy();
       b.setAngle(0);
       w.setAngle(0);
+      b.setTexture(b.charKey);
+      w.setTexture(w.charKey);
+      b.face('right');
+      w.face('left');
     },
 
     hasArt: (key) => scene.textures.exists(key),
