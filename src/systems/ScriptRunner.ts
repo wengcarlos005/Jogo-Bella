@@ -142,6 +142,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       const p = scene.tile(tx, ty);
       a.setPosition(p.x, p.y);
       (a.body as Phaser.Physics.Arcade.Body).reset(p.x, p.y);
+      // NPC que passeia: o novo lugar vira o "canto" dele (não volta atravessando a casa)
+      if (a instanceof NPC) a.home.set(p.x, p.y);
       if (facing) a.face(facing);
       if (a === scene.player) scene.player.trail.length = 0;
     },

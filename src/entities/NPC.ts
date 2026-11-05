@@ -12,7 +12,7 @@ export class NPC extends Character {
   private onArrive: (() => void) | null = null;
   private speed = 55;
   private wanderTimer = 0;
-  private home: Phaser.Math.Vector2;
+  home: Phaser.Math.Vector2;
   private followTarget: Player | null = null;
   wanderRadius = 24;
   private followMoving = false;

@@ -238,7 +238,8 @@ export class GameScene extends Phaser.Scene {
         const bw = def.pose ? 14 : 18;
         body.setSize(bw / sc, 9 / sc);
         body.setOffset((npc.frame.width - bw / sc) / 2, npc.frame.height - 10 / sc);
-        body.setImmovable(true);
+        // a Bella não empurra o NPC, mas o NPC continua batendo nas paredes e nos móveis
+        body.pushable = false;
       }
       if (def.wanderRadius !== undefined) npc.wanderRadius = def.wanderRadius * TILE;
       if (def.wanderAxis) npc.wanderAxis = def.wanderAxis;
