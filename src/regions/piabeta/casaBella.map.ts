@@ -47,7 +47,7 @@ export const casaBellaMap: MapDef = {
     R(875, 0, 1536, 300),
     // Divisória do meio + paredes da sala (passagens em x 155–270 e 910–1030)
     R(0, 484, 155, 690),
-    R(270, 484, 910, 690),
+    R(270, 484, 910, 680),
     R(1030, 484, 1536, 690),
     // Parede de baixo (porta em x 690–800)
     R(0, 912, 690, 1024),
@@ -63,7 +63,7 @@ export const casaBellaMap: MapDef = {
     R(1408, 300, 1496, 388), // planta
     // Sala
     R(60, 700, 138, 735), // planta (vaso)
-    R(218, 688, 318, 872), // rack da TV (encostado na parede: sem fresta atrás; embaixo dá pra passar)
+    R(218, 712, 318, 872), // rack da TV (encostado na parede: sem fresta atrás; embaixo dá pra passar)
     R(408, 690, 548, 724), // mesinha + abajur
     R(550, 690, 910, 745), // sofá
     R(1062, 690, 1290, 756), // estante
