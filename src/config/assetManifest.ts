@@ -59,6 +59,11 @@ export const ASSETS: AssetEntry[] = [
     (n, i): AssetEntry => ({ id: `OBJ-${String(i + 1).padStart(3, '0')}`, key: `burger-${n}`, file: `assets/objects/burger-${n}.png`, kind: 'image' }),
   ),
 
+  // Casal sentado no banco (4 quadros 200x150: normal, piscando, expressão, normal)
+  ...['bench-pq-ang-r', 'bench-pq-front-lamp', 'bench-pq-ang-l', 'bench-pq-front-bin', 'bench-rua', 'bench-rua-bin'].map(
+    (n, i): AssetEntry => ({ id: `OBJ-04${i}`, key: n, file: `assets/objects/${n}.png`, kind: 'spritesheet', frameWidth: 200, frameHeight: 150 }),
+  ),
+
   // Veículos (HD: quadros 192x128 — esquerda, direita, frente, costas)
   { id: 'OBJ-020', key: 'uber-car', file: 'assets/objects/uber-car.png', kind: 'spritesheet', frameWidth: 192, frameHeight: 128 },
 

@@ -63,7 +63,7 @@ export const casaBellaMap: MapDef = {
     R(1408, 300, 1496, 388), // planta
     // Sala
     R(60, 700, 138, 735), // planta (vaso)
-    R(222, 800, 312, 850), // TV (só a base do rack; dá pra passar atrás e embaixo)
+    R(218, 700, 318, 882), // rack da TV inteiro (medido no desenho)
     R(408, 690, 548, 724), // mesinha + abajur
     R(550, 690, 910, 745), // sofá
     R(1062, 690, 1290, 756), // estante
@@ -80,8 +80,7 @@ export const casaBellaMap: MapDef = {
 
   // Profundidade: TV e planta da sala na frente de quem passa atrás
   overlays: [
-    { x0: 243, y0: 642, x1: 294, y1: 805, base: 888 }, // tela da TV
-    { x0: 214, y0: 698, x1: 322, y1: 892, base: 888, cut: 'furniture' }, // rack
+    { x0: 246, y0: 645, x1: 294, y1: 800, base: 882, cut: 'dark' }, // só a tela escura da TV
     { x0: 1360, y0: 660, x1: 1492, y1: 815, base: 808, cut: 'foliage' }, // planta
   ],
 

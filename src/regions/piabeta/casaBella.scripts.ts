@@ -187,9 +187,9 @@ export const casaScripts: Record<string, Script> = {
     if (!ctx.objectiveDone(Q, 'mae')) {
       // posiciona os três lado a lado (sem empilhar)
       await ctx.fadeOut(200);
-      ctx.place('player', 11.0, 16.2, 'right');
-      ctx.place('mae-bella', 12.8, 15.7, 'down');
-      ctx.place('weng', 14.7, 16.2, 'left');
+      ctx.place('player', 10.2, 16.0, 'right');
+      ctx.place('mae-bella', 12.8, 16.0, 'down');
+      ctx.place('weng', 15.4, 16.0, 'left');
       await ctx.fadeIn(250);
       await ctx.say('bella', 'Mãe, esse é o Weng.');
       await ctx.say('mae-bella', 'Ah, então você que é o Weng! Prazer, querido. A Bella fala de você.');
@@ -226,9 +226,9 @@ export const casaScripts: Record<string, Script> = {
     }
     if (!ctx.objectiveDone(Q, 'pai')) {
       await ctx.fadeOut(200);
-      ctx.place('player', 18.7, 8.2, 'right');
-      ctx.place('weng', 18.7, 9.9, 'right');
-      ctx.place('pai-bella', 20.4, 8.4, 'left');
+      ctx.place('player', 18.8, 8.3, 'right');
+      ctx.place('pai-bella', 21.0, 8.3, 'left');
+      ctx.place('weng', 19.9, 10.1, 'up');
       await ctx.fadeIn(250);
       await ctx.say('bella', `${CHAMADO ? `${CHAMADO}, esse` : 'Esse'} é o Weng.`);
       ctx.face('weng', 'up');

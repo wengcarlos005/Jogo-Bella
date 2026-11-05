@@ -228,10 +228,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'O carro do vizinho. Sempre estacionado exatamente aqui.');
   },
   async banco(ctx) {
-    await ctx.sit(555, 712, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']]);
+    await ctx.sit(555, 712, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']], { key: 'bench-rua', x: 555, y: 780 });
   },
   async banco2(ctx) {
-    await ctx.sit(1063, 712, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']]);
+    await ctx.sit(1063, 712, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']], { key: 'bench-rua', x: 1063, y: 780 });
   },
 };
 

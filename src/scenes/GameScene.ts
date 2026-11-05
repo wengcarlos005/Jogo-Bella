@@ -459,7 +459,8 @@ export class GameScene extends Phaser.Scene {
   private addNpcColliders(npc: NPC): void {
     this.physics.add.collider(this.player, npc, undefined, () => !npc.passThroughPlayer);
     // paredes só valem quando o NPC anda sozinho (cenas de script atravessam tudo)
-    const walls = () => npc.behavior !== 'scripted';
+    // só quem passeia sozinho colide com móveis; o Weng seguindo a Bella usa o caminho dela
+    const walls = () => npc.behavior === 'wander' || npc.behavior === 'idle';
     this.physics.add.collider(npc, this.built.collision, undefined, walls);
     this.physics.add.collider(npc, this.built.solids, undefined, walls);
   }

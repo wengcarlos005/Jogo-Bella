@@ -238,7 +238,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       scene.setUmbrella(who === 'player' ? 'bella' : who, mode);
     },
 
-    async sit(seatX, seatY, lines) {
+    async sit(seatX, seatY, lines, couple) {
       const sx = seatX / 3;
       const sy = seatY / 3;
       const weng = scene.npcs.get('weng')?.npc;
@@ -247,11 +247,39 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       const pl = scene.player;
       pl.scripted = true;
       (pl.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
-      pl.sit(withWeng ? sx - 11 : sx, sy, 'down');
-      if (withWeng) {
+      // Com o Weng junto e arte do casal no banco: um sprite só, cobrindo o banco pintado.
+      let pair: Phaser.GameObjects.Sprite | null = null;
+      let pairTimer: Phaser.Time.TimerEvent | null = null;
+      if (withWeng && couple && scene.textures.exists(couple.key)) {
+        pl.setVisible(false);
         weng!.stopFollowing();
         weng!.behavior = 'scripted';
-        weng!.sit(sx + 11, sy, 'down');
+        weng!.setVisible(false);
+        pair = scene.add.sprite(couple.x / 3, couple.y / 3, couple.key, 0).setOrigin(0.5, 1).setScale(1 / RENDER_SCALE);
+        pair.setDepth(couple.y / 3 + 60);
+        let tick = 0;
+        pairTimer = scene.time.addEvent({
+          delay: 400,
+          loop: true,
+          callback: () => {
+            tick++;
+            if (tick % 22 === 0) pair!.setFrame(2);
+            else if (tick % 22 === 3) pair!.setFrame(0);
+            else if (tick % 7 === 0) {
+              pair!.setFrame(1);
+              scene.time.delayedCall(170, () => pair?.active && pair.frame.name === '1' && pair.setFrame(0));
+            }
+          },
+        });
+        pl.setPosition(couple.x / 3 - 10, couple.y / 3 + 4);
+        weng!.setPosition(couple.x / 3 + 10, couple.y / 3 + 4);
+      } else {
+        pl.sit(withWeng ? sx - 11 : sx, sy, 'down');
+        if (withWeng) {
+          weng!.stopFollowing();
+          weng!.behavior = 'scripted';
+          weng!.sit(sx + 11, sy, 'down');
+        }
       }
       await UI.fade(0, 260);
       AudioSystem.play('confirm');
@@ -273,15 +301,21 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         InputSystem.on('script:interact', done);
         scene.events.on('update', check);
       });
+      if (pair) {
+        pairTimer?.remove();
+        pair.destroy();
+        pl.setVisible(true);
+        weng!.setVisible(true);
+      }
       pl.standUp();
-      const back = 12;
-      pl.setPosition(pl.x, sy + back);
+      const back = pair ? 0 : 12;
+      if (!pair) pl.setPosition(pl.x, sy + back);
       (pl.body as Phaser.Physics.Arcade.Body).reset(pl.x, pl.y);
       pl.face('down');
       pl.scripted = false;
       if (withWeng) {
         weng!.standUp();
-        weng!.setPosition(weng!.x, sy + back);
+        weng!.setPosition(weng!.x, (pair ? pl.y : sy + back));
         (weng!.body as Phaser.Physics.Arcade.Body).reset(weng!.x, weng!.y);
         pl.trail.length = 0;
         weng!.follow(pl);

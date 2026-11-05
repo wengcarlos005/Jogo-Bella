@@ -136,6 +136,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
           if (keep && o.cut === 'foliage') keep = isFoliage(d[p], d[p + 1], d[p + 2]);
           if (keep && o.cut === 'furniture') keep = isFurniture(d[p], d[p + 1], d[p + 2]);
           if (keep && o.cut === 'lamp') keep = isLamp(d[p], d[p + 1], d[p + 2]);
+          if (keep && o.cut === 'dark') keep = Math.max(d[p], d[p + 1], d[p + 2]) < 95;
           if (!keep) d[p + 3] = 0;
         }
         ctx.putImageData(data, 0, 0);

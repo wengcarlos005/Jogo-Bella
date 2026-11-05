@@ -117,16 +117,16 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Um laguinho com vitórias-régias e uma pontezinha. Esse parque pensou em tudo.');
   },
   async banco(ctx) {
-    await ctx.sit(325, 628, [['weng', 'Um banco na luz do poste. Clássico.'], ['bella', 'Clássico e perfeito.']]);
+    await ctx.sit(325, 628, [['weng', 'Um banco na luz do poste. Clássico.'], ['bella', 'Clássico e perfeito.']], { key: 'bench-pq-front-lamp', x: 325, y: 668 });
   },
   async banco2(ctx) {
-    await ctx.sit(1052, 424, [['bella', 'Olha o laguinho daqui. Dá pra ouvir os sapos.'], ['weng', 'Eles tão cantando pra gente.']]);
+    await ctx.sit(1052, 424, [['bella', 'Olha o laguinho daqui. Dá pra ouvir os sapos.'], ['weng', 'Eles tão cantando pra gente.']], { key: 'bench-pq-ang-l', x: 1052, y: 466 });
   },
   async banco3(ctx) {
-    await ctx.sit(1367, 655, [['weng', 'Se eu pudesse, parava o tempo agora.'], ['bella', '...Eu também.']]);
+    await ctx.sit(1367, 655, [['weng', 'Se eu pudesse, parava o tempo agora.'], ['bella', '...Eu também.']], { key: 'bench-pq-front-bin', x: 1350, y: 694 });
   },
   async banco4(ctx) {
-    await ctx.sit(275, 262, [['bella', 'O barulhinho do chafariz é tão calmo.'], ['weng', 'Você também me deixa calmo. Mesmo nervoso.']]);
+    await ctx.sit(275, 262, [['bella', 'O barulhinho do chafariz é tão calmo.'], ['weng', 'Você também me deixa calmo. Mesmo nervoso.']], { key: 'bench-pq-ang-r', x: 275, y: 300 });
   },
   async weng(ctx) {
     if (objActive('passear')) await ctx.say('weng', 'Vamos seguindo o caminho, pro meio do parque.');
