@@ -274,8 +274,8 @@ export const ruaMap: MapDef = {
     R(483, 688, 627, 776),
     R(990, 688, 1137, 776),
     R(927, 697, 973, 765),
-    R(262, 790, 330, 892),
-    R(1310, 790, 1388, 892),
+    R(170, 560, 450, 892), // árvore esquerda (copa sólida)
+    R(1185, 570, 1495, 892), // árvore direita
     // canteiros
     ...FLOWER_BEDS,
   ],
@@ -287,8 +287,6 @@ export const ruaMap: MapDef = {
     { x0: 122, y0: 468, x1: 162, y1: 640, base: 638, cut: 'lamp' }, // poste esquerdo (haste)
     { x0: 1418, y0: 372, x1: 1502, y1: 468, base: 638, cut: 'lamp' }, // poste direito (luminária)
     { x0: 1468, y0: 468, x1: 1508, y1: 640, base: 638, cut: 'lamp' }, // poste direito (haste)
-    { x0: 165, y0: 550, x1: 455, y1: 790, base: 892, cut: 'foliage', fade: true }, // copa esquerda
-    { x0: 1180, y0: 560, x1: 1500, y1: 790, base: 892, cut: 'foliage', fade: true }, // copa direita
     { x0: 478, y0: 722, x1: 632, y1: 780, base: 776, cut: 'furniture' }, // banco esq. (assento da frente e pés)
     { x0: 985, y0: 722, x1: 1142, y1: 780, base: 776, cut: 'furniture' }, // banco dir. (assento da frente e pés)
   ],

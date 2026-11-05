@@ -43,8 +43,8 @@ const scripts: Record<string, Script> = {
     await ctx.fadeOut(300);
     ctx.follow('weng', false);
     // dentro do coreto, no piso, entre as colunas da frente
-    ctx.place('player', 12.75, 5.95, 'right');
-    ctx.place('weng', 14.35, 5.95, 'left');
+    ctx.place('player', 12.75, 5.45, 'right');
+    ctx.place('weng', 14.35, 5.45, 'left');
     await ctx.fadeIn(500);
     ctx.letterbox(true);
     await ctx.focus(13.5, 4.9, 1.5, 1200);
@@ -67,7 +67,7 @@ const scripts: Record<string, Script> = {
       await ctx.choose('bella', '(...)', ['"Pode."', 'Responder com um sorriso']);
     }
 
-    await Promise.all([ctx.move('player', 13.2, 5.95, 12), ctx.move('weng', 13.85, 5.95, 12)]);
+    await Promise.all([ctx.move('player', 13.2, 5.45, 12), ctx.move('weng', 13.85, 5.45, 12)]);
     ctx.face('player', 'right');
     ctx.face('weng', 'left');
     await ctx.focus(13.5, 4.7, 2.1, 2200);
@@ -157,7 +157,7 @@ export const parqueMap: MapDef = {
     R(0, 830, 650, 925),
     R(830, 830, 1536, 925),
     // coreto: telhado/fundo e laterais (entra pela escadinha)
-    R(505, 150, 840, 288),
+    R(505, 150, 840, 300), // coreto: telhado e interior (só a cena do beijo entra)
     R(505, 180, 555, 400),
     R(790, 180, 840, 400),
     R(495, 330, 588, 410),
@@ -190,10 +190,10 @@ export const parqueMap: MapDef = {
     R(1125, 672, 1262, 762),
     R(1155, 752, 1310, 832),
     R(90, 745, 262, 830),
-    // árvores: a área da copa é sólida (ninguém fica "atrás" da árvore)
-    R(545, 640, 605, 725), // troncos
-    R(950, 650, 1010, 765),
-    R(30, 690, 100, 815),
+    // árvores: copa inteira sólida (ninguém anda dentro da árvore)
+    R(440, 560, 715, 728),
+    R(845, 555, 1125, 768),
+    R(0, 575, 180, 818),
     // atrás dos postes
     R(395, 585, 440, 640),
     R(1040, 790, 1082, 862),
@@ -201,15 +201,8 @@ export const parqueMap: MapDef = {
   ],
 
   overlays: [
-    // copas (Stardew: ficam na frente e transparentes quando a Bella passa atrás)
-    { x0: 425, y0: 520, x1: 730, y1: 705, base: 725, cut: 'foliage', fade: true },
-    { x0: 830, y0: 515, x1: 1140, y1: 725, base: 765, cut: 'foliage', fade: true },
-    { x0: 0, y0: 535, x1: 190, y1: 725, base: 815, cut: 'foliage', fade: true },
     // topo do arco de flores (só sobre a passagem)
-    { x0: 655, y0: 640, x1: 840, y1: 705, base: 930, cut: 'foliage' },
-    // coreto: só os parapeitos laterais da frente (o casal fica entre as colunas)
-    { x0: 497, y0: 262, x1: 612, y1: 352, base: 345 },
-    { x0: 735, y0: 262, x1: 850, y1: 352, base: 345 },
+    { x0: 655, y0: 640, x1: 840, y1: 705, base: 930, cut: 'foliage', fade: true },
   ],
 
   // Noite (o passeio é depois do lanche): véu escuro + postes e lanternas acesos
@@ -240,7 +233,7 @@ export const parqueMap: MapDef = {
   spawns: {
     'from-rota66': { tx: 14.9, ty: 19.1, facing: 'up' },
   },
-  exits: [{ rect: R(0, 925, 30, 1005), toMap: 'piabeta-fragoso', toSpawn: 'from-parque' }],
+  exits: [{ rect: R(650, 985, 830, 1005), toMap: 'piabeta-fragoso', toSpawn: 'from-parque' }],
   triggers: [
     {
       id: 'chuva',

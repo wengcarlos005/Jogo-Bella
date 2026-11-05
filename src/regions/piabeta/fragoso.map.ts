@@ -120,19 +120,25 @@ export const fragosoMap: MapDef = {
   blocks: [
     R(0, 0, 1500, 322), // casas e muros de cima
     R(1500, 0, 1536, 1024), // árvores da direita
-    R(0, 468, 1192, 668), // terreno do meio (árvores, bananeiras, muro do gato)
-    R(0, 778, 1300, 1024), // casas de baixo (telhados)
-    R(1300, 760, 1500, 1024), // flores e muro de baixo
-    // postes (e a área logo atrás deles)
-    R(1176, 470, 1230, 560),
+    // terreno do meio: plantas/árvores (topo) + muro (frente)
+    R(0, 445, 1192, 600),
+    R(0, 600, 700, 692), // muro da esquerda (até a calçada)
+    R(700, 600, 1205, 660), // muro do gato
+    R(1192, 445, 1205, 660),
+    // casas de baixo (telhados)
+    R(0, 772, 1536, 1024),
+    R(1380, 700, 1536, 772), // folhagem do canto
+    // bases dos postes
+    R(204, 712, 240, 745),
+    R(1192, 660, 1228, 692),
     R(108, 332, 140, 360),
     R(724, 344, 752, 370),
     R(1166, 362, 1196, 390),
-    R(210, 722, 242, 750),
   ],
   overlays: [
-    { x0: 240, y0: 375, x1: 540, y1: 600, base: 655, cut: 'foliage', fade: true }, // árvore grande
-    { x0: 585, y0: 425, x1: 800, y1: 620, base: 640, cut: 'foliage', fade: true }, // bananeira
+    // postes: quem passa atrás (ao norte da base) fica atrás da haste
+    { x0: 207, y0: 545, x1: 238, y1: 745, base: 744 },
+    { x0: 1195, y0: 440, x1: 1225, y1: 692, base: 690 },
   ],
 
   lighting: {
