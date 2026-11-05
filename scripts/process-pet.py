@@ -54,6 +54,7 @@ def main():
     ap.add_argument("--height", type=float, default=40)
     ap.add_argument("--n", type=int, default=4)
     ap.add_argument("--ref-index", type=int, default=0, help="pose cuja altura vira --height")
+    ap.add_argument("--cuts", type=str, default="", help="poses: xs de corte aproximados (ex.: 440,950,1485); usa a coluna mais vazia por perto")
     args = ap.parse_args()
     im, a = load(args.src)
     if args.mode == "walk":
@@ -68,17 +69,28 @@ def main():
             out.alpha_composite(s, (col * fw + (fw - s.width) // 2, row * fh + fh - 1 - s.height))
     else:
         (r0, r1), = ps.segments(a.sum(axis=1), 1, min_gap=8)
-        cols = ps.segments(a[r0:r1].sum(axis=0), args.n, min_gap=20)
+        if args.cuts:
+            prof = a.sum(axis=0)
+            xs = []
+            for g in [int(v) for v in args.cuts.split(",")]:
+                lo, hi = max(0, g - 40), min(a.shape[1], g + 40)
+                xs.append(lo + int(np.argmin(prof[lo:hi])))
+            edges = [0] + xs + [a.shape[1]]
+            cols = list(zip(edges[:-1], edges[1:]))
+        else:
+            cols = ps.segments(a[r0:r1].sum(axis=0), args.n, min_gap=20)
         cells = []
         for c0, c1 in cols:
-            ys, xs = np.nonzero(a[r0:r1, c0:c1])
-            cells.append((c0 + xs.min(), r0 + ys.min(), c0 + xs.max() + 1, r0 + ys.max() + 1))
+            ys, xs = np.nonzero(a[:, c0:c1])
+            cells.append((c0 + xs.min(), ys.min(), c0 + xs.max() + 1, ys.max() + 1))
         ref = cells[args.ref_index]
         scale = args.height / float(ref[3] - ref[1])
         fw, fh = args.fw, args.fh
         out = Image.new("RGBA", (fw * len(cells), fh), (0, 0, 0, 0))
         for i, (x0, y0, x1, y1) in enumerate(cells):
-            s = shrink(im.crop((x0, y0, x1, y1)), scale)
+            # só o que pertence a esta faixa (zera o resto antes de recortar)
+            band = np.asarray(im).copy(); band[:, :cols[i][0], 3] = 0; band[:, cols[i][1]:, 3] = 0
+            s = shrink(Image.fromarray(band).crop((x0, y0, x1, y1)), scale)
             if s.width > fw or s.height > fh:
                 k = min(fw / s.width, fh / s.height); s = s.resize((int(s.width * k), int(s.height * k)), Image.NEAREST)
             out.alpha_composite(s, (i * fw + (fw - s.width) // 2, fh - 1 - s.height))

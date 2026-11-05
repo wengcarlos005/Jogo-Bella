@@ -1,5 +1,6 @@
 import type { Script } from '@/core/script';
 import { PERSONAL } from '@/data/personal';
+import { GameState } from '@/core/GameState';
 
 /**
  * Roteiro da Missão 1 — "O encontro marcado".
@@ -171,6 +172,26 @@ export const casaScripts: Record<string, Script> = {
       'Respira, Weng. Respira. (Isso era pra eu mesmo, desculpa.)',
     ];
     await ctx.say('weng', lines[Math.floor(Math.random() * lines.length)]);
+  },
+
+  async lala(ctx) {
+    const n = Number(GameState.getFlag<number>('lala-carinhos') ?? 0);
+    ctx.pose('lala', 'lala-poses', 3);
+    ctx.hearts('lala', 6);
+    await ctx.say('lala', 'Prrrr...');
+    const falas = [
+      'Bom dia, Lala. Dormiu bem? Claro que dormiu, você só dorme.',
+      'Lala, deseja sorte pra mim hoje. Muita sorte.',
+      'Depois eu te conto tudo, tá? Tudinho.',
+    ];
+    await ctx.say('bella', ctx.flag('weng-entrou') ? 'Weng, essa é a Lala. A princesa da casa.' : falas[n % falas.length]);
+    if (ctx.flag('weng-entrou') && !ctx.flag('lala-weng')) {
+      ctx.setFlag('lala-weng');
+      await ctx.say('weng', 'Oi, Lala! ...Ela me ignorou completamente.');
+      await ctx.say('bella', 'Ela é assim. Você tem que merecer.');
+    }
+    GameState.setFlag('lala-carinhos', n + 1);
+    ctx.pose('lala', 'lala-poses', 1);
   },
 
   async mae(ctx) {

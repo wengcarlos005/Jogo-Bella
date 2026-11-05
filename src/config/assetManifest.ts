@@ -91,6 +91,8 @@ export const ASSETS: AssetEntry[] = [
   // 0 sentada, 1 dormindo, 2 se espreguiçando, 3 recebendo carinho.
   char('PET-001', 'meli', 'pets/meli-walk.png', 64),
   { id: 'PET-001P', key: 'meli-poses', file: 'assets/pets/meli-poses.png', kind: 'spritesheet', frameWidth: 96, frameHeight: 64 },
+  char('PET-002', 'lala', 'pets/lala-walk.png', 64),
+  { id: 'PET-002P', key: 'lala-poses', file: 'assets/pets/lala-poses.png', kind: 'spritesheet', frameWidth: 96, frameHeight: 64 },
   { id: 'MAP-010', key: 'map-duque-apto-bg', file: 'assets/maps/duque-apto-bg.png', kind: 'image' },
   { id: 'MAP-001', key: 'map-piabeta-casa-bella-bg', file: 'assets/maps/piabeta-casa-bella-bg.png', kind: 'image' },
   { id: 'MAP-002', key: 'map-piabeta-casa-bella-fg', file: 'assets/maps/piabeta-casa-bella-fg.png', kind: 'image' },
@@ -113,6 +115,11 @@ export const ASSETS: AssetEntry[] = [
   { id: 'ICO-001', key: 'icon-rosa', file: 'assets/ui/icon-rosa.png', kind: 'image' },
   { id: 'ICO-002', key: 'icon-vale', file: 'assets/ui/icon-vale.png', kind: 'image' },
   { id: 'ICO-003', key: 'icon-chocolate', file: 'assets/ui/icon-chocolate.png', kind: 'image' },
+  { id: 'ICO-020', key: 'icon-acai', file: 'assets/ui/icon-acai.png', kind: 'image' },
+  ...['piranha', 'creme', 'scrunchie', 'pote', 'vela', 'pano', 'pacoca', 'balas', 'chocolate'].map(
+    (n, i): AssetEntry => ({ id: `ICO-${String(21 + i).padStart(3, '0')}`, key: `icon-achado-${n}`, file: `assets/ui/icon-achado-${n}.png`, kind: 'image' }),
+  ),
+  { id: 'MAP-012', key: 'map-duque-acai-bg', file: 'assets/maps/duque-acai-bg.png', kind: 'image' },
   { id: 'MEM-003', key: 'memory-pia-03', file: 'assets/cinematics/memory-pia-03.png', kind: 'image' },
 
   // UI

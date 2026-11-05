@@ -55,6 +55,8 @@ export interface NpcPlacement {
   wanderAxis?: 'x' | 'y' | 'both';
   visibleIf?: () => boolean;
   markerIf?: () => boolean;
+  /** Começa numa pose parada de outra folha (ex.: gato dormindo: { key: 'lala-poses', frame: 1 }). */
+  pose?: { key: string; frame: number };
 }
 
 export interface ExitDef {

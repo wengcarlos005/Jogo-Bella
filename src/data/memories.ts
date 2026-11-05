@@ -63,6 +63,14 @@ export const MEMORIES: MemoryDef[] = [
     text: 'A primeira vez no apê do Weng. A Meli se escondeu, eu conquistei ela com sachê, novelo e carinho, e da janela a gente viu o Teatro Raul Cortez todo iluminado.',
     image: 'memory-dq-01',
   },
+  {
+    id: 'mem-dq-02',
+    region: 'duque-de-caxias',
+    title: 'Açaí cheio de complemento',
+    year: 'Ano 1',
+    text: 'O Weng disse "pede o que você quiser". Eu pedi. Ele ficou com a parte sem complemento, como manda a regra de dividir açaí.',
+    image: 'memory-dq-02',
+  },
 ];
 
 export const MEMORY_GOAL = 50;

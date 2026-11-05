@@ -123,6 +123,8 @@ export const casaBellaMap: MapDef = {
   ],
 
   npcs: [
+    // Lala, a gata da Bella, dormindo no chão do quarto
+    { id: 'lala', sprite: 'lala', tx: 14.1, ty: 8.2, facing: 'down', interact: 'lala', pose: { key: 'lala-poses', frame: 1 } },
     { id: 'mae-bella', sprite: 'mae-bella', tx: 12.8, ty: 15.7, facing: 'down', interact: 'mae', markerIf: () => objActive('mae') && GameState.is('weng-entrou') },
     { id: 'pai-bella', sprite: 'pai-bella', tx: 20.4, ty: 8.4, facing: 'right', interact: 'pai', markerIf: () => objActive('pai') && GameState.is('weng-entrou') },
     {

@@ -451,20 +451,28 @@ export const aptoMap: MapDef = {
   spawns: {
     porta: { tx: 15.5, ty: 17.4, facing: 'up' },
   },
-  exits: [
-    {
-      rect: R(715, 905, 820, 940),
-      toMap: 'duque-apto',
-      toSpawn: 'porta',
-      blockedIf: () => (QuestSystem.isActive(Q) ? 'Hoje a gente fica em casa com a Meli.' : 'A rua do prédio chega em breve!'),
-    },
-  ],
   triggers: [
+    // Porta de saída: durante a visita fica em casa; depois, passeios
+    { id: 'porta', rect: R(715, 900, 820, 945), script: 'porta' },
     // Pista: entrando no quarto do Weng, um barulhinho de sininho
     { id: 'pista', rect: R(410, 330, 900, 440), script: 'pista', once: true, enabledIf: () => objActive('achar-meli') },
   ],
   scripts: {
     ...scripts,
+    async porta(ctx) {
+      if (QuestSystem.isActive(Q)) {
+        await ctx.say('weng', 'Hoje a gente fica em casa com a Meli.');
+        await ctx.move('player', P.porta.x, P.porta.y - 0.6, 60);
+        return;
+      }
+      const c = await ctx.choose('bella', 'Sair do apê?', ['Tomar um açaí', 'Ficar em casa']);
+      if (c === 1) {
+        await ctx.move('player', P.porta.x, P.porta.y - 0.6, 60);
+        return;
+      }
+      await ctx.say('weng', 'Bora! A açaiteria é logo ali.');
+      await ctx.teleport('duque-acai', 'porta');
+    },
     async pista(ctx) {
       ctx.setFlag('dq-pista');
       await ctx.say('bella', '(Ouvi um sininho... tlim, tlim. Veio do arranhador, ali no canto do quarto.)');

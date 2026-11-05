@@ -225,6 +225,7 @@ export class GameScene extends Phaser.Scene {
       const npc = new NPC(this, p.x, p.y, this.spriteFor(def.sprite), def.id);
       npc.face(def.facing ?? 'down');
       npc.behavior = def.behavior ?? 'idle';
+      if (def.pose && this.textures.exists(def.pose.key)) npc.pose(def.pose.key, def.pose.frame);
       if (def.wanderRadius !== undefined) npc.wanderRadius = def.wanderRadius * TILE;
       if (def.wanderAxis) npc.wanderAxis = def.wanderAxis;
       npc.interactScript = def.interact;

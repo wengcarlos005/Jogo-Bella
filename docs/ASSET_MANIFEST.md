@@ -132,19 +132,19 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CHAR-021 | Avó do Weng (4×4 + retrato) | characters/avo-weng.png | pedido |
 | CHAR-022 | Avô do Weng (4×4 + retrato) | characters/avo2-weng.png | pedido |
 | CHAR-023 | Pombo, gato preto (4×4 + poses) | characters/pombo.png | pedido |
-| CHAR-024 | Lala, gata branca com manchas marrons (4×4 + poses) | characters/lala.png | pedido |
+| CHAR-024 | Lala, gata branca com manchas marrons (4×4 + poses; manchas recoloridas de laranja para marrom) | pets/lala-walk.png, pets/lala-poses.png | ✅ no jogo (casa da Bella) |
 | MAP-011 | Calçada do prédio do Weng (Av. Dr. Manoel Teles): fachada antiga, loja de cosméticos turquesa, loja de ternos, entrada do condomínio, calçada de pedra portuguesa em ondas; ref. art-source/ref/predio-weng-fachada.jpg | maps/duque-predio-bg.png | pedido |
 | MAP-011b | Frente do Shopping da Multidão (do outro lado da avenida): fachada azul, pilares vermelhos, entrada larga; ref. art-source/ref/shopping-multidao-fachada.jpg | maps/duque-multidao-fora-bg.png | pedido |
 | CIN-010 | Vista da janela: o casal olhando o Teatro Raul Cortez iluminado de cima, à noite | cinematics/duque-janela.png | pedido |
-| MAP-012 | Açaiteria (interior) | maps/duque-acai-bg.png | depois |
+| MAP-012 | Açaiteria (interior) | maps/duque-acai-bg.png | ✅ no jogo |
 | MAP-013 | Mercado (interior) | maps/duque-mercado-bg.png | depois |
 | MAP-014 | Shopping da Multidão (interior: corredor de lojinhas de cabelo, casa, doces) | maps/duque-multidao-bg.png | pedido |
-| ICON-020.. | Achadinhos: piranha de cabelo, creme de cabelo, scrunchie, potinho organizador, vela cheirosa, pano de prato fofo, paçoca, bala de goma, chocolate | ui/icon-*.png | depois |
+| ICON-020.. | Achadinhos: piranha de cabelo, creme de cabelo, scrunchie, potinho organizador, vela cheirosa, pano de prato fofo, paçoca, bala de goma, chocolate | ui/icon-achado-*.png | ✅ recortados |
 | MAP-017 | Quintal da casa da Bella com churrasqueira (dia) | maps/piabeta-quintal-bg.png | pedido |
 | MAP-018 | Praça do 2º encontro (fim de tarde) com o restaurante mexicano ao lado | maps/piabeta-praca2-bg.png | pedido |
 | MAP-019 | Restaurante mexicano (interior) | maps/piabeta-mexicano-bg.png | pedido |
 | CIN-015 | Os dois de chapéu mexicano brindando a bebida de cortesia | cinematics/mexicano.png | pedido |
-| MAP-015 | Cinema do Caxias Shopping (saguão + entrada da sala + corredor do shopping) | maps/duque-cinema-bg.png | pedido |
+| MAP-015 | Cinema do Caxias Shopping (saguão) | art-source/maps/duque-cinema.webp | recebido, entra com o 3º encontro |
 | MAP-016 | Quarto da Bella decorado para o pedido (variação do quarto: luzes, fotos, origamis, carta, chocolates) | maps/piabeta-quarto-pedido-bg.png | pedido |
 | CIN-011 | O pedido de namoro (Weng com o buquê atrás dela, quarto iluminado) | cinematics/pedido.png | pedido |
 | CIN-012 | Páscoa (chocolates + cartinha de coelho) | cinematics/pascoa.png | depois |
