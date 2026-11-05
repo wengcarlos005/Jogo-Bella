@@ -140,6 +140,10 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | MAP-013 | Mercado (interior) | maps/duque-mercado-bg.png | depois |
 | MAP-014 | Shopping da Multidão (interior: corredor de lojinhas de cabelo, casa, doces) | maps/duque-multidao-bg.png | pedido |
 | ICON-020.. | Achadinhos: piranha de cabelo, creme de cabelo, scrunchie, potinho organizador, vela cheirosa, pano de prato fofo, paçoca, bala de goma, chocolate | ui/icon-*.png | depois |
+| MAP-017 | Quintal da casa da Bella com churrasqueira (dia) | maps/piabeta-quintal-bg.png | pedido |
+| MAP-018 | Praça do 2º encontro (fim de tarde) com o restaurante mexicano ao lado | maps/piabeta-praca2-bg.png | pedido |
+| MAP-019 | Restaurante mexicano (interior) | maps/piabeta-mexicano-bg.png | pedido |
+| CIN-015 | Os dois de chapéu mexicano brindando a bebida de cortesia | cinematics/mexicano.png | pedido |
 | MAP-015 | Cinema do shopping (saguão + entrada da sala) | maps/duque-cinema-bg.png | depois |
 | MAP-016 | Quarto da Bella decorado para o pedido (variação do quarto: luzes, fotos, origamis, carta, chocolates) | maps/piabeta-quarto-pedido-bg.png | pedido |
 | CIN-011 | O pedido de namoro (Weng com o buquê atrás dela, quarto iluminado) | cinematics/pedido.png | pedido |

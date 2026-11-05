@@ -11,8 +11,11 @@ Fatos reais (do Weng):
 
 A Bella **só vai ao apartamento do Weng depois do pedido de namoro.**
 
-1. **Ainda ficando:** encontros fora de casa (a confirmar quais: cinema, açaí, Shopping da Multidão...).
-2. **O pedido de namoro (a surpresa).** Cinema no shopping (Five Nights at Freddy's). Na saída, a mãe liga dizendo que a irmã, e depois que a avó, está passando mal: a Bella volta emburrada para Piabetá. No quarto: luzes, fotos dos dois, origamis, a cartinha e chocolates; o Weng aparece atrás dela com um buquê enquanto toca "Yellow". Ele se declara (não conseguia mais se ver sem ela; o anel ainda não tinha chegado). Ela, toda envergonhada, responde "aceito" rápido demais, e os dois dizem "te amo" pela primeira vez.
+Foram 3 encontros antes do namoro (o 1º é o prólogo: Rota 66, Fragoso, parque e o primeiro beijo).
+
+1. **2º encontro — churrasco na casa da Bella.** Os pais dela (mãe e Alexandre) fazem churrasco; depois o casal assiste a um filme; depois passeia numa praça. Do lado da praça, um restaurante mexicano dá uma bebida de cortesia (muito gostosa) e os dois usam chapéus mexicanos.
+1b. **3º encontro** (a confirmar).
+2. **O pedido de namoro (a surpresa)** (a confirmar se é o 3º encontro). Cinema no shopping (Five Nights at Freddy's). Na saída, a mãe liga dizendo que a irmã, e depois que a avó, está passando mal: a Bella volta emburrada para Piabetá. No quarto: luzes, fotos dos dois, origamis, a cartinha e chocolates; o Weng aparece atrás dela com um buquê enquanto toca "Yellow". Ele se declara (não conseguia mais se ver sem ela; o anel ainda não tinha chegado). Ela, toda envergonhada, responde "aceito" rápido demais, e os dois dizem "te amo" pela primeira vez.
 3. **Primeira visita ao apê, já namorando.** Avós na China, apê só do Weng. A Meli desconfiada: ganhar a confiança dela (sachê, carinho, brinquedo). Vista do teatro pela janela.
 4. **Rotina (base livre):** jogar cartas (minijogos inspirados no Taco Gato e no Exploding Kittens, com regras e arte próprias), cozinhar juntos, montar o açaí dela (bem cheio de complementos), Shopping da Multidão ("Achadinhos": orçamento curto + listinha), mercado.
 5. **Páscoa.** A Bella dá muito chocolate para ele, e até para a irmã dele. Ele dá chocolates e uma cartinha de coelho da Páscoa.
