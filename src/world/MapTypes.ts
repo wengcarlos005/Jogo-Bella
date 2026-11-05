@@ -150,6 +150,11 @@ export interface MapDef {
     lights: { x: number; y: number; r: number; color?: number; flicker?: boolean; /** letreiro de neon: pulsa forte e falha de vez em quando */ neon?: boolean }[];
     when?: () => boolean;
   };
+  /**
+   * Casa às escuras: tudo preto, só um círculo de luz em volta da Bella (lanterna do celular)
+   * e alguns brilhos fracos (px do cenário ORIGINAL). Some devagar quando `when()` vira falso.
+   */
+  blackout?: { when: () => boolean; radius?: number; glows?: { x: number; y: number; r: number; alpha?: number }[] };
   /** Janelas (vidros) onde aparece chuva lá fora enquanto `when()` for verdadeiro. */
   rainWindows?: { rects: TileRect[]; when: () => boolean; /** false: a arte já tem o vidro chuvoso, só cai a chuva. */ glass?: boolean };
   /** Vapor subindo (chapas, panelas, xícaras): pontos em px do cenário ORIGINAL. */

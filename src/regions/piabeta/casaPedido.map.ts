@@ -3,6 +3,7 @@ import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
 import { QuestSystem } from '@/systems/QuestSystem';
 import { PERSONAL } from '@/data/personal';
+import { CASA_BLOCKS, CASA_OVERLAYS } from './casaBella.map';
 
 const Q = 'dq-e3';
 const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
@@ -16,7 +17,9 @@ const scripts: Record<string, Script> = {
     ctx.visible('weng', false);
     await ctx.wait(300);
     await ctx.say('bella', 'Mãe? Cheguei! Cadê todo mundo?');
-    await ctx.say('bella', '...Tá tudo apagado. E que luzinha é essa vindo do meu quarto?');
+    await ctx.say('bella', '...Tá tudo apagado. Peraí, deixa eu ligar a lanterna do celular.');
+    ctx.sfx('blip');
+    await ctx.say('bella', 'E que luzinha é essa vindo do meu quarto?');
     ctx.toast('Vá até o seu quarto');
   },
 
@@ -30,9 +33,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Nossas fotos... uma cartinha na cama... chocolates...');
     await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', 'Peraí. A minha irmã não tava passando mal, né?');
-    // ele aparece atrás dela
-    ctx.place('weng', 4.6, 10.2, 'up');
+    // ele vem da sala, passa pela porta do quarto e para atrás dela
+    ctx.place('weng', 4.4, 12.4, 'up');
     ctx.visible('weng', true);
+    await ctx.move('weng', 4.4, 9.7, 30);
     await ctx.move('weng', 7.6, 8.9, 30);
     ctx.face('weng', 'right');
     await ctx.say('weng', 'Bella.');
@@ -86,38 +90,22 @@ export const casaPedidoMap: MapDef = {
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
-  blocks: [
-    R(0, 0, 40, 1024),
-    R(1500, 0, 1536, 1024),
-    R(40, 0, 840, 250), // parede do quarto
-    R(55, 180, 262, 438), // cama (o pé da cama fica atrás de quem passa na frente)
-    R(270, 180, 452, 335), // escrivaninha + cadeira
-    R(455, 160, 545, 340), // penteadeira + banquinho
-    R(545, 145, 615, 305), // espelho
-    R(580, 210, 660, 330), // planta
-    R(635, 100, 822, 318), // guarda-roupa
-    R(840, 0, 876, 490), // divisória quarto/cozinha
-    R(876, 0, 1500, 296), // cozinha: geladeira, fogão, bancada
-    R(1040, 312, 1280, 475), // mesa + cadeiras
-    R(1400, 240, 1500, 390), // planta
-    R(40, 485, 155, 690), // parede à esquerda (passagem do quarto em x 155–270)
-    R(270, 485, 908, 650), // parede da sala
-    R(405, 600, 545, 720), // planta + mesinha com abajur
-    R(550, 595, 915, 745), // sofá
-    R(1030, 485, 1500, 680), // parede da direita (passagem da cozinha em x 908–1030)
-    R(1060, 545, 1292, 755), // estante
-    R(45, 640, 150, 735), // planta da sala
-    R(220, 650, 320, 890), // TV
-    R(1365, 665, 1490, 810), // planta da direita
-    R(0, 915, 690, 1024), // parede de baixo (porta em x 690–800)
-    R(800, 915, 1536, 1024),
-  ],
+  // mesma planta da casa do prólogo: mesmos bloqueios e a mesma profundidade
+  blocks: CASA_BLOCKS,
 
-  overlays: [
-    { x0: 40, y0: 560, x1: 160, y1: 740, base: 735, cut: 'outline' },
-    { x0: 1360, y0: 660, x1: 1495, y1: 815, base: 810, cut: 'outline' },
-    { x0: 1040, y0: 300, x1: 1285, y1: 478, base: 475, cut: 'furniture', slice: true },
-  ],
+
+  overlays: CASA_OVERLAYS,
+
+  // tudo apagado até a Bella entrar no quarto: só a lanterna do celular e uma luzinha vazando do quarto
+  blackout: {
+    when: () => QuestSystem.isActive(Q) && !objDone('quarto'),
+    radius: 30,
+    glows: [
+      { x: 212, y: 535, r: 105, alpha: 0.3 },
+      { x: 745, y: 905, r: 90, alpha: 0.25 },
+    ],
+  },
+
 
   lighting: {
     darkness: 0.25,

@@ -237,6 +237,28 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     prop(id, key, tx, ty, frame = 0, scale, depth) {
       scene.tempProps.get(id)?.destroy();
       if (key === 'burger-full') scene.ensureBurgerTexture();
+      if (key === 'fx-novelo' && !scene.textures.exists('fx-novelo')) {
+        // novelo de lã em pixel art (rosa com fios mais claros e uma pontinha solta)
+        const t = scene.textures.createCanvas('fx-novelo', 12, 11)!;
+        const c = t.getContext();
+        const px = (x: number, y: number, col: string) => {
+          c.fillStyle = col;
+          c.fillRect(x, y, 1, 1);
+        };
+        for (let y = 0; y < 10; y++)
+          for (let x = 0; x < 10; x++) {
+            const d = Math.hypot(x - 4.5, y - 4.5);
+            if (d > 4.6) continue;
+            const edge = d > 3.7;
+            const strand = (x + y) % 3 === 0 || (x - y + 9) % 4 === 0;
+            px(x, y, edge ? '#7a2346' : strand ? '#ffb3d0' : y < 4 ? '#f27aa8' : '#d9568a');
+          }
+        px(9, 7, '#d9568a');
+        px(10, 8, '#d9568a');
+        px(11, 8, '#f27aa8');
+        px(2, 2, '#fff1f6');
+        t.refresh();
+      }
       const img = scene.add.image(tx * 16, ty * 16, key, frame).setOrigin(0.5, 1);
       if (scale !== undefined) {
         img.setScale(scale);

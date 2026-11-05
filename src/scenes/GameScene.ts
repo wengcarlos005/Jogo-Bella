@@ -116,6 +116,7 @@ export class GameScene extends Phaser.Scene {
     this.addSteam();
     this.addRainWindows();
     this.addLighting();
+    this.addBlackout();
 
     GameState.data.mapId = def.id;
     this.visitRegion(def.region);
@@ -384,6 +385,55 @@ export class GameScene extends Phaser.Scene {
     this.refreshLighting();
   }
 
+  private blackoutRt: Phaser.GameObjects.RenderTexture | null = null;
+  private blackoutHole: Phaser.GameObjects.Image | null = null;
+
+  /** Casa às escuras (ex.: chegando para o pedido): só a lanterna do celular em volta da Bella. */
+  private addBlackout(): void {
+    this.blackoutRt = null;
+    const B = this.def.blackout;
+    if (!B) return;
+    if (!this.textures.exists('fx-hole')) {
+      const t = this.textures.createCanvas('fx-hole', 128, 128)!;
+      const c = t.getContext();
+      const g = c.createRadialGradient(64, 64, 0, 64, 64, 64);
+      g.addColorStop(0, 'rgba(255,255,255,1)');
+      g.addColorStop(0.45, 'rgba(255,255,255,0.85)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      c.fillStyle = g;
+      c.fillRect(0, 0, 128, 128);
+      t.refresh();
+    }
+    const { widthPx: w, heightPx: h } = this.built;
+    this.blackoutRt = this.add.renderTexture(0, 0, w, h).setOrigin(0).setDepth(199_800);
+    this.blackoutHole = this.make.image({ key: 'fx-hole', add: false });
+    this.blackoutRt.setAlpha(B.when() ? 1 : 0);
+  }
+
+  private updateBlackout(): void {
+    const B = this.def.blackout;
+    const rt = this.blackoutRt;
+    if (!B || !rt || !this.blackoutHole) return;
+    const target = B.when() ? 1 : 0;
+    rt.setAlpha(rt.alpha + (target - rt.alpha) * 0.04);
+    if (rt.alpha < 0.01) {
+      rt.setVisible(false);
+      return;
+    }
+    rt.setVisible(true);
+    rt.clear();
+    rt.fill(0x06050c, 0.96);
+    const hole = this.blackoutHole;
+    for (const g of B.glows ?? []) {
+      hole.setDisplaySize((g.r / 3) * 2, (g.r / 3) * 2).setAlpha(g.alpha ?? 0.5).setPosition(g.x / 3, g.y / 3);
+      rt.erase(hole);
+    }
+    const r = B.radius ?? 34;
+    const flick = 1 + Math.sin(this.time.now / 140) * 0.02;
+    hole.setDisplaySize(r * 2 * flick, r * 2 * flick).setAlpha(1).setPosition(this.player.x, this.player.y - 10);
+    rt.erase(hole);
+  }
+
   private refreshLighting(): void {
     const on = this.def.lighting?.when ? this.def.lighting.when() : true;
     for (const o of this.lightObjs) (o as unknown as Phaser.GameObjects.Components.Visible).setVisible(on);
@@ -544,7 +594,8 @@ export class GameScene extends Phaser.Scene {
 
   private addNpcColliders(npc: NPC): void {
     // o Weng nunca bloqueia a Bella (ele mesmo desvia); os outros NPCs, sim
-    this.physics.add.collider(this.player, npc, undefined, () => !npc.passThroughPlayer && npc.npcId !== 'weng');
+    // em cena de script (andando para um ponto) ninguém empurra ninguém
+    this.physics.add.collider(this.player, npc, undefined, () => !npc.passThroughPlayer && npc.npcId !== 'weng' && npc.behavior !== 'scripted');
     // paredes só valem quando o NPC anda sozinho (cenas de script atravessam tudo)
     // só quem passeia sozinho colide com móveis; o Weng seguindo a Bella usa o caminho dela
     const walls = () => npc.behavior === 'wander' || npc.behavior === 'idle' || npc.behavior === 'follow';
@@ -754,6 +805,7 @@ export class GameScene extends Phaser.Scene {
       }
     }
     this.weather.update(this.cameras.main);
+    this.updateBlackout();
     // Um recorte só cobre quem está DE FATO atrás do objeto (pés entre o topo e a base).
     // Quem está mais ao norte (acima do objeto) passa por cima, sem corte.
     for (const o of this.built.overlays) {

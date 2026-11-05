@@ -25,8 +25,8 @@ const ROW = '.'.repeat(32);
 const P = {
   porta: { x: 15.5, y: 17.4 },
   torre: { x: 17.2, y: 6.2 }, // Meli saindo da casinha do arranhador
-  potinho: { x: 1.6, y: 16.4 }, // Meli comendo nos potinhos da cozinha
-  tapete: { x: 13.6, y: 16.7 }, // brincadeira e carinho, no tapete da sala
+  potinho: { x: 2.3, y: 17.3 }, // Meli comendo nos potinhos da cozinha
+  brinca: { x: 5.3, y: 17.0 }, // onde ela fica depois de brincar com o novelo (chão da cozinha)
   caminha: { x: 6.44, y: 7.55 }, // caminha no quarto do Weng (dormindo dentro dela)
 };
 
@@ -36,7 +36,7 @@ function restoreMeli(ctx: ScriptContext): void {
     ctx.place('meli', P.caminha.x, P.caminha.y, 'down');
     ctx.pose('meli', 'meli-poses', 1);
   } else if (objDone('brincar')) {
-    ctx.place('meli', P.tapete.x, P.tapete.y, 'down');
+    ctx.place('meli', P.brinca.x, P.brinca.y, 'down');
     ctx.pose('meli', 'meli-poses', 0);
   } else if (objDone('potinho')) {
     ctx.place('meli', P.potinho.x, P.potinho.y, 'down');
@@ -82,38 +82,48 @@ const scripts: Record<string, Script> = {
         await ctx.say('weng', 'Agora ela quer brincar. Pega um novelo no cesto da sala!');
         return;
       }
-      await ctx.fadeOut(250);
-      ctx.pose('meli', null);
-      ctx.place('meli', P.tapete.x, P.tapete.y, 'right');
-      ctx.place('player', P.tapete.x + 2.4, P.tapete.y, 'left');
-      ctx.place('weng', P.tapete.x + 1.2, P.tapete.y - 1.6, 'down');
-      await ctx.frame(P.tapete.x + 1.2, P.tapete.y, 0);
-      await ctx.fadeIn(250);
+      // tudo acontece ali mesmo, no chão da cozinha: a Bella joga o novelo e a Meli corre atrás
+      ctx.follow('weng', false);
+      await ctx.move('player', 4.6, 15.4, 60);
+      void ctx.move('weng', 6.7, 15.3, 60);
+      ctx.face('player', 'meli');
+      await ctx.frame(4.8, 16.3, 500);
       await ctx.say('bella', 'Olha o que eu tenho aqui, Meli...');
       ctx.pose('meli', 'meli-poses', 2);
       await ctx.emote('meli', 'exclaim');
-      await ctx.wait(500);
+      ctx.take('novelo');
+      ctx.prop('novelo', 'fx-novelo', 4.6, 15.2, 0, 1);
+      ctx.sfx('blip');
+      await ctx.moveProp('novelo', 6.8, 16.7, 650);
       ctx.pose('meli', null);
-      await ctx.move('meli', P.tapete.x + 1.4, P.tapete.y, 70);
-      await ctx.move('meli', P.tapete.x - 0.6, P.tapete.y, 70);
-      await ctx.move('meli', P.tapete.x, P.tapete.y, 70);
+      await ctx.move('meli', 6.4, 16.7, 120);
+      ctx.hearts('meli', 3);
+      ctx.sfx('blip');
+      void ctx.moveProp('novelo', 2.9, 16.5, 700);
+      await ctx.wait(250);
+      await ctx.move('meli', 3.3, 16.5, 120);
+      ctx.sfx('blip');
+      void ctx.moveProp('novelo', 5.8, 17.2, 600);
+      await ctx.wait(200);
+      await ctx.move('meli', 5.3, 17.0, 120);
       ctx.face('meli', 'right');
       ctx.hearts('meli', 6);
       await ctx.say('meli', 'Mrrrau!');
+      ctx.face('player', 'meli');
       await ctx.say('weng', 'Ela NUNCA brinca assim com visita. Tô passado.');
       await ctx.say('bella', 'É porque eu não sou visita. Né, Meli?');
       ctx.pose('meli', 'meli-poses', 0);
-      await ctx.unfocus(400);
+      await ctx.unfocus(500);
+      ctx.follow('weng', true);
       ctx.objective(Q, 'brincar');
       ctx.toast('Faça carinho na Meli');
       return;
     }
     if (objActive('carinho')) {
-      await ctx.fadeOut(250);
-      ctx.place('meli', P.tapete.x, P.tapete.y, 'down');
-      ctx.place('player', P.tapete.x + 1.9, P.tapete.y - 0.15, 'left');
-      await ctx.frame(P.tapete.x + 1, P.tapete.y, 0);
-      await ctx.fadeIn(250);
+      ctx.follow('weng', false);
+      await ctx.move('player', P.brinca.x + 1.3, P.brinca.y - 0.1, 50);
+      ctx.face('player', 'left');
+      await ctx.frame(5.8, 16.6, 500);
       await ctx.say('bella', 'Posso? Bem devagarinho...');
       ctx.pose('meli', 'meli-poses', 3);
       ctx.hearts('meli', 10);
@@ -121,8 +131,19 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Ela tá ronronando! Pronto. Foi aprovada oficialmente.');
       await ctx.emote('bella', 'heart');
       await ctx.say('bella', 'Eu sabia que a gente ia se dar bem!');
-      ctx.pose('meli', 'meli-poses', 0);
-      await ctx.unfocus(400);
+      ctx.removeProp('novelo');
+      // cansou de tanto brincar: vai sozinha pra caminha, no quarto do Weng
+      ctx.pose('meli', null);
+      void (async () => {
+        await ctx.move('meli', 8.9, P.brinca.y, 70);
+        await ctx.move('meli', 8.9, 8.3, 70);
+        await ctx.move('meli', P.caminha.x, P.caminha.y, 60);
+        ctx.face('meli', 'down');
+        ctx.pose('meli', 'meli-poses', 1);
+      })();
+      await ctx.say('weng', 'Olha ela indo pra caminha. Cansou de ser feliz.');
+      await ctx.unfocus(500);
+      ctx.follow('weng', true);
       ctx.objective(Q, 'carinho');
       await ctx.say('weng', 'Agora vem cá, quero te mostrar a vista do meu quarto.');
       ctx.toast('Vá até a janela do quarto do Weng');
@@ -220,20 +241,41 @@ const scripts: Record<string, Script> = {
   async potinhos(ctx) {
     if (objActive('potinho') && ctx.has('sache')) {
       ctx.take('sache');
-      await ctx.say('bella', 'Ó o sachêêê... Meli, Meli, Meli!');
+      ctx.follow('weng', false);
+      await ctx.move('player', 4.6, 16.2, 60);
+      void ctx.move('weng', 6.6, 15.3, 60);
+      ctx.face('player', 'left');
       ctx.sfx('pickup');
-      await ctx.fadeOut(300);
-      ctx.pose('meli', 'meli-poses', 0);
-      ctx.place('meli', P.potinho.x, P.potinho.y, 'down');
-      ctx.place('player', P.potinho.x + 2.4, P.potinho.y - 0.2, 'left');
-      ctx.place('weng', P.potinho.x + 4.0, P.potinho.y - 1.0, 'left');
-      await ctx.frame(P.potinho.x + 2, P.potinho.y, 0);
-      await ctx.fadeIn(300);
+      await ctx.say('bella', 'Ó o sachêêê... Meli, Meli, Meli! (tchc-tchc-tchc)');
+      // lá no quarto, a Meli escuta o barulho do sachê...
+      if (!ctx.flag('dq-meli-vista')) {
+        ctx.setFlag('dq-meli-vista');
+        ctx.refresh();
+        ctx.place('meli', P.torre.x, P.torre.y, 'down');
+      }
+      await ctx.focus(17.2, 7.2, 1.3, 700);
+      ctx.pose('meli', null);
+      ctx.face('meli', 'down');
+      await ctx.emote('meli', 'exclaim');
+      // ...e atravessa o apê correndo: sai do quarto, desce o corredor e entra na cozinha
+      const corrida = (async () => {
+        await ctx.move('meli', 17.2, 7.4, 120);
+        await ctx.move('meli', 8.9, 7.4, 120);
+        await ctx.move('meli', 8.9, 17.3, 120);
+        await ctx.move('meli', P.potinho.x, P.potinho.y, 100);
+        ctx.face('meli', 'down');
+      })();
+      // a câmera volta pra cozinha, enquadrada acima da caixa de diálogo
+      await ctx.frame(4.2, 16.6, 1600);
+      await corrida;
       await ctx.emote('meli', 'note');
+      ctx.hearts('meli', 4);
       await ctx.say('meli', 'Nham nham nham...');
       await ctx.say('weng', 'Viu? Em dois segundos ela atravessou o apê inteiro.');
       await ctx.say('bella', 'Quem nunca, né, Meli? Por comida eu também atravesso.');
-      await ctx.unfocus(400);
+      ctx.pose('meli', 'meli-poses', 0);
+      await ctx.unfocus(500);
+      ctx.follow('weng', true);
       ctx.objective(Q, 'potinho');
       await ctx.say('weng', 'Agora ela já gosta de você uns 30%. Pra chegar nos 100%, só brincando.');
       ctx.toast('Pegue um novelo no cesto da sala');

@@ -24,6 +24,54 @@ const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({
 // e móveis vêm dos `blocks`, alinhados ao desenho.
 const ROW = '.'.repeat(32);
 
+/** Paredes e móveis da casa (a mesma planta serve para a casa decorada do pedido). */
+export const CASA_BLOCKS: TileRect[] = [
+  // Paredes externas
+  R(0, 0, 40, 1024), // esquerda
+  R(1496, 0, 1536, 1024), // direita
+  // Quarto: parede do fundo + divisória com a cozinha
+  R(0, 0, 875, 235),
+  R(826, 0, 892, 488),
+  // Cozinha: parede, geladeira, fogão e bancada
+  R(875, 0, 1536, 300),
+  // Divisória do meio + paredes da sala (passagens em x 155–270 e 910–1030)
+  R(0, 484, 155, 690),
+  R(270, 484, 910, 680),
+  R(1030, 484, 1536, 690),
+  // Parede de baixo (porta em x 690–800)
+  R(0, 912, 690, 1024),
+  R(800, 912, 1536, 1024),
+  // Quarto
+  R(40, 230, 258, 450), // cama (com folga dos lados para o cabelo não passar por cima)
+  R(272, 230, 448, 338), // escrivaninha + cadeira
+  R(458, 230, 538, 338), // penteadeira + banquinho
+  R(538, 230, 640, 322), // espelho + planta
+  R(635, 230, 818, 320), // guarda-roupa
+  // Cozinha
+  R(1045, 362, 1282, 470), // mesa + cadeiras (corredor livre entre o fogão e a cadeira de cima; a cadeira fica na frente de quem passa atrás)
+  R(1408, 300, 1496, 388), // planta
+  // Sala
+  R(60, 700, 138, 735), // planta (vaso)
+  R(218, 712, 318, 872), // rack da TV (encostado na parede: sem fresta atrás; embaixo dá pra passar)
+  R(408, 690, 548, 724), // mesinha + abajur
+  R(550, 690, 910, 745), // sofá
+  R(1062, 690, 1290, 756), // estante
+  R(1382, 740, 1480, 808), // planta
+];
+
+/** Profundidade: TV, plantas, cadeiras e vasos na frente de quem passa atrás. */
+export const CASA_OVERLAYS: NonNullable<MapDef['overlays']> = [
+  { x0: 246, y0: 645, x1: 294, y1: 800, base: 882, cut: 'dark' }, // só a tela escura da TV
+  { x0: 1360, y0: 660, x1: 1492, y1: 815, base: 808, cut: 'outline' }, // planta (recorte pelo contorno)
+  { x0: 40, y0: 605, x1: 165, y1: 745, base: 738, cut: 'outline' }, // planta do canto da sala
+  // cozinha: cadeiras dos lados e de baixo, e a planta do canto
+  { x0: 1040, y0: 312, x1: 1290, y1: 475, base: 472, cut: 'furniture', slice: true },
+  { x0: 1400, y0: 235, x1: 1500, y1: 392, base: 390, cut: 'furniture' },
+  // vasos na parede de baixo: na frente de quem passa atrás deles
+  { x0: 130, y0: 878, x1: 226, y1: 1012, base: 1010, cut: 'furniture' },
+  { x0: 1295, y0: 872, x1: 1392, y1: 1006, base: 1004, cut: 'furniture' },
+];
+
 /** Prólogo — casa da Bella em Piabetá (interior, cenário pintado). */
 export const casaBellaMap: MapDef = {
   id: 'piabeta-casa-bella',
@@ -47,39 +95,8 @@ export const casaBellaMap: MapDef = {
     ],
   },
 
-  blocks: [
-    // Paredes externas
-    R(0, 0, 40, 1024), // esquerda
-    R(1496, 0, 1536, 1024), // direita
-    // Quarto: parede do fundo + divisória com a cozinha
-    R(0, 0, 875, 235),
-    R(826, 0, 892, 488),
-    // Cozinha: parede, geladeira, fogão e bancada
-    R(875, 0, 1536, 300),
-    // Divisória do meio + paredes da sala (passagens em x 155–270 e 910–1030)
-    R(0, 484, 155, 690),
-    R(270, 484, 910, 680),
-    R(1030, 484, 1536, 690),
-    // Parede de baixo (porta em x 690–800)
-    R(0, 912, 690, 1024),
-    R(800, 912, 1536, 1024),
-    // Quarto
-    R(40, 230, 258, 450), // cama (com folga dos lados para o cabelo não passar por cima)
-    R(272, 230, 448, 338), // escrivaninha + cadeira
-    R(458, 230, 538, 338), // penteadeira + banquinho
-    R(538, 230, 640, 322), // espelho + planta
-    R(635, 230, 818, 320), // guarda-roupa
-    // Cozinha
-    R(1045, 362, 1282, 470), // mesa + cadeiras (corredor livre entre o fogão e a cadeira de cima; a cadeira fica na frente de quem passa atrás)
-    R(1408, 300, 1496, 388), // planta
-    // Sala
-    R(60, 700, 138, 735), // planta (vaso)
-    R(218, 712, 318, 872), // rack da TV (encostado na parede: sem fresta atrás; embaixo dá pra passar)
-    R(408, 690, 548, 724), // mesinha + abajur
-    R(550, 690, 910, 745), // sofá
-    R(1062, 690, 1290, 756), // estante
-    R(1382, 740, 1480, 808), // planta
-  ],
+  blocks: CASA_BLOCKS,
+
 
   props: [
     // porta-guarda-chuvas ao lado da porta (o rosa some quando a Bella pega)
@@ -90,17 +107,8 @@ export const casaBellaMap: MapDef = {
   // (a chuva nas janelas já está desenhada no cenário)
 
   // Profundidade: TV e planta da sala na frente de quem passa atrás
-  overlays: [
-    { x0: 246, y0: 645, x1: 294, y1: 800, base: 882, cut: 'dark' }, // só a tela escura da TV
-    { x0: 1360, y0: 660, x1: 1492, y1: 815, base: 808, cut: 'outline' }, // planta (recorte pelo contorno)
-    { x0: 40, y0: 605, x1: 165, y1: 745, base: 738, cut: 'outline' }, // planta do canto da sala
-    // cozinha: cadeiras dos lados e de baixo, e a planta do canto
-    { x0: 1040, y0: 312, x1: 1290, y1: 475, base: 472, cut: 'furniture', slice: true },
-    { x0: 1400, y0: 235, x1: 1500, y1: 392, base: 390, cut: 'furniture' },
-    // vasos na parede de baixo: na frente de quem passa atrás deles
-    { x0: 130, y0: 878, x1: 226, y1: 1012, base: 1010, cut: 'furniture' },
-    { x0: 1295, y0: 872, x1: 1392, y1: 1006, base: 1004, cut: 'furniture' },
-  ],
+  overlays: CASA_OVERLAYS,
+
 
   hotspots: [
     // Quarto
