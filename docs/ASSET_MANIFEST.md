@@ -123,7 +123,7 @@ Só a roupa casual da Bella tem os óculos rosados.
 
 ### LOTE 3 — Duque de Caxias (Capítulo 1)
 Apartamento do Weng (mora com os avós e a gata Meli): sala grande no centro ligando 2 quartos, banheiro e cozinha; cama com capa de esteira de bambu.
-Gatas da Bella (Piabetá): Pombo (preto) e Lala (branca com manchas marrons). Passeios: açaí, mercado, shopping.
+Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacificador). Gatas da Bella (Piabetá): Pombo (preto) e Lala (branca com manchas marrons). Passeios: açaí, mercado, shopping.
 
 | ID | Arte | Arquivo | Status |
 |---|---|---|---|
@@ -133,7 +133,8 @@ Gatas da Bella (Piabetá): Pombo (preto) e Lala (branca com manchas marrons). Pa
 | CHAR-022 | Avô do Weng (4×4 + retrato) | characters/avo2-weng.png | pedido |
 | CHAR-023 | Pombo, gato preto (4×4 + poses) | characters/pombo.png | pedido |
 | CHAR-024 | Lala, gata branca com manchas marrons (4×4 + poses) | characters/lala.png | pedido |
-| MAP-011 | Rua/entrada do prédio em Duque de Caxias | maps/duque-rua-bg.png | depois |
+| MAP-011 | Praça do Pacificador: entrada do prédio do Weng + Teatro Raul Cortez (Niemeyer) | maps/duque-praca-bg.png | pedido |
+| CIN-010 | Vista da janela: o casal olhando o Teatro Raul Cortez iluminado de cima, à noite | cinematics/duque-janela.png | pedido |
 | MAP-012 | Açaiteria (interior) | maps/duque-acai-bg.png | depois |
 | MAP-013 | Mercado (interior) | maps/duque-mercado-bg.png | depois |
 | MAP-014 | Shopping (praça de alimentação/corredor) | maps/duque-shopping-bg.png | depois |
