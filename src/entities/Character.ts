@@ -116,19 +116,46 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
   sit(x: number, seatY: number, dir: Direction = 'down'): void {
     this.sitting = true;
     this.anims.stop();
-    this.face(dir);
-    const fh = this.frame.height;
-    const fw = this.frame.width;
-    const legs = fh * this.headRatio * 0.3;
-    this.setCrop(0, 0, fw, fh - legs);
-    this.setPosition(x, seatY + legs * this.scaleY);
+    const who = this.charKey.startsWith('bella') ? 'bella' : this.charKey.startsWith('weng') ? 'weng' : '';
+    const sitKey = `${who}-sit`;
+    if (who && this.scene.textures.exists(sitKey)) {
+      // pose sentada de verdade: pés no chão, um pouco abaixo do assento
+      this.standKey = this.charKey;
+      this.setTexture(sitKey, 0);
+      this.setPosition(x, seatY + 7);
+      this.blinkTimer = this.scene.time.addEvent({
+        delay: 2600,
+        loop: true,
+        callback: () => {
+          this.setFrame(1);
+          this.scene.time.delayedCall(180, () => this.sitting && this.setFrame(0));
+        },
+      });
+    } else {
+      this.face(dir);
+      const fh = this.frame.height;
+      const fw = this.frame.width;
+      const legs = fh * this.headRatio * 0.3;
+      this.setCrop(0, 0, fw, fh - legs);
+      this.setPosition(x, seatY + legs * this.scaleY);
+    }
     (this.body as Phaser.Physics.Arcade.Body).reset(this.x, this.y);
-    this.setDepth(seatY + 2);
+    this.setDepth(seatY + 40);
   }
+
+  private standKey: string | null = null;
+  private blinkTimer: Phaser.Time.TimerEvent | null = null;
 
   standUp(): void {
     if (!this.sitting) return;
     this.sitting = false;
+    this.blinkTimer?.remove();
+    this.blinkTimer = null;
+    if (this.standKey) {
+      this.setTexture(this.standKey, 0);
+      this.standKey = null;
+      this.face(this.facing);
+    }
     this.setCrop();
   }
 

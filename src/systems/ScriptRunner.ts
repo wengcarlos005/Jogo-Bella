@@ -223,7 +223,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       scene.tempProps.delete(id);
     },
     illustration: (key, lines) => UI.illustration(key, lines),
-    backdrop: (key) => UI.backdrop(key),
+    backdrop: (key, rainy) => UI.backdrop(key, rainy),
 
     nerves(value, message) {
       const v = Math.max(0, Math.min(100, Math.round(value)));
@@ -247,11 +247,11 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       const pl = scene.player;
       pl.scripted = true;
       (pl.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
-      pl.sit(withWeng ? sx - 9 : sx, sy, 'down');
+      pl.sit(withWeng ? sx - 11 : sx, sy, 'down');
       if (withWeng) {
         weng!.stopFollowing();
         weng!.behavior = 'scripted';
-        weng!.sit(sx + 9, sy, 'down');
+        weng!.sit(sx + 11, sy, 'down');
       }
       await UI.fade(0, 260);
       AudioSystem.play('confirm');
@@ -359,6 +359,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       glow.destroy();
       big.destroy();
     },
+
+    hasArt: (key) => scene.textures.exists(key),
 
     playerTile: () => ({ x: (scene.player.x - 8) / 16, y: (scene.player.y + 1) / 16 - 1 }),
 

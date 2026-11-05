@@ -40,6 +40,9 @@ export const ASSETS: AssetEntry[] = [
   char('CHAR-012', 'bella-linho', 'characters/bella-linho.png', 136),
   char('CHAR-013', 'bella-festa', 'characters/bella-festa.png', 136),
   char('CHAR-014', 'bella-inverno', 'characters/bella-inverno.png', 136),
+  // Sentados (2 quadros: olhos abertos / fechados)
+  { id: 'CHAR-031', key: 'bella-sit', file: 'assets/characters/bella-sit.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 136 },
+  { id: 'CHAR-032', key: 'weng-sit', file: 'assets/characters/weng-sit.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 136 },
   char('CHAR-002', 'weng-casual', 'characters/weng-casual.png', 136),
   char('CHAR-021', 'weng-basica', 'characters/weng-basica.png', 136),
   char('CHAR-022', 'weng-social', 'characters/weng-social.png', 136),
@@ -90,6 +93,7 @@ export const ASSETS: AssetEntry[] = [
   // Ilustrações do álbum (320x200)
   { id: 'MEM-001', key: 'memory-pia-01', file: 'assets/cinematics/memory-pia-01.png', kind: 'image' },
   { id: 'MEM-002', key: 'memory-pia-02', file: 'assets/cinematics/memory-pia-02.png', kind: 'image' },
+  { id: 'CIN-002', key: 'cena-rota66-mesa', file: 'assets/cinematics/rota66-mesa.png', kind: 'image' },
   { id: 'MEM-004', key: 'memory-pia-04', file: 'assets/cinematics/memory-pia-04.png', kind: 'image' },
   ...['colar', 'oculos', 'celular', 'guardanapo', 'flor'].map(
     (n, i): AssetEntry => ({ id: `ICO-${String(10 + i).padStart(3, '0')}`, key: `icon-${n}`, file: `assets/ui/icon-${n}.png`, kind: 'image' }),

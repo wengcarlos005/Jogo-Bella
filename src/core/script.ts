@@ -64,7 +64,7 @@ export interface ScriptContext {
   moveProp(id: string, tx: number, ty: number, ms: number): Promise<void>;
   removeProp(id: string): void;
   /** Ilustração de fundo em tela cheia; os diálogos continuam por cima. null remove. */
-  backdrop(key: string | null): Promise<void>;
+  backdrop(key: string | null, rainy?: boolean): Promise<void>;
   /** Ilustração em tela cheia com legendas (avança com interagir). */
   illustration(key: string, lines: string[]): Promise<void>;
   /**
@@ -82,6 +82,8 @@ export interface ScriptContext {
   sit(seatX: number, seatY: number, lines?: [string, string][]): Promise<void>;
   /** Animação do beijo entre a Bella e o Weng (eles precisam estar frente a frente). */
   kiss(): Promise<void>;
+  /** Existe arte carregada com essa chave? */
+  hasArt(key: string): boolean;
   /** Tile atual da Bella. */
   playerTile(): { x: number; y: number };
   /** Mostra/esconde um personagem (ex.: dentro do carro). */

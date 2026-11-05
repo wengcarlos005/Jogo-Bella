@@ -195,7 +195,7 @@ function isLamp(r: number, g: number, b: number): boolean {
   const v = max / 255;
   const sat = max === 0 ? 0 : (max - min) / max;
   const greenish = g > r && g > b;
-  return (v < 0.3 && !greenish) || (sat > 0.35 && v > 0.62 && r >= g && !greenish);
+  return (v < 0.22 && !greenish) || (sat > 0.35 && v > 0.62 && r >= g && b < g && !greenish);
 }
 
 /** Converte um retângulo em tiles para pixels. */

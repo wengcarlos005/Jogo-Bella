@@ -158,7 +158,7 @@ class UIManagerImpl {
   private backdropEl: HTMLElement | null = null;
 
   /** Ilustração de fundo em tela cheia, com os diálogos por cima. null remove. */
-  async backdrop(key: string | null): Promise<void> {
+  async backdrop(key: string | null, rainy = false): Promise<void> {
     if (!key) {
       const el = this.backdropEl;
       this.backdropEl = null;
@@ -171,7 +171,7 @@ class UIManagerImpl {
     }
     const url = textureURL(key);
     if (!url) return;
-    const el = h('div', { class: 'backdrop' }, h('img', { src: url, alt: '' }));
+    const el = h('div', { class: `backdrop ${rainy ? 'rainy' : ''}` }, h('img', { src: url, alt: '' }), rainy ? h('div', { class: 'bd-rain' }) : null);
     this.backdropEl?.remove();
     this.backdropEl = el;
     this.root.append(el);

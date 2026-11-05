@@ -114,12 +114,21 @@ export class NPC extends Character {
         this.animateFromVelocity();
         return;
       }
+      if (!goal && d > 40) {
+        // sem rastro (Bella foi reposicionada): vai direto até ela
+        const dx = p.x - this.x;
+        const dy = p.y - this.y;
+        body.setVelocity((dx / d) * 120, (dy / d) * 120);
+        if (d > 160) this.setPosition(p.x - 14, p.y);
+        this.animateFromVelocity();
+        return;
+      }
       if (goal && this.followMoving && toGoal > 3) {
         const dx = goal.x - this.x;
         const dy = goal.y - this.y;
         const sp = d > 70 ? 140 : d > 40 ? 95 : 70;
         body.setVelocity((dx / toGoal) * sp, (dy / toGoal) * sp);
-        if (d > 160) this.setPosition(goal.x, goal.y);
+        if (d > 120) this.setPosition(goal.x, goal.y);
       } else {
         body.setVelocity(0, 0);
         this.followMoving = false;

@@ -28,11 +28,11 @@ const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({
 
 /** Canteiros pintados da pracinha onde dá para colher uma flor (missão da Dona Cida). */
 const FLOWER_BEDS: TileRect[] = [
-  R(80, 770, 200, 915), // amarelas e lilases (esquerda)
-  R(595, 862, 745, 950), // vermelhas (centro-esquerda)
-  R(880, 885, 1010, 950), // lilases (centro)
-  R(1410, 775, 1540, 880), // vermelhas (direita)
-  R(1425, 860, 1545, 935), // lilases (direita, embaixo)
+  R(80, 765, 200, 860), // amarelas (esquerda)
+  R(80, 860, 200, 915), // lilases (esquerda)
+  R(600, 865, 750, 950), // vermelhas (centro-esquerda)
+  R(1410, 770, 1530, 860), // vermelhas (direita)
+  R(1430, 870, 1530, 935), // lilases (direita)
 ];
 
 const flowerHotspots: HotspotDef[] = FLOWER_BEDS.map((rect, i) => ({
@@ -86,7 +86,7 @@ const scripts: Record<string, Script> = {
   async encontro(ctx) {
     // Ela vê o Weng lá na esquina e vai chegando, passo a passo, cada vez mais nervosa.
     const sx = ctx.playerTile().x;
-    const stop = 29.4;
+    const stop = 26.7;
     const step = (stop - sx) / 3;
     ctx.face('player', 'right');
     await ctx.emote('bella', 'exclaim');
@@ -214,8 +214,8 @@ const scripts: Record<string, Script> = {
   async 'portao-vizinha'(ctx) {
     await ctx.say('bella', 'A casa da Dona Cida. Sempre cheirando a bolo. Melhor não entrar sem ser convidada.');
   },
-  async letreiro(ctx) {
-    await ctx.say('bella', `A lanchonete do bairro. Boa, mas hoje o encontro é na ${ROTA}!`);
+  async 'casa-vizinho'(ctx) {
+    await ctx.say('bella', 'A casa do seu Jorge. Ele cuida dessas plantas como se fossem filhos.');
   },
 
   async 'placa-parque'(ctx) {
@@ -228,10 +228,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'O carro do vizinho. Sempre estacionado exatamente aqui.');
   },
   async banco(ctx) {
-    await ctx.sit(555, 728, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']]);
+    await ctx.sit(555, 712, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']]);
   },
   async banco2(ctx) {
-    await ctx.sit(1063, 728, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']]);
+    await ctx.sit(1063, 712, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']]);
   },
 };
 
@@ -246,71 +246,69 @@ export const ruaMap: MapDef = {
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 21 }, () => '.'.repeat(34)),
 
+  // Medido elemento por elemento sobre art-source/maps/piabeta-rua-v2.webp (1619x971)
   blocks: [
-    // Bordas do cenário (árvores do fundo, laterais, fim da imagem)
-    R(0, 0, 930, 40),
-    R(1010, 0, 1619, 40),
+    // fundo: árvores, casas e muros/cercas (portão da Bella aberto em x 288–360)
+    R(0, 0, 1619, 290),
+    R(0, 290, 288, 372),
+    R(360, 290, 900, 372),
+    R(1010, 290, 1619, 372),
+    // trilha: aberta até a placa, depois mato
+    R(900, 0, 1010, 40),
+    R(1010, 205, 1080, 335), // placa
+    // bordas
     R(1612, 0, 1700, 1100),
-    R(0, 925, 1700, 1100),
-    // Casa da Bella + cerca (portão em x 285–360)
-    R(0, 0, 285, 372),
-    R(360, 0, 525, 372),
-    R(285, 0, 360, 292),
-    // Casa da Dona Cida + cerca + arbustos até a trilha
-    R(520, 0, 930, 372),
-    // Trilha do parque: arbustos e placa à direita
-    R(1010, 0, 1105, 372),
-    // Hamburgueria e vasos
-    R(1100, 0, 1619, 338),
-    R(1112, 270, 1190, 362),
-    R(1538, 270, 1612, 362),
-    // Rua: carro e postes
-    R(262, 432, 498, 532),
-    R(118, 595, 166, 640),
-    R(1462, 595, 1515, 640),
-    // Pracinha: cerca viva (abertura do caminho em x 770–850)
-    R(0, 625, 770, 705),
-    R(850, 625, 1619, 705),
-    R(0, 625, 70, 971),
-    R(1548, 625, 1619, 971),
-    // Calçada logo ao sul das luminárias (senão a Bella fica "atrás" do poste por cima dele)
-    R(104, 440, 228, 640),
-    R(1404, 440, 1528, 640),
-    // Bancos (inclusive atrás deles), lixeira, árvores (copa sólida)
-    R(482, 690, 628, 775),
-    R(992, 690, 1135, 775),
-    R(268, 800, 335, 892), // tronco esquerdo
-    R(1310, 800, 1385, 892), // tronco direito
-    R(925, 728, 972, 762),
-    R(268, 838, 322, 892),
-    R(1318, 838, 1382, 892),
-    // Canteiros floridos
+    R(0, 950, 1700, 1100),
+    // postes (base e a calçada logo ao sul da luminária)
+    R(118, 455, 212, 640),
+    R(1418, 455, 1512, 640),
+    // carro (corpo)
+    R(265, 470, 497, 533),
+    // pracinha: cerca viva com a passagem do meio (x 770–848)
+    R(0, 628, 770, 700),
+    R(848, 628, 1619, 700),
+    R(0, 628, 30, 971),
+    R(1552, 628, 1619, 971),
+    R(0, 918, 1619, 971),
+    // bancos (assento e encosto), lixeira, troncos
+    R(483, 688, 627, 776),
+    R(990, 688, 1137, 776),
+    R(927, 697, 973, 765),
+    R(262, 790, 330, 892),
+    R(1310, 790, 1388, 892),
+    // canteiros
     ...FLOWER_BEDS,
   ],
 
-  // Profundidade: o que fica NA FRENTE de quem passa atrás
+  // Profundidade (o que passa NA FRENTE de quem está atrás)
   overlays: [
-    { x0: 252, y0: 400, x1: 505, y1: 542, base: 532, cut: 'furniture' }, // carro
-    { x0: 140, y0: 535, x1: 470, y1: 800, base: 880, cut: 'foliage', fade: true }, // copa esquerda
-    { x0: 1185, y0: 540, x1: 1465, y1: 800, base: 885, cut: 'foliage', fade: true }, // copa direita
+    { x0: 255, y0: 405, x1: 505, y1: 540, base: 533, cut: 'furniture' }, // carro
+    { x0: 128, y0: 372, x1: 212, y1: 468, base: 638, cut: 'lamp' }, // poste esquerdo (luminária)
+    { x0: 122, y0: 468, x1: 162, y1: 640, base: 638, cut: 'lamp' }, // poste esquerdo (haste)
+    { x0: 1418, y0: 372, x1: 1502, y1: 468, base: 638, cut: 'lamp' }, // poste direito (luminária)
+    { x0: 1468, y0: 468, x1: 1508, y1: 640, base: 638, cut: 'lamp' }, // poste direito (haste)
+    { x0: 165, y0: 550, x1: 455, y1: 790, base: 892, cut: 'foliage', fade: true }, // copa esquerda
+    { x0: 1180, y0: 560, x1: 1500, y1: 790, base: 892, cut: 'foliage', fade: true }, // copa direita
+    { x0: 478, y0: 722, x1: 632, y1: 780, base: 776, cut: 'furniture' }, // banco esq. (assento da frente e pés)
+    { x0: 985, y0: 722, x1: 1142, y1: 780, base: 776, cut: 'furniture' }, // banco dir. (assento da frente e pés)
   ],
 
   hotspots: [
     ...flowerHotspots,
-    { rect: R(368, 280, 415, 385), interact: 'caixa', label: 'Caixa de correio' },
-    { rect: R(698, 290, 752, 372), interact: 'portao-vizinha', label: 'Casa da Dona Cida' },
-    { rect: R(1005, 210, 1078, 300), interact: 'placa-parque', label: 'Ler' },
-    { rect: R(262, 410, 498, 532), interact: 'carro', label: 'Carro' },
-    { rect: R(482, 685, 628, 775), interact: 'banco', label: 'Sentar' },
-    { rect: R(992, 685, 1135, 775), interact: 'banco2', label: 'Sentar' },
-    { rect: R(1240, 40, 1480, 150), interact: 'letreiro', label: 'Ver' },
+    { rect: R(372, 285, 414, 382), interact: 'caixa', label: 'Caixa de correio' },
+    { rect: R(700, 300, 760, 372), interact: 'portao-vizinha', label: 'Casa da Dona Cida' },
+    { rect: R(1005, 200, 1085, 340), interact: 'placa-parque', label: 'Ler' },
+    { rect: R(262, 410, 500, 535), interact: 'carro', label: 'Carro' },
+    { rect: R(483, 650, 627, 776), interact: 'banco', label: 'Sentar' },
+    { rect: R(990, 650, 1137, 776), interact: 'banco2', label: 'Sentar' },
+    { rect: R(1325, 290, 1415, 372), interact: 'casa-vizinho', label: 'Portão' },
   ],
 
   npcs: [
     {
       id: 'weng',
       sprite: 'weng',
-      tx: 32.3,
+      tx: 28.6,
       ty: 8.0,
       facing: 'left',
       interact: 'weng',
@@ -322,15 +320,9 @@ export const ruaMap: MapDef = {
     'from-casa': { tx: 6.2, ty: 7.3, facing: 'down' },
   },
   exits: [
-    { rect: R(290, 292, 355, 322), toMap: 'piabeta-casa-bella', toSpawn: 'from-rua', sfx: 'door' },
+    { rect: R(292, 340, 356, 374), toMap: 'piabeta-casa-bella', toSpawn: 'from-rua', sfx: 'door' },
     {
-      rect: R(1300, 330, 1432, 350),
-      toMap: 'piabeta-rua',
-      toSpawn: 'from-casa',
-      blockedIf: () => `A lanchonete do bairro. Hoje o lanche é na ${ROTA}!`,
-    },
-    {
-      rect: R(930, 0, 1010, 30),
+      rect: R(905, 40, 1005, 70),
       toMap: 'piabeta-rua',
       toSpawn: 'from-casa',
       blockedIf: () => 'Uma trilha para o mato. Hoje o plano é outro!',
@@ -339,7 +331,7 @@ export const ruaMap: MapDef = {
   triggers: [
     {
       id: 'encontro',
-      rect: R(1250, 372, 1612, 460),
+      rect: R(1090, 372, 1160, 460),
       script: 'encontro',
       once: true,
       enabledIf: () => esperandoNaEsquina(),

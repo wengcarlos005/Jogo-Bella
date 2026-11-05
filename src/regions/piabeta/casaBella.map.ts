@@ -62,8 +62,8 @@ export const casaBellaMap: MapDef = {
     R(1045, 318, 1282, 470), // mesa + cadeiras
     R(1408, 300, 1496, 388), // planta
     // Sala
-    R(40, 690, 150, 735), // planta
-    R(215, 690, 318, 888), // TV
+    R(60, 700, 138, 735), // planta (vaso)
+    R(222, 815, 312, 885), // TV (só a base do rack; atrás dela dá pra passar)
     R(408, 690, 548, 724), // mesinha + abajur
     R(550, 690, 910, 745), // sofá
     R(1062, 690, 1290, 756), // estante

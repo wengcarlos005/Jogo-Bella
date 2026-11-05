@@ -90,6 +90,9 @@ const scripts: Record<string, Script> = {
     ctx.letterbox(true);
     await ctx.focus(3.56, 10.6, 1.6, 10);
     await ctx.fadeIn(500);
+    // arte dedicada da mesa (cinematics/rota66-mesa.png), se existir
+    const mesaArt = ctx.hasArt('cena-rota66-mesa');
+    if (mesaArt) await ctx.backdrop('cena-rota66-mesa', true);
     await ctx.narrate('Os lanches chegam. O cheiro é incrível. O nervosismo também.');
     await ctx.say('weng', 'E aí? Aprovado?');
     const c1 = await ctx.choose('bella', '(Primeira mordida...)', ['"Melhor hambúrguer da minha vida."', '"Hmm... preciso de mais uma mordida pra decidir."', 'Fazer um joinha de boca cheia']);
@@ -101,7 +104,8 @@ const scripts: Record<string, Script> = {
     }
     // Presente da Bella: Vale Beijo, Vale Abraço e chocolates
     await ctx.say('bella', 'Ah! Eu também trouxe uma coisa pra você. Fecha os olhos.');
-    await ctx.backdrop('memory-pia-02');
+    await ctx.backdrop('memory-pia-02', true);
+    void mesaArt;
     await ctx.emote('weng', 'question');
     ctx.take('vale-beijo');
     ctx.take('chocolates');
@@ -211,7 +215,7 @@ export const rota66Map: MapDef = {
     R(1005, 840, 1455, 905),
     // floreiras e plantas da frente
     R(0, 905, 645, 1100),
-    R(645, 815, 890, 1100), // porta de vidro (não dá pra pisar em cima)
+    R(645, 938, 890, 1100), // porta de vidro (não dá pra pisar em cima)
     R(890, 905, 1536, 1100),
     R(540, 880, 625, 975),
     R(905, 880, 995, 975),
@@ -243,11 +247,11 @@ export const rota66Map: MapDef = {
 
   npcs: [{ id: 'atendente', sprite: 'atendente', tx: 15.3, ty: 9.0, facing: 'down', interact: 'atendente' }],
   spawns: {
-    'from-fora': { tx: 15.5, ty: 15.6, facing: 'up' },
+    'from-fora': { tx: 15.5, ty: 17.0, facing: 'up' },
   },
   exits: [
     {
-      rect: R(645, 780, 890, 815), // encostar na porta de vidro = sair
+      rect: R(645, 905, 890, 938), // encostar na porta de vidro = sair
       toMap: 'piabeta-rota66-fora',
       toSpawn: 'from-rota66',
       sfx: 'door',
