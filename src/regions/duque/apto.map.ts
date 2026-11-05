@@ -266,9 +266,31 @@ const scripts: Record<string, Script> = {
   },
   async estante(ctx) {
     const jogos = PERSONAL.favorites.jogos;
-    await ctx.say('bella', `Quanto jogo! Olha, tem ${jogos[0]} e ${jogos[1]}!`);
-    await ctx.say('weng', 'Depois a gente joga. Mas já vou avisando: no Taco Gato eu sou imbatível.');
-    await ctx.say('bella', 'Você fala isso agora...');
+    if (!ctx.flag('dq-cartas-1')) {
+      await ctx.say('bella', `Quanto jogo! Olha, tem ${jogos[0]} e ${jogos[1]}!`);
+      await ctx.say('weng', 'E tem o Bate-Gato, que eu inventei com cartas da Meli, do Pombo e da Lala. Já vou avisando: eu sou imbatível.');
+      await ctx.say('bella', 'Você fala isso agora...');
+    }
+    if (QuestSystem.isActive(Q)) {
+      await ctx.say('weng', 'Depois a gente joga. Primeiro, a Meli tem que te aprovar.');
+      return;
+    }
+    const c = await ctx.choose('bella', 'Jogar Bate-Gato com o Weng?', ['Bora jogar!', 'Agora não']);
+    if (c === 1) return;
+    ctx.setFlag('dq-cartas-1');
+    const r = await ctx.cards({ title: 'Bate-Gato' });
+    if (r.won) {
+      await ctx.emote('bella', 'heart');
+      await ctx.say('bella', `${r.bella} a ${r.weng}! Quem é imbatível agora, hein?`);
+      await ctx.say('weng', 'Sorte de principiante. Revanche!');
+      if (!ctx.flag('dq-cartas-venceu')) {
+        ctx.setFlag('dq-cartas-venceu');
+        await ctx.memory('mem-dq-03');
+      }
+    } else {
+      await ctx.say('weng', `${r.weng} a ${r.bella}. Eu avisei.`);
+      await ctx.say('bella', 'Revanche. Agora. E sem roubar.');
+    }
   },
   async janela(ctx) {
     if (objActive('janela') && objDone('carinho')) {
@@ -412,7 +434,7 @@ export const aptoMap: MapDef = {
     { rect: R(85, 165, 292, 422), interact: 'camaWeng', label: 'Cama' },
     { rect: R(380, 140, 560, 332), interact: 'computador', label: 'Computador' },
     { rect: R(560, 30, 700, 332), interact: 'janela', label: 'Janela', markerIf: () => objActive('janela') && objDone('carinho') },
-    { rect: R(640, 60, 805, 280), interact: 'estante', label: 'Estante' },
+    { rect: R(640, 60, 805, 280), interact: 'estante', label: 'Jogar cartas' },
     { rect: R(805, 130, 895, 312), interact: 'arranhador', label: 'Arranhador', markerIf: () => objActive('achar-meli') && GameState.is('dq-pista') },
     { rect: R(290, 355, 380, 428), interact: 'caminha', label: 'Caminha' },
     // Quarto dos avós

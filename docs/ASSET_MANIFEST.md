@@ -148,6 +148,8 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CIN-011 | O pedido de namoro (Weng com o buquê atrás dela, quarto iluminado) | cinematics/pedido.png | pedido |
 | CIN-012 | Páscoa (chocolates + cartinha de coelho) | cinematics/pascoa.png | depois |
 | CIN-013 | A primeira noite | cinematics/primeira-noite.png | ✅ recebido |
+| MG-A | Ingredientes do açaí (12) | minigames/acai-*.png | ✅ no minijogo do açaí |
+| MG-C | Cartas do Bate-Gato (8) | minigames/carta-*.png | ✅ no minijogo de cartas |
 | CIN-014 | Fazendo as pazes depois da briga | cinematics/pazes.png | depois |
 | CHAR-025 | Avó da Bella (4×4 + retrato) | characters/avo-bella.png | pedido |
 | CHAR-026 | Tia Jaque (4×4 + retrato) | characters/tia-jaque.png | pedido |

@@ -1,3 +1,4 @@
+import { playCardGame, type CardResult } from './screens/CardGame';
 import { playAcaiGame, type AcaiOptions, type AcaiResult } from './screens/AcaiGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -128,6 +129,10 @@ class UIManagerImpl {
 
   acai(opts: AcaiOptions): Promise<AcaiResult> {
     return playAcaiGame(this.root, opts);
+  }
+
+  cards(opts: { title?: string; rounds?: number } = {}): Promise<CardResult> {
+    return playCardGame(this.root, opts);
   }
 
   private bars: HTMLElement[] = [];

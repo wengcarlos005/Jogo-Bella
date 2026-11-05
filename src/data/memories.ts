@@ -71,6 +71,14 @@ export const MEMORIES: MemoryDef[] = [
     text: 'O Weng disse "pede o que você quiser". Eu pedi. Ele ficou com a parte sem complemento, como manda a regra de dividir açaí.',
     image: 'memory-dq-02',
   },
+  {
+    id: 'mem-dq-03',
+    region: 'duque-de-caxias',
+    title: 'O imbatível perdeu',
+    year: 'Ano 1',
+    text: 'O Weng jurava que era imbatível nas cartas. Até jogar comigo.',
+    image: 'memory-dq-03',
+  },
 ];
 
 export const MEMORY_GOAL = 50;

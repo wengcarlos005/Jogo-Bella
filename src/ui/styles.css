@@ -1457,3 +1457,32 @@ html, body {
 }
 .ac-talk .bg-msg:empty { display: none; }
 .ac-talk .ac-helper { align-self: flex-end; flex: none; }
+
+/* ---------- Minigame de cartas: Bate-Gato ---------- */
+.cg-title { background: #5b2c83; box-shadow: 0 calc(var(--u) * 1.5) 0 #33174d; }
+.cg-table {
+  display: grid; grid-template-columns: 1fr 1.6fr 1fr; align-items: center; gap: calc(var(--u) * 4);
+  background: radial-gradient(ellipse at 50% 40%, #3f7a52, #24503a 75%);
+  border: calc(var(--u) * 1.2) solid #6b4a2b; border-radius: calc(var(--u) * 5);
+  padding: calc(var(--u) * 5); color: var(--cream);
+  box-shadow: inset 0 0 calc(var(--u) * 10) rgba(0, 0, 0, 0.35);
+}
+.cg-player { display: flex; flex-direction: column; align-items: center; gap: calc(var(--u) * 1.5); font-weight: 800; }
+.cg-player img { width: calc(var(--u) * 34); image-rendering: pixelated; border-radius: calc(var(--u) * 3); background: rgba(255, 255, 255, 0.15); }
+.cg-player b { font-family: var(--font-pixel); font-size: clamp(20px, calc(var(--u) * 14), 44px); color: var(--gold); text-shadow: 0 2px 0 #000; }
+.cg-center { display: flex; flex-direction: column; align-items: center; gap: calc(var(--u) * 1.5); }
+.cg-word { font-family: var(--font-pixel); font-size: clamp(18px, calc(var(--u) * 13), 40px); color: #fff; text-shadow: 0 2px 0 #000; min-height: 1.2em; }
+.cg-word.cg-say { animation: pop 260ms cubic-bezier(.2, 1.6, .4, 1); }
+.cg-who { font-size: clamp(10px, calc(var(--u) * 5), 15px); opacity: 0.85; min-height: 1.2em; }
+.cg-pile { position: relative; background: none; border: none; padding: 0; cursor: pointer; }
+.cg-card { width: calc(var(--u) * 52); image-rendering: pixelated; filter: drop-shadow(0 calc(var(--u) * 2) 0 rgba(0, 0, 0, 0.35)); }
+.cg-card.cg-flip { animation: cgFlip 220ms ease-out; }
+@keyframes cgFlip { from { transform: rotateY(90deg) scale(0.9); } }
+.cg-hand { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: calc(var(--u) * 26); opacity: 0; pointer-events: none; }
+.cg-slap-b .cg-hand, .cg-slap-w .cg-hand { animation: cgSlap 420ms ease-out; }
+.cg-slap-w .cg-hand { filter: hue-rotate(160deg); }
+@keyframes cgSlap { 0% { opacity: 0; transform: translateY(-30%) scale(1.4); } 30% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+.cg-wrong { animation: shake 300ms; }
+.cg-left { font-size: clamp(10px, calc(var(--u) * 5), 14px); opacity: 0.8; }
+.cg-msg { text-align: center; font-weight: 800; min-height: 1.4em; font-size: clamp(12px, calc(var(--u) * 6.5), 20px); }
+.cg-rules { text-align: center; color: var(--ink-soft); font-size: clamp(9px, calc(var(--u) * 4.5), 13px); }
