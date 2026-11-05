@@ -139,7 +139,15 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | MAP-013 | Mercado (interior) | maps/duque-mercado-bg.png | depois |
 | MAP-014 | Shopping da Multidão (interior: corredor de lojinhas de cabelo, casa, doces) | maps/duque-multidao-bg.png | pedido |
 | ICON-020.. | Achadinhos: piranha de cabelo, creme de cabelo, scrunchie, potinho organizador, vela cheirosa, pano de prato fofo, paçoca, bala de goma, chocolate | ui/icon-*.png | depois |
-| CIN-010.. | Ilustrações: primeira noite, briga boba, surpresa, convite para Petrópolis | cinematics/duque-*.png | depois |
+| MAP-015 | Cinema do shopping (saguão + entrada da sala) | maps/duque-cinema-bg.png | depois |
+| MAP-016 | Quarto da Bella decorado para o pedido (variação do quarto: luzes, fotos, origamis, carta, chocolates) | maps/piabeta-quarto-pedido-bg.png | pedido |
+| CIN-011 | O pedido de namoro (Weng com o buquê atrás dela, quarto iluminado) | cinematics/pedido.png | pedido |
+| CIN-012 | Páscoa (chocolates + cartinha de coelho) | cinematics/pascoa.png | depois |
+| CIN-013 | A primeira noite | cinematics/primeira-noite.png | depois |
+| CIN-014 | Fazendo as pazes depois da briga | cinematics/pazes.png | depois |
+| CHAR-025 | Avó da Bella (4×4 + retrato) | characters/avo-bella.png | pedido |
+| CHAR-026 | Tia Jaque (4×4 + retrato) | characters/tia-jaque.png | pedido |
+| CHAR-027 | Kelly, prima da Bella (4×4 + retrato) | characters/kelly.png | pedido |
 
 ### LOTE 4–6 — Viagens do Ano 1 e 2 (Fases 5–6)
 Por cidade: 2–4 cenários pintados + camadas frontais, 3–6 NPCs, objetos-chave dos minigames, 3–4 ilustrações de memória. Lista detalhada será gerada no início de cada fase.
