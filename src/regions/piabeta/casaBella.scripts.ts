@@ -185,11 +185,16 @@ export const casaScripts: Record<string, Script> = {
       return;
     }
     if (!ctx.objectiveDone(Q, 'mae')) {
-      // posiciona os três lado a lado (sem empilhar)
+      // os três em triângulo (mesma distância entre eles), longe do porta-guarda-chuvas;
+      // o Weng para de seguir durante a conversa para não andar por cima da mãe
       await ctx.fadeOut(200);
-      ctx.place('player', 10.2, 16.0, 'right');
-      ctx.place('mae-bella', 12.8, 16.0, 'down');
-      ctx.place('weng', 15.4, 16.0, 'left');
+      ctx.follow('weng', false);
+      ctx.place('mae-bella', 9.6, 15.5, 'down');
+      ctx.place('player', 8.1, 17.8, 'up');
+      ctx.place('weng', 11.1, 17.8, 'up');
+      ctx.face('player', 'mae-bella');
+      ctx.face('weng', 'mae-bella');
+      await ctx.frame(9.6, 17.0, 0);
       await ctx.fadeIn(250);
       await ctx.say('bella', 'Mãe, esse é o Weng.');
       await ctx.say('mae-bella', 'Ah, então você que é o Weng! Prazer, querido. A Bella fala de você.');
@@ -211,6 +216,8 @@ export const casaScripts: Record<string, Script> = {
       }
       await ctx.say('mae-bella', 'Juízo, hein, vocês dois. E cuida bem dela.');
       await ctx.say('weng', 'Pode deixar.');
+      await ctx.unfocus(500);
+      ctx.follow('weng', true);
       ctx.objective(Q, 'mae');
       if (ctx.objectiveDone(Q, 'pai')) ctx.toast('Saia pela porta da frente');
       return;
@@ -226,6 +233,7 @@ export const casaScripts: Record<string, Script> = {
     }
     if (!ctx.objectiveDone(Q, 'pai')) {
       await ctx.fadeOut(200);
+      ctx.follow('weng', false);
       ctx.place('player', 18.8, 8.3, 'right');
       ctx.place('pai-bella', 21.0, 8.3, 'left');
       ctx.place('weng', 19.9, 10.1, 'up');
@@ -248,6 +256,7 @@ export const casaScripts: Record<string, Script> = {
       await ctx.say('weng', 'Sim, senhor!');
       await ctx.emote('pai-bella', 'note');
       await ctx.say('pai-bella', '...Bom rapaz.');
+      ctx.follow('weng', true);
       ctx.objective(Q, 'pai');
       if (ctx.objectiveDone(Q, 'mae')) ctx.toast('Saia pela porta da frente');
       return;

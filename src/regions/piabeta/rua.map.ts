@@ -85,9 +85,12 @@ const scripts: Record<string, Script> = {
 
   async encontro(ctx) {
     // Ela vê o Weng lá na esquina e vai chegando, passo a passo, cada vez mais nervosa.
-    const sx = ctx.playerTile().x;
+    const here = ctx.playerTile();
+    const sx = Math.min(here.x, 24.5);
     const stop = 26.7;
     const step = (stop - sx) / 3;
+    // vindo pela rua: primeiro sobe para a calçada, na frente dele
+    if (Math.abs(here.y - 8.0) > 0.3) await ctx.move('player', sx, 8.0, 40);
     ctx.face('player', 'right');
     await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', '(É ele. Ali na esquina. Com um guarda-chuva azul.)');
@@ -331,7 +334,8 @@ export const ruaMap: MapDef = {
   triggers: [
     {
       id: 'encontro',
-      rect: R(1090, 372, 1160, 460),
+      // faixa inteira (calçada + rua): chegando por cima, pela rua ou subindo da pracinha, dispara igual
+      rect: R(1040, 372, 1200, 628),
       script: 'encontro',
       once: true,
       enabledIf: () => esperandoNaEsquina(),

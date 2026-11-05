@@ -52,6 +52,11 @@ export interface ScriptContext {
   /** Câmera de cinema: foca no tile (tx, ty) com zoom relativo (1 = normal). */
   focus(tx: number, ty: number, zoom?: number, ms?: number): Promise<void>;
   /** Volta a câmera para seguir a Bella. */
+  /**
+   * Enquadra um grupo de personagens (pés na altura ty) acima da caixa de diálogo,
+   * mesmo na borda de baixo do mapa. Desfaz com unfocus().
+   */
+  frame(tx: number, ty: number, ms?: number): Promise<void>;
   unfocus(ms?: number): Promise<void>;
   letterbox(on: boolean): void;
   /** Explosão de corações sobre um personagem. */

@@ -19,6 +19,13 @@ export const PERSONAL = {
    */
   bellaStepdad: { name: 'Alexandre', chamado: 'Alexandre' },
 
+  /** Avós do Weng (moram com ele no apartamento em Duque de Caxias). */
+  wengGrandparents: { avo: 'Vó', avoh: 'Vô' },
+  /** Gatos: Meli (do Weng, laranja); Pombo (preto) e Lala (branca com manchas marrons) da Bella. */
+  pets: { weng: ['Meli'], bella: ['Pombo', 'Lala'] },
+  /** Família da Bella que pode aparecer: tia Jaque (mora perto) e a avó. */
+  bellaFamily: { tia: 'Jaque' },
+
   /** Datas reais (formato livre, ex.: "12/03/2023"). Deixe '' se não souber. */
   dates: {
     firstDate: '',

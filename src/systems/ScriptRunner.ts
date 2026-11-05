@@ -158,8 +158,28 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       return new Promise((r) => scene.time.delayedCall(ms + 20, () => { cam.centerOn(p.x, p.y - 12); r(undefined); }));
     },
 
+    frame(tx, ty, ms = 500) {
+      const cam = scene.cameras.main;
+      const p = scene.tile(tx, ty);
+      cam.stopFollow();
+      // a caixa de diálogo cobre ~30% de baixo da tela: deixa a câmera descer além do mapa
+      // (essa faixa vazia fica escondida atrás da caixa) e centraliza o grupo na parte visível
+      const b = cam.getBounds();
+      scene.data.set('camBounds', b);
+      cam.setBounds(b.x, b.y, b.width, b.height + 90);
+      const cy = p.y + 14;
+      if (ms <= 0) cam.centerOn(p.x, cy);
+      else cam.pan(p.x, cy, ms, 'Sine.easeInOut');
+      return new Promise((r) => scene.time.delayedCall(Math.max(ms, 0) + 20, () => { cam.centerOn(p.x, cy); r(undefined); }));
+    },
+
     unfocus(ms = 700) {
       const cam = scene.cameras.main;
+      const saved = scene.data.get('camBounds') as Phaser.Geom.Rectangle | undefined;
+      if (saved) {
+        cam.setBounds(saved.x, saved.y, saved.width, saved.height);
+        scene.data.remove('camBounds');
+      }
       cam.zoomTo(RENDER_SCALE, ms, 'Sine.easeInOut');
       cam.pan(scene.player.x, scene.player.y - 8, ms, 'Sine.easeInOut');
       return new Promise((r) =>
