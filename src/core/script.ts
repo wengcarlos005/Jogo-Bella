@@ -74,6 +74,14 @@ export interface ScriptContext {
   nerves(value: number, message?: string): void;
   /** Guarda-chuva: 'up' aberto, 'hide' abaixado escondendo o rosto, 'off' fechado. */
   umbrella(who: string, mode: 'up' | 'hide' | 'off'): void;
+  /**
+   * Sentar num banco/sofá: Bella (e o Weng, se estiver junto) sentam lado a lado.
+   * Coordenadas em px do cenário ORIGINAL: centro do assento e altura do assento.
+   * Resolve quando a jogadora levanta (anda ou aperta interagir).
+   */
+  sit(seatX: number, seatY: number, lines?: [string, string][]): Promise<void>;
+  /** Animação do beijo entre a Bella e o Weng (eles precisam estar frente a frente). */
+  kiss(): Promise<void>;
   /** Tile atual da Bella. */
   playerTile(): { x: number; y: number };
   /** Mostra/esconde um personagem (ex.: dentro do carro). */

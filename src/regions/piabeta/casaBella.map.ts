@@ -108,7 +108,7 @@ export const casaBellaMap: MapDef = {
     // Sala
     { rect: R(215, 650, 318, 888), interact: 'tv', label: 'TV' },
     { rect: R(1062, 545, 1290, 758), interact: 'estante', label: 'Estante' },
-    { rect: R(550, 600, 910, 748), interact: 'sofa', label: 'Sofá' },
+    { rect: R(550, 600, 910, 748), interact: 'sofa', label: 'Sentar' },
     {
       rect: R(620, 820, 700, 925),
       interact: 'guarda-chuva',

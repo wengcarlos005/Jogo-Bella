@@ -71,10 +71,8 @@ const scripts: Record<string, Script> = {
     ctx.face('player', 'right');
     ctx.face('weng', 'left');
     await ctx.focus(13.5, 4.7, 2.1, 2200);
-    ctx.hearts('bella', 14);
-    ctx.hearts('weng', 14);
-    await ctx.wait(1200);
-    await ctx.fadeOut(1800, '#fff3f6');
+    await ctx.kiss();
+    await ctx.fadeOut(1600, '#fff3f6');
     ctx.objective(Q, 'beijo');
     await ctx.illustration('memory-pia-03', ['O primeiro beijo.', `Piabetá, ${dateOrPlaceholder(PERSONAL.dates.firstKiss)}. Debaixo de chuva.`]);
 
@@ -119,7 +117,16 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Um laguinho com vitórias-régias e uma pontezinha. Esse parque pensou em tudo.');
   },
   async banco(ctx) {
-    await ctx.say('weng', 'Um banco na luz do poste. Clássico.');
+    await ctx.sit(325, 628, [['weng', 'Um banco na luz do poste. Clássico.'], ['bella', 'Clássico e perfeito.']]);
+  },
+  async banco2(ctx) {
+    await ctx.sit(1052, 424, [['bella', 'Olha o laguinho daqui. Dá pra ouvir os sapos.'], ['weng', 'Eles tão cantando pra gente.']]);
+  },
+  async banco3(ctx) {
+    await ctx.sit(1367, 655, [['weng', 'Se eu pudesse, parava o tempo agora.'], ['bella', '...Eu também.']]);
+  },
+  async banco4(ctx) {
+    await ctx.sit(275, 262, [['bella', 'O barulhinho do chafariz é tão calmo.'], ['weng', 'Você também me deixa calmo. Mesmo nervoso.']]);
   },
   async weng(ctx) {
     if (objActive('passear')) await ctx.say('weng', 'Vamos seguindo o caminho, pro meio do parque.');
@@ -205,12 +212,29 @@ export const parqueMap: MapDef = {
     { x0: 735, y0: 262, x1: 850, y1: 352, base: 345 },
   ],
 
+  // Noite (o passeio é depois do lanche): véu escuro + postes e lanternas acesos
+  lighting: {
+    darkness: 0.6,
+    lights: [
+      { x: 416, y: 508, r: 230 },
+      { x: 959, y: 334, r: 230 },
+      { x: 1063, y: 740, r: 230 },
+      { x: 1473, y: 556, r: 230 },
+      { x: 605, y: 797, r: 180 },
+      { x: 897, y: 797, r: 180 },
+      { x: 616, y: 240, r: 150 },
+      { x: 730, y: 241, r: 150 },
+    ],
+  },
+
   hotspots: [
     { rect: R(505, 30, 840, 432), interact: 'coreto', label: 'Coreto', markerIf: () => objActive('abrigo') && objDone('passear') },
     { rect: R(80, 380, 380, 560), interact: 'chafariz', label: 'Chafariz' },
     { rect: R(1040, 130, 1400, 400), interact: 'lago', label: 'Lago' },
-    { rect: R(255, 575, 395, 665), interact: 'banco', label: 'Banco' },
-    { rect: R(985, 370, 1120, 460), interact: 'banco', label: 'Banco' },
+    { rect: R(255, 575, 395, 665), interact: 'banco', label: 'Sentar' },
+    { rect: R(985, 370, 1120, 460), interact: 'banco2', label: 'Sentar' },
+    { rect: R(1300, 600, 1435, 690), interact: 'banco3', label: 'Sentar' },
+    { rect: R(200, 205, 350, 295), interact: 'banco4', label: 'Sentar' },
   ],
 
   spawns: {

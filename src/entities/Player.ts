@@ -21,8 +21,23 @@ export class Player extends Character {
     const v = InputSystem.vector();
     const run = InputSystem.running();
     const speed = run ? PLAYER.runSpeed : PLAYER.walkSpeed;
-    body.setVelocity(v.x * speed, v.y * speed);
-    this.animateFromVelocity(run ? 1.6 : 1);
+    // aceleração/frenagem suaves (sem "tranco" ao começar e ao parar)
+    const dt = Math.min(2, this.scene.game.loop.delta / (1000 / 60));
+    const tx = v.x * speed;
+    const ty = v.y * speed;
+    const moving = v.x !== 0 || v.y !== 0;
+    const k = 1 - Math.pow(1 - (moving ? PLAYER.accel : PLAYER.decel), dt);
+    let vx = body.velocity.x + (tx - body.velocity.x) * k;
+    let vy = body.velocity.y + (ty - body.velocity.y) * k;
+    if (!moving && Math.hypot(vx, vy) < 6) vx = vy = 0;
+    body.setVelocity(vx, vy);
+    // direção: segue o que a jogadora aperta (horizontal tem prioridade na diagonal, como no Stardew)
+    if (moving) {
+      if (Math.abs(v.x) >= 0.35) this.facing = v.x < 0 ? 'left' : 'right';
+      else this.facing = v.y < 0 ? 'up' : 'down';
+    }
+    // passos no ritmo da velocidade real
+    this.animateFromVelocity(Math.max(0.6, Math.hypot(vx, vy) / PLAYER.walkSpeed) * 1.15, moving);
 
     const last = this.trail[this.trail.length - 1];
     if (!last || Phaser.Math.Distance.Between(last.x, last.y, this.x, this.y) > 3) {

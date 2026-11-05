@@ -48,7 +48,7 @@ export function ensureCharacterAnims(scene: Phaser.Scene, key: string): void {
     scene.anims.create({
       key: walk,
       frames: scene.anims.generateFrameNumbers(key, { frames: [r, r + 1, r + 2, r + 3] }),
-      frameRate: 8,
+      frameRate: 9,
       repeat: -1,
     });
   }
@@ -110,6 +110,28 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     return new Phaser.Math.Vector2(body.center.x, body.center.y);
   }
 
+  sitting = false;
+
+  /** Senta (sem sprite próprio: esconde as pernas atrás do assento). seatY = altura do assento no mundo. */
+  sit(x: number, seatY: number, dir: Direction = 'down'): void {
+    this.sitting = true;
+    this.anims.stop();
+    this.face(dir);
+    const fh = this.frame.height;
+    const fw = this.frame.width;
+    const legs = fh * this.headRatio * 0.3;
+    this.setCrop(0, 0, fw, fh - legs);
+    this.setPosition(x, seatY + legs * this.scaleY);
+    (this.body as Phaser.Physics.Arcade.Body).reset(this.x, this.y);
+    this.setDepth(seatY + 2);
+  }
+
+  standUp(): void {
+    if (!this.sitting) return;
+    this.sitting = false;
+    this.setCrop();
+  }
+
   face(dir: Direction): void {
     this.facing = dir;
     this.anims.stop();
@@ -123,24 +145,27 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
   }
 
   /** Atualiza animação conforme a velocidade atual. */
-  animateFromVelocity(speedScale = 1): void {
+  animateFromVelocity(speedScale = 1, keepFacing = false): void {
     const body = this.body as Phaser.Physics.Arcade.Body;
     const { x, y } = body.velocity;
-    if (Math.abs(x) < 1 && Math.abs(y) < 1) {
+    if (Math.abs(x) < 4 && Math.abs(y) < 4) {
       if (this.anims.isPlaying) this.face(this.facing);
       return;
     }
-    // Só troca de direção quando um eixo domina claramente (evita girar na diagonal).
-    const ax = Math.abs(x);
-    const ay = Math.abs(y);
-    if (ax > ay * 1.25) this.facing = x < 0 ? 'left' : 'right';
-    else if (ay > ax * 1.25) this.facing = y < 0 ? 'up' : 'down';
+    if (!keepFacing) {
+      // Só troca de direção quando um eixo domina claramente (evita girar na diagonal).
+      const ax = Math.abs(x);
+      const ay = Math.abs(y);
+      if (ax > ay * 1.25) this.facing = x < 0 ? 'left' : 'right';
+      else if (ay > ax * 1.25) this.facing = y < 0 ? 'up' : 'down';
+    }
     this.anims.play(`${this.charKey}-walk-${this.facing}`, true);
     this.anims.timeScale = speedScale;
   }
 
   preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta);
+    if (this.sitting) return;
     this.setDepth(this.y);
   }
 }

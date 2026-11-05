@@ -110,6 +110,7 @@ export class GameScene extends Phaser.Scene {
     this.weather = new WeatherSystem(this);
     this.addAmbient(def.ambient ?? (def.indoor ? 'dust' : undefined));
     this.addRainWindows();
+    this.addLighting();
 
     GameState.data.mapId = def.id;
     this.visitRegion(def.region);
@@ -181,7 +182,8 @@ export class GameScene extends Phaser.Scene {
     const bx = w < GAME_WIDTH ? -(GAME_WIDTH - w) / 2 : 0;
     const by = h < GAME_HEIGHT ? -(GAME_HEIGHT - h) / 2 : 0;
     cam.setBounds(bx, by, Math.max(w, GAME_WIDTH), Math.max(h, GAME_HEIGHT));
-    cam.startFollow(this.player, true, CAMERA.lerp, CAMERA.lerp, 0, -8);
+    cam.startFollow(this.player, false, CAMERA.lerp, CAMERA.lerp, 0, -8);
+    cam.setDeadzone(10, 8);
     cam.setRoundPixels(true);
   }
 
@@ -273,6 +275,59 @@ export class GameScene extends Phaser.Scene {
     entry.npc.follow(this.player);
   }
 
+  private lightObjs: Phaser.GameObjects.GameObject[] = [];
+
+  /** Noite: véu azul-escuro sobre o cenário + brilhos quentes nas lâmpadas (blend aditivo). */
+  private addLighting(): void {
+    this.lightObjs = [];
+    const L = this.def.lighting;
+    if (!L) return;
+    if (!this.textures.exists('fx-glow')) {
+      const t = this.textures.createCanvas('fx-glow', 128, 128)!;
+      const c = t.getContext();
+      const g = c.createRadialGradient(64, 64, 0, 64, 64, 64);
+      g.addColorStop(0, 'rgba(255,255,255,1)');
+      g.addColorStop(0.25, 'rgba(255,255,255,0.55)');
+      g.addColorStop(0.6, 'rgba(255,255,255,0.15)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      c.fillStyle = g;
+      c.fillRect(0, 0, 128, 128);
+      t.refresh();
+    }
+    const { widthPx: w, heightPx: h } = this.built;
+    const veil = this.add.rectangle(0, 0, w, h, L.color ?? 0x101848, L.darkness).setOrigin(0).setDepth(199_000);
+    this.lightObjs.push(veil);
+    for (const l of L.lights) {
+      const x = l.x / 3;
+      const y = l.y / 3;
+      const r = l.r / 3;
+      const glow = this.add
+        .image(x, y, 'fx-glow')
+        .setDisplaySize(r * 2, r * 2)
+        .setTint(l.color ?? 0xffb04a)
+        .setAlpha(0.42)
+        .setBlendMode(Phaser.BlendModes.ADD)
+        .setDepth(199_500);
+      const core = this.add
+        .image(x, y, 'fx-glow')
+        .setDisplaySize(r * 0.32, r * 0.32)
+        .setTint(0xffe2a0)
+        .setAlpha(0.5)
+        .setBlendMode(Phaser.BlendModes.ADD)
+        .setDepth(199_501);
+      if (l.flicker !== false) {
+        this.tweens.add({ targets: glow, alpha: { from: 0.34, to: 0.46 }, duration: Phaser.Math.Between(900, 1600), yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+      }
+      this.lightObjs.push(glow, core);
+    }
+    this.refreshLighting();
+  }
+
+  private refreshLighting(): void {
+    const on = this.def.lighting?.when ? this.def.lighting.when() : true;
+    for (const o of this.lightObjs) (o as unknown as Phaser.GameObjects.Components.Visible).setVisible(on);
+  }
+
   private rainWindowObjs: Phaser.GameObjects.GameObject[] = [];
 
   /** Vidros das janelas: céu cinza + gotas caindo, enquanto estiver chovendo lá fora. */
@@ -298,6 +353,7 @@ export class GameScene extends Phaser.Scene {
       this.rainWindowObjs.push(glass, drops);
     }
     this.refreshRainWindows();
+    this.refreshLighting();
   }
 
   private refreshRainWindows(): void {

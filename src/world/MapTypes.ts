@@ -123,6 +123,16 @@ export interface MapDef {
   exits?: ExitDef[];
   triggers?: TriggerDef[];
   scripts?: Record<string, Script>;
+  /**
+   * Iluminação noturna: escurece o cenário e acende luzes (coordenadas em px do
+   * cenário ORIGINAL). `when` decide se está de noite (padrão: sempre).
+   */
+  lighting?: {
+    darkness: number;
+    color?: number;
+    lights: { x: number; y: number; r: number; color?: number; flicker?: boolean }[];
+    when?: () => boolean;
+  };
   /** Janelas (vidros) onde aparece chuva lá fora enquanto `when()` for verdadeiro. */
   rainWindows?: { rects: TileRect[]; when: () => boolean };
   /** Partículas de ambiente: poeira de luz, vaga-lumes, pétalas. */

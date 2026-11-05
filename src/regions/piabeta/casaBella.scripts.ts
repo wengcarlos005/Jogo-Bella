@@ -259,7 +259,11 @@ export const casaScripts: Record<string, Script> = {
     await ctx.say('bella', 'Uma louça pra lavar. Ela pode esperar até amanhã. Hoje não.');
   },
   async sofa(ctx) {
-    await ctx.say('bella', 'O sofá do cochilo de domingo. Hoje não tem cochilo, tem encontro!');
+    if (ctx.flag('weng-segue') && !ctx.objectiveDone(Q, 'pai')) {
+      await ctx.say('bella', 'Ainda não dá pra sentar. Falta apresentar o Weng pro Alexandre!');
+      return;
+    }
+    await ctx.sit(730, 700, ctx.flag('weng-segue') ? [['weng', 'Esse sofá é confortável demais. Perigoso.'], ['bella', 'É o sofá do cochilo de domingo.']] : [['bella', 'O sofá do cochilo de domingo. Hoje não tem cochilo, tem encontro!']]);
   },
   async geladeira(ctx) {
     await ctx.say('bella', 'Água gelada pra acalmar. Ok, não acalmou.');

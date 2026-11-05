@@ -62,6 +62,11 @@ export class WeatherSystem {
     }
   }
 
+  /** Chuva em câmera lenta (cenas especiais). */
+  slow(on: boolean): void {
+    this.rain.timeScale = on ? 0.25 : 1;
+  }
+
   destroy(): void {
     AudioSystem.setRain(false);
   }

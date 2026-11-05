@@ -19,8 +19,11 @@ export const PROP_SCALE = 1.4;
 export const TILE = 16;
 
 export const PLAYER = {
-  walkSpeed: 70,
-  runSpeed: 120,
+  walkSpeed: 82,
+  runSpeed: 140,
+  /** Suavização da velocidade (0..1 por quadro a 60fps): aceleração e frenagem. */
+  accel: 0.32,
+  decel: 0.45,
   /** Corpo de colisão (nos pés). Posição calculada pelo tamanho do quadro. */
   body: { width: 10, height: 6 },
   interactRange: 22,
@@ -28,7 +31,7 @@ export const PLAYER = {
 
 export const CHAR_FRAME = { width: 32, height: 32 };
 
-export const CAMERA = { lerp: 0.14 };
+export const CAMERA = { lerp: 0.12 };
 
 export const AUTOSAVE_INTERVAL_MS = 60_000;
 

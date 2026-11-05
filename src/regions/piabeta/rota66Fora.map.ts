@@ -46,7 +46,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Uma placa da Rota 66 de verdade. Ou quase de verdade.');
   },
   async banco(ctx) {
-    await ctx.say('bella', 'Um banquinho na frente da lanchonete. Bom pra esperar o Uber de volta.');
+    await ctx.sit(300, 655, [['bella', 'Que noite bonita.'], ['weng', 'Tá mesmo. E nem é por causa do neon.']]);
   },
   async trilha(ctx) {
     await ctx.say('bella', 'Um caminho escuro no meio das árvores. Melhor ir pela rua, com o Weng.');
@@ -90,10 +90,20 @@ export const rota66ForaMap: MapDef = {
     R(0, 805, 1536, 1100),
   ],
 
+  lighting: {
+    darkness: 0.28,
+    lights: [
+      { x: 105, y: 508, r: 240 },
+      { x: 640, y: 230, r: 300, color: 0xff6f9a },
+      { x: 560, y: 450, r: 220 },
+      { x: 920, y: 450, r: 220 },
+    ],
+  },
+
   hotspots: [
     { rect: R(330, 140, 920, 320), interact: 'neon', label: 'Letreiro' },
     { rect: R(1080, 440, 1185, 684), interact: 'placa', label: 'Placa' },
-    { rect: R(215, 585, 385, 702), interact: 'banco', label: 'Banco' },
+    { rect: R(215, 585, 385, 702), interact: 'banco', label: 'Sentar' },
   ],
 
   spawns: {

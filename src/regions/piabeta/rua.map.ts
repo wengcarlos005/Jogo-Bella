@@ -228,7 +228,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'O carro do vizinho. Sempre estacionado exatamente aqui.');
   },
   async banco(ctx) {
-    await ctx.say('bella', 'Um banquinho na sombra. Bom pra ficar conversando até tarde.');
+    await ctx.sit(555, 728, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']]);
+  },
+  async banco2(ctx) {
+    await ctx.sit(1063, 728, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']]);
   },
 };
 
@@ -270,6 +273,9 @@ export const ruaMap: MapDef = {
     R(850, 625, 1619, 705),
     R(0, 625, 70, 971),
     R(1548, 625, 1619, 971),
+    // Calçada logo ao sul das luminárias (senão a Bella fica "atrás" do poste por cima dele)
+    R(104, 440, 228, 640),
+    R(1404, 440, 1528, 640),
     // Bancos (inclusive atrás deles), lixeira, árvores (copa sólida)
     R(482, 690, 628, 775),
     R(992, 690, 1135, 775),
@@ -296,7 +302,7 @@ export const ruaMap: MapDef = {
     { rect: R(1005, 210, 1078, 300), interact: 'placa-parque', label: 'Ler' },
     { rect: R(262, 410, 498, 532), interact: 'carro', label: 'Carro' },
     { rect: R(482, 685, 628, 775), interact: 'banco', label: 'Sentar' },
-    { rect: R(992, 685, 1135, 775), interact: 'banco', label: 'Sentar' },
+    { rect: R(992, 685, 1135, 775), interact: 'banco2', label: 'Sentar' },
     { rect: R(1240, 40, 1480, 150), interact: 'letreiro', label: 'Ver' },
   ],
 

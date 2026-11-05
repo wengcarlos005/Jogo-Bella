@@ -1248,3 +1248,12 @@ html, body {
   #game { top: 0; right: 0; bottom: calc(var(--bot) + 84px); }
   #hotbar { bottom: 84px; }
 }
+/* ilustração: zoom lento (Ken Burns) e corações caindo */
+.ill-screen .ill-img { animation: kenburns 14s ease-out forwards; }
+@keyframes kenburns { from { transform: scale(1.08); } to { transform: scale(1); } }
+.ill-screen::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle at 50% 50%, #ff9ab866 0 2px, transparent 3px);
+  background-size: 90px 120px; animation: hearts-fall 6s linear infinite; opacity: 0.8;
+}
+@keyframes hearts-fall { from { background-position: 0 -120px; } to { background-position: 30px 120px; } }

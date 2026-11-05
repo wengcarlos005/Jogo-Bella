@@ -135,6 +135,16 @@ export const fragosoMap: MapDef = {
     { x0: 585, y0: 425, x1: 800, y1: 620, base: 640, cut: 'foliage', fade: true }, // bananeira
   ],
 
+  lighting: {
+    darkness: 0.4,
+    lights: [
+      { x: 195, y: 130, r: 260 },
+      { x: 1251, y: 153, r: 260 },
+      { x: 1275, y: 419, r: 260 },
+      { x: 299, y: 584, r: 260 },
+    ],
+  },
+
   hotspots: [
     { rect: R(1010, 560, 1095, 640), interact: 'gato', label: 'Gato' },
     { rect: R(865, 230, 1010, 330), interact: 'varal', label: 'Varal' },

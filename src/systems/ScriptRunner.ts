@@ -8,6 +8,7 @@ import { MemoryAlbumSystem } from './MemoryAlbumSystem';
 import { AudioSystem } from './AudioSystem';
 import { UI } from '@/ui/UIManager';
 import { NPC } from '@/entities/NPC';
+import { InputSystem } from './InputSystem';
 import { ITEMS } from '@/data/items';
 import { OUTFITS } from '@/data/outfits';
 import Phaser from 'phaser';
@@ -235,6 +236,128 @@ export function createScriptContext(scene: GameScene): ScriptContext {
 
     umbrella(who, mode) {
       scene.setUmbrella(who === 'player' ? 'bella' : who, mode);
+    },
+
+    async sit(seatX, seatY, lines) {
+      const sx = seatX / 3;
+      const sy = seatY / 3;
+      const weng = scene.npcs.get('weng')?.npc;
+      const withWeng = !!weng && weng.visible && weng.behavior === 'follow';
+      await UI.fade(1, 220);
+      const pl = scene.player;
+      pl.scripted = true;
+      (pl.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+      pl.sit(withWeng ? sx - 9 : sx, sy, 'down');
+      if (withWeng) {
+        weng!.stopFollowing();
+        weng!.behavior = 'scripted';
+        weng!.sit(sx + 9, sy, 'down');
+      }
+      await UI.fade(0, 260);
+      AudioSystem.play('confirm');
+      scene.sparkleBurst(pl.x, pl.headY + 6, 6, true);
+      if (lines) for (const [who, text] of lines) await UI.dialogue.say(who, text);
+      UI.dialogue.close();
+      UI.toasts.show('Ande ou aperte E para levantar');
+      // espera levantar
+      await new Promise<void>((resolve) => {
+        const done = () => {
+          InputSystem.off('script:interact', done);
+          scene.events.off('update', check);
+          resolve();
+        };
+        const check = () => {
+          const v = InputSystem.vector();
+          if (v.x !== 0 || v.y !== 0) done();
+        };
+        InputSystem.on('script:interact', done);
+        scene.events.on('update', check);
+      });
+      pl.standUp();
+      const back = 12;
+      pl.setPosition(pl.x, sy + back);
+      (pl.body as Phaser.Physics.Arcade.Body).reset(pl.x, pl.y);
+      pl.face('down');
+      pl.scripted = false;
+      if (withWeng) {
+        weng!.standUp();
+        weng!.setPosition(weng!.x, sy + back);
+        (weng!.body as Phaser.Physics.Arcade.Body).reset(weng!.x, weng!.y);
+        pl.trail.length = 0;
+        weng!.follow(pl);
+      }
+    },
+
+    async kiss() {
+      const b = scene.player;
+      const w = scene.npcs.get('weng')?.npc;
+      if (!w) return;
+      const tw = (cfg: Phaser.Types.Tweens.TweenBuilderConfig) => new Promise<void>((r) => scene.tweens.add({ ...cfg, onComplete: () => r() }));
+      const midX = (b.x + w.x) / 2;
+      const headY = Math.min(b.headY, w.headY) + 8;
+      UI.dialogue.close();
+      if (!scene.textures.exists('fx-bigheart')) {
+        const t = scene.textures.createCanvas('fx-bigheart', 96, 88)!;
+        const c = t.getContext();
+        const heart = (s: number, color: string) => {
+          c.save();
+          c.translate(48, 46);
+          c.scale(s, s);
+          c.beginPath();
+          c.moveTo(0, 30);
+          c.bezierCurveTo(-46, 0, -30, -40, 0, -18);
+          c.bezierCurveTo(30, -40, 46, 0, 0, 30);
+          c.fillStyle = color;
+          c.fill();
+          c.restore();
+        };
+        heart(1, '#ff6f9a');
+        heart(0.82, '#ff8fb1');
+        c.fillStyle = 'rgba(255,255,255,0.7)';
+        c.beginPath();
+        c.ellipse(32, 30, 7, 5, -0.6, 0, Math.PI * 2);
+        c.fill();
+        t.refresh();
+      }
+      // 1) o mundo desacelera: chuva mais lenta, coração batendo
+      scene.weather.slow(true);
+      AudioSystem.play('memory');
+      // 2) chegam mais perto, devagar; a Bella fica na pontinha dos pés
+      await Promise.all([
+        tw({ targets: b, x: midX - 13, duration: 1100, ease: 'Sine.easeInOut' }),
+        tw({ targets: w, x: midX + 13, duration: 1100, ease: 'Sine.easeInOut' }),
+      ]);
+      await Promise.all([
+        tw({ targets: b, y: b.y - 2, x: midX - 10.5, duration: 600, ease: 'Sine.easeOut' }),
+        tw({ targets: w, x: midX + 10.5, scaleY: w.scaleY * 0.985, duration: 600, ease: 'Sine.easeOut' }),
+      ]);
+      // 3) o beijo: brilho rosa e um coração grande que pulsa atrás dos dois
+      const glow = scene.add.image(midX, headY, 'fx-glow').setTint(0xff7aa8).setBlendMode(Phaser.BlendModes.ADD).setDepth(b.depth - 2).setAlpha(0).setDisplaySize(10, 10);
+      const big = scene.add.image(midX, headY - 10, 'fx-bigheart').setDepth(b.depth - 1).setScale(0).setAlpha(0.9);
+      tw({ targets: glow, alpha: 0.9, displayWidth: 120, displayHeight: 120, duration: 900, ease: 'Sine.easeOut' });
+      await tw({ targets: big, scale: 0.55, duration: 700, ease: 'Back.easeOut' });
+      scene.tweens.add({ targets: big, scale: 0.62, duration: 380, yoyo: true, repeat: 3, ease: 'Sine.easeInOut' });
+      // 4) corações subindo em espiral + brilhos
+      for (let i = 0; i < 26; i++) {
+        const img = scene.add.image(midX + Phaser.Math.Between(-6, 6), headY, i % 3 ? 'fx-heart' : 'fx-spark').setDepth(170_000).setScale(0.4);
+        const ang = (i / 26) * Math.PI * 4;
+        scene.tweens.add({
+          targets: img,
+          x: midX + Math.cos(ang) * Phaser.Math.Between(18, 40),
+          y: headY - Phaser.Math.Between(30, 70),
+          scale: { from: 0.4, to: 1.4 },
+          alpha: { from: 1, to: 0 },
+          delay: i * 70,
+          duration: 1500,
+          ease: 'Sine.easeOut',
+          onComplete: () => img.destroy(),
+        });
+      }
+      scene.cameras.main.zoomTo(scene.cameras.main.zoom * 1.12, 2600, 'Sine.easeInOut');
+      await new Promise((r) => scene.time.delayedCall(2600, r));
+      scene.weather.slow(false);
+      glow.destroy();
+      big.destroy();
     },
 
     playerTile: () => ({ x: (scene.player.x - 8) / 16, y: (scene.player.y + 1) / 16 - 1 }),
