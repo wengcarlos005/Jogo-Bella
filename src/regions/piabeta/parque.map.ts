@@ -111,6 +111,10 @@ const scripts: Record<string, Script> = {
     await ctx.teleport('piabeta-quintal', 'porta');
   },
 
+  async placaMex(ctx) {
+    await ctx.say('weng', 'O mexicano é logo ali, saindo por essa ponta da praça. Bora?');
+  },
+
   async coreto(ctx) {
     if (objActive('abrigo') && objDone('passear')) {
       await ctx.say('weng', 'Sobe, sobe! Pela escadinha!');
@@ -187,11 +191,11 @@ export const parqueMap: MapDef = {
     R(0, 830, 650, 925),
     R(830, 830, 1536, 925),
     // coreto: telhado/interior (só a cena do beijo entra) e laterais
-    R(505, 150, 840, 300),
+    R(505, 150, 840, 338), // coreto inteiro (piso e guarda-corpo); só a cena do beijo entra
     R(505, 180, 555, 400),
     R(790, 180, 840, 400),
-    R(495, 330, 588, 410),
-    R(758, 330, 852, 410),
+    R(495, 330, 598, 410),
+    R(752, 330, 852, 410),
     R(428, 240, 505, 332), // flores à esquerda do coreto
     R(842, 262, 910, 342), // flores à direita do coreto
     // canto superior esquerdo: ipê (tronco), banco, lixeira, poste
@@ -199,7 +203,7 @@ export const parqueMap: MapDef = {
     R(200, 235, 350, 290),
     R(355, 225, 392, 265),
     // chafariz: só a metade da frente da bacia (dá pra passar por trás)
-    R(88, 478, 310, 546),
+    R(80, 432, 318, 546), // bacia inteira do chafariz (passa-se por trás dela, não dentro da água)
     R(0, 580, 95, 622), // moita à esquerda do chafariz
     // lago e ponte: dá pra subir na ponte; a água e as pedras bloqueiam
     R(1040, 150, 1245, 250),
@@ -243,15 +247,15 @@ export const parqueMap: MapDef = {
     { x0: 0, y0: 500, x1: 195, y1: 832, base: 830, cut: 'foliage', fade: true, tall: true },
     { x0: 1360, y0: 150, x1: 1536, y1: 480, base: 480, cut: 'foliage', fade: true, tall: true }, // árvore do lago
     // canteiros: as flores ficam na frente de quem passa atrás
-    { x0: 1248, y0: 440, x1: 1412, y1: 556, base: 554, cut: 'foliage' },
-    { x0: 758, y0: 455, x1: 902, y1: 546, base: 544, cut: 'foliage' },
-    { x0: 314, y0: 672, x1: 470, y1: 798, base: 794, cut: 'outline' },
-    { x0: 1120, y0: 664, x1: 1266, y1: 768, base: 764, cut: 'outline' },
-    { x0: 1150, y0: 748, x1: 1314, y1: 834, base: 832, cut: 'outline' },
-    { x0: 85, y0: 742, x1: 266, y1: 832, base: 830, cut: 'foliage' },
-    { x0: 422, y0: 205, x1: 508, y1: 334, base: 332, cut: 'foliage' },
-    { x0: 838, y0: 225, x1: 912, y1: 344, base: 342, cut: 'foliage' },
-    { x0: 0, y0: 520, x1: 112, y1: 624, base: 622, cut: 'foliage' },
+    { x0: 1248, y0: 440, x1: 1412, y1: 556, base: 554, cut: 'foliage', fade: true },
+    { x0: 758, y0: 455, x1: 902, y1: 546, base: 544, cut: 'foliage', fade: true },
+    { x0: 314, y0: 672, x1: 470, y1: 798, base: 794, cut: 'outline', fade: true },
+    { x0: 1120, y0: 664, x1: 1266, y1: 768, base: 764, cut: 'outline', fade: true },
+    { x0: 1150, y0: 748, x1: 1314, y1: 834, base: 832, cut: 'outline', fade: true },
+    { x0: 85, y0: 742, x1: 266, y1: 832, base: 830, cut: 'foliage', fade: true },
+    { x0: 422, y0: 205, x1: 508, y1: 334, base: 332, cut: 'foliage', fade: true },
+    { x0: 838, y0: 225, x1: 912, y1: 344, base: 342, cut: 'foliage', fade: true },
+    { x0: 0, y0: 520, x1: 112, y1: 624, base: 622, cut: 'foliage', fade: true },
     // chafariz: bacia (oval) e a parte de cima (coluna)
     { x0: 77, y0: 425, x1: 318, y1: 552, base: 548, ellipse: true },
     { x0: 160, y0: 318, x1: 252, y1: 470, base: 548, cut: 'column' },
@@ -288,6 +292,12 @@ export const parqueMap: MapDef = {
   },
 
   hotspots: [
+    {
+      rect: R(1470, 690, 1536, 830),
+      interact: 'placaMex',
+      label: 'Restaurante →',
+      markerIf: () => QuestSystem.isActive('dq-e2') && QuestSystem.isObjectiveDone('dq-e2', 'passeio') && !QuestSystem.isObjectiveDone('dq-e2', 'mexicano'),
+    },
     { rect: R(505, 30, 840, 432), interact: 'coreto', label: 'Coreto', markerIf: () => objActive('abrigo') && objDone('passear') },
     { rect: R(80, 380, 380, 560), interact: 'chafariz', label: 'Chafariz' },
     { rect: R(1040, 130, 1400, 400), interact: 'lago', label: 'Lago' },
