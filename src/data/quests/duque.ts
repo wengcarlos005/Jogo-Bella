@@ -2,6 +2,21 @@ import type { QuestDef } from './index';
 
 export const DUQUE_QUESTS: QuestDef[] = [
   {
+    id: 'dq-e3',
+    region: 'piabeta',
+    chapter: 'Capítulo 1 · Piabetá',
+    title: 'O terceiro encontro',
+    kind: 'principal',
+    description: 'Cinema no Caxias Shopping. Five Nights at Freddy\'s. O que pode dar errado?',
+    objectives: [
+      { id: 'saida', text: 'Sair do cinema', hint: 'A saída fica lá embaixo, depois do tapete vermelho.' },
+      { id: 'casa', text: 'Voltar pra casa', hint: 'Sua mãe disse que é urgente...' },
+      { id: 'quarto', text: 'Ir até o seu quarto', hint: 'O quarto fica em cima, à esquerda. Tá tudo apagado...' },
+      { id: 'pedido', text: '???' },
+    ],
+    rewardMemory: 'mem-dq-05',
+  },
+  {
     id: 'dq-e2',
     region: 'piabeta',
     chapter: 'Capítulo 1 · Piabetá',

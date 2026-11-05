@@ -143,9 +143,9 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | MAP-018 | Rua ao lado da praça do primeiro beijo com a fachada do restaurante mexicano (a praça é o parque que já existe) | maps/piabeta-mexicano-fora-bg.png | pedido |
 | MAP-019 | Restaurante mexicano (interior) | maps/piabeta-mexicano-bg.png | pedido |
 | CIN-015 | Os dois de chapéu mexicano brindando a bebida de cortesia | cinematics/mexicano.png | pedido |
-| MAP-015 | Cinema do Caxias Shopping (saguão) | art-source/maps/duque-cinema.webp | recebido, entra com o 3º encontro |
-| MAP-016 | Quarto da Bella decorado para o pedido (variação do quarto: luzes, fotos, origamis, carta, chocolates) | maps/piabeta-quarto-pedido-bg.png | pedido |
-| CIN-011 | O pedido de namoro (Weng com o buquê atrás dela, quarto iluminado) | cinematics/pedido.png | pedido |
+| MAP-015 | Cinema do Caxias Shopping (saguão) | maps/duque-cinema-bg.png | ✅ no jogo |
+| MAP-016 | Casa da Bella decorada para o pedido | maps/piabeta-casa-pedido-bg.png | ✅ no jogo |
+| CIN-011 | O pedido de namoro | cinematics/pedido.png | ✅ no jogo |
 | CIN-012 | Páscoa (chocolates + cartinha de coelho) | cinematics/pascoa.png | depois |
 | CIN-013 | A primeira noite | cinematics/primeira-noite.png | ✅ recebido |
 | MG-A | Ingredientes do açaí (12) | minigames/acai-*.png | ✅ no minijogo do açaí |

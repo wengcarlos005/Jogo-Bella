@@ -43,10 +43,9 @@ const scripts: Record<string, Script> = {
     await ctx.memory('mem-dq-04');
     await ctx.fadeOut(600);
     await ctx.narrate('E ali, de chapéu gigante e rindo de tudo, a Bella teve certeza: era ele.');
-    await ctx.narrate('O terceiro encontro seria o do pedido de namoro... (essa parte da história chega em breve).');
-    await ctx.chapterCard('Fim do Capítulo 1', 'Piabetá', 'O segundo encontro.', 'Continuar');
-    await ctx.chapterCard('Capítulo 2', 'Duque de Caxias', 'Nosso cantinho. Já namorando: a primeira vez no apê do Weng.', 'Começar');
-    await ctx.teleport('duque-apto', 'porta');
+    await ctx.chapterCard('Terceiro encontro', 'Caxias Shopping', 'Cinema, uma ligação inesperada e uma surpresa.', 'Continuar');
+    ctx.startQuest('dq-e3');
+    await ctx.teleport('duque-cinema', 'sala');
   },
   async cardapio(ctx) {
     await ctx.say('bella', 'Um quadro-negro com um chapéu desenhado. "Hoje: nachos e bebida da casa."');

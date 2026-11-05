@@ -87,6 +87,14 @@ export const MEMORIES: MemoryDef[] = [
     text: 'Segundo encontro: churrasco com a minha mãe e o Alexandre, filme no sofá, a caminhada até a nossa praça e o restaurante mexicano que deu bebida de cortesia. A gente de chapéu gigante, rindo de tudo.',
     image: 'memory-dq-04',
   },
+  {
+    id: 'mem-dq-05',
+    region: 'piabeta',
+    title: 'O pedido',
+    year: 'O começo',
+    text: 'Cinema no Caxias Shopping, a ligação da minha mãe e eu voltando emburrada pra casa. No quarto: luzinhas, nossas fotos, origamis, a cartinha e chocolates. Ele apareceu atrás de mim com um buquê e me pediu em namoro. Eu disse "aceito" rápido demais. E a gente disse "te amo" pela primeira vez.',
+    image: 'cena-pedido',
+  },
 ];
 
 export const MEMORY_GOAL = 50;

@@ -6,5 +6,6 @@ import { rota66ForaMap } from './rota66Fora.map';
 import { fragosoMap } from './fragoso.map';
 import { quintalMap } from './quintal.map';
 import { mexicanoForaMap } from './mexicanoFora.map';
+import { casaPedidoMap } from './casaPedido.map';
 
-export const PIABETA_MAPS = [casaBellaMap, ruaMap, rota66ForaMap, rota66Map, fragosoMap, parqueMap, quintalMap, mexicanoForaMap];
+export const PIABETA_MAPS = [casaBellaMap, ruaMap, rota66ForaMap, rota66Map, fragosoMap, parqueMap, quintalMap, mexicanoForaMap, casaPedidoMap];

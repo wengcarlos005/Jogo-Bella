@@ -170,6 +170,8 @@ export class GameScene extends Phaser.Scene {
 
   private visitRegion(region: RegionId): void {
     const visited = GameState.data.regionsVisited;
+    // o cinema do 3º encontro fica em Caxias, mas ainda é o Capítulo 1: o cartão do Capítulo 2 espera o apê
+    if (this.def.id === 'duque-cinema') return;
     if (!visited.includes(region)) {
       visited.push(region);
       const meta = regionMeta(region);
