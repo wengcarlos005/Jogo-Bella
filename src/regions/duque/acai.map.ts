@@ -10,7 +10,6 @@ const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0
 
 const ROW = '.'.repeat(32);
 
-const COMPLEMENTOS = ['Granola', 'Banana', 'Morango', 'Leite em pó', 'Confete', 'Kiwi', 'Paçoca', 'Creme de avelã', 'Leite condensado'];
 
 const scripts: Record<string, Script> = {
   async chegada(ctx) {
@@ -30,30 +29,22 @@ const scripts: Record<string, Script> = {
     await ctx.say('atendente-acai', 'Boa noite! Qual o tamanho do açaí?');
     const tam = await ctx.choose('bella', 'Tamanho do copo', ['300 ml', '500 ml', '700 ml']);
     if (tam === 2) await ctx.say('weng', 'Setecentos?! Tá bom, tá bom. Eu ajudo a comer.');
-    const escolhidos: string[] = [];
-    // A Bella gosta de açaí CHEIO de complemento: vai escolhendo até dizer chega
-    for (let i = 0; i < 5; i++) {
-      const restantes = COMPLEMENTOS.filter((c) => !escolhidos.includes(c));
-      const opcoes = [...restantes.slice(0, 3), escolhidos.length >= 2 ? 'Pronto, só isso!' : 'Mais um...'];
-      const c = await ctx.choose('bella', escolhidos.length ? `Já tem: ${escolhidos.join(', ')}. E mais?` : 'Complementos', opcoes);
-      if (c === opcoes.length - 1) {
-        if (escolhidos.length >= 2) break;
-        COMPLEMENTOS.push(COMPLEMENTOS.shift()!);
-        continue;
-      }
-      escolhidos.push(opcoes[c]);
-    }
-    if (escolhidos.length >= 4) {
+    await ctx.say('atendente-acai', 'Pode montar do seu jeito, os complementos tão todos aqui!');
+    const r = await ctx.acai({ title: 'O açaí da Bella', helper: 'weng' });
+    const escolhidos = [...new Set(r.toppings)].map((t) => t.replace('-', ' '));
+    if (r.toppings.length >= 7) {
       await ctx.say('atendente-acai', 'Nossa, vai querer TUDO isso?');
       await ctx.say('bella', 'Açaí sem complemento é só uma tigela roxa triste.');
       await ctx.emote('weng', 'heart');
       await ctx.say('weng', 'Não discute com ela, moça. Eu já perdi essa.');
+    } else if (r.toppings.length >= 4) {
+      await ctx.say('weng', 'Bonito. Mas eu te conheço: amanhã você vai dizer que faltou complemento.');
     } else {
       await ctx.say('weng', 'Só isso? Tá doente?');
       await ctx.say('bella', 'Eu tô me controlando! ...Coloca mais paçoca, moça.');
     }
     ctx.sfx('pickup');
-    await ctx.showItem('icon-acai', 'Você pegou', 'Açaí da Bella', `Copo de ${['300', '500', '700'][tam]} ml com ${escolhidos.join(', ').toLowerCase()}. Transbordando.`);
+    await ctx.showItem('icon-acai', 'Você pegou', 'Açaí da Bella', `Copo de ${['300', '500', '700'][tam]} ml com ${escolhidos.join(', ')}. Transbordando.`);
     ctx.setFlag('acai-hoje');
 
     await ctx.fadeOut(300);

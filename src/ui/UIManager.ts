@@ -1,3 +1,4 @@
+import { playAcaiGame, type AcaiOptions, type AcaiResult } from './screens/AcaiGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
 import { GAME_WIDTH } from '@/config/gameConfig';
@@ -123,6 +124,10 @@ class UIManagerImpl {
 
   burger(opts: BurgerOptions): Promise<BurgerResult> {
     return playBurgerGame(this.root, opts);
+  }
+
+  acai(opts: AcaiOptions): Promise<AcaiResult> {
+    return playAcaiGame(this.root, opts);
   }
 
   private bars: HTMLElement[] = [];

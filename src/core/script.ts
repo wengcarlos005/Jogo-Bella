@@ -50,6 +50,7 @@ export interface ScriptContext {
   /** Minigame do hambúrguer. */
   burger(opts: import('@/ui/screens/BurgerGame').BurgerOptions): Promise<import('@/ui/screens/BurgerGame').BurgerResult>;
   /** Câmera de cinema: foca no tile (tx, ty) com zoom relativo (1 = normal). */
+  acai(opts: import('@/ui/screens/AcaiGame').AcaiOptions): Promise<import('@/ui/screens/AcaiGame').AcaiResult>;
   focus(tx: number, ty: number, zoom?: number, ms?: number): Promise<void>;
   /** Volta a câmera para seguir a Bella. */
   /** Põe um personagem numa pose de outra folha (ex.: 'meli-poses', 1 = dormindo). null volta ao normal. */

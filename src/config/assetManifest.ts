@@ -115,6 +115,13 @@ export const ASSETS: AssetEntry[] = [
   { id: 'ICO-001', key: 'icon-rosa', file: 'assets/ui/icon-rosa.png', kind: 'image' },
   { id: 'ICO-002', key: 'icon-vale', file: 'assets/ui/icon-vale.png', kind: 'image' },
   { id: 'ICO-003', key: 'icon-chocolate', file: 'assets/ui/icon-chocolate.png', kind: 'image' },
+  ...['tigela', 'acai', 'granola', 'banana', 'morango', 'leite-condensado', 'leite-po', 'pacoca', 'confete', 'kiwi', 'creme-avela', 'colher'].map(
+    (n, i): AssetEntry => ({ id: `MG-A${String(i + 1).padStart(2, '0')}`, key: `acai-${n}`, file: `assets/minigames/acai-${n}.png`, kind: 'image' }),
+  ),
+  ...['verso', 'meli', 'pombo', 'lala', 'acai', 'coracao', 'chocolate', 'novelo'].map(
+    (n, i): AssetEntry => ({ id: `MG-C${String(i + 1).padStart(2, '0')}`, key: `carta-${n}`, file: `assets/minigames/carta-${n}.png`, kind: 'image' }),
+  ),
+  { id: 'CIN-013', key: 'cena-primeira-noite', file: 'assets/cinematics/primeira-noite.png', kind: 'image' },
   { id: 'ICO-020', key: 'icon-acai', file: 'assets/ui/icon-acai.png', kind: 'image' },
   ...['piranha', 'creme', 'scrunchie', 'pote', 'vela', 'pano', 'pacoca', 'balas', 'chocolate'].map(
     (n, i): AssetEntry => ({ id: `ICO-${String(21 + i).padStart(3, '0')}`, key: `icon-achado-${n}`, file: `assets/ui/icon-achado-${n}.png`, kind: 'image' }),

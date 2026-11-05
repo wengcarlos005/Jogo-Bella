@@ -147,6 +147,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     },
 
     burger: (opts) => UI.burger(opts),
+    acai: (opts) => UI.acai(opts),
 
     focus(tx, ty, zoom = 1.4, ms = 900) {
       const cam = scene.cameras.main;
