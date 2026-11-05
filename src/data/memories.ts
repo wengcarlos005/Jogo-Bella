@@ -103,6 +103,22 @@ export const MEMORIES: MemoryDef[] = [
     text: 'Eu enchi o Weng de ovo de Páscoa, e ainda sobrou um pra irmã dele. Ele me deu chocolates e uma cartinha em formato de coelho. A Meli queria tudo.',
     image: 'cena-pascoa',
   },
+  {
+    id: 'mem-dq-07',
+    region: 'duque-de-caxias',
+    title: 'A primeira noite',
+    year: 'Ano 1',
+    text: 'Jantar feito a quatro mãos, filme no sofá e a Meli nos pés da cama. A gente conversou baixinho até dormir.',
+    image: 'cena-primeira-noite',
+  },
+  {
+    id: 'mem-dq-08',
+    region: 'duque-de-caxias',
+    title: 'As pazes',
+    year: 'Ano 1',
+    text: 'A nossa primeira briga foi por nos comparar com casais perfeitos do TikTok. Aprendemos juntos e pedimos desculpas um pro outro. Nada de régua da internet: só a gente.',
+    image: 'cena-pazes',
+  },
 ];
 
 export const MEMORY_GOAL = 50;

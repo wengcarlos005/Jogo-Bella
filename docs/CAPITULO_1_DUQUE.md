@@ -25,3 +25,7 @@ Foram 3 encontros antes do namoro (o 1º é o prólogo: Rota 66, Fragoso, parque
 ## Observações
 - A música "Yellow" não vai embutida no jogo (direitos autorais). A cena toca `public/assets/audio/pedido.mp3` se o arquivo existir (o Weng pode colocar o dele); senão, uma música romântica própria.
 - Os jogos de cartas e o filme aparecem pelo nome nas falas; as mecânicas e as artes são próprias.
+
+
+## Petrópolis (aniversário da Bella) — fatos
+Hotel no alto de um morro, muito frio. Almoço num restaurante chique. Passeio no Palácio Quitandinha. Piquenique.

@@ -169,6 +169,34 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'A caminha da Meli. Tem até patinha desenhada.');
   },
   async camaWeng(ctx) {
+    if (QuestSystem.isActive('dq-m3') && QuestSystem.isObjectiveDone('dq-m3', 'filme') && !QuestSystem.isObjectiveDone('dq-m3', 'dormir')) {
+      await ctx.say('bella', 'A cama de esteira de bambu... geladinha.');
+      await ctx.say('weng', 'Eu disse que era a melhor invenção da China.');
+      await ctx.fadeOut(700);
+      await ctx.illustration('cena-primeira-noite', ['A primeira noite.', 'A TV ainda ligada, a Meli nos pés da cama, e a gente conversando baixinho até pegar no sono.']);
+      ctx.objective('dq-m3', 'dormir');
+      await ctx.memory('mem-dq-07');
+      // dias depois: a briga boba
+      await ctx.narrate('Uns dias depois. Uma tarde qualquer, cada um no seu celular.');
+      ctx.startQuest('dq-m4');
+      ctx.follow('weng', false);
+      ctx.place('player', 15.2, 15.6, 'up');
+      ctx.place('weng', 16.8, 15.6, 'up');
+      await ctx.fadeIn(500);
+      await ctx.say('bella', 'Olha esse casal do TikTok. Ele faz café da manhã pra ela todo dia. Todo. Dia.');
+      await ctx.say('weng', 'E essa aqui? Ela nunca reclama de nada, nunca fica de cara feia.');
+      await ctx.emote('bella', 'exclaim');
+      await ctx.say('bella', 'Como assim? Isso foi indireta?');
+      await ctx.say('weng', 'E o café da manhã foi o quê, então?');
+      await ctx.choose('bella', '(O clima pesou)', ['"Esquece. Não quero mais falar disso."', '"Você tá me comparando com uma desconhecida?"']);
+      await ctx.say('weng', '...Vou ficar um pouco no quarto.');
+      await ctx.move('weng', 13.6, 7.9, 50);
+      ctx.face('weng', 'up');
+      await ctx.wait(400);
+      await ctx.say('bella', '(Que briga mais boba. A gente nem é aquelas pessoas da internet. A gente é a gente.)');
+      ctx.toast('Vá conversar com o Weng no quarto');
+      return;
+    }
     if (objActive('achar-meli')) {
       await ctx.say('bella', 'Debaixo da cama... só uma meia perdida. Nada de Meli.');
       return;
@@ -217,6 +245,20 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Geladeira cheia de ímã. Tem até um de gatinho.');
   },
   async fogao(ctx) {
+    if (QuestSystem.isActive('dq-m3') && !QuestSystem.isObjectiveDone('dq-m3', 'jantar')) {
+      const c = await ctx.choose('bella', 'O que a gente cozinha hoje?', ['Macarrão ao molho branco', 'Strogonoff com batata palha', 'Miojo gourmet (com ovo!)']);
+      const pratos = ['macarrão ao molho branco', 'strogonoff', 'miojo gourmet'];
+      await ctx.say('weng', c === 2 ? 'Miojo gourmet. Respeito a ousadia.' : `Fechado: ${pratos[c]}. Eu pico a cebola e choro sozinho.`);
+      await ctx.fadeOut(400);
+      ctx.sfx('pickup');
+      await ctx.narrate('Panela no fogo, música baixinha e a Meli rondando a cozinha esperando cair alguma coisa.');
+      await ctx.fadeIn(400);
+      await ctx.say('bella', 'Hmm... ficou bom demais! A gente é um ótimo time.');
+      await ctx.say('weng', 'Eu te disse. Agora: filme no sofá?');
+      ctx.objective('dq-m3', 'jantar');
+      ctx.toast('Sente no sofá para ver o filme');
+      return;
+    }
     await ctx.say('weng', 'Um dia a gente cozinha junto aqui. Eu corto, você manda.');
     await ctx.say('bella', 'Fechado. E eu provo tudo antes.');
   },
@@ -241,6 +283,19 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', 'Atrás do sofá... nada. Só poeira e um controle perdido.');
       return;
     }
+    if (QuestSystem.isActive('dq-m3') && QuestSystem.isObjectiveDone('dq-m3', 'jantar') && !QuestSystem.isObjectiveDone('dq-m3', 'filme')) {
+      await ctx.sit(745, 640, [
+        ['narrador', 'Um filme escolhido depois de vinte minutos de discussão. Pipoca, coberta e a Meli no meio dos dois.'],
+        ['bella', 'Você vai dormir no meio do filme, né?'],
+        ['weng', 'Jamais. ...Talvez.'],
+        ['bella', 'Eu gosto daqui. Do apê, da Meli, de você.'],
+        ['weng', 'Então fica. Hoje, pelo menos.'],
+      ]);
+      ctx.objective('dq-m3', 'filme');
+      await ctx.say('weng', 'Tá tarde. Vamos dormir?');
+      ctx.toast('Vá até a cama do quarto do Weng');
+      return;
+    }
     if (QuestSystem.isActive('dq-m2')) {
       await ctx.fadeOut(500);
       await ctx.backdrop('cena-pascoa');
@@ -259,7 +314,12 @@ const scripts: Record<string, Script> = {
       ctx.objective('dq-m2', 'pascoa');
       await ctx.fadeIn(500);
       await ctx.memory('mem-dq-06');
-      ctx.toast('Mais cenas do Capítulo 2 em breve!');
+      await ctx.fadeOut(600);
+      await ctx.narrate('Um tempo depois. A Bella vai dormir no apê pela primeira vez.');
+      ctx.startQuest('dq-m3');
+      await ctx.fadeIn(500);
+      await ctx.say('weng', 'Hoje eu cozinho. Quer dizer... a gente cozinha. Eu corto, você manda.');
+      ctx.toast('Vá até o fogão da cozinha');
       return;
     }
     await ctx.sit(745, 640, [['weng', 'Esse sofá já viu muita maratona de série.'], ['bella', 'Agora vai ver as nossas.']]);
@@ -457,7 +517,7 @@ export const aptoMap: MapDef = {
 
   hotspots: [
     // Quarto do Weng
-    { rect: R(85, 165, 292, 422), interact: 'camaWeng', label: 'Cama' },
+    { rect: R(85, 165, 292, 422), interact: 'camaWeng', label: 'Cama', markerIf: () => QuestSystem.isActive('dq-m3') && QuestSystem.isObjectiveDone('dq-m3', 'filme') },
     { rect: R(380, 140, 560, 332), interact: 'computador', label: 'Computador' },
     { rect: R(560, 30, 700, 332), interact: 'janela', label: 'Janela', markerIf: () => objActive('janela') && objDone('carinho') },
     { rect: R(640, 60, 805, 280), interact: 'estante', label: 'Jogar cartas' },
@@ -469,12 +529,12 @@ export const aptoMap: MapDef = {
     { rect: R(1265, 185, 1440, 422), interact: 'camaAvos', label: 'Cama' },
     // Cozinha
     { rect: R(50, 535, 152, 707), interact: 'geladeira', label: 'Geladeira' },
-    { rect: R(160, 570, 250, 707), interact: 'fogao', label: 'Fogão' },
+    { rect: R(160, 570, 250, 707), interact: 'fogao', label: 'Fogão', markerIf: () => QuestSystem.isActive('dq-m3') && !QuestSystem.isObjectiveDone('dq-m3', 'jantar') },
     { rect: R(250, 565, 380, 707), interact: 'armario', label: 'Armário', markerIf: () => objActive('sache') },
     { rect: R(50, 840, 152, 897), interact: 'potinhos', label: 'Potinhos', markerIf: () => objActive('potinho') && objDone('sache') },
     // Sala
     { rect: R(420, 535, 505, 842), interact: 'tv', label: 'Videogame' },
-    { rect: R(595, 530, 905, 692), interact: 'sofa', label: 'Sentar', markerIf: () => QuestSystem.isActive('dq-m2') },
+    { rect: R(595, 530, 905, 692), interact: 'sofa', label: 'Sentar', markerIf: () => QuestSystem.isActive('dq-m2') || (QuestSystem.isActive('dq-m3') && QuestSystem.isObjectiveDone('dq-m3', 'jantar') && !QuestSystem.isObjectiveDone('dq-m3', 'filme')) },
     { rect: R(955, 590, 1100, 782), interact: 'mesa', label: 'Mesa' },
     { rect: R(1090, 525, 1160, 602), interact: 'cesto', label: 'Cesto', markerIf: () => objActive('novelo') && objDone('potinho') },
     { rect: R(1105, 720, 1168, 852), interact: 'arranhadorSala', label: 'Arranhador' },
@@ -507,6 +567,43 @@ export const aptoMap: MapDef = {
   ],
   scripts: {
     ...scripts,
+    async weng(ctx) {
+      if (QuestSystem.isActive('dq-m4')) {
+        await ctx.say('bella', 'Posso entrar?');
+        await ctx.say('weng', 'Pode. Eu tava pensando em você. Na gente.');
+        const c = await ctx.choose('bella', 'O que dizer?', ['"Desculpa. Eu não quero ser comparada, e também não quero te comparar."', '"A gente não é aquele casal do TikTok. E ainda bem."']);
+        await ctx.say('weng', c === 0 ? 'Desculpa também. Eu nem gosto de café da manhã de propaganda. Gosto do nosso jeito.' : 'Ainda bem mesmo. Aquele casal nunca ia jogar Bate-Gato às duas da manhã.');
+        await ctx.say('bella', 'Então combinado: nada de régua da internet. Só a gente.');
+        await ctx.fadeOut(600);
+        await ctx.illustration('cena-pazes', ['As pazes.', 'Aprendemos juntos. E pedimos desculpas um pro outro.']);
+        ctx.objective('dq-m4', 'pazes');
+        ctx.follow('weng', true);
+        await ctx.memory('mem-dq-08');
+        // o aniversário dela
+        await ctx.narrate('Algumas semanas depois. O aniversário da Bella estava chegando...');
+        ctx.startQuest('dq-m5');
+        await ctx.fadeIn(500);
+        await ctx.say('weng', '(Hotel no alto do morro, restaurante chique, Quitandinha, piquenique... já tá tudo reservado. Agora é só contar.)');
+        ctx.toast('Fale com o Weng');
+        return;
+      }
+      if (QuestSystem.isActive('dq-m5')) {
+        await ctx.say('weng', 'Bella, pega um casaco. Dos grossos.');
+        await ctx.say('bella', 'Casaco? Em Duque de Caxias? Tá tudo bem com você?');
+        await ctx.say('weng', 'É que no seu aniversário a gente vai pra... Petrópolis!');
+        await ctx.emote('bella', 'heart');
+        await ctx.say('bella', 'PETRÓPOLIS?! Sério?! Weng!!!');
+        await ctx.say('weng', 'Hotel lá no alto do morro, frio de verdade. Almoço chique, Quitandinha e piquenique. Tudo nosso.');
+        await ctx.say('bella', 'Você é o melhor namorado do mundo. Já disse isso hoje?');
+        await ctx.say('weng', 'Hoje não. Pode repetir.');
+        ctx.objective('dq-m5', 'convite');
+        ctx.unlockRegion('petropolis');
+        await ctx.chapterCard('Fim do Capítulo 2', 'Duque de Caxias', 'Nosso cantinho.', 'Continuar');
+        await ctx.chapterCard('Capítulo 3', 'Petrópolis', 'O aniversário dela. Em breve!', 'Continuar');
+        return;
+      }
+      await ctx.say('weng', 'Que foi? Tá me olhando com cara de quem quer açaí.');
+    },
     async porta(ctx) {
       if (QuestSystem.isActive(Q)) {
         await ctx.say('weng', 'Hoje a gente fica em casa com a Meli.');
