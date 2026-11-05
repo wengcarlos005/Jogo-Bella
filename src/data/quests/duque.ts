@@ -50,4 +50,14 @@ export const DUQUE_QUESTS: QuestDef[] = [
     ],
     rewardMemory: 'mem-dq-01',
   },
+  {
+    id: 'dq-m2',
+    region: 'duque-de-caxias',
+    chapter: 'Capítulo 2',
+    title: 'Feliz Páscoa',
+    kind: 'principal',
+    description: 'Domingo de Páscoa no apê. A Bella chegou cheia de sacolas...',
+    objectives: [{ id: 'pascoa', text: 'Sentar no sofá com a Bella', hint: 'O sofá azul, no meio da sala.' }],
+    rewardMemory: 'mem-dq-06',
+  },
 ];

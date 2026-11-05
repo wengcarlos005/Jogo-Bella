@@ -22,30 +22,7 @@ const scripts: Record<string, Script> = {
   },
 
   async porta(ctx) {
-    if (!objActive('mexicano')) {
-      await ctx.say('bella', 'O nosso mexicano. Ainda dá pra sentir o gosto daquela bebida.');
-      return;
-    }
-    await ctx.fadeOut(400);
-    await ctx.backdrop('memory-dq-04');
-    await ctx.say('garcom', '¡Bienvenidos! Primeira vez aqui? Então vocês ganham uma bebida de cortesia da casa!');
-    await ctx.say('bella', 'De graça?! Hoje é o nosso dia.');
-    await ctx.say('garcom', 'E pra entrar no clima... os chapéus!');
-    await ctx.say('weng', 'Bella. Você tá linda de chapéu mexicano.');
-    await ctx.say('bella', 'Você tá ridículo. E eu amei.');
-    const c = await ctx.choose('bella', '(A bebida chegou, gelada e colorida)', ['Brindar: "Ao segundo encontro!"', 'Brindar: "Aos próximos!"']);
-    await ctx.say('weng', c === 0 ? 'Ao segundo encontro! E ao churrasco do Alexandre, que eu sobrevivi.' : 'Aos próximos. Muitos próximos.');
-    await ctx.say('bella', 'Hmm... que bebida gostosa! O que tem nisso?');
-    await ctx.say('garcom', 'Segredo da casa, señorita.');
-    await ctx.say('weng', 'A gente vai ter que voltar até descobrir.');
-    await ctx.backdrop(null);
-    ctx.objective(Q, 'mexicano');
-    await ctx.memory('mem-dq-04');
-    await ctx.fadeOut(600);
-    await ctx.narrate('E ali, de chapéu gigante e rindo de tudo, a Bella teve certeza: era ele.');
-    await ctx.chapterCard('Terceiro encontro', 'Caxias Shopping', 'Cinema, uma ligação inesperada e uma surpresa.', 'Continuar');
-    ctx.startQuest('dq-e3');
-    await ctx.teleport('duque-cinema', 'sala');
+    await ctx.teleport('piabeta-mexicano', 'porta');
   },
   async cardapio(ctx) {
     await ctx.say('bella', 'Um quadro-negro com um chapéu desenhado. "Hoje: nachos e bebida da casa."');

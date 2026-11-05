@@ -131,22 +131,22 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CHAR-020 | Meli, gata laranja (4×4 andando + folha de poses) | pets/meli-walk.png, pets/meli-poses.png | ✅ no jogo |
 | CHAR-021 | Avó do Weng (4×4 + retrato) | characters/avo-weng.png | pedido |
 | CHAR-022 | Avô do Weng (4×4 + retrato) | characters/avo2-weng.png | pedido |
-| CHAR-023 | Pombo, gato preto (4×4 + poses) | characters/pombo.png | pedido |
+| CHAR-023 | Pombo, gato preto (andando; poses pendentes) | pets/pombo-walk.png | ✅ no jogo (casa da Bella) |
 | CHAR-024 | Lala, gata branca com manchas marrons (4×4 + poses; manchas recoloridas de laranja para marrom) | pets/lala-walk.png, pets/lala-poses.png | ✅ no jogo (casa da Bella) |
 | MAP-011 | Rua do Weng: portaria, praça com o Teatro Raul Cortez, avenida e o Shopping da Multidão (uma arte só) | maps/duque-rua-bg.png | ✅ no jogo |
-| CIN-010 | Vista da janela: o casal olhando o Teatro Raul Cortez iluminado de cima, à noite | cinematics/duque-janela.png | pedido |
+| CIN-010 | Vista da janela | cinematics/duque-janela.png | ✅ no jogo |
 | MAP-012 | Açaiteria (interior) | maps/duque-acai-bg.png | ✅ no jogo |
 | MAP-013 | Mercado (interior) | maps/duque-mercado-bg.png | depois |
 | MAP-014 | Shopping da Multidão (interior: corredor de lojinhas de cabelo, casa, doces) | maps/duque-multidao-bg.png | pedido |
 | ICON-020.. | Achadinhos: piranha de cabelo, creme de cabelo, scrunchie, potinho organizador, vela cheirosa, pano de prato fofo, paçoca, bala de goma, chocolate | ui/icon-achado-*.png | ✅ recortados |
 | MAP-017 | Quintal da casa da Bella com churrasqueira (dia) | maps/piabeta-quintal-bg.png | pedido |
 | MAP-018 | Rua ao lado da praça do primeiro beijo com a fachada do restaurante mexicano (a praça é o parque que já existe) | maps/piabeta-mexicano-fora-bg.png | pedido |
-| MAP-019 | Restaurante mexicano (interior) | maps/piabeta-mexicano-bg.png | pedido |
+| MAP-019 | Restaurante mexicano (interior) | maps/piabeta-mexicano-bg.png | ✅ no jogo |
 | CIN-015 | Os dois de chapéu mexicano brindando a bebida de cortesia | cinematics/mexicano.png | pedido |
 | MAP-015 | Cinema do Caxias Shopping (saguão) | maps/duque-cinema-bg.png | ✅ no jogo |
 | MAP-016 | Casa da Bella decorada para o pedido | maps/piabeta-casa-pedido-bg.png | ✅ no jogo |
 | CIN-011 | O pedido de namoro | cinematics/pedido.png | ✅ no jogo |
-| CIN-012 | Páscoa (chocolates + cartinha de coelho) | cinematics/pascoa.png | depois |
+| CIN-012 | Páscoa | cinematics/pascoa.png | ✅ no jogo |
 | CIN-013 | A primeira noite | cinematics/primeira-noite.png | ✅ recebido |
 | MG-A | Ingredientes do açaí (12) | minigames/acai-*.png | ✅ no minijogo do açaí |
 | MG-C | Cartas do Bate-Gato (8) | minigames/carta-*.png | ✅ no minijogo de cartas |

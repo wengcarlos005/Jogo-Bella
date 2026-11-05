@@ -197,6 +197,17 @@ export const casaScripts: Record<string, Script> = {
     await ctx.say('weng', lines[Math.floor(Math.random() * lines.length)]);
   },
 
+  async pombo(ctx) {
+    await ctx.emote('pombo', 'question');
+    await ctx.say('pombo', 'Mrrr.');
+    await ctx.say('bella', ctx.flag('weng-entrou') ? 'Esse é o Pombo. Ele julga todo mundo. Não leva pro pessoal.' : 'Pombo, para de me olhar com essa cara de julgamento.');
+    if (ctx.flag('weng-entrou') && !ctx.flag('pombo-weng')) {
+      ctx.setFlag('pombo-weng');
+      await ctx.say('weng', 'Ele tá me encarando. Ele tá me encarando muito.');
+      await ctx.say('bella', 'Ele tá decidindo se gosta de você.');
+    }
+  },
+
   async lala(ctx) {
     const n = Number(GameState.getFlag<number>('lala-carinhos') ?? 0);
     ctx.pose('lala', 'lala-poses', 3);

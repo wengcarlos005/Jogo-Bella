@@ -131,6 +131,8 @@ export const casaBellaMap: MapDef = {
   ],
 
   npcs: [
+    // Pombo, o gato preto, passeando pela sala
+    { id: 'pombo', sprite: 'pombo', tx: 20.5, ty: 17.0, facing: 'left', interact: 'pombo', behavior: 'wander', wanderRadius: 3, wanderAxis: 'x' },
     // Lala, a gata da Bella, dormindo no chão do quarto
     { id: 'lala', sprite: 'lala', tx: 14.1, ty: 8.2, facing: 'down', interact: 'lala', pose: { key: 'lala-poses', frame: 1 } },
     { id: 'mae-bella', sprite: 'mae-bella', tx: 23.6, ty: 16.4, facing: 'down', interact: 'mae', behavior: 'wander', wanderRadius: 2.2, wanderAxis: 'x', markerIf: () => objActive('mae') && GameState.is('weng-entrou') },

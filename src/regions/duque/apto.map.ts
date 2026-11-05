@@ -241,6 +241,27 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', 'Atrás do sofá... nada. Só poeira e um controle perdido.');
       return;
     }
+    if (QuestSystem.isActive('dq-m2')) {
+      await ctx.fadeOut(500);
+      await ctx.backdrop('cena-pascoa');
+      await ctx.fadeIn(600);
+      await ctx.say('bella', 'Feliz Páscoa! Esse é pra você. E esse. E esse. E esse aqui também.');
+      await ctx.say('weng', 'Bella... isso é ovo de Páscoa pra um ano inteiro!');
+      await ctx.say('bella', 'Tem um pra sua irmã também. Não come o dela, hein.');
+      await ctx.say('weng', 'Não prometo nada.');
+      await ctx.say('weng', 'Mas eu também tenho uma coisa pra você.');
+      await ctx.showItem('icon-chocolate', 'Você ganhou', 'Chocolates e cartinha de coelho', 'Uma caixa de bombons e uma cartinha em formato de coelho, escrita à mão pelo Weng.');
+      await ctx.say('bella', 'Uma cartinha de coelhinho! Ai, que fofo. Vou guardar pra sempre.');
+      await ctx.say('meli', 'Miau?');
+      await ctx.say('weng', 'Não, Meli. Chocolate não é pra gato. Nem adianta me olhar assim.');
+      await ctx.fadeOut(500);
+      await ctx.backdrop(null);
+      ctx.objective('dq-m2', 'pascoa');
+      await ctx.fadeIn(500);
+      await ctx.memory('mem-dq-06');
+      ctx.toast('Mais cenas do Capítulo 2 em breve!');
+      return;
+    }
     await ctx.sit(745, 640, [['weng', 'Esse sofá já viu muita maratona de série.'], ['bella', 'Agora vai ver as nossas.']]);
   },
   async tv(ctx) {
@@ -315,7 +336,12 @@ const scripts: Record<string, Script> = {
       ctx.place('meli', P.caminha.x, P.caminha.y, 'down');
       ctx.objective(Q, 'janela');
       await ctx.wait(600);
-      ctx.toast('Mais cenas do Capítulo 1 em breve!');
+      await ctx.fadeOut(600);
+      await ctx.narrate('Algumas semanas depois. Domingo de Páscoa.');
+      ctx.startQuest('dq-m2');
+      await ctx.fadeIn(500);
+      await ctx.say('bella', 'Weng! Vem pro sofá. Eu trouxe uma coisinha. Ou várias.');
+      ctx.toast('Sente no sofá com a Bella');
       return;
     }
     await ctx.say('bella', 'A janela do quarto dele. Lá embaixo, o teatro todo iluminado.');
@@ -448,7 +474,7 @@ export const aptoMap: MapDef = {
     { rect: R(50, 840, 152, 897), interact: 'potinhos', label: 'Potinhos', markerIf: () => objActive('potinho') && objDone('sache') },
     // Sala
     { rect: R(420, 535, 505, 842), interact: 'tv', label: 'Videogame' },
-    { rect: R(595, 530, 905, 692), interact: 'sofa', label: 'Sentar' },
+    { rect: R(595, 530, 905, 692), interact: 'sofa', label: 'Sentar', markerIf: () => QuestSystem.isActive('dq-m2') },
     { rect: R(955, 590, 1100, 782), interact: 'mesa', label: 'Mesa' },
     { rect: R(1090, 525, 1160, 602), interact: 'cesto', label: 'Cesto', markerIf: () => objActive('novelo') && objDone('potinho') },
     { rect: R(1105, 720, 1168, 852), interact: 'arranhadorSala', label: 'Arranhador' },

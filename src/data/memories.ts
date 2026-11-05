@@ -95,6 +95,14 @@ export const MEMORIES: MemoryDef[] = [
     text: 'Cinema no Caxias Shopping, a ligação da minha mãe e eu voltando emburrada pra casa. No quarto: luzinhas, nossas fotos, origamis, a cartinha e chocolates. Ele apareceu atrás de mim com um buquê e me pediu em namoro. Eu disse "aceito" rápido demais. E a gente disse "te amo" pela primeira vez.',
     image: 'cena-pedido',
   },
+  {
+    id: 'mem-dq-06',
+    region: 'duque-de-caxias',
+    title: 'Páscoa',
+    year: 'Ano 1',
+    text: 'Eu enchi o Weng de ovo de Páscoa, e ainda sobrou um pra irmã dele. Ele me deu chocolates e uma cartinha em formato de coelho. A Meli queria tudo.',
+    image: 'cena-pascoa',
+  },
 ];
 
 export const MEMORY_GOAL = 50;
