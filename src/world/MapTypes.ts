@@ -110,7 +110,12 @@ export interface MapDef {
     ellipse?: boolean;
     fade?: boolean;
     /** 'foliage': mantém só folhas, flores e contornos (tira chão, asfalto, pedra). */
-    cut?: 'foliage' | 'furniture' | 'lamp' | 'dark';
+    cut?: 'foliage' | 'furniture' | 'lamp' | 'dark' | 'booth';
+    /**
+     * Móveis baixos (sofás, mesas): fatia o recorte em faixas horizontais, cada uma com a
+     * própria profundidade. Quem passa AO LADO não é cortado; quem passa ATRÁS é.
+     */
+    slice?: boolean;
   }[];
   /** Interações invisíveis sobre o cenário. */
   hotspots?: HotspotDef[];

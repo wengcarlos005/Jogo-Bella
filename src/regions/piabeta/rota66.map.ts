@@ -225,7 +225,7 @@ export const rota66Map: MapDef = {
     R(1005, 840, 1455, 905),
     // floreiras e plantas da frente
     R(0, 905, 645, 1100),
-    R(645, 938, 890, 1100), // porta de vidro (não dá pra pisar em cima)
+    R(645, 884, 890, 1100), // porta de vidro (não dá pra pisar em cima)
     R(890, 905, 1536, 1100),
     R(540, 880, 625, 975),
     R(905, 880, 995, 975),
@@ -235,20 +235,20 @@ export const rota66Map: MapDef = {
   overlays: [
     // Cabines recortadas peça por peça (assento esq., encosto do meio, assento dir.),
     // começando no topo de cada peça: o chão em volta nunca fica na frente de ninguém.
-    { x0: 434, y0: 465, x1: 482, y1: 668, base: 665, cut: 'furniture' }, // cabine do meio (esq.)
-    { x0: 482, y0: 482, x1: 680, y1: 668, base: 665, cut: 'furniture' },
-    { x0: 680, y0: 465, x1: 723, y1: 668, base: 665, cut: 'furniture' },
-    { x0: 877, y0: 464, x1: 922, y1: 668, base: 665, cut: 'furniture' }, // cabine do meio (dir.)
-    { x0: 922, y0: 482, x1: 1112, y1: 668, base: 665, cut: 'furniture' },
-    { x0: 1112, y0: 464, x1: 1163, y1: 668, base: 665, cut: 'furniture' },
-    { x0: 111, y0: 675, x1: 162, y1: 906, base: 905, cut: 'furniture' }, // cabine de baixo (esq.)
-    { x0: 162, y0: 701, x1: 357, y1: 906, base: 905, cut: 'furniture' },
-    { x0: 357, y0: 675, x1: 406, y1: 906, base: 905, cut: 'furniture' },
-    { x0: 1144, y0: 679, x1: 1184, y1: 906, base: 905, cut: 'furniture' }, // cabine de baixo (dir.)
-    { x0: 1184, y0: 701, x1: 1385, y1: 906, base: 905, cut: 'furniture' },
-    { x0: 1385, y0: 679, x1: 1432, y1: 906, base: 905, cut: 'furniture' },
-    { x0: 137, y0: 503, x1: 252, y1: 568, base: 650, cut: 'furniture' }, // mesinha da janela: tampo
-    { x0: 118, y0: 568, x1: 262, y1: 650, base: 650, cut: 'furniture' }, // assentos e pés (os encostos ficam atrás)
+    { x0: 434, y0: 465, x1: 482, y1: 668, base: 665, cut: 'booth', slice: true }, // cabine do meio (esq.)
+    { x0: 482, y0: 482, x1: 680, y1: 668, base: 665, cut: 'booth', slice: true },
+    { x0: 680, y0: 465, x1: 723, y1: 668, base: 665, cut: 'booth', slice: true },
+    { x0: 877, y0: 464, x1: 922, y1: 668, base: 665, cut: 'booth', slice: true }, // cabine do meio (dir.)
+    { x0: 922, y0: 482, x1: 1112, y1: 668, base: 665, cut: 'booth', slice: true },
+    { x0: 1112, y0: 464, x1: 1163, y1: 668, base: 665, cut: 'booth', slice: true },
+    { x0: 111, y0: 675, x1: 162, y1: 906, base: 905, cut: 'booth', slice: true }, // cabine de baixo (esq.)
+    { x0: 162, y0: 701, x1: 357, y1: 906, base: 905, cut: 'booth', slice: true },
+    { x0: 357, y0: 675, x1: 406, y1: 906, base: 905, cut: 'booth', slice: true },
+    { x0: 1144, y0: 679, x1: 1184, y1: 906, base: 905, cut: 'booth', slice: true }, // cabine de baixo (dir.)
+    { x0: 1184, y0: 701, x1: 1385, y1: 906, base: 905, cut: 'booth', slice: true },
+    { x0: 1385, y0: 679, x1: 1432, y1: 906, base: 905, cut: 'booth', slice: true },
+    { x0: 137, y0: 503, x1: 252, y1: 568, base: 650, cut: 'furniture', slice: true }, // mesinha da janela: tampo
+    { x0: 118, y0: 568, x1: 262, y1: 650, base: 650, cut: 'furniture', slice: true }, // assentos e pés (os encostos ficam atrás)
     { x0: 342, y0: 492, x1: 438, y1: 600, base: 662, cut: 'foliage' }, // plantas
     { x0: 1148, y0: 492, x1: 1244, y1: 600, base: 664, cut: 'foliage' },
     { x0: 0, y0: 636, x1: 106, y1: 745, base: 760, cut: 'foliage' },
@@ -271,7 +271,7 @@ export const rota66Map: MapDef = {
   },
   exits: [
     {
-      rect: R(645, 905, 890, 938), // encostar na porta de vidro = sair
+      rect: R(645, 866, 890, 884), // encostar na porta de vidro = sair
       toMap: 'piabeta-rota66-fora',
       toSpawn: 'from-rota66',
       sfx: 'door',

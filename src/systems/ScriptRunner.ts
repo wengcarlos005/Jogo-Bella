@@ -283,7 +283,10 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         weng!.stopFollowing();
         weng!.behavior = 'scripted';
         weng!.setVisible(false);
-        pair = scene.add.sprite(couple.x / 3, couple.y / 3, couple.key, 0).setOrigin(0.5, 1).setScale(1 / RENDER_SCALE);
+        // mesma largura do banco pintado no cenário (senão aparecem "dois bancos")
+        const BENCH_W: Record<string, number> = { 'bench-pq-ang-r': 114, 'bench-pq-front-lamp': 113, 'bench-pq-ang-l': 108, 'bench-pq-front-bin': 125, 'bench-rua': 111, 'bench-rua-bin': 124 };
+        const sc = couple.w && BENCH_W[couple.key] ? couple.w / 3 / BENCH_W[couple.key] : 1 / RENDER_SCALE;
+        pair = scene.add.sprite(couple.x / 3, couple.y / 3, couple.key, 0).setOrigin(0.5, 1).setScale(sc);
         pair.setDepth(couple.y / 3 + 60);
         let tick = 0;
         pairTimer = scene.time.addEvent({

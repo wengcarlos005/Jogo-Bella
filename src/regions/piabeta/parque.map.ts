@@ -131,16 +131,16 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Um laguinho com vitórias-régias e uma pontezinha. Esse parque pensou em tudo.');
   },
   async banco(ctx) {
-    await ctx.sit(325, 628, [['weng', 'Um banco na luz do poste. Clássico.'], ['bella', 'Clássico e perfeito.']], { key: 'bench-pq-front-lamp', x: 325, y: 668 });
+    await ctx.sit(325, 628, [['weng', 'Um banco na luz do poste. Clássico.'], ['bella', 'Clássico e perfeito.']], { key: 'bench-pq-front-lamp', x: 325, y: 668, w: 140 });
   },
   async banco2(ctx) {
-    await ctx.sit(1052, 424, [['bella', 'Olha o laguinho daqui. Dá pra ouvir os sapos.'], ['weng', 'Eles tão cantando pra gente.']], { key: 'bench-pq-ang-l', x: 1052, y: 466 });
+    await ctx.sit(1052, 424, [['bella', 'Olha o laguinho daqui. Dá pra ouvir os sapos.'], ['weng', 'Eles tão cantando pra gente.']], { key: 'bench-pq-ang-l', x: 1052, y: 466, w: 135 });
   },
   async banco3(ctx) {
-    await ctx.sit(1367, 655, [['weng', 'Se eu pudesse, parava o tempo agora.'], ['bella', '...Eu também.']], { key: 'bench-pq-front-bin', x: 1350, y: 694 });
+    await ctx.sit(1367, 655, [['weng', 'Se eu pudesse, parava o tempo agora.'], ['bella', '...Eu também.']], { key: 'bench-pq-front-bin', x: 1343, y: 686, w: 185 });
   },
   async banco4(ctx) {
-    await ctx.sit(275, 262, [['bella', 'O barulhinho do chafariz é tão calmo.'], ['weng', 'Você também me deixa calmo. Mesmo nervoso.']], { key: 'bench-pq-ang-r', x: 275, y: 300 });
+    await ctx.sit(275, 262, [['bella', 'O barulhinho do chafariz é tão calmo.'], ['weng', 'Você também me deixa calmo. Mesmo nervoso.']], { key: 'bench-pq-ang-r', x: 285, y: 294, w: 128 });
   },
   async weng(ctx) {
     if (objActive('passear')) await ctx.say('weng', 'Vamos seguindo o caminho, pro meio do parque.');
@@ -167,6 +167,11 @@ export const parqueMap: MapDef = {
     R(0, 150, 70, 830),
     R(1490, 150, 1536, 690), // borda direita (passagem para a rua do mexicano em y 690–830)
     R(0, 1005, 1536, 1100),
+    // pilares do portão (com lampião) e as folhas do portão abertas: ninguém sobe neles
+    R(576, 788, 640, 952),
+    R(860, 788, 930, 952),
+    R(640, 770, 678, 945),
+    R(826, 770, 860, 945),
     // grade da frente (portão em x 650–830)
     R(0, 830, 650, 925),
     R(830, 830, 1536, 925),
@@ -176,14 +181,14 @@ export const parqueMap: MapDef = {
     R(790, 180, 840, 400),
     R(495, 330, 588, 410),
     R(758, 330, 852, 410),
-    R(425, 210, 505, 330),
-    R(840, 230, 910, 340),
+    R(432, 272, 503, 330),
+    R(845, 292, 908, 340),
     // canto superior esquerdo: ipê, banco, lixeira, poste
     R(110, 150, 190, 290),
     R(200, 235, 350, 290),
     R(355, 225, 392, 265),
     // chafariz
-    R(85, 400, 370, 545),
+    R(80, 428, 326, 540),
     // lago e pedras
     R(1040, 140, 1395, 395),
     R(1285, 330, 1365, 410),
@@ -198,16 +203,19 @@ export const parqueMap: MapDef = {
     R(1300, 640, 1435, 680),
     R(1250, 630, 1292, 682),
     // canteiros
-    R(1250, 445, 1410, 555),
-    R(760, 458, 900, 545),
-    R(325, 678, 460, 790),
-    R(1125, 672, 1262, 762),
-    R(1155, 752, 1310, 832),
-    R(90, 745, 262, 830),
+    R(1258, 505, 1402, 552),
+    R(768, 505, 892, 542),
+    R(318, 738, 466, 792),
+    R(1128, 718, 1260, 760),
+    R(1158, 792, 1308, 830),
+    R(92, 788, 260, 828),
     // árvores: copa inteira sólida (ninguém anda dentro da árvore)
-    R(440, 560, 715, 728),
-    R(845, 555, 1125, 768),
-    R(0, 575, 180, 818),
+    // só o tronco é sólido: dá pra passar por baixo da copa (a copa fica na frente, translúcida)
+    R(528, 690, 594, 732),
+    R(600, 718, 650, 752), // moita de flores ao lado do tronco (o caminho do arco fica livre)
+    R(946, 722, 1014, 768),
+    R(0, 718, 64, 818),
+    R(0, 772, 182, 830), // moita embaixo da árvore do canto
     // atrás dos postes
     R(395, 585, 440, 640),
     R(1040, 790, 1082, 862),
@@ -215,6 +223,22 @@ export const parqueMap: MapDef = {
   ],
 
   overlays: [
+    // pilares e lampiões do portão: na frente de quem está logo atrás deles
+    { x0: 576, y0: 740, x1: 640, y1: 952, base: 950 },
+    { x0: 860, y0: 740, x1: 930, y1: 952, base: 950 },
+    // copas das árvores: na frente de quem está atrás do tronco, translúcidas
+    { x0: 430, y0: 490, x1: 725, y1: 700, base: 730, cut: 'foliage', fade: true },
+    { x0: 835, y0: 480, x1: 1135, y1: 735, base: 766, cut: 'foliage', fade: true },
+    { x0: 0, y0: 500, x1: 195, y1: 832, base: 830, cut: 'foliage', fade: true },
+    // canteiros e moitas: a parte de cima fica na frente de quem passa atrás
+    { x0: 1248, y0: 440, x1: 1412, y1: 556, base: 554, cut: 'foliage' },
+    { x0: 758, y0: 455, x1: 902, y1: 546, base: 544, cut: 'foliage' },
+    { x0: 310, y0: 675, x1: 474, y1: 796, base: 794, cut: 'foliage' },
+    { x0: 1120, y0: 668, x1: 1266, y1: 764, base: 762, cut: 'foliage' },
+    { x0: 1150, y0: 748, x1: 1314, y1: 834, base: 832, cut: 'foliage' },
+    { x0: 85, y0: 742, x1: 266, y1: 832, base: 830, cut: 'foliage' },
+    { x0: 422, y0: 205, x1: 508, y1: 332, base: 330, cut: 'foliage' },
+    { x0: 838, y0: 225, x1: 912, y1: 342, base: 340, cut: 'foliage' },
     // topo do arco de flores (só sobre a passagem)
     { x0: 655, y0: 640, x1: 840, y1: 705, base: 930, cut: 'foliage', fade: true },
   ],

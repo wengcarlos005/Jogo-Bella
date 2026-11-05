@@ -16,6 +16,7 @@ export class NPC extends Character {
   private followTarget: Player | null = null;
   wanderRadius = 24;
   private followMoving = false;
+  private stuckMs = 0;
   private lookTimer = Phaser.Math.Between(2000, 5000);
   /** Seguidor: não bloqueia a Bella (mas colide com paredes). */
   passThroughPlayer = false;
@@ -132,7 +133,13 @@ export class NPC extends Character {
         const dy = goal.y - this.y;
         const sp = d > 70 ? 140 : d > 40 ? 95 : 70;
         body.setVelocity((dx / toGoal) * sp, (dy / toGoal) * sp);
-        if (d > 120) this.setPosition(goal.x, goal.y);
+        // preso num móvel/parede: reaparece no rastro dela
+        this.stuckMs = body.blocked.none && body.touching.none ? 0 : this.stuckMs + delta;
+        if (d > 120 || this.stuckMs > 350) {
+          this.setPosition(goal.x, goal.y);
+          body.reset(goal.x, goal.y);
+          this.stuckMs = 0;
+        }
       } else {
         body.setVelocity(0, 0);
         this.followMoving = false;

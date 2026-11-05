@@ -89,7 +89,7 @@ export interface ScriptContext {
    * Coordenadas em px do cenário ORIGINAL: centro do assento e altura do assento.
    * Resolve quando a jogadora levanta (anda ou aperta interagir).
    */
-  sit(seatX: number, seatY: number, lines?: [string, string][], couple?: { key: string; x: number; y: number }): Promise<void>;
+  sit(seatX: number, seatY: number, lines?: [string, string][], couple?: { key: string; x: number; y: number; /** largura do banco pintado (px da arte original) */ w?: number }): Promise<void>;
   /** Animação do beijo entre a Bella e o Weng (eles precisam estar frente a frente). */
   kiss(): Promise<void>;
   /** Existe arte carregada com essa chave? */

@@ -46,7 +46,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Uma placa da Rota 66 de verdade. Ou quase de verdade.');
   },
   async banco(ctx) {
-    await ctx.sit(300, 655, [['bella', 'Que noite bonita.'], ['weng', 'Tá mesmo. E nem é por causa do neon.']]);
+    await ctx.sit(300, 678, [['bella', 'Que noite bonita.'], ['weng', 'Tá mesmo. E nem é por causa do neon.']]);
   },
   async trilha(ctx) {
     await ctx.say('bella', 'Um caminho escuro no meio das árvores. Melhor ir pela rua, com o Weng.');
@@ -86,8 +86,8 @@ export const rota66ForaMap: MapDef = {
     R(1112, 640, 1152, 684),
     R(1425, 640, 1488, 694),
     R(1350, 690, 1536, 782),
-    // rua (não dá pra andar no asfalto)
-    R(0, 805, 1536, 1100),
+    // rua: dá pra andar no asfalto, até a borda de baixo
+    R(0, 1000, 1536, 1100),
   ],
 
   lighting: {

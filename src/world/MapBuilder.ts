@@ -137,10 +137,26 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
           if (keep && o.cut === 'furniture') keep = isFurniture(d[p], d[p + 1], d[p + 2]);
           if (keep && o.cut === 'lamp') keep = isLamp(d[p], d[p + 1], d[p + 2]);
           if (keep && o.cut === 'dark') keep = Math.max(d[p], d[p + 1], d[p + 2]) < 95;
+          if (keep && o.cut === 'booth') keep = isBooth(d[p], d[p + 1], d[p + 2]);
           if (!keep) d[p + 3] = 0;
         }
         ctx.putImageData(data, 0, 0);
         tex.refresh();
+      }
+      if (o.slice) {
+        // faixas de 8 px lógicos (24 px de arte): cada uma ordena pela própria linha de baixo
+        const step = 16; // px de textura (= 8 lógicos)
+        for (let sy = 0; sy < ch; sy += step) {
+          const hgt = Math.min(step, ch - sy);
+          const img = scene.add.image(cx / RENDER_SCALE, (cy + sy) / RENDER_SCALE, key).setOrigin(0).setScale(1 / RENDER_SCALE);
+          img.setCrop(0, sy, cw, hgt);
+          img.setPosition(cx / RENDER_SCALE, cy / RENDER_SCALE);
+          const top = (cy + sy) / RENDER_SCALE;
+          const bottom = Math.min((cy + sy + hgt) / RENDER_SCALE, o.base / 3);
+          img.setDepth(bottom);
+          overlays.push({ img, rect: new Phaser.Geom.Rectangle(o.x0 / 3, top, (o.x1 - o.x0) / 3, bottom - top), base: bottom, fade: false });
+        }
+        return;
       }
       const img = scene.add.image(cx / RENDER_SCALE, cy / RENDER_SCALE, key).setOrigin(0).setScale(1 / RENDER_SCALE);
       img.setDepth(o.base / 3);
@@ -178,6 +194,18 @@ function isFoliage(r: number, g: number, b: number): boolean {
   }
   if (h >= 55 && h <= 170 && sat > 0.22) return true; // verdes
   if (sat > 0.42 && (h >= 290 || h < 12 || (h >= 45 && h < 55) || (h >= 170 && h < 290))) return true; // rosa, vermelho, roxo, amarelo, azul
+  return false;
+}
+
+/** Sofás vermelhos de lanchonete: couro vermelho, cromado e contorno; tira o piso xadrez (marrom e bege). */
+function isBooth(r: number, g: number, b: number): boolean {
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const sat = max === 0 ? 0 : (max - min) / max;
+  if (max < 48) return true; // contorno
+  if (r > 125 && r > g * 1.7 && r > b * 1.5) return true; // couro vermelho
+  if (r > 200 && g < 170 && b < 170 && r > g * 1.25) return true; // brilho rosado do couro
+  if (sat < 0.14 && max > 140) return true; // cromado
   return false;
 }
 
