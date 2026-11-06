@@ -119,7 +119,7 @@ const scripts: Record<string, Script> = {
   },
 };
 
-/** Retângulo no cenário ORIGINAL (art-source/maps/piabeta-fragoso.png, 1536x1024). 48 px = 1 tile. */
+/** Retângulo no cenário ORIGINAL (art-source/maps/piabeta-fragoso-base.webp, 1536x1024). 48 px = 1 tile. */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
 /** Fragoso à noite (cenário pintado): calçada de cima → curva à direita → rua de baixo. */
@@ -133,85 +133,87 @@ export const fragosoMap: MapDef = {
   art: 'native',
   legend: { '.': T.SIDEWALK },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
+  // v2: cenário vazio (art-source/maps/piabeta-fragoso-base.webp) + objetos da folha (objects/frg-*).
+  // Versão anterior (cenário pintado inteiro com recortes) em backups/fragoso-v1/.
   blocks: [
-    R(0, 0, 1500, 322), // casas e muros de cima
-    R(1500, 0, 1536, 1024), // árvores da direita
-    // terreno do meio: plantas/árvores (topo) + muro (frente)
-    R(0, 470, 1192, 600), // terreno com plantas (dá pra encostar nas folhas)
-    R(0, 600, 700, 702), // muro da esquerda (até a faixa de grama, ninguém entra na parede)
-    R(700, 600, 1205, 660), // muro do gato
-    R(1192, 445, 1205, 660),
-    // casas de baixo (telhados)
+    R(0, 0, 1536, 326), // casas e muros de cima
+    R(1490, 326, 1536, 560), // árvores da direita
+    R(1440, 560, 1536, 700),
+    R(1410, 700, 1536, 1024),
+    R(0, 395, 128, 515), // folhagem da esquerda (a calçada de cima fica livre)
+    R(0, 515, 1200, 690), // terreno do meio + muro (a calçada de baixo fica livre)
     // casas de baixo: bloqueio na linha do beiral de cada telhado
-    R(0, 808, 200, 1024), // moitas do canto (a parte de cima fica por cima dos pés)
-    R(200, 806, 525, 1024),
-    R(525, 792, 600, 1024),
+    R(0, 782, 205, 1024),
+    R(205, 810, 525, 1024),
+    R(525, 795, 600, 1024),
     R(600, 776, 920, 1024),
     R(920, 768, 1185, 1024),
-    R(1185, 768, 1380, 1024),
-    R(1380, 700, 1536, 780), // folhagem do canto
-    R(1405, 575, 1536, 700), // arbustos à direita da curva
-    R(0, 392, 122, 445), // arbustos do canto de cima à esquerda (a calçada de cima fica livre)
+    R(1185, 815, 1410, 1024),
     // bases dos postes
-    R(204, 712, 240, 745),
-    R(108, 332, 140, 360),
-    R(724, 344, 752, 370),
-    R(1166, 362, 1196, 390),
+    R(108, 333, 140, 355),
+    R(721, 346, 753, 368),
+    R(1165, 366, 1197, 388),
+    R(206, 723, 238, 745),
+    R(1190, 668, 1222, 690),
   ],
-  overlays: [
-    // postes: quem passa atrás (ao norte da base) fica atrás da haste
-    // postes: haste estreita (sem fio nem chão) + luminária pelo contorno
-    { x0: 206, y0: 540, x1: 242, y1: 745, base: 744, cut: 'column', tall: true },
-    { x0: 258, y0: 598, x1: 324, y1: 660, base: 744, cut: 'outline', tall: true },
-    { x0: 1188, y0: 405, x1: 1226, y1: 692, base: 690, cut: 'column', tall: true },
-    { x0: 1236, y0: 420, x1: 1302, y1: 478, base: 690, cut: 'outline', tall: true },
-    // plantas do terreno: as folhas ficam na frente dos pés de quem encosta nelas
-    { x0: 0, y0: 770, x1: 205, y1: 900, base: 900, cut: 'foliage', fade: true }, // moitas do canto de baixo
-    { x0: 1290, y0: 700, x1: 1536, y1: 900, base: 900, cut: 'foliage', fade: true },
-    // copa da árvore: fica translúcida quando alguém passa atrás
-    { x0: 240, y0: 330, x1: 520, y1: 600, base: 600, cut: 'foliage', fade: true, tall: true },
+
+  // Objetos: x = centro, y = base (px da arte original). Profundidade fixa na base.
+  objects: [
+    { key: 'frg-poste', x: 154, y: 355, w: 100, shadow: 0.35 },
+    { key: 'frg-poste', x: 767, y: 368, w: 100, shadow: 0.35 },
+    { key: 'frg-poste', x: 1211, y: 388, w: 100, shadow: 0.35 },
+    { key: 'frg-poste', x: 252, y: 745, w: 100, shadow: 0.35 },
+    { key: 'frg-poste', x: 1236, y: 690, w: 100, shadow: 0.35 },
+    { key: 'frg-arvore', x: 385, y: 600, w: 300, fade: true, shadow: 0.6 },
+    { key: 'frg-bananeira', x: 690, y: 604, w: 200, fade: true, shadow: 0.5 },
+    { key: 'frg-moitas', x: 930, y: 612, w: 220, fade: true, shadow: false },
+    { key: 'frg-moita', x: 560, y: 610, w: 120, shadow: false },
+    { key: 'frg-moita', x: 190, y: 612, w: 130, shadow: false, flip: true },
+    { key: 'frg-flores', x: 1135, y: 620, w: 100, shadow: false },
+    { key: 'frg-gato', x: 1050, y: 620, w: 78, shadow: false },
   ],
 
   lighting: {
     darkness: 0.4,
     when: () => !QuestSystem.isActive('dq-e2'),
     lights: [
-      { x: 195, y: 130, r: 260 },
-      { x: 1251, y: 153, r: 260 },
-      { x: 1275, y: 419, r: 260 },
-      { x: 299, y: 584, r: 260 },
+      { x: 189, y: 156, r: 230 },
+      { x: 802, y: 169, r: 230 },
+      { x: 1246, y: 189, r: 230 },
+      { x: 287, y: 546, r: 230 },
+      { x: 1271, y: 491, r: 230 },
     ],
   },
 
   hotspots: [
-    { rect: R(1010, 560, 1095, 640), interact: 'gato', label: 'Gato' },
+    { rect: R(1005, 560, 1100, 640), interact: 'gato', label: 'Gato' },
     { rect: R(865, 230, 1010, 330), interact: 'varal', label: 'Varal' },
-    { rect: R(100, 150, 150, 362), interact: 'poste', label: 'Poste' },
+    { rect: R(100, 110, 165, 360), interact: 'poste', label: 'Poste' },
   ],
   spawns: {
-    'from-rota66': { tx: 2.6, ty: 6.3, facing: 'right' },
+    'from-rota66': { tx: 3.4, ty: 6.3, facing: 'right' },
     'from-parque': { tx: 2.2, ty: 14.4, facing: 'right' },
   },
   exits: [
     {
-      rect: R(0, 322, 22, 468),
+      rect: R(0, 326, 22, 395),
       toMap: 'piabeta-rota66-fora',
       toSpawn: 'from-fragoso',
       // a caminhada é pra frente: voltar pra Rota 66 só depois de chegar no parque
       blockedIf: () => (QuestSystem.isActive(Q) && !QuestSystem.isObjectiveDone(Q, 'parque') ? 'Weng: "A Rota 66 ficou pra trás! O parque é pro outro lado →"' : false),
     },
     {
-      rect: R(0, 668, 22, 800),
+      rect: R(0, 690, 22, 780),
       toMap: 'piabeta-parque',
       toSpawn: 'from-rota66',
       blockedIf: () => (QuestSystem.isActive(Q) && !QuestSystem.isObjectiveDone(Q, 'fragoso') ? 'Vamos com calma, sem pressa.' : false),
     },
   ],
   triggers: [
-    { id: 'c1', rect: R(380, 322, 410, 468), script: 'conversa1', once: true, enabledIf: () => QuestSystem.isActive(Q) },
-    { id: 'c2', rect: R(1000, 322, 1030, 468), script: 'conversa2', once: true, enabledIf: () => QuestSystem.isActive(Q) },
-    { id: 'c3', rect: R(1192, 560, 1500, 590), script: 'conversa3', once: true, enabledIf: () => QuestSystem.isActive(Q) },
-    { id: 'c4', rect: R(700, 668, 730, 800), script: 'conversa4', once: true, enabledIf: () => QuestSystem.isActive(Q) },
+    { id: 'c1', rect: R(380, 326, 410, 515), script: 'conversa1', once: true, enabledIf: () => QuestSystem.isActive(Q) },
+    { id: 'c2', rect: R(1000, 326, 1030, 515), script: 'conversa2', once: true, enabledIf: () => QuestSystem.isActive(Q) },
+    { id: 'c3', rect: R(1200, 560, 1490, 590), script: 'conversa3', once: true, enabledIf: () => QuestSystem.isActive(Q) },
+    { id: 'c4', rect: R(700, 690, 730, 830), script: 'conversa4', once: true, enabledIf: () => QuestSystem.isActive(Q) },
   ],
   scripts,
   onEnter: 'entrar',

@@ -72,6 +72,10 @@ export const ASSETS: AssetEntry[] = [
   ),
 
   // Casal sentado no banco (4 quadros 200x150: normal, piscando, expressão, normal)
+  // Fragoso v2: objetos recortados da folha
+  ...['poste', 'arvore', 'bananeira', 'moitas', 'moita', 'flores', 'gato', 'poste2'].map(
+    (n, i): AssetEntry => ({ id: `OBJ-FRG-${i}`, key: `frg-${n}`, file: `assets/objects/frg-${n}.png`, kind: 'image' }),
+  ),
   // Rota 66 v2: objetos recortados da folha (tools/sprite-sheet.py)
   ...['cabine', 'mesinha', 'banqueta', 'bomba', 'jukebox', 'planta', 'floreira', 'porta', 'divisoria', 'vidro'].map(
     (n, i): AssetEntry => ({ id: `OBJ-R66-${i}`, key: `r66-${n}`, file: `assets/objects/r66-${n}.png`, kind: 'image' }),

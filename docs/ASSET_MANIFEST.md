@@ -189,5 +189,5 @@ Backup da versão pintada inteira em `backups/rota66-v1/`.
 Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estilo), depois a folha
 (anexando a Rota 66 atual e a base nova). Fundo da folha: magenta #FF00FF liso.
 | NPC-004L | Atendente da Rota 66 limpando (2 linhas x 4 quadros, fundo magenta) | npcs/atendente-limpando.png | descartado (atendente fica parada no balcão) |
-| MAP-021 | Fragoso vazio (ruas, calçadas, casas, muros, sem postes/árvore do meio/bananeira/gato) | maps/piabeta-fragoso-base.png | pedido |
-| OBJ-FRG | Folha de objetos de Fragoso (8 objetos em fundo magenta) | objects/fragoso-folha.png | pedido |
+| MAP-021 | Fragoso vazio (ruas, calçadas, casas, muros, sem postes/árvore do meio/bananeira/gato) | maps/piabeta-fragoso-base.webp | ✅ no jogo |
+| OBJ-FRG | Folha de objetos de Fragoso (8 objetos em fundo magenta) | objects/fragoso-folha.webp → objects/frg-*.png | ✅ no jogo |
