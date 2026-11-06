@@ -173,3 +173,18 @@ Tudo listado acima ainda não recebido é desenhado pelo `PlaceholderFactory` co
 
 | UI-020 | Kit da barra de cima, plaquinhas, corações, porta-retrato, barra de itens | ui/hud-*.png | ✅ no jogo |
 | UI-021 | Botões do menu com moldura | ui/hud-btn-*.png | ✅ no jogo |
+
+
+---
+
+## Teste: cenário + folha de objetos (Rota 66 v2)
+
+Backup da versão pintada inteira em `backups/rota66-v1/`.
+
+| ID | Item | Arquivo de entrega | Status |
+|----|------|--------------------|--------|
+| MAP-020 | Rota 66 vazia (só chão, paredes, balcão e decoração de parede) | maps/piabeta-rota66-base.png | pedido |
+| OBJ-R66 | Folha de objetos da Rota 66 (9 objetos em fundo magenta) | objects/rota66-folha.png | pedido |
+
+Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estilo), depois a folha
+(anexando a Rota 66 atual e a base nova). Fundo da folha: magenta #FF00FF liso.
