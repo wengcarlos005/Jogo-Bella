@@ -15,6 +15,7 @@ export const SPEAKERS: Record<string, SpeakerDef> = {
   vizinha: { name: 'Dona Cida', portrait: 'portrait-vizinha' },
   atendente: { name: 'Atendente', portrait: 'portrait-atendente' },
   meli: { name: 'Meli' },
+  gatinho: { name: 'Gatinho' },
   garcom: { name: 'Garçom', portrait: 'portrait-garcom' },
   'atendente-acai': { name: 'Atendente' },
   'atendente-cine': { name: 'Atendente da bomboniere' },

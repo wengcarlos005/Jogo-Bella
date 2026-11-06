@@ -260,6 +260,7 @@ export class GameScene extends Phaser.Scene {
         // a Bella não empurra o NPC, mas o NPC continua batendo nas paredes e nos móveis
         body.pushable = false;
       }
+      if (def.behavior === 'flee') npc.fleeFrom = this.player;
       if (def.chore) {
         npc.chore = { xs: def.chore.xs.map((x) => x * TILE), y: tileToFeet(0, def.chore.y).y, wy: tileToFeet(0, def.chore.wy ?? def.chore.y).y, i: 0, dir: 1, wipe: 1500 };
         this.addWipeCloth(npc);
@@ -670,7 +671,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.player, npc, undefined, () => !npc.passThroughPlayer && npc.npcId !== 'weng' && npc.behavior !== 'scripted' && npc.behavior !== 'chore');
     // paredes só valem quando o NPC anda sozinho (cenas de script atravessam tudo)
     // só quem passeia sozinho colide com móveis; o Weng seguindo a Bella usa o caminho dela
-    const walls = () => npc.behavior === 'wander' || npc.behavior === 'idle' || npc.behavior === 'follow';
+    const walls = () => npc.behavior === 'wander' || npc.behavior === 'idle' || npc.behavior === 'follow' || npc.behavior === 'flee';
     this.physics.add.collider(npc, this.built.collision, undefined, walls);
     this.physics.add.collider(npc, this.built.solids, undefined, walls);
   }

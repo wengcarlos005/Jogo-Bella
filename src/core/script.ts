@@ -54,6 +54,8 @@ export interface ScriptContext {
   /** A Bella escolhe um item clicando na barra de itens; devolve o id. */
   pickItem(prompt: string): Promise<string>;
   grill(opts?: { title?: string; helper?: string }): Promise<import('@/ui/screens/GrillGame').GrillResult>;
+  /** Minigame do beijo escondido no sofá. */
+  kissGame(): Promise<import('@/ui/screens/KissGame').KissResult>;
   /** Conversa no celular (transições entre cenas). */
   phone(opts: import('@/ui/screens/PhoneChat').PhoneOptions, msgs: import('@/ui/screens/PhoneChat').PhoneMsg[]): Promise<void>;
   cards(opts?: { title?: string; rounds?: number }): Promise<import('@/ui/screens/CardGame').CardResult>;

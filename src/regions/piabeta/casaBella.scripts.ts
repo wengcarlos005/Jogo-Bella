@@ -15,16 +15,18 @@ const CHAMADO = PERSONAL.bellaStepdad.chamado;
 async function filmeNoSofa(ctx: Parameters<Script>[0]): Promise<void> {
   await ctx.say('bella', 'Senta aqui. Esse sofá é o melhor lugar da casa.');
   await ctx.sit(730, 714, [
-    ['narrador', 'Um filme qualquer passando na TV. Ninguém prestou muita atenção.'],
+    ['narrador', 'Um filme qualquer passando na TV. A mãe e o Alexandre arrumando a bagunça do churrasco lá na cozinha.'],
     ['bella', 'Weng... você tá vendo o filme ou olhando pra mim?'],
     ['weng', 'Tem filme passando?'],
-    ['mae-bella', '(da cozinha) Querem pipoca?!'],
-    ['bella', 'NÃO, MÃE, OBRIGADA!'],
-    ['pai-bella', '(da cozinha) Eu quero.'],
-    ['weng', 'Bora passear depois? Quero ir na nossa praça.'],
-    ['bella', 'A do coreto? São uns 25 minutos a pé, passando por Fragoso.'],
-    ['weng', 'Com você, 25 minutos passam em 5.'],
+    ['bella', '(cochichando) Minha mãe pode aparecer a qualquer momento...'],
+    ['weng', '(cochichando) Então a gente vai ter que ser rápido.'],
   ]);
+  await ctx.kissGame();
+  await ctx.say('mae-bella', '(da cozinha) O filme acabou? Ninguém nem riu! Era comédia!');
+  await ctx.say('bella', 'NÃO, MÃE, FOI ÓTIMO!');
+  await ctx.say('weng', 'Bora passear? Quero ir na nossa praça.');
+  await ctx.say('bella', 'A do coreto? São uns 25 minutos a pé, passando por Fragoso.');
+  await ctx.say('weng', 'Com você, 25 minutos passam em 5.');
   ctx.objective('dq-e2', 'filme');
   // depois do filme a casa fica livre: dá pra conversar com todo mundo antes de sair
   ctx.toast('Quando quiserem passear, saiam pela porta da sala');
@@ -34,9 +36,6 @@ export const casaScripts: Record<string, Script> = {
   async entrar(ctx) {
     // 2º encontro: depois do churrasco, antes do filme: apresentar a Lala
     if (ctx.questActive('dq-e2') && ctx.objectiveDone('dq-e2', 'mesa') && !ctx.objectiveDone('dq-e2', 'lala')) {
-      // na cozinha, cada um num canto (sem cadeira e sem ficar um em cima do outro)
-      ctx.place('pai-bella', 19.6, 7.2, 'down');
-      ctx.place('mae-bella', 28.0, 9.4, 'left');
       ctx.follow('weng', true);
       ctx.place('weng', 16.2, 15.6, 'up');
       await ctx.wait(300);

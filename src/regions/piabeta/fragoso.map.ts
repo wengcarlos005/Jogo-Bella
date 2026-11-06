@@ -15,15 +15,59 @@ const Q = 'pia-m3';
 const nerves = () => Number(GameState.getFlag<number>('nervosismo') ?? 0);
 const lower = (ctx: ScriptContext, to: number) => ctx.nerves(Math.min(nerves(), to));
 
+const CAT_SPOTS: [number, number][] = [
+  [5.6, 7.9], [11.8, 8.2], [17.5, 8.0], [22.4, 8.3], [26.6, 11.2], [27.2, 13.6], [6.4, 14.5], [12.2, 14.5], [18.6, 14.5], [23.6, 14.4],
+];
+const catsDone = () => ['gato1', 'gato2', 'gato3'].filter((c) => GameState.is(`frg-${c}`)).length;
+
+/** Minigame dos gatinhos: chegar perto (eles fogem!) e fazer carinho. */
+async function petCat(ctx: ScriptContext, id: string, pose: string, lines: string[]): Promise<void> {
+  ctx.pose(id, pose, 0);
+  if (ctx.flag(`frg-${id}`)) {
+    await ctx.say('bella', 'Esse já ganhou carinho. Olha ele ronronando ainda.');
+    return;
+  }
+  ctx.setFlag(`frg-${id}`);
+  ctx.face('player', id);
+  ctx.pose(id, pose, 3);
+  ctx.hearts(id, 8);
+  ctx.sfx('pickup');
+  await ctx.say('gatinho', 'Prrrrr... prrrrr...');
+  for (const l of lines) {
+    const m = l.match(/^(Weng|Bella): "(.*)"$/);
+    if (m) await ctx.say(m[1] === 'Weng' ? 'weng' : 'bella', m[2]);
+    else await ctx.say('bella', l);
+  }
+  ctx.pose(id, pose, 1);
+  const n = catsDone();
+  if (n >= 3) {
+    ctx.objective(Q, 'gatos');
+    await ctx.say('weng', 'Três gatos, três carinhos. Agora o parque?');
+    await ctx.say('bella', 'Agora o parque. (Melhor caminhada da vida.)');
+  } else ctx.toast(`Gatinhos: ${n}/3`);
+}
+
 const scripts: Record<string, Script> = {
   async entrar(ctx) {
     if (ctx.questActive('dq-e2')) ctx.weather('sunset');
+    if (ctx.questActive(Q) && !ctx.objectiveDone(Q, 'gatos')) {
+      // os gatinhos aparecem em lugares diferentes a cada vez
+      const spots = [...CAT_SPOTS].sort(() => Math.random() - 0.5);
+      ['gato1', 'gato2', 'gato3'].forEach((id, i) => {
+        if (!ctx.flag(`frg-${id}`)) ctx.place(id, spots[i][0], spots[i][1], 'down');
+      });
+    }
     if (ctx.flag('fragoso-intro') || !ctx.questActive(Q)) return;
     ctx.setFlag('fragoso-intro');
     if (nerves() === 0) ctx.nerves(70);
     await ctx.wait(300);
     await ctx.narrate('Fragoso, à noite. As ruas tranquilas, as luzes dos postes, e o barulhinho dos grilos.');
     await ctx.say('weng', 'O parque é pra lá. Vamos devagar? Não tem pressa nenhuma.');
+    await ctx.emote('bella', 'exclaim');
+    await ctx.say('bella', 'Weng... olha. Tem GATINHO na rua. Tem mais de um!');
+    await ctx.say('weng', 'Ai não. Agora a gente não chega no parque nunca.');
+    await ctx.say('bella', 'Só um carinho em cada um. Prometo.');
+    ctx.toast('Faça carinho nos 3 gatinhos (eles fogem se você chegar correndo!)');
   },
 
   async conversa1(ctx) {
@@ -81,6 +125,16 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Eu também. O parque é logo ali.');
     ctx.objective(Q, 'fragoso');
     await ctx.memory('mem-pia-04');
+  },
+
+  async gatinho1(ctx) {
+    await petCat(ctx, 'gato1', 'meli-poses', ['Um laranjinha! Igualzinho... a um que eu ainda vou conhecer.', 'Weng: "Ele parou pra você. Ninguém resiste."']);
+  },
+  async gatinho2(ctx) {
+    await petCat(ctx, 'gato2', 'lala-poses', ['Branquinha com manchinha! Que princesa.', 'Weng: "Você para pra fazer carinho em TODO gato?"', 'Bella: "Em todo."']);
+  },
+  async gatinho3(ctx) {
+    await petCat(ctx, 'gato3', 'pombo-poses', ['Um pretinho! Os mais carinhosos de todos.', 'Weng: "Esse aí tá te olhando apaixonado. Concorrência."']);
   },
 
   async gato(ctx) {
@@ -190,6 +244,19 @@ export const fragosoMap: MapDef = {
     { rect: R(865, 230, 1010, 330), interact: 'varal', label: 'Varal' },
     { rect: R(100, 110, 165, 360), interact: 'poste', label: 'Poste' },
   ],
+  npcs: [
+    ...(['gato1', 'gato2', 'gato3'] as const).map((id, i) => ({
+      id,
+      sprite: (['meli', 'lala', 'pombo'] as const)[i],
+      tx: CAT_SPOTS[i * 3][0],
+      ty: CAT_SPOTS[i * 3][1],
+      facing: 'down' as const,
+      interact: `gatinho${i + 1}`,
+      behavior: 'flee' as const,
+      visibleIf: () => QuestSystem.isActive(Q) && (!QuestSystem.isObjectiveDone(Q, 'gatos') || GameState.is(`frg-${id}`)),
+      markerIf: () => QuestSystem.isActive(Q) && !GameState.is(`frg-${id}`),
+    })),
+  ],
   spawns: {
     'from-rota66': { tx: 3.4, ty: 6.3, facing: 'right' },
     'from-parque': { tx: 2.2, ty: 14.4, facing: 'right' },
@@ -206,7 +273,11 @@ export const fragosoMap: MapDef = {
       rect: R(0, 690, 22, 780),
       toMap: 'piabeta-parque',
       toSpawn: 'from-rota66',
-      blockedIf: () => (QuestSystem.isActive(Q) && !QuestSystem.isObjectiveDone(Q, 'fragoso') ? 'Vamos com calma, sem pressa.' : false),
+      blockedIf: () => {
+        if (!QuestSystem.isActive(Q)) return false;
+        if (!QuestSystem.isObjectiveDone(Q, 'gatos')) return `Bella: "Ainda tem gatinho sem carinho! (${catsDone()}/3)"`;
+        return !QuestSystem.isObjectiveDone(Q, 'fragoso') ? 'Vamos com calma, sem pressa.' : false;
+      },
     },
   ],
   triggers: [

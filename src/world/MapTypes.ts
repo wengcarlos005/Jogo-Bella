@@ -50,7 +50,7 @@ export interface NpcPlacement {
   ty: number;
   facing?: Direction;
   interact?: string;
-  behavior?: 'idle' | 'wander' | 'chore';
+  behavior?: 'idle' | 'wander' | 'chore' | 'flee';
   /** Rotina (behavior 'chore'): pontos x (tiles) onde para pra limpar, andando na linha y (tiles). */
   chore?: { xs: number[]; y: number; /** linha onde ela fica limpando (padrão: a mesma) */ wy?: number };
   /** Raio (em tiles) que o NPC pode se afastar de onde nasceu. Padrão: 1,5. */

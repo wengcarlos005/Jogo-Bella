@@ -201,3 +201,4 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | OBJ-MX | Folhas do mexicano (dentro e fachada) | objects/mex-folha.webp, mexfora-folha.webp → mx-*, mxf-* | ✅ no jogo |
 | OBJ-QT | Folha de objetos do quintal | objects/quintal-folha.webp → qt-* | ✅ recortada (aguardando o quintal vazio) |
 | MAP-026 | Quintal vazio | maps/piabeta-quintal-base.png | pedido |
+| MG-CH | Churrasco: carnes (4 tipos x 4 estados), grelha, bandeja (fundo magenta) | minigames/churrasco-*.png | pedido |

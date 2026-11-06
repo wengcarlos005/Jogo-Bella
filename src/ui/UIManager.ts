@@ -1,6 +1,7 @@
 import { playUberGame, type UberResult } from './screens/UberGame';
 import { playGrillGame, type GrillResult } from './screens/GrillGame';
 import { playCardGame, type CardResult } from './screens/CardGame';
+import { playKissGame, type KissResult } from './screens/KissGame';
 import { playPhoneChat, type PhoneMsg, type PhoneOptions } from './screens/PhoneChat';
 import { playAcaiGame, type AcaiOptions, type AcaiResult } from './screens/AcaiGame';
 import type Phaser from 'phaser';
@@ -152,6 +153,11 @@ class UIManagerImpl {
 
   uberRide(opts: { title?: string; destino?: string } = {}): Promise<UberResult> {
     return playUberGame(this.root, opts);
+  }
+
+  kissGame(): Promise<KissResult> {
+    this.dialogue.close();
+    return playKissGame(this.root);
   }
 
   phone(opts: PhoneOptions, msgs: PhoneMsg[]): Promise<void> {

@@ -2140,3 +2140,42 @@ html.hud-kit #rightbar .sb-btn.sb-kit .sb-label { font-size: clamp(11px, 0.95vw,
 .gh-final { font-weight: 800; color: #5a2f1a; }
 .gh-panel .gp-pop { position: absolute; transform: translateX(-50%); z-index: 10; pointer-events: none; }
 @media (max-aspect-ratio: 1/1) { .gh-main { grid-template-columns: 1fr; } .gh-guests { width: auto; flex-direction: row; flex-wrap: wrap; } }
+
+/* ---------- Beijo escondido (sofá) ---------- */
+.kg-panel { width: min(96%, calc(var(--u) * 420)); }
+.kg-title { background: linear-gradient(#e2558f, #b5306a) !important; box-shadow: inset 0 2px 0 rgba(255,255,255,.3), 0 calc(var(--u) * 1.5) 0 #6e1a3e !important; text-shadow: 0 2px 0 #6e1a3e !important; }
+.kg-hud { display: flex; justify-content: space-between; align-items: center; font-size: clamp(14px, calc(var(--u) * 8), 24px); }
+.kg-lives span { color: #d9c2c8; margin-right: 2px; } .kg-lives span.on { color: #ff4d7d; text-shadow: 0 2px 0 #8e1a3e; }
+.kg-kisses span { opacity: .25; filter: grayscale(1); margin-left: 2px; transition: .3s; } .kg-kisses span.on { opacity: 1; filter: none; animation: gp-bump .4s; }
+.kg-stage { position: relative; width: 100%; aspect-ratio: 700 / 460; border-radius: calc(var(--u) * 3); overflow: hidden; border: calc(var(--u) * 1.2) solid #4a2347; image-rendering: pixelated; background-color: #2a1a20; }
+.kg-stage::after { content: ''; position: absolute; inset: 0; background: rgba(20, 16, 50, .35); pointer-events: none; }
+.kg-tv { position: absolute; left: 0; top: 30%; width: 6%; height: 50%; background: radial-gradient(ellipse at 0 50%, rgba(140, 170, 255, .55), transparent 70%); animation: kg-tv 1.3s steps(3) infinite; z-index: 3; }
+@keyframes kg-tv { 50% { opacity: .5; } }
+.kg-obj { position: absolute; transform: translate(-50%, -100%); image-rendering: pixelated; z-index: 2; }
+.kg-char { position: absolute; width: 25%; aspect-ratio: 1; transform: translate(-50%, -100%); background-repeat: no-repeat; image-rendering: pixelated; z-index: 4; }
+.kg-char.hide { visibility: hidden; }
+.kg-char.kiss { opacity: 0; } .kg-char.kiss.show { opacity: 1; }
+.kg-mom { z-index: 1; opacity: 0; transform: translate(-50%, -92%); transition: opacity .15s, transform .25s; }
+.kg-mom.show { opacity: 1; transform: translate(-50%, -100%); }
+.kg-cat { z-index: 1; width: 12%; opacity: 0; }
+.kg-cat.walk { animation: kg-cat 1.2s linear; }
+@keyframes kg-cat { 0% { opacity: 1; transform: translate(-150%, -100%); } 100% { opacity: 1; transform: translate(80%, -100%); } }
+.kg-shadow { position: absolute; width: 18%; height: 34%; transform: translate(-50%, -100%); background: radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, .55), transparent 70%); opacity: 0; transition: opacity .3s; z-index: 1; }
+.kg-shadow.on { opacity: 1; }
+.kg-steps { position: absolute; transform: translate(-50%, -50%); font-size: clamp(14px, calc(var(--u) * 9), 28px); opacity: 0; z-index: 6; }
+.kg-steps.on { opacity: 1; animation: kg-steps .3s steps(2) infinite; }
+@keyframes kg-steps { 50% { transform: translate(-40%, -60%) rotate(10deg); } }
+.kg-ring { position: absolute; width: 9%; aspect-ratio: 1; transform: translate(-50%, -50%) scale(.6); border-radius: 50%; opacity: 0; transition: opacity .2s, transform .2s; z-index: 7;
+  background: conic-gradient(#ff4d7d calc(var(--p, 0) * 360deg), rgba(255, 255, 255, .35) 0); box-shadow: 0 0 0 3px #fff, 0 0 12px #ff8fb8; }
+.kg-ring.on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.kg-ring i { position: absolute; inset: 22%; border-radius: 50%; background: #fff; }
+.kg-ring i::after { content: '💋'; position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(8px, calc(var(--u) * 4), 13px); font-style: normal; }
+.kg-heart { position: absolute; color: #ff6f9a; font-style: normal; font-size: clamp(10px, calc(var(--u) * 6), 18px); text-shadow: 0 1px 0 #8e1a3e; z-index: 8; animation: kg-heart 1.2s ease-out forwards; }
+@keyframes kg-heart { to { transform: translate(var(--dx), -70px) scale(1.5); opacity: 0; } }
+.kg-flash { position: absolute; inset: 0; background: #ff3b5c; opacity: 0; pointer-events: none; z-index: 9; }
+.kg-flash.on { animation: kg-flash .6s ease-out; }
+@keyframes kg-flash { 15% { opacity: .45; } }
+.kg-stage.shake { animation: gq-shake .3s 2; }
+.kg-stage.kissing::after { background: rgba(60, 10, 40, .45); }
+.kg-btn { font-family: var(--font-pixel); font-size: clamp(14px, calc(var(--u) * 8), 24px); color: #fff; border: none; cursor: pointer; padding: calc(var(--u) * 2.5) calc(var(--u) * 14); border-radius: calc(var(--u) * 4); background: linear-gradient(#ff7eb6, #e2558f); box-shadow: inset 0 3px 0 rgba(255,255,255,.35), 0 calc(var(--u) * 2) 0 #8e2856; user-select: none; touch-action: none; }
+.kg-btn:active { transform: translateY(2px) scale(.98); box-shadow: inset 0 3px 0 rgba(255,255,255,.35), 0 0 0 #8e2856; }

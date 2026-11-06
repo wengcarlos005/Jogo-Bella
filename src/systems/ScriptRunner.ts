@@ -235,6 +235,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     cards: (opts) => UI.cards(opts),
     grill: (opts) => UI.grill(opts),
     phone: (opts, msgs) => UI.phone(opts, msgs),
+    kissGame: () => UI.kissGame(),
     pickItem: (prompt) => UI.pickItem(prompt),
     uberRide: (opts) => UI.uberRide(opts),
 

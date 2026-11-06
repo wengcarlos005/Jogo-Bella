@@ -7,7 +7,11 @@ import { InputSystem } from '@/systems/InputSystem';
 export class NPC extends Character {
   readonly npcId: string;
   interactScript?: string;
-  behavior: 'idle' | 'wander' | 'follow' | 'scripted' | 'chore' = 'idle';
+  behavior: 'idle' | 'wander' | 'follow' | 'scripted' | 'chore' | 'flee' = 'idle';
+  /** Gatinho arisco: de quem ele foge. */
+  fleeFrom: Phaser.GameObjects.Components.Transform | null = null;
+  private fleeRest = 0;
+  private fleeTimer = 0;
   /** Rotina de trabalho (ex.: garçonete limpando o balcão): pontos x onde para e limpa, numa linha y. */
   chore: { xs: number[]; y: number; wy: number; i: number; dir: number; wipe: number } | null = null;
   /** Está limpando agora (a cena desenha o paninho). */
@@ -217,6 +221,35 @@ export class NPC extends Character {
         c.wipe = Phaser.Math.Between(2400, 4400);
         body.setVelocity(0, 0);
       } else body.setVelocity(Math.sign(dx) * 22, (c.y - this.y) * 3);
+      this.animateFromVelocity();
+      return;
+    }
+
+    if (this.behavior === 'flee' && this.fleeFrom) {
+      // foge quando a Bella chega perto; de vez em quando para pra se lamber (é a chance de chegar)
+      const p = this.fleeFrom as unknown as { x: number; y: number };
+      const dx = this.x - p.x;
+      const dy = this.y - p.y;
+      const d = Math.hypot(dx, dy) || 1;
+      this.fleeTimer -= delta;
+      if (this.fleeRest > 0) {
+        this.fleeRest -= delta;
+        body.setVelocity(0, 0);
+      } else if (d < 46) {
+        if (this.fleeTimer <= 0) {
+          this.fleeTimer = 700;
+          // às vezes cansa e senta mesmo com ela perto
+          if (Math.random() < 0.22) this.fleeRest = 1500;
+        }
+        const sp = 52;
+        // foge pra longe, com um desvio pro lado (não fica preso na parede)
+        const side = Math.sin(this.fleeTimer / 120) * 0.5;
+        body.setVelocity(((dx / d) - (dy / d) * side) * sp, ((dy / d) + (dx / d) * side) * sp);
+      } else if (this.fleeTimer <= 0) {
+        this.fleeTimer = Phaser.Math.Between(1200, 2600);
+        if (Math.random() < 0.5) body.setVelocity(0, 0);
+        else body.setVelocity(Phaser.Math.Between(-18, 18), Phaser.Math.Between(-12, 12));
+      }
       this.animateFromVelocity();
       return;
     }
