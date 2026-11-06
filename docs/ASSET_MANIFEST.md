@@ -202,3 +202,5 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | OBJ-QT | Folha de objetos do quintal | objects/quintal-folha.webp → qt-* | ✅ recortada (aguardando o quintal vazio) |
 | MAP-026 | Quintal vazio | maps/piabeta-quintal-base.png | pedido |
 | MG-CH | Churrasco: carnes (4 tipos x 4 estados), grelha, bandeja (fundo magenta) | minigames/churrasco-*.png | pedido |
+| MAP-027 | Cinema vazio | maps/duque-cinema-base.webp | ✅ no jogo |
+| OBJ-CN | Folha de objetos do cinema | objects/cinema-folha.webp → cn-* | ✅ no jogo |

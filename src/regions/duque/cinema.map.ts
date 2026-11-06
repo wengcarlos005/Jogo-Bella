@@ -4,7 +4,7 @@ import type { Script } from '@/core/script';
 import { QuestSystem } from '@/systems/QuestSystem';
 
 const Q = 'dq-e3';
-/** Retângulo no cenário ORIGINAL (art-source/maps/duque-cinema.webp, 1536x1024). 48 px = 1 tile. */
+/** Retângulo no cenário ORIGINAL (art-source/maps/duque-cinema-base.webp, 1536x1024). 48 px = 1 tile. */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
 const scripts: Record<string, Script> = {
@@ -131,34 +131,51 @@ export const cinemaMap: MapDef = {
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
+  // v2: cenário vazio (art-source/maps/duque-cinema-base.webp) + objetos da folha (objects/cn-*).
+  // Versão anterior em backups/cinema-v1/.
   blocks: [
     R(0, 0, 1536, 398), // fundo: bilheteria, entrada da sala, pipoca
-    R(170, 380, 600, 585), // balcão da bilheteria
-    R(240, 470, 645, 690), // fila com cordões (só os pés dos pedestais)
+    R(170, 380, 605, 580), // balcão da bilheteria
     R(955, 398, 1395, 528), // balcão da pipoca
-    R(50, 455, 185, 645), // planta da esquerda
-    R(0, 620, 150, 880), // sofá da esquerda
-    R(1385, 460, 1480, 600), // planta da direita
-    R(1285, 545, 1375, 695), // planta do meio
-    R(1035, 540, 1240, 680), // sofá de cima
-    R(1160, 650, 1300, 745), // mesinha
-    R(1190, 715, 1430, 850), // sofá de baixo
-    R(1375, 560, 1536, 790), // sofá do canto
-    R(120, 842, 470, 1024), // floreira da esquerda
-    R(1070, 842, 1410, 1024), // floreira da direita
-    // antifurto: só a base bloqueia; o resto fica na frente/atrás de quem passa (recorte)
-    R(515, 905, 565, 970),
-    R(970, 905, 1020, 970),
-    R(0, 880, 120, 1024),
-    R(1410, 850, 1536, 1024),
+    R(0, 0, 40, 1024),
+    R(1500, 0, 1536, 1024),
+    R(250, 658, 370, 678),
+    R(459, 546, 631, 566),
+    R(417, 682, 599, 702),
+    R(518, 946, 562, 968),
+    R(973, 946, 1017, 968),
+    R(1050, 610, 1230, 658),
+    R(1206, 800, 1404, 848),
+    R(24, 735, 120, 785),
+    R(1420, 740, 1516, 790),
+    R(1184, 692, 1276, 718),
+    R(132, 905, 464, 1000),
+    R(1074, 905, 1406, 1000),
+    R(65, 617, 165, 645),
+    R(1395, 537, 1485, 565),
+    R(1293, 672, 1383, 700),
+    R(593, 404, 657, 432),
+    R(893, 404, 957, 432),
   ],
 
-  overlays: [
-    { x0: 115, y0: 830, x1: 475, y1: 1000, base: 1000, cut: 'outline' },
-    { x0: 1065, y0: 830, x1: 1415, y1: 1000, base: 1000, cut: 'outline' },
-    { x0: 510, y0: 700, x1: 570, y1: 975, base: 970 },
-    { x0: 965, y0: 700, x1: 1025, y1: 975, base: 970 },
-    { x0: 1185, y0: 705, x1: 1435, y1: 855, base: 850, cut: 'outline' },
+  objects: [
+    { key: 'cn-cordao', x: 310, y: 678, w: 125, shadow: 0.7 },
+    { key: 'cn-cordao', x: 545, y: 566, w: 180, shadow: 0.7 },
+    { key: 'cn-cordao', x: 508, y: 702, w: 190, shadow: 0.7 },
+    { key: 'cn-antifurto', x: 540, y: 968, w: 48, shadow: 0.7 },
+    { key: 'cn-antifurto', x: 995, y: 968, w: 48, shadow: 0.7, flip: true },
+    { key: 'cn-sofa', x: 1140, y: 658, w: 215, shadow: 0.7 },
+    { key: 'cn-sofa', x: 1305, y: 848, w: 235, shadow: 0.7 },
+    { key: 'cn-poltrona', x: 72, y: 785, w: 115, shadow: 0.7 },
+    { key: 'cn-poltrona', x: 1468, y: 790, w: 115, shadow: 0.7, flip: true },
+    { key: 'cn-mesinha', x: 1230, y: 718, w: 110, shadow: 0.7 },
+    { key: 'cn-floreira', x: 298, y: 1000, w: 345, shadow: false },
+    { key: 'cn-floreira', x: 1240, y: 1000, w: 345, shadow: false },
+    { key: 'cn-planta', x: 115, y: 645, w: 118, shadow: 0.7 },
+    { key: 'cn-planta', x: 1440, y: 565, w: 108, shadow: 0.7, flip: true },
+    { key: 'cn-planta', x: 1338, y: 700, w: 108, shadow: 0.7 },
+    { key: 'cn-planta', x: 625, y: 432, w: 76, shadow: 0.7 },
+    { key: 'cn-planta', x: 925, y: 432, w: 76, shadow: 0.7, flip: true },
   ],
 
   hotspots: [
