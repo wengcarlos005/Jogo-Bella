@@ -100,6 +100,12 @@ export interface MapDef {
   /** Camada de detalhes sobre o chão (opcional, mesmas dimensões; ' ' = vazio). */
   detail?: string[];
   props?: PropPlacement[];
+  /**
+   * Objetos de uma folha de objetos (fundo separado do cenário). Coordenadas em px da arte ORIGINAL:
+   * `x` = centro, `y` = base (onde o objeto encosta no chão). `w` = largura desejada (px da arte).
+   * A colisão continua nos `blocks`.
+   */
+  objects?: { key: string; x: number; y: number; w?: number; base?: number; fade?: boolean; front?: boolean; tall?: boolean; flip?: boolean; when?: () => boolean }[];
   /** Colisões extras em retângulos (unidades de tile, fracionários). Ideal para cenários pintados. */
   blocks?: TileRect[];
   /**

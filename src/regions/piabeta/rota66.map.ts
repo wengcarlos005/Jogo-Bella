@@ -217,83 +217,80 @@ export const rota66Map: MapDef = {
   legend: { '.': T.KITCHEN },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
+  // v2: cenário vazio (art-source/maps/piabeta-rota66-base.png) + objetos da folha (objects/r66-*).
+  // Versão anterior (cenário pintado inteiro com recortes) em backups/rota66-v1/.
   blocks: [
-    // paredes (janela à esquerda, parede da direita, fundo)
-    R(0, 0, 90, 1024),
-    R(1460, 0, 1536, 1024),
-    R(0, 0, 1536, 300),
-    R(90, 300, 410, 380), // parede da janela até o encosto das cadeiras de cima
-    // bomba de gasolina decorativa
-    R(408, 300, 502, 392),
-    // balcão + banquetas
-    R(515, 300, 1252, 420),
-    R(592, 420, 1162, 447),
-    // planta + jukebox
-    R(1248, 300, 1305, 385),
-    R(1298, 300, 1442, 428),
+    // paredes: fundo, janela à esquerda (inclinada), parede da direita, muretinha de baixo
+    R(0, 0, 1536, 365),
+    R(0, 0, 118, 500),
+    R(0, 500, 90, 620),
+    R(0, 620, 60, 720),
+    R(0, 720, 40, 830),
+    R(0, 830, 85, 1100),
+    R(1472, 0, 1536, 520),
+    R(1495, 520, 1536, 680),
+    R(1515, 680, 1536, 830),
+    R(1455, 830, 1536, 1100),
+    R(0, 918, 645, 1100),
+    R(885, 918, 1536, 1100),
+    R(640, 790, 895, 1100), // porta de vidro (ninguém fica em cima dela)
+    // balcão + banquetas, bomba de gasolina, planta e jukebox
+    R(500, 300, 1250, 425),
+    R(595, 425, 1160, 452),
+    R(410, 330, 500, 398),
+    R(1245, 330, 1310, 412),
+    R(1300, 330, 1442, 432),
     // mesinhas da janela (a de baixo é a "mesa para dois")
-    R(100, 360, 310, 476), // mesinha de cima + cadeiras (ninguém sobe na mesa)
-    R(84, 500, 300, 652), // mesinha de baixo + cadeiras
+    R(115, 380, 305, 475),
+    R(80, 520, 285, 648),
+    // cabines do meio e de baixo (com a divisória de vidro na frente)
+    R(430, 490, 724, 668),
+    R(873, 490, 1167, 668),
+    R(108, 725, 408, 925),
+    R(1138, 725, 1438, 925),
     // plantas
-    R(368, 620, 422, 662),
-    R(1152, 620, 1205, 664),
-    R(28, 738, 88, 780),
-    R(1470, 692, 1536, 742),
-    R(1448, 752, 1512, 790),
-    // cabines do meio
-    R(430, 488, 724, 665), // do topo do encosto até a frente: ninguém sobe no sofá
-    R(876, 488, 1164, 665),
-    // cabines de baixo + divisórias de vidro
-    R(85, 700, 410, 905),
-    R(85, 840, 535, 905),
-    R(1140, 702, 1460, 905),
-    R(1005, 840, 1455, 905),
-    // floreiras e plantas da frente
-    R(0, 905, 645, 1100),
-    R(640, 790, 895, 1100), // porta de vidro inteira (ninguém fica em cima dela)
-    R(890, 905, 1536, 1100),
-    R(540, 880, 625, 975),
-    R(905, 880, 995, 975),
+    R(355, 625, 412, 664),
+    R(1157, 625, 1214, 666),
+    R(25, 745, 95, 782),
+    R(1445, 725, 1515, 762),
+    R(540, 885, 600, 922),
+    R(920, 885, 980, 922),
   ],
 
-  steam: [{ x: 880, y: 208 }, { x: 918, y: 206 }, { x: 958, y: 208 }, { x: 1012, y: 200 }],
-  rainWindows: { glass: false, when: () => true, rects: [R(0, 300, 50, 930)] },
+  steam: [{ x: 880, y: 192 }, { x: 918, y: 190 }, { x: 958, y: 192 }],
+  rainWindows: { glass: false, when: () => true, rects: [R(15, 170, 95, 560)] },
 
-  // Profundidade: cabines, plantas e mesas na frente de quem passa atrás delas
-  overlays: [
-    // porta de vidro: na frente de quem encosta nela por dentro
-    { x0: 640, y0: 785, x1: 895, y1: 1000, base: 1000, front: true },
-    // Cabines recortadas peça por peça (assento esq., encosto do meio, assento dir.),
-    // começando no topo de cada peça: o chão em volta nunca fica na frente de ninguém.
-    { x0: 434, y0: 465, x1: 482, y1: 668, base: 665, cut: 'booth', slice: true }, // cabine do meio (esq.)
-    { x0: 482, y0: 482, x1: 680, y1: 668, base: 665, cut: 'booth', slice: true },
-    { x0: 680, y0: 465, x1: 723, y1: 668, base: 665, cut: 'booth', slice: true },
-    { x0: 877, y0: 464, x1: 922, y1: 668, base: 665, cut: 'booth', slice: true }, // cabine do meio (dir.)
-    { x0: 922, y0: 482, x1: 1112, y1: 668, base: 665, cut: 'booth', slice: true },
-    { x0: 1112, y0: 464, x1: 1163, y1: 668, base: 665, cut: 'booth', slice: true },
-    { x0: 111, y0: 675, x1: 162, y1: 906, base: 905, cut: 'booth', slice: true }, // cabine de baixo (esq.)
-    { x0: 162, y0: 701, x1: 357, y1: 906, base: 905, cut: 'booth', slice: true },
-    { x0: 357, y0: 675, x1: 406, y1: 906, base: 905, cut: 'booth', slice: true },
-    { x0: 1144, y0: 679, x1: 1184, y1: 906, base: 905, cut: 'booth', slice: true }, // cabine de baixo (dir.)
-    { x0: 1184, y0: 701, x1: 1385, y1: 906, base: 905, cut: 'booth', slice: true },
-    { x0: 1385, y0: 679, x1: 1432, y1: 906, base: 905, cut: 'booth', slice: true },
-    { x0: 137, y0: 503, x1: 252, y1: 568, base: 650, cut: 'furniture', slice: true }, // mesinha da janela: tampo
-    { x0: 118, y0: 568, x1: 262, y1: 650, base: 650, cut: 'furniture', slice: true }, // assentos e pés (os encostos ficam atrás)
-    { x0: 336, y0: 488, x1: 430, y1: 662, base: 662, cut: 'outline', fade: true }, // plantas (folhas e vaso; base = fundo do vaso)
-    { x0: 1138, y0: 488, x1: 1232, y1: 664, base: 664, cut: 'outline', fade: true },
-    { x0: 0, y0: 636, x1: 112, y1: 780, base: 780, cut: 'outline', fade: true },
-    { x0: 1446, y0: 540, x1: 1536, y1: 742, base: 742, cut: 'outline', fade: true },
-    { x0: 1426, y0: 690, x1: 1514, y1: 792, base: 790, cut: 'outline', fade: true },
-    { x0: 530, y0: 790, x1: 640, y1: 988, base: 985, cut: 'outline', fade: true },
-    { x0: 898, y0: 790, x1: 1006, y1: 988, base: 985, cut: 'outline', fade: true },
+  // Objetos: x = centro, y = base (px da arte original), w = largura. Cada um com a sua profundidade.
+  objects: [
+    { key: 'r66-bomba', x: 455, y: 396, w: 92 },
+    ...[629, 753, 876, 1000, 1127].map((x) => ({ key: 'r66-banqueta', x, y: 450, w: 62 })),
+    { key: 'r66-planta', x: 1278, y: 412, w: 74, fade: true },
+    { key: 'r66-jukebox', x: 1370, y: 432, w: 140 },
+    { key: 'r66-mesinha', x: 210, y: 474, w: 190 },
+    { key: 'r66-mesinha', x: 182, y: 648, w: 205 },
+    { key: 'r66-cabine', x: 577, y: 668, w: 295 },
+    { key: 'r66-cabine', x: 1020, y: 668, w: 295 },
+    { key: 'r66-cabine', x: 258, y: 905, w: 300 },
+    { key: 'r66-cabine', x: 1288, y: 905, w: 300 },
+    { key: 'r66-divisoria', x: 258, y: 926, w: 330 },
+    { key: 'r66-divisoria', x: 1288, y: 926, w: 330 },
+    { key: 'r66-planta', x: 383, y: 664, w: 80, fade: true },
+    { key: 'r66-planta', x: 1185, y: 666, w: 80, fade: true },
+    { key: 'r66-planta', x: 60, y: 782, w: 80, fade: true },
+    { key: 'r66-planta', x: 1480, y: 762, w: 80, fade: true, flip: true },
+    { key: 'r66-planta', x: 570, y: 922, w: 85, fade: true },
+    { key: 'r66-planta', x: 950, y: 922, w: 85, fade: true, flip: true },
+    ...[220, 450, 1090, 1320].map((x) => ({ key: 'r66-floreira', x, y: 1022, w: 130 })),
+    // porta de vidro: sempre por cima de quem encosta nela, transparente
+    { key: 'r66-porta', x: 765, y: 1000, w: 245, front: true },
   ],
 
   hotspots: [
     { rect: R(520, 250, 1250, 450), interact: 'balcao', label: 'Balcão', markerIf: () => objActive('pedido') || (objDone('pedido') && objActive('pedido-weng')) },
-    { rect: R(88, 470, 300, 655), interact: 'mesa', label: 'Mesinha', markerIf: () => objActive('mesa') && objDone('pedido-weng') },
+    { rect: R(80, 470, 300, 655), interact: 'mesa', label: 'Mesinha', markerIf: () => objActive('mesa') && objDone('pedido-weng') },
     { rect: R(1298, 230, 1442, 432), interact: 'jukebox', label: 'Jukebox' },
-    { rect: R(408, 160, 502, 396), interact: 'bomba', label: 'Bomba antiga' },
-    { rect: R(150, 60, 330, 330), interact: 'quadro', label: 'Neon' },
+    { rect: R(410, 160, 500, 398), interact: 'bomba', label: 'Bomba antiga' },
+    { rect: R(240, 20, 420, 210), interact: 'quadro', label: 'Neon' },
   ],
 
   // a atendente não fica parada: vai limpando o balcão, parando entre os banquinhos

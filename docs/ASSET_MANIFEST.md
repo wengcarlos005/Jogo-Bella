@@ -183,8 +183,8 @@ Backup da versão pintada inteira em `backups/rota66-v1/`.
 
 | ID | Item | Arquivo de entrega | Status |
 |----|------|--------------------|--------|
-| MAP-020 | Rota 66 vazia (só chão, paredes, balcão e decoração de parede) | maps/piabeta-rota66-base.png | pedido |
-| OBJ-R66 | Folha de objetos da Rota 66 (9 objetos em fundo magenta) | objects/rota66-folha.png | pedido |
+| MAP-020 | Rota 66 vazia (só chão, paredes, balcão e decoração de parede) | maps/piabeta-rota66-base.png | ✅ no jogo (aguardando versão com o chão corrigido) |
+| OBJ-R66 | Folha de objetos da Rota 66 (9 objetos em fundo magenta) | objects/rota66-folha.png → objects/r66-*.png (tools/sprite-sheet.py) | ✅ no jogo |
 
 Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estilo), depois a folha
 (anexando a Rota 66 atual e a base nova). Fundo da folha: magenta #FF00FF liso.

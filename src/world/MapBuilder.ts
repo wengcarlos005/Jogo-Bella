@@ -216,6 +216,19 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     });
   }
 
+  // Objetos soltos (folha de objetos): cada um com a própria profundidade, sem recorte do cenário.
+  for (const ob of def.objects ?? []) {
+    if (!scene.textures.exists(ob.key)) continue;
+    const img = scene.add.image(ob.x / 3, ob.y / 3, ob.key).setOrigin(0.5, 1);
+    if (ob.w) img.setScale(ob.w / 3 / img.width);
+    else img.setScale(1 / RENDER_SCALE);
+    if (ob.flip) img.setFlipX(true);
+    const base = (ob.base ?? ob.y) / 3;
+    img.setDepth(ob.front ? 150_000 : base);
+    const b = img.getBounds();
+    overlays.push({ img, rect: new Phaser.Geom.Rectangle(b.x, b.y, b.width, b.height), base, fade: !!ob.fade || !!ob.front, front: ob.front, tall: ob.tall, when: ob.when });
+  }
+
   for (const b of def.blocks ?? []) {
     const r = tileRect(b);
     solids.add(scene.add.zone(r.centerX, r.centerY, r.width, r.height));

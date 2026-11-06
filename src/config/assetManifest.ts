@@ -71,6 +71,10 @@ export const ASSETS: AssetEntry[] = [
   ),
 
   // Casal sentado no banco (4 quadros 200x150: normal, piscando, expressão, normal)
+  // Rota 66 v2: objetos recortados da folha (tools/sprite-sheet.py)
+  ...['cabine', 'mesinha', 'banqueta', 'bomba', 'jukebox', 'planta', 'floreira', 'porta', 'divisoria'].map(
+    (n, i): AssetEntry => ({ id: `OBJ-R66-${i}`, key: `r66-${n}`, file: `assets/objects/r66-${n}.png`, kind: 'image' }),
+  ),
   ...['bench-pq-ang-r', 'bench-pq-front-lamp', 'bench-pq-ang-l', 'bench-pq-front-bin', 'bench-rua', 'bench-rua-bin'].map(
     (n, i): AssetEntry => ({ id: `OBJ-04${i}`, key: n, file: `assets/objects/${n}.png`, kind: 'spritesheet', frameWidth: 200, frameHeight: 150 }),
   ),
