@@ -11,6 +11,7 @@ export const PETROPOLIS_QUESTS: QuestDef[] = [
     objectives: [
       { id: 'mirante', text: 'Ver a serra pela luneta do mirante', hint: 'O mirante fica à direita, subindo pelo gramado.' },
       { id: 'checkin', text: 'Fazer o check-in', hint: 'A recepção fica no alto da escadaria.' },
+      { id: 'almoco', text: 'Almoço de aniversário no restaurante', hint: 'A mesa da rosa fica no meio do salão, debaixo do lustre.' },
     ],
   },
 ];

@@ -213,3 +213,5 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | OBJ-AC/HF | Folhas da açaiteria e do hotel por fora | ac-*, hf-* | ✅ no jogo |
 | OBJ-HQ | Folha do quarto do hotel | objects/hotel-quarto-folha.webp → hq-* | ✅ recortada (aguardando o quarto vazio) |
 | MAP-032 | Quarto do hotel vazio | maps/pt-quarto-base.png | pedido |
+| MAP-033 | Restaurante chique em Petrópolis | maps/pt-restaurante.webp | ✅ no jogo |
+| OBJ-RS | Folha do restaurante | objects/restaurante-folha.webp → rs-* | ✅ no jogo |

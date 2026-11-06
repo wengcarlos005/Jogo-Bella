@@ -43,7 +43,13 @@ const scripts: Record<string, Script> = {
     if (objActive('checkin')) {
       ctx.objective(Q, 'checkin');
       await ctx.say('bella', 'Check-in feito! Bora ver o quarto!');
-      await ctx.narrate('O quarto, o almoço chique, o Quitandinha e o piquenique... essa parte da viagem chega em breve!');
+      await ctx.fadeOut(600);
+      await ctx.narrate('Lareira acesa, chocolate quente e uma manta xadrez. A primeira noite na serra.');
+      await ctx.teleport('pt-restaurante', 'porta');
+      return;
+    }
+    if (objActive('almoco')) {
+      await ctx.teleport('pt-restaurante', 'porta');
       return;
     }
     await ctx.say('bella', 'A recepção. Tem chocolate quente de boas-vindas!');
