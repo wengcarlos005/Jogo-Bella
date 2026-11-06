@@ -667,7 +667,7 @@ export class GameScene extends Phaser.Scene {
   private addNpcColliders(npc: NPC): void {
     // o Weng nunca bloqueia a Bella (ele mesmo desvia); os outros NPCs, sim
     // em cena de script (andando para um ponto) ninguém empurra ninguém
-    this.physics.add.collider(this.player, npc, undefined, () => !npc.passThroughPlayer && npc.npcId !== 'weng' && npc.behavior !== 'scripted');
+    this.physics.add.collider(this.player, npc, undefined, () => !npc.passThroughPlayer && npc.npcId !== 'weng' && npc.behavior !== 'scripted' && npc.behavior !== 'chore');
     // paredes só valem quando o NPC anda sozinho (cenas de script atravessam tudo)
     // só quem passeia sozinho colide com móveis; o Weng seguindo a Bella usa o caminho dela
     const walls = () => npc.behavior === 'wander' || npc.behavior === 'idle' || npc.behavior === 'follow';
@@ -869,6 +869,11 @@ export class GameScene extends Phaser.Scene {
     for (const { npc } of this.npcs.values()) {
       // em cena, quem tem rotina para e presta atenção
       if (npc.chore && (this.busy || !InputSystem.gameplayEnabled)) npc.holdChore(600);
+      // quem trabalha andando (garçonete) espera a pessoa sair da frente, em vez de empurrar
+      if (npc.chore) {
+        const wg = this.npcs.get('weng')?.npc;
+        if ([this.player, wg].some((a) => a && a.visible && Math.abs(a.x - npc.x) < 18 && Math.abs(a.y - npc.y) < 14)) npc.holdChore(500);
+      }
       npc.update(time, delta);
     }
     // o Weng nunca fica "dentro" da Bella: se encavalar, ele vai pro lado livre mais próximo

@@ -253,7 +253,7 @@ export const rota66Map: MapDef = {
     R(1300, 330, 1442, 432),
     // mesinhas da janela (a de baixo é a "mesa para dois")
     R(125, 385, 300, 475),
-    R(90, 525, 285, 650),
+    R(90, 465, 290, 650), // a de baixo começa onde terminam as cadeiras da de cima (sem corredor no meio)
     // cabines do meio e de baixo (com a divisória de vidro na frente)
     R(434, 490, 723, 668),
     R(876, 490, 1164, 668),
