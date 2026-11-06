@@ -25,8 +25,8 @@ const scripts: Record<string, Script> = {
     if (t.y > 15.8 && t.x > 13 && t.x < 18.5) {
       ctx.follow('weng', false);
       ctx.sfx('door');
-      void ctx.move('weng', 16.9, 14.6, 55);
-      await ctx.move('player', 15.2, 14.6, 55);
+      // os dois andam juntos; só depois o Weng volta a seguir (senão o fim da caminhada dele desliga o seguir)
+      await Promise.all([ctx.move('weng', 16.9, 14.6, 55), ctx.move('player', 15.2, 14.6, 55)]);
       ctx.follow('weng', true);
     }
     if (ctx.flag('rota66-saudacao')) return;

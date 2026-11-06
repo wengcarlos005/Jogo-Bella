@@ -167,7 +167,7 @@ export const casaScripts: Record<string, Script> = {
     ctx.face('mae-bella', 'up');
     await ctx.say('mae-bella', 'Que linda! Vai sair assim? Tá caindo um pé d\'água lá fora, hein!');
     await ctx.say('bella', 'Ele tá me esperando na esquina, mãe!');
-    await ctx.say('mae-bella', 'Então leva o guarda-chuva! Tá ali do lado da porta.');
+    await ctx.say('mae-bella', 'Então leva o guarda-chuva! Tá ali no canto da sala, do lado da estante.');
   },
 
   async 'guarda-chuva'(ctx) {
@@ -292,7 +292,7 @@ export const casaScripts: Record<string, Script> = {
       if (ctx.objectiveDone(Q, 'guarda-chuva')) {
         await ctx.say('mae-bella', 'Vai logo, menina! Não deixa o rapaz esperando na chuva!');
       } else if (ctx.objectiveDone(Q, 'espelho')) {
-        await ctx.say('mae-bella', 'Leva o guarda-chuva! Tá ali do lado da porta.');
+        await ctx.say('mae-bella', 'Leva o guarda-chuva! Tá ali no canto da sala, do lado da estante.');
       } else {
         await ctx.say('mae-bella', 'Ainda não se arrumou? O moço vai chegar e você aí!');
       }

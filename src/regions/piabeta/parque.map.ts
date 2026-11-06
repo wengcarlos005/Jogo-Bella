@@ -160,16 +160,16 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Um laguinho com vitórias-régias e uma pontezinha. Esse parque pensou em tudo.');
   },
   async banco(ctx) {
-    await ctx.sit(335, 602, [['weng', 'Um banco na luz do poste. Clássico.'], ['bella', 'Clássico e perfeito.']], { key: 'bench-pq-front-lamp', x: 335, y: 642, w: 150 });
+    await ctx.sit(335, 602, [['weng', 'Um banco na luz do poste. Clássico.'], ['bella', 'Clássico e perfeito.']], { key: 'bench-pq-front-lamp', x: 335, y: 642, w: 140 });
   },
   async banco2(ctx) {
-    await ctx.sit(1105, 438, [['bella', 'Olha o laguinho daqui. Dá pra ouvir os sapos.'], ['weng', 'Eles tão cantando pra gente.']], { key: 'bench-pq-front-lamp', x: 1105, y: 478, w: 150 });
+    await ctx.sit(1105, 438, [['bella', 'Olha o laguinho daqui. Dá pra ouvir os sapos.'], ['weng', 'Eles tão cantando pra gente.']], { key: 'bench-pq-ang-l', x: 1105, y: 478, w: 135 });
   },
   async banco3(ctx) {
-    await ctx.sit(1350, 632, [['weng', 'Se eu pudesse, parava o tempo agora.'], ['bella', '...Eu também.']], { key: 'bench-pq-front-lamp', x: 1350, y: 672, w: 150 });
+    await ctx.sit(1350, 632, [['weng', 'Se eu pudesse, parava o tempo agora.'], ['bella', '...Eu também.']], { key: 'bench-pq-front-lamp', x: 1350, y: 672, w: 140 });
   },
   async banco4(ctx) {
-    await ctx.sit(330, 260, [['bella', 'O barulhinho do chafariz é tão calmo.'], ['weng', 'Você também me deixa calmo. Mesmo nervoso.']], { key: 'bench-pq-front-lamp', x: 330, y: 300, w: 150 });
+    await ctx.sit(330, 260, [['bella', 'O barulhinho do chafariz é tão calmo.'], ['weng', 'Você também me deixa calmo. Mesmo nervoso.']], { key: 'bench-pq-ang-r', x: 327, y: 300, w: 128 });
   },
   async weng(ctx) {
     if (objActive('passear')) await ctx.say('weng', 'Vamos seguindo o caminho, pro meio do parque.');
@@ -265,10 +265,10 @@ export const parqueMap: MapDef = {
     { key: 'prq-poste', x: 1450, y: 690, w: 60, shadow: 0.5 },
     { key: 'prq-poste', x: 1085, y: 830, w: 60, shadow: 0.5 },
     { key: 'prq-poste', x: 250, y: 320, w: 60, shadow: 0.5 },
-    { key: 'prq-banco', x: 335, y: 642, w: 150, shadow: 0.9 },
-    { key: 'prq-banco', x: 1105, y: 478, w: 150, shadow: 0.9 },
-    { key: 'prq-banco', x: 1350, y: 672, w: 150, shadow: 0.9 },
-    { key: 'prq-banco', x: 330, y: 300, w: 150, shadow: 0.9 },
+    { key: 'prq-banco-front', x: 335, y: 642, w: 135, shadow: 0.9 },
+    { key: 'prq-banco-ang-l', x: 1105, y: 478, w: 133, shadow: 0.9 }, // de lado, virado pro lago
+    { key: 'prq-banco-front2', x: 1350, y: 672, w: 137, shadow: 0.9 },
+    { key: 'prq-banco-ang-r', x: 330, y: 300, w: 118, shadow: 0.9 }, // de lado, virado pro chafariz
     { key: 'prq-lixeira', x: 1255, y: 668, w: 44, shadow: 0.9 },
     { key: 'prq-lixeira', x: 425, y: 298, w: 44, shadow: 0.9 },
     { key: 'prq-vaso', x: 575, y: 428, w: 70, shadow: 0.7 },
@@ -288,9 +288,8 @@ export const parqueMap: MapDef = {
     ...[[52, 104], [302, 356], [1102, 1154], [1299, 1353], [1497, 1536]].map(([x0, x1]) => ({ x0, y0: 820, x1, y1: 950, base: 946, cut: 'outline' as const })),
     // ponte: fatiada (a frente do tabuleiro passa na frente dos pés de quem atravessa)
     { x0: 1238, y0: 140, x1: 1452, y1: 278, base: 276, cut: 'furniture', slice: true },
-    { x0: 590, y0: 200, x1: 627, y1: 360, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
-    { x0: 710, y0: 200, x1: 748, y1: 360, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
-    { x0: 500, y0: 25, x1: 845, y1: 205, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    // só o telhado (até a viga): as pilastras da frente ficam dos lados, não por cima dos dois
+    { x0: 500, y0: 25, x1: 845, y1: 178, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
   ],
 
   // Noite (o passeio é depois do lanche): véu escuro + postes e lanternas acesos
@@ -305,10 +304,10 @@ export const parqueMap: MapDef = {
       { x: 250, y: 95, r: 230 },
       { x: 607, y: 780, r: 170 },
       { x: 897, y: 775, r: 170 },
-      { x: 555, y: 215, r: 140 },
-      { x: 620, y: 230, r: 140 },
-      { x: 720, y: 230, r: 140 },
-      { x: 785, y: 210, r: 140 },
+      { x: 555, y: 213, r: 70 },
+      { x: 620, y: 232, r: 70 },
+      { x: 722, y: 232, r: 70 },
+      { x: 785, y: 213, r: 70 },
     ],
   },
 

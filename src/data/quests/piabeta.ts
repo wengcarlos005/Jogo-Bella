@@ -19,7 +19,7 @@ export const PIABETA_QUESTS: QuestDef[] = [
       { id: 'colar', text: 'Colocar o colar da sorte', hint: 'Na penteadeira, perto do espelho.' },
       { id: 'presente', text: 'Pegar o presente do Weng', hint: 'Você escondeu no guarda-roupa, atrás das roupas.' },
       { id: 'espelho', text: 'Dar uma última olhada no espelho', hint: 'O espelho fica ao lado da penteadeira.' },
-      { id: 'guarda-chuva', text: 'Pegar o guarda-chuva', hint: 'Desça até a sala. O guarda-chuva fica perto da porta.' },
+      { id: 'guarda-chuva', text: 'Pegar o guarda-chuva', hint: 'Desça até a sala. O guarda-chuva fica no canto da direita, perto da estante.' },
       { id: 'esquina', text: 'Buscar o Weng na esquina', hint: 'Saia de casa e siga pela calçada para a direita, até a esquina.' },
       { id: 'mae', text: 'Apresentar o Weng para sua mãe', hint: 'Sua mãe está na sala.' },
       { id: 'pai', text: `Apresentar o Weng para o ${ALE}`, hint: `O ${ALE} está na cozinha, perto da mesa.` },

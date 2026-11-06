@@ -196,7 +196,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       if (a instanceof NPC) {
         const wasFollowing = a.behavior === 'follow';
         await a.walkTo(p.x, p.y, speed);
-        a.behavior = wasFollowing ? 'follow' : 'idle';
+        // se no meio da caminhada a cena mandou ele seguir a Bella, não desfaz isso
+        if (a.behavior === 'scripted') a.behavior = wasFollowing ? 'follow' : 'idle';
         return;
       }
       // jogador: tween com animação de caminhada na velocidade certa

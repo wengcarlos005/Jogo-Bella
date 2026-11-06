@@ -103,6 +103,7 @@ export const casaPedidoMap: MapDef = {
 
   // v2: casa decorada à noite (art-source/maps/piabeta-casa-pedido-base.webp) + os mesmos móveis soltos da casa
   objects: CASA_OBJECTS,
+  overlays: [{ x0: 676, y0: 858, x1: 814, y1: 1000, base: 1000, front: true }],
 
   // tudo apagado até a Bella entrar no quarto: só a lanterna do celular e uma luzinha vazando do quarto
   blackout: {

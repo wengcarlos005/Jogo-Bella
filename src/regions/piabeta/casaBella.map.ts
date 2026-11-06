@@ -115,9 +115,9 @@ export const casaBellaMap: MapDef = {
 
 
   props: [
-    // porta-guarda-chuvas ao lado da porta (o rosa some quando a Bella pega)
-    { key: 'prop-umbrella-stand', tx: 13.2, ty: 18.1, scale: 0.24, block: [0, 24, 23, 25], visibleIf: () => !objDone('guarda-chuva') },
-    { key: 'prop-umbrella-stand-empty', tx: 13.2, ty: 18.1, scale: 0.24, block: [0, 24, 23, 25], visibleIf: () => objDone('guarda-chuva') },
+    // porta-guarda-chuvas no canto da direita da sala (o rosa some quando a Bella pega)
+    { key: 'prop-umbrella-stand', tx: 27.6, ty: 17.4, scale: 0.24, block: [0, 24, 23, 25], visibleIf: () => !objDone('guarda-chuva') },
+    { key: 'prop-umbrella-stand-empty', tx: 27.6, ty: 17.4, scale: 0.24, block: [0, 24, 23, 25], visibleIf: () => objDone('guarda-chuva') },
   ],
 
   // (a chuva nas janelas já está desenhada no cenário)
@@ -126,6 +126,8 @@ export const casaBellaMap: MapDef = {
   // v2: cenário vazio (art-source/maps/piabeta-casa-bella-base.webp) + objetos da folha (objects/casa-*).
   // A casa do pedido continua com o cenário antigo e os recortes (CASA_OVERLAYS). Backup em backups/casa-bella-v1/.
   objects: CASA_OBJECTS,
+  // porta da frente e o pedaço de parede em volta: na frente de quem está saindo, transparente
+  overlays: [{ x0: 676, y0: 858, x1: 814, y1: 1000, base: 1000, front: true }],
 
 
   hotspots: [
@@ -149,7 +151,7 @@ export const casaBellaMap: MapDef = {
     { rect: R(1062, 545, 1290, 758), interact: 'estante', label: 'Estante' },
     { rect: R(550, 600, 910, 748), interact: 'sofa', label: 'Sentar', markerIf: () => QuestSystem.isActive('dq-e2') && QuestSystem.isObjectiveDone('dq-e2', 'lala') && !QuestSystem.isObjectiveDone('dq-e2', 'filme') },
     {
-      rect: R(620, 820, 700, 925),
+      rect: R(1315, 770, 1410, 890),
       interact: 'guarda-chuva',
       label: 'Guarda-chuva',
       markerIf: () => objActive('guarda-chuva') && objDone('espelho'),
@@ -189,7 +191,7 @@ export const casaBellaMap: MapDef = {
       blockedIf: () => {
         if (!QuestSystem.isActive(Q)) return false;
         if (!objDone('espelho')) return 'Ainda não tô pronta!';
-        if (!objDone('guarda-chuva')) return 'Tá chovendo! Melhor pegar o guarda-chuva perto da porta.';
+        if (!objDone('guarda-chuva')) return 'Tá chovendo! Melhor pegar o guarda-chuva no canto da sala.';
         if (objDone('esquina') && (!objDone('mae') || !objDone('pai')))
           return `Antes de sair, apresente o Weng para sua mãe e o ${PERSONAL.bellaStepdad.name}.`;
         return false;
