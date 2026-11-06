@@ -19,6 +19,17 @@ const WENG_ORDER: IngredientId[] = ['pao-baixo', 'carne', 'queijo', 'picles', 'a
 
 const scripts: Record<string, Script> = {
   async chegada(ctx) {
+    // entrando pela porta de vidro: os dois aparecem atrás dela e caminham pra dentro
+    const t = ctx.playerTile();
+    if (t.y > 13.8 && t.x > 13 && t.x < 18.5) {
+      ctx.follow('weng', false);
+      ctx.place('player', 15.2, 16.7, 'up');
+      ctx.place('weng', 16.6, 17.0, 'up');
+      ctx.sfx('door');
+      void ctx.move('weng', 16.9, 14.6, 55);
+      await ctx.move('player', 15.2, 14.6, 55);
+      ctx.follow('weng', true);
+    }
     if (ctx.flag('rota66-saudacao')) return;
     ctx.setFlag('rota66-saudacao');
     await ctx.wait(300);
@@ -233,7 +244,7 @@ export const rota66Map: MapDef = {
     R(1455, 900, 1536, 1100),
     R(0, 918, 630, 1100),
     R(905, 918, 1536, 1100),
-    R(630, 780, 905, 1100), // porta de vidro (ninguém fica em cima dela)
+    R(630, 950, 905, 1100), // soleira da porta: dá pra entrar no vão da porta, sair só lá no fundo
     // balcão + banquetas, bomba de gasolina, planta e jukebox
     R(515, 300, 1250, 425),
     R(595, 425, 1160, 452),
@@ -251,8 +262,8 @@ export const rota66Map: MapDef = {
     R(45, 860, 540, 930),
     R(1000, 860, 1458, 930),
     // plantas
-    R(355, 625, 412, 664),
-    R(1157, 625, 1214, 666),
+    R(350, 630, 406, 668),
+    R(1190, 630, 1246, 670),
     R(25, 745, 95, 782),
     R(1455, 705, 1525, 745),
     R(1440, 755, 1505, 792),
@@ -267,7 +278,7 @@ export const rota66Map: MapDef = {
   objects: [
     { key: 'r66-bomba', x: 455, y: 396, w: 94 },
     ...[629, 753, 876, 1000, 1127].map((x) => ({ key: 'r66-banqueta', x, y: 448, w: 66, shadow: 0.8 })),
-    { key: 'r66-planta', x: 1283, y: 414, w: 76, fade: true, shadow: 0.7 },
+    { key: 'r66-planta', x: 1283, y: 414, w: 76, shadow: 0.7 },
     { key: 'r66-jukebox', x: 1370, y: 432, w: 144 },
     { key: 'r66-mesinha', x: 212, y: 474, w: 182 },
     { key: 'r66-mesinha', x: 188, y: 650, w: 200 },
@@ -275,17 +286,17 @@ export const rota66Map: MapDef = {
     { key: 'r66-cabine', x: 1020, y: 668, w: 290 },
     { key: 'r66-cabine', x: 258, y: 905, w: 295 },
     { key: 'r66-cabine', x: 1288, y: 905, w: 290 },
-    { key: 'r66-planta', x: 383, y: 664, w: 88, fade: true, shadow: 0.7 },
-    { key: 'r66-planta', x: 1185, y: 666, w: 88, fade: true, shadow: 0.7 },
-    { key: 'r66-planta', x: 60, y: 782, w: 88, fade: true, shadow: 0.7 },
-    { key: 'r66-planta', x: 1490, y: 745, w: 82, fade: true, flip: true, shadow: 0.7 },
-    { key: 'r66-planta', x: 1470, y: 792, w: 88, fade: true, shadow: 0.7 },
-    // divisórias de vidro na frente das cabines de baixo (duas de cada lado, emendadas)
-    ...[160, 385, 1115, 1345].map((x) => ({ key: 'r66-divisoria', x, y: 932, w: 228, shadow: false as const })),
+    { key: 'r66-planta', x: 378, y: 668, w: 88, base: 676, shadow: 0.7 },
+    { key: 'r66-planta', x: 1218, y: 670, w: 88, base: 676, shadow: 0.7 }, // um pouco pro lado da cabine, folhas na frente
+    { key: 'r66-planta', x: 60, y: 782, w: 88, shadow: 0.7 },
+    { key: 'r66-planta', x: 1490, y: 745, w: 82, flip: true, shadow: 0.7 },
+    { key: 'r66-planta', x: 1470, y: 792, w: 88, shadow: 0.7 },
+    // vidro em cima da muretinha, na frente das cabines de baixo (a parte vermelha já é a parede do cenário)
+    ...[155, 380, 1120, 1345].map((x) => ({ key: 'r66-vidro', x, y: 928, w: 228, shadow: false as const })),
     // floreiras em cima da muretinha e plantas dos lados da porta
     ...[213, 427, 1100, 1280].map((x) => ({ key: 'r66-floreira', x, y: 972, w: 134, shadow: false as const })),
-    { key: 'r66-planta', x: 585, y: 988, w: 100, fade: true, shadow: 0.7 },
-    { key: 'r66-planta', x: 950, y: 988, w: 100, fade: true, flip: true, shadow: 0.7 },
+    { key: 'r66-planta', x: 585, y: 988, w: 100, shadow: 0.7 },
+    { key: 'r66-planta', x: 950, y: 988, w: 100, flip: true, shadow: 0.7 },
     // porta de vidro: sempre por cima de quem encosta nela, transparente
     { key: 'r66-porta', x: 768, y: 1002, w: 268, front: true, shadow: false },
   ],
@@ -305,7 +316,7 @@ export const rota66Map: MapDef = {
   },
   exits: [
     {
-      rect: R(640, 760, 895, 780), // encostar na porta de vidro = sair
+      rect: R(650, 915, 885, 950), // atravessar a porta até o fundo = sair (encostar não sai)
       toMap: 'piabeta-rota66-fora',
       toSpawn: 'from-rota66',
       sfx: 'door',
