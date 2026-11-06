@@ -3,7 +3,7 @@ import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
 
 /**
- * Retângulo medido no cenário ORIGINAL (art-source/maps/duque-acai.webp, 1536x1024).
+ * Retângulo medido no cenário ORIGINAL (art-source/maps/duque-acai-base.webp, 1536x1024).
  * 48 px da imagem = 1 tile (16 px lógicos).
  */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
@@ -93,36 +93,52 @@ export const acaiMap: MapDef = {
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => ROW),
 
+  // v2: cenário vazio (art-source/maps/duque-acai-base.webp) + objetos da folha (objects/ac-*). Backup em backups/acai-v1/.
   blocks: [
     R(0, 0, 60, 1024), // vidraça da esquerda
     R(1505, 0, 1536, 1024), // parede da direita
     R(0, 0, 1536, 455), // fundo
     R(400, 0, 1330, 625), // balcão
     R(330, 380, 410, 560), // canto atrás da máquina
-    R(40, 400, 345, 800), // bancada da janela + banquetas
-    R(315, 600, 630, 855), // mesa da esquerda + banquetas
-    R(1070, 600, 1420, 855), // mesa da direita + banquetas
-    R(1330, 260, 1455, 610), // geladeira de sucos
-    R(1455, 560, 1530, 660), // lixeira
-    R(145, 920, 475, 1010), // floreira da esquerda
-    R(1045, 920, 1395, 1010), // floreira da direita
-    R(30, 880, 125, 1000), // vaso da esquerda
-    R(1405, 870, 1500, 1000), // vaso da direita
-    R(527, 930, 562, 968), // antena antifurto (esq.)
-    R(946, 930, 985, 968), // antena antifurto (dir.)
+    R(40, 400, 345, 590), // bancada da janela
+    R(1330, 260, 1475, 610), // geladeira de sucos
     R(0, 1000, 560, 1024),
     R(950, 1000, 1536, 1024),
+    R(398, 730, 546, 770),
+    R(1172, 730, 1318, 770),
+    R(351, 830, 399, 850),
+    R(546, 830, 594, 850),
+    R(1124, 830, 1172, 850),
+    R(1319, 830, 1367, 850),
+    R(97, 760, 143, 780),
+    R(177, 695, 223, 715),
+    R(257, 630, 303, 650),
+    R(30, 970, 130, 1000),
+    R(1405, 970, 1505, 1000),
+    R(152, 932, 468, 1012),
+    R(1052, 932, 1388, 1012),
+    R(529, 946, 561, 968),
+    R(949, 946, 981, 968),
+    R(1469, 618, 1507, 640),
   ],
 
-  overlays: [
-    { x0: 140, y0: 860, x1: 478, y1: 1010, base: 1005, cut: 'foliage' },
-    { x0: 1040, y0: 860, x1: 1400, y1: 1010, base: 1005, cut: 'foliage' },
-    { x0: 0, y0: 725, x1: 170, y1: 1000, base: 995, cut: 'foliage' },
-    { x0: 1370, y0: 735, x1: 1510, y1: 1000, base: 995, cut: 'foliage' },
-    { x0: 524, y0: 742, x1: 565, y1: 968, base: 966 },
-    { x0: 943, y0: 740, x1: 988, y1: 968, base: 966 },
-    { x0: 315, y0: 600, x1: 632, y1: 858, base: 855, cut: 'furniture' },
-    { x0: 1068, y0: 600, x1: 1422, y1: 858, base: 855, cut: 'furniture' },
+  objects: [
+    { key: 'ac-mesa', x: 472, y: 770, w: 175, shadow: 0.8 },
+    { key: 'ac-mesa', x: 1245, y: 770, w: 175, shadow: 0.8, flip: true },
+    { key: 'ac-banqueta', x: 375, y: 850, w: 60, shadow: 0.8 },
+    { key: 'ac-banqueta', x: 570, y: 850, w: 60, shadow: 0.8 },
+    { key: 'ac-banqueta', x: 1148, y: 850, w: 60, shadow: 0.8 },
+    { key: 'ac-banqueta', x: 1343, y: 850, w: 60, shadow: 0.8 },
+    { key: 'ac-banqueta', x: 120, y: 780, w: 58, shadow: 0.8 },
+    { key: 'ac-banqueta', x: 200, y: 715, w: 58, shadow: 0.8 },
+    { key: 'ac-banqueta', x: 280, y: 650, w: 58, shadow: 0.8 },
+    { key: 'ac-planta', x: 80, y: 1000, w: 125, shadow: 0.6 },
+    { key: 'ac-planta', x: 1455, y: 1000, w: 125, shadow: 0.6, flip: true },
+    { key: 'ac-floreira', x: 310, y: 1012, w: 330, shadow: false },
+    { key: 'ac-floreira', x: 1220, y: 1012, w: 350, shadow: false },
+    { key: 'ac-antifurto', x: 545, y: 968, w: 40, shadow: 0.6 },
+    { key: 'ac-antifurto', x: 965, y: 968, w: 40, shadow: 0.6, flip: true },
+    { key: 'ac-lixeira', x: 1488, y: 640, w: 48, shadow: 0.7 },
   ],
 
   lighting: {
@@ -140,7 +156,7 @@ export const acaiMap: MapDef = {
 
   hotspots: [
     { rect: R(630, 455, 1070, 627), interact: 'balcao', label: 'Balcão' },
-    { rect: R(1070, 600, 1420, 858), interact: 'mesa', label: 'Mesa' },
+    { rect: R(1150, 620, 1340, 780), interact: 'mesa', label: 'Mesa' },
   ],
 
   spawns: {

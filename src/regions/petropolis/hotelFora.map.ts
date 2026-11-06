@@ -6,7 +6,7 @@ import { QuestSystem } from '@/systems/QuestSystem';
 const Q = 'pt-m1';
 const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
 const objActive = (o: string) => QuestSystem.isActive(Q) && !objDone(o);
-/** Retângulo no cenário ORIGINAL (art-source/maps/pt-hotel-fora.webp, 1536x1024). 48 px = 1 tile. */
+/** Retângulo no cenário ORIGINAL (art-source/maps/pt-hotel-fora-base.webp, 1536x1024). 48 px = 1 tile. */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
 const scripts: Record<string, Script> = {
@@ -98,30 +98,46 @@ export const hotelForaMap: MapDef = {
     R(436, 615, 500, 675), // pedra
     R(515, 455, 605, 520), // canteiro ao lado da escada
     R(712, 600, 852, 650), // canteiro de hortênsias azuis
-    R(606, 560, 630, 586), // pés dos postes
-    R(805, 680, 828, 706),
-    R(768, 450, 790, 472),
-    R(876, 570, 892, 592), // placa
-    R(285, 560, 395, 615), // banco da esquerda
-    R(240, 565, 280, 615), // lixeira
-    R(918, 640, 1030, 694), // banco da direita
-    R(880, 630, 915, 676), // lixeira
     R(672, 790, 742, 945), // pilar do portão (esq.)
     R(940, 770, 1058, 945), // portão aberto + pilar (dir.)
     R(1040, 790, 1536, 1024), // cerca e hortênsias da direita
     R(0, 1000, 1536, 1024),
+    // objetos soltos: só a base
+    R(604, 568, 632, 586),
+    R(802, 688, 830, 706),
+    R(765, 454, 791, 472),
+    R(287, 577, 393, 615),
+    R(921, 656, 1027, 694),
+    R(247, 592, 269, 612),
+    R(886, 656, 906, 676),
+    R(866, 578, 902, 594),
+    R(719, 610, 845, 650),
+    R(90, 612, 224, 652),
+    R(1080, 730, 1180, 770),
+    R(1187, 719, 1253, 745),
+  ],
+
+  // v2: cenário vazio (art-source/maps/pt-hotel-fora-base.webp) + objetos da folha (objects/hf-*). Backup em backups/hotel-fora-v1/.
+  objects: [
+    { key: 'hf-poste', x: 618, y: 586, w: 48, shadow: 0.4 },
+    { key: 'hf-poste', x: 816, y: 706, w: 48, shadow: 0.4 },
+    { key: 'hf-poste', x: 778, y: 472, w: 44, shadow: 0.4 },
+    { key: 'hf-banco', x: 340, y: 615, w: 118, shadow: 0.9 },
+    { key: 'hf-banco', x: 974, y: 694, w: 118, shadow: 0.9 },
+    { key: 'hf-lixeira', x: 258, y: 612, w: 36, shadow: 0.8 },
+    { key: 'hf-lixeira', x: 896, y: 676, w: 34, shadow: 0.8 },
+    { key: 'hf-placa', x: 884, y: 594, w: 60, shadow: 0.6 },
+    { key: 'hf-hortazul', x: 782, y: 650, w: 140, shadow: false },
+    { key: 'hf-hortrosa', x: 157, y: 652, w: 150, shadow: false },
+    { key: 'hf-hortrosa', x: 1130, y: 770, w: 110, shadow: false, flip: true },
+    { key: 'hf-pinheiro', x: 1220, y: 745, w: 110, fade: true, shadow: 0.5 },
   ],
 
   overlays: [
-    { x0: 600, y0: 440, x1: 636, y1: 586, base: 586, cut: 'column', tall: true },
-    { x0: 800, y0: 600, x1: 832, y1: 706, base: 706, cut: 'column', tall: true },
-    { x0: 762, y0: 400, x1: 794, y1: 472, base: 472, cut: 'column', tall: true },
     { x0: 670, y0: 730, x1: 745, y1: 945, base: 945 },
     { x0: 990, y0: 730, x1: 1060, y1: 945, base: 945 },
     { x0: 0, y0: 100, x1: 160, y1: 650, base: 650, cut: 'foliage', fade: true, tall: true },
     { x0: 1200, y0: 560, x1: 1536, y1: 820, base: 820, cut: 'foliage', fade: true, tall: true },
-    { x0: 280, y0: 520, x1: 400, y1: 618, base: 615, cut: 'outline' },
-    { x0: 912, y0: 600, x1: 1035, y1: 696, base: 694, cut: 'outline' },
   ],
 
   lighting: {

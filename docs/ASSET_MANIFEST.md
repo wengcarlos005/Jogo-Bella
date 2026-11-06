@@ -208,3 +208,8 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | OBJ-RB | Folha da rua da Bella | objects/rua-folha.webp → rb-* | ✅ no jogo |
 | MAP-029 | Rua do Weng vazia | maps/duque-rua-base.webp | ✅ no jogo |
 | OBJ-DR | Folha da rua do Weng | objects/duque-rua-folha.webp → dr-* | ✅ no jogo |
+| MAP-030 | Açaiteria vazia | maps/duque-acai-base.webp | ✅ no jogo |
+| MAP-031 | Hotel em Petrópolis por fora, vazio | maps/pt-hotel-fora-base.webp | ✅ no jogo |
+| OBJ-AC/HF | Folhas da açaiteria e do hotel por fora | ac-*, hf-* | ✅ no jogo |
+| OBJ-HQ | Folha do quarto do hotel | objects/hotel-quarto-folha.webp → hq-* | ✅ recortada (aguardando o quarto vazio) |
+| MAP-032 | Quarto do hotel vazio | maps/pt-quarto-base.png | pedido |
