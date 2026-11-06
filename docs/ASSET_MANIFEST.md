@@ -196,3 +196,8 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | MAP-023 | Casa da Bella vazia | maps/piabeta-casa-bella-base.webp | ✅ no jogo |
 | OBJ-CASA | Folha de objetos da casa (6 objetos) | objects/casa-folha.webp → objects/casa-*.png | ✅ no jogo |
 | MAP-016b | Casa decorada do pedido (noite) a partir da casa vazia nova | maps/piabeta-casa-pedido-base.webp | ✅ no jogo |
+| MAP-024 | Restaurante mexicano vazio (dentro) | maps/piabeta-mexicano-base.webp | ✅ no jogo |
+| MAP-025 | Fachada do mexicano vazia | maps/piabeta-mexicano-fora-base.webp | ✅ no jogo |
+| OBJ-MX | Folhas do mexicano (dentro e fachada) | objects/mex-folha.webp, mexfora-folha.webp → mx-*, mxf-* | ✅ no jogo |
+| OBJ-QT | Folha de objetos do quintal | objects/quintal-folha.webp → qt-* | ✅ recortada (aguardando o quintal vazio) |
+| MAP-026 | Quintal vazio | maps/piabeta-quintal-base.png | pedido |

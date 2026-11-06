@@ -7,7 +7,7 @@ const Q = 'dq-e2';
 const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
 const objActive = (o: string) => QuestSystem.isActive(Q) && !objDone(o);
 
-/** Retângulo no cenário ORIGINAL (art-source/maps/piabeta-mexicano.webp, 1536x1024). 48 px = 1 tile. */
+/** Retângulo no cenário ORIGINAL (art-source/maps/piabeta-mexicano-base.webp, 1536x1024). 48 px = 1 tile. */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
 const scripts: Record<string, Script> = {
@@ -27,9 +27,9 @@ const scripts: Record<string, Script> = {
     }
     await ctx.fadeOut(400);
     ctx.follow('weng', false);
-    ctx.place('player', 14.0, 10.6, 'right');
-    ctx.place('weng', 18.0, 10.6, 'left');
-    ctx.place('garcom', 12.8, 12.6, 'right');
+    ctx.place('player', 12.3, 10.6, 'right');
+    ctx.place('weng', 18.8, 10.6, 'left');
+    ctx.place('garcom', 15.2, 13.6, 'up');
     await ctx.backdrop('memory-dq-04');
     await ctx.say('garcom', '¡Bienvenidos! Primeira vez aqui? Então vocês ganham uma bebida de cortesia da casa!');
     await ctx.say('bella', 'De graça?! Hoje é o nosso dia.');
@@ -104,55 +104,73 @@ export const mexicanoMap: MapDef = {
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
+  // v2: cenário vazio (art-source/maps/piabeta-mexicano-base.webp) + objetos da folha (objects/mx-*).
+  // Versão anterior em backups/mexicano-v1/.
   blocks: [
-    R(0, 0, 1536, 318), // paredes do fundo
-    R(0, 0, 44, 1024),
-    R(1496, 0, 1536, 1024),
-    R(100, 290, 592, 500), // balcão + banquetas
-    R(925, 290, 1010, 372), // cacto
-    R(1040, 268, 1308, 520), // mesa de cima à direita
-    R(1360, 440, 1455, 545), // cacto grande
-    R(55, 545, 140, 635), // cacto florido
-    R(30, 745, 175, 835), // planta
-    R(650, 410, 912, 662), // mesa do meio
-    R(250, 530, 528, 768), // mesa da esquerda
-    R(1048, 535, 1335, 798), // mesa da direita
-    R(1410, 760, 1495, 835), // cacto da direita
-    R(0, 835, 640, 1024), // parede de baixo (porta em x 640–840)
-    R(840, 835, 1536, 1024),
-    R(640, 960, 840, 1024),
+    R(0, 0, 1536, 322), // parede do fundo
+    R(0, 0, 112, 472), // parede da esquerda (com o quadro)
+    R(0, 470, 110, 490), R(0, 490, 100, 510), R(0, 510, 90, 530), R(0, 530, 80, 550), R(0, 550, 70, 570), R(0, 570, 60, 590), R(0, 590, 50, 610), R(0, 610, 40, 630), R(0, 630, 30, 650), R(0, 650, 20, 670),
+    R(0, 660, 22, 820),
+    R(1440, 330, 1536, 350), R(1445, 350, 1536, 370), R(1450, 370, 1536, 390), R(1454, 390, 1536, 410), R(1459, 410, 1536, 430), R(1464, 430, 1536, 450), R(1469, 450, 1536, 470), R(1474, 470, 1536, 490), R(1478, 490, 1536, 510), R(1483, 510, 1536, 530), R(1488, 530, 1536, 550), R(1493, 550, 1536, 570), R(1498, 570, 1536, 590), R(1502, 590, 1536, 610), R(1507, 610, 1536, 630), R(1512, 630, 1536, 650), R(1517, 650, 1536, 670),
+    R(1515, 660, 1536, 820),
+    R(105, 300, 592, 474), // balcão
+    // parede de baixo (porta em x 700–775)
+    R(0, 815, 700, 1024),
+    R(775, 815, 1536, 1024),
+    R(700, 960, 775, 1024),
+    R(653, 493, 883, 640),
+    R(1074, 385, 1286, 520),
+    R(224, 660, 436, 795),
+    R(1094, 660, 1306, 795),
+    R(183, 505, 227, 528),
+    R(278, 505, 322, 528),
+    R(373, 505, 417, 528),
+    R(468, 505, 512, 528),
+    R(927, 364, 993, 392),
+    R(1417, 672, 1487, 700),
+    R(45, 612, 99, 640),
+    R(1445, 450, 1495, 478),
+    R(549, 784, 621, 812),
+    R(899, 784, 971, 812),
+    R(1019, 370, 1101, 398),
   ],
 
-  overlays: [
-    { x0: 640, y0: 380, x1: 918, y1: 666, base: 662, cut: 'furniture', slice: true },
-    { x0: 244, y0: 525, x1: 532, y1: 772, base: 768, cut: 'furniture', slice: true },
-    { x0: 1042, y0: 530, x1: 1340, y1: 802, base: 798, cut: 'furniture', slice: true },
-    { x0: 1034, y0: 260, x1: 1312, y1: 522, base: 520, cut: 'furniture', slice: true },
-    { x0: 920, y0: 210, x1: 1012, y1: 376, base: 372, cut: 'outline', fade: true },
-    { x0: 1350, y0: 310, x1: 1460, y1: 548, base: 545, cut: 'outline', fade: true },
-    { x0: 45, y0: 455, x1: 145, y1: 638, base: 635, cut: 'outline', fade: true },
-    { x0: 20, y0: 655, x1: 185, y1: 838, base: 835, cut: 'outline', fade: true },
-    { x0: 1400, y0: 668, x1: 1500, y1: 838, base: 835, cut: 'outline', fade: true },
-    { x0: 100, y0: 285, x1: 595, y1: 505, base: 500, cut: 'furniture', slice: true },
-    // porta de entrada (batentes e folhas abertas): sempre por cima de quem passa, transparente
-    { x0: 620, y0: 745, x1: 852, y1: 965, base: 1000, front: true },
+  objects: [
+    { key: 'mx-mesa', x: 768, y: 640, w: 250, shadow: 0.8 },
+    { key: 'mx-mesa', x: 1180, y: 520, w: 230, shadow: 0.8 },
+    { key: 'mx-mesa', x: 330, y: 795, w: 230, shadow: 0.8 },
+    { key: 'mx-mesa', x: 1200, y: 795, w: 230, shadow: 0.8 },
+    { key: 'mx-banqueta', x: 205, y: 528, w: 52, shadow: 0.8 },
+    { key: 'mx-banqueta', x: 300, y: 528, w: 52, shadow: 0.8 },
+    { key: 'mx-banqueta', x: 395, y: 528, w: 52, shadow: 0.8 },
+    { key: 'mx-banqueta', x: 490, y: 528, w: 52, shadow: 0.8 },
+    { key: 'mx-cacto', x: 960, y: 392, w: 88, shadow: 0.7 },
+    { key: 'mx-cacto', x: 1452, y: 700, w: 92, shadow: 0.7, flip: true },
+    { key: 'mx-cactoflor', x: 72, y: 640, w: 72, shadow: 0.7 },
+    { key: 'mx-cactoflor', x: 1470, y: 478, w: 66, shadow: 0.7, flip: true },
+    { key: 'mx-planta', x: 585, y: 812, w: 96, shadow: 0.7 },
+    { key: 'mx-planta', x: 935, y: 812, w: 96, shadow: 0.7, flip: true },
+    { key: 'mx-cabideiro', x: 1060, y: 398, w: 108, shadow: 0.7 },
   ],
+
+  // porta de entrada (folhas abertas): sempre por cima de quem passa, transparente
+  overlays: [{ x0: 620, y0: 728, x1: 856, y1: 950, base: 1000, front: true }],
 
   npcs: [
-    // garçom: fica entre o balcão e as mesas, indo e voltando
-    { id: 'garcom', sprite: 'garcom', tx: 12.6, ty: 11.4, facing: 'down', interact: 'garcom', behavior: 'wander', wanderRadius: 1.0, wanderAxis: 'y' },
+    // garçom: anda pertinho do balcão, entre os banquinhos e a mesa do meio
+    { id: 'garcom', sprite: 'garcom', tx: 12.0, ty: 10.8, facing: 'down', interact: 'garcom', behavior: 'wander', wanderRadius: 1.2, wanderAxis: 'y' },
   ],
 
   hotspots: [
-    { rect: R(650, 380, 912, 662), interact: 'mesa', label: 'Sentar', markerIf: () => objActive('mexicano') && objDone('passeio') },
-    { rect: R(100, 280, 592, 505), interact: 'bar', label: 'Balcão' },
-    { rect: R(915, 745, 1065, 840), interact: 'chapeus', label: 'Chapéus' },
+    { rect: R(643, 373, 893, 640), interact: 'mesa', label: 'Sentar', markerIf: () => objActive('mexicano') && objDone('passeio') },
+    { rect: R(105, 280, 592, 480), interact: 'bar', label: 'Balcão' },
+    { rect: R(1000, 190, 1115, 400), interact: 'chapeus', label: 'Chapéus' },
   ],
 
   spawns: {
-    porta: { tx: 14.9, ty: 15.8, facing: 'up' },
+    porta: { tx: 14.9, ty: 15.4, facing: 'up' },
   },
-  triggers: [{ id: 'saida', rect: R(650, 925, 830, 960), script: 'saida' }],
+  triggers: [{ id: 'saida', rect: R(695, 925, 780, 960), script: 'saida' }],
   scripts,
   onEnter: 'chegada',
 };
