@@ -314,8 +314,8 @@ export const rota66Map: MapDef = {
     { rect: R(240, 20, 420, 210), interact: 'quadro', label: 'Neon' },
   ],
 
-  // a atendente fica na frente do balcão, perto do caixa
-  npcs: [{ id: 'atendente', sprite: 'atendente', tx: 12.6, ty: 9.7, facing: 'down', interact: 'atendente' }],
+  // a atendente fica no canto da direita (perto do jukebox), sem fechar o corredor do balcão
+  npcs: [{ id: 'atendente', sprite: 'atendente', tx: 25.3, ty: 10.9, facing: 'left', interact: 'atendente' }],
   spawns: {
     'from-fora': { tx: 15.2, ty: 16.7, facing: 'up' }, // atrás da porta de vidro; a cena de entrada traz pra dentro
   },
