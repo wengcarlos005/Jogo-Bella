@@ -84,6 +84,21 @@ const scripts: Record<string, Script> = {
   },
 
   async gato(ctx) {
+    // domingo do churrasco: o mesmo gatinho, agora tomando sol no muro
+    if (ctx.questActive('dq-e2')) {
+      if (ctx.flag('gato-fragoso-dom')) {
+        await ctx.say('weng', 'Ele nem abriu o olho. Tá no modo domingo.');
+        return;
+      }
+      ctx.setFlag('gato-fragoso-dom');
+      await ctx.emote('bella', 'exclaim');
+      await ctx.say('bella', 'Weng! É o gatinho daquela noite! No mesmo muro!');
+      await ctx.say('weng', 'Ele tava aqui no nosso primeiro encontro... e agora tá aqui no segundo.');
+      await ctx.say('bella', 'Ele é tipo o padrinho da gente.');
+      await ctx.say('weng', 'Padrinho que dorme o tempo todo. Tá contratado.');
+      await ctx.emote('weng', 'heart');
+      return;
+    }
     if (ctx.flag('gato-fragoso')) {
       await ctx.say('bella', 'Ele continua aí, dormindo. Nem ligou pra gente.');
       return;
@@ -139,7 +154,6 @@ export const fragosoMap: MapDef = {
     R(0, 392, 122, 445), // arbustos do canto de cima à esquerda (a calçada de cima fica livre)
     // bases dos postes
     R(204, 712, 240, 745),
-    R(1192, 660, 1228, 692),
     R(108, 332, 140, 360),
     R(724, 344, 752, 370),
     R(1166, 362, 1196, 390),
@@ -175,11 +189,17 @@ export const fragosoMap: MapDef = {
     { rect: R(100, 150, 150, 362), interact: 'poste', label: 'Poste' },
   ],
   spawns: {
-    'from-rota66': { tx: 1.2, ty: 6.3, facing: 'right' },
-    'from-parque': { tx: 1.2, ty: 14.4, facing: 'right' },
+    'from-rota66': { tx: 2.6, ty: 6.3, facing: 'right' },
+    'from-parque': { tx: 2.2, ty: 14.4, facing: 'right' },
   },
   exits: [
-    { rect: R(0, 322, 22, 468), toMap: 'piabeta-rota66-fora', toSpawn: 'from-fragoso' },
+    {
+      rect: R(0, 322, 22, 468),
+      toMap: 'piabeta-rota66-fora',
+      toSpawn: 'from-fragoso',
+      // a caminhada é pra frente: voltar pra Rota 66 só depois de chegar no parque
+      blockedIf: () => (QuestSystem.isActive(Q) && !QuestSystem.isObjectiveDone(Q, 'parque') ? 'Weng: "A Rota 66 ficou pra trás! O parque é pro outro lado →"' : false),
+    },
     {
       rect: R(0, 668, 22, 800),
       toMap: 'piabeta-parque',

@@ -17,6 +17,65 @@ import { RENDER_SCALE } from '@/config/gameConfig';
 const DIRS: Direction[] = ['down', 'up', 'left', 'right'];
 
 /** Implementa a API de scripts (diálogos/cutscenes) sobre a GameScene. */
+/** Emotes em pixel art (desenhados uma vez). X = contorno, letras = cores. */
+const EMOTE_ART: Record<string, { rows: string[]; pal: Record<string, string> }> = {
+  heart: {
+    rows: [
+      '..XXX...XXX..',
+      '.XwwrX.XrrrX.',
+      'XwwrrrXrrrrrX',
+      'XwrrrrrrrrrrX',
+      'XrrrrrrrrrrdX',
+      'XrrrrrrrrrrdX',
+      '.XrrrrrrrrdX.',
+      '..XrrrrrrdX..',
+      '...XrrrrdX...',
+      '....XrrdX....',
+      '.....XdX.....',
+      '......X......',
+    ],
+    pal: { X: '#5a1030', r: '#ff4d7d', w: '#ffd3e0', d: '#d12f60' },
+  },
+  mini: {
+    rows: ['.X.X.', 'XrXrX', 'XrrrX', '.XrX.', '..X..'],
+    pal: { X: '#5a1030', r: '#ff8fb0' },
+  },
+  exclaim: {
+    rows: ['.XXXX.', 'XwyyyX', 'XyyyyX', 'XyyyoX', '.XyyX.', '.XyoX.', '.XyoX.', '..XX..', '.XXXX.', 'XyyyoX', '.XXXX.'],
+    pal: { X: '#5a2a08', y: '#ffd23f', w: '#fff6c2', o: '#e89a12' },
+  },
+  question: {
+    rows: ['.XXXXX.', 'XwbbbbX', 'XbXXXbX', '.X..XbX', '...XbX.', '..XbX..', '..XbX..', '..XX...', '.......', '..XX...', '.XbbX..', '..XX...'],
+    pal: { X: '#142a5a', b: '#5aa0ff', w: '#d6e8ff' },
+  },
+  note: {
+    rows: ['....XXXX', '....XppX', '....XpX.', '....XpX.', '....XpX.', '.XXXXpX.', 'XpppppX.', 'XwpppdX.', '.XXXXX..'],
+    pal: { X: '#2e1450', p: '#b07aff', w: '#e8d8ff', d: '#7c46d6' },
+  },
+  sweat: {
+    rows: ['...X...', '..XbX..', '.XbbbX.', '.XwbbX.', 'XwbbbbX', 'XbbbbdX', 'XbbbbdX', '.XbbdX.', '..XXX..'],
+    pal: { X: '#123a5a', b: '#6cc6ff', w: '#e0f6ff', d: '#3a8ed0' },
+  },
+};
+
+function ensureEmotes(scene: GameScene): void {
+  if (scene.textures.exists('emote2-heart')) return;
+  for (const [name, { rows, pal }] of Object.entries(EMOTE_ART)) {
+    const w = Math.max(...rows.map((r) => r.length));
+    const t = scene.textures.createCanvas(`emote2-${name}`, w, rows.length)!;
+    const c = t.getContext();
+    rows.forEach((row, y) =>
+      [...row].forEach((ch, x) => {
+        const col = pal[ch];
+        if (!col) return;
+        c.fillStyle = col;
+        c.fillRect(x, y, 1, 1);
+      }),
+    );
+    t.refresh();
+  }
+}
+
 export function createScriptContext(scene: GameScene): ScriptContext {
   const actor = (who: string) => {
     const a = scene.findActor(who);
@@ -88,13 +147,35 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     emote(who, emote: Emote) {
       const a = actor(who);
       if (!a) return Promise.resolve();
-      const img = scene.add.image(a.x, a.headY - 8, `emote-${emote}`).setDepth(160_000).setScale(0);
-      scene.tweens.add({ targets: img, scale: 1, duration: 160, ease: 'Back.Out' });
+      ensureEmotes(scene);
+      // símbolo em pixel art com contorno (sem balão): pula, flutua e some
+      const y0 = a.headY - 6;
+      const img = scene.add.image(a.x + 6, y0, `emote2-${emote}`).setOrigin(0.5, 1).setDepth(160_000).setScale(0);
+      scene.tweens.add({ targets: img, scale: 1, duration: 220, ease: 'Back.Out' });
+      scene.tweens.add({ targets: img, y: y0 - 5, duration: 900, ease: 'Sine.Out' });
+      if (emote === 'heart') {
+        scene.tweens.add({ targets: img, scale: 1.18, duration: 160, delay: 260, yoyo: true, repeat: 1, ease: 'Sine.InOut' });
+        for (let k = 0; k < 3; k++) {
+          const m = scene.add.image(a.x + 6, y0 - 6, 'emote2-mini').setDepth(160_001).setAlpha(0);
+          scene.tweens.add({
+            targets: m,
+            alpha: { from: 1, to: 0 },
+            x: a.x + 6 + (k - 1) * 9,
+            y: y0 - 16 - k * 3,
+            duration: 700,
+            delay: 200 + k * 120,
+            ease: 'Sine.Out',
+            onComplete: () => m.destroy(),
+          });
+        }
+      } else if (emote === 'exclaim') {
+        scene.tweens.add({ targets: img, angle: { from: -12, to: 12 }, duration: 80, yoyo: true, repeat: 2 });
+      } else if (emote === 'note') {
+        scene.tweens.add({ targets: img, angle: { from: -10, to: 10 }, duration: 260, yoyo: true, repeat: 1, ease: 'Sine.InOut' });
+      }
       return new Promise<void>((resolve) => {
-        scene.time.delayedCall(850, () => {
-          img.destroy();
-          resolve();
-        });
+        scene.time.delayedCall(700, () => scene.tweens.add({ targets: img, alpha: 0, duration: 200, onComplete: () => img.destroy() }));
+        scene.time.delayedCall(900, () => resolve());
       });
     },
 
@@ -238,7 +319,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       scene.tempProps.get(id)?.destroy();
       if (key === 'burger-full') scene.ensureBurgerTexture();
       if (key === 'fx-novelo' && !scene.textures.exists('fx-novelo')) {
-        // novelo de lã em pixel art (rosa com fios mais claros e uma pontinha solta)
+        // novelo de lã em pixel art (azul, igual ao do cesto, com fios mais claros e uma pontinha solta)
         const t = scene.textures.createCanvas('fx-novelo', 12, 11)!;
         const c = t.getContext();
         const px = (x: number, y: number, col: string) => {
@@ -251,12 +332,12 @@ export function createScriptContext(scene: GameScene): ScriptContext {
             if (d > 4.6) continue;
             const edge = d > 3.7;
             const strand = (x + y) % 3 === 0 || (x - y + 9) % 4 === 0;
-            px(x, y, edge ? '#7a2346' : strand ? '#ffb3d0' : y < 4 ? '#f27aa8' : '#d9568a');
+            px(x, y, edge ? '#1c3a78' : strand ? '#a8d4ff' : y < 4 ? '#5aa0ff' : '#3a78d8');
           }
-        px(9, 7, '#d9568a');
-        px(10, 8, '#d9568a');
-        px(11, 8, '#f27aa8');
-        px(2, 2, '#fff1f6');
+        px(9, 7, '#3a78d8');
+        px(10, 8, '#3a78d8');
+        px(11, 8, '#5aa0ff');
+        px(2, 2, '#eef6ff');
         t.refresh();
       }
       const img = scene.add.image(tx * 16, ty * 16, key, frame).setOrigin(0.5, 1);
@@ -320,23 +401,17 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         const sc = couple.w && BENCH_W[couple.key] ? couple.w / 3 / BENCH_W[couple.key] : 1 / RENDER_SCALE;
         pair = scene.add.sprite(couple.x / 3, couple.y / 3, couple.key, 0).setOrigin(0.5, 1).setScale(sc);
         pair.setDepth(couple.y / 3 + 60);
-        let tick = 0;
+        // as poses da folha foram desenhadas separadas (cabelo muda de um quadro pro outro):
+        // fica a pose principal, respirando de leve, com coraçõezinhos subindo de vez em quando
+        scene.tweens.add({ targets: pair, scaleY: sc * 1.012, duration: 1700, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
         pairTimer = scene.time.addEvent({
-          delay: 400,
+          delay: 2600,
           loop: true,
           callback: () => {
-            tick++;
-            // quadros: 0 normal, 1 piscadinha, 2 rindo, 3 ela encosta a cabeça nele
-            const f = String(pair!.frame.name);
-            if (tick % 18 === 0) pair!.setFrame(3);
-            else if (f === '3' && tick % 18 === 6) pair!.setFrame(0);
-            else if (f === '0' && tick % 11 === 0) {
-              pair!.setFrame(2);
-              scene.time.delayedCall(900, () => pair?.active && String(pair.frame.name) === '2' && pair.setFrame(0));
-            } else if (f === '0' && tick % 7 === 0) {
-              pair!.setFrame(1);
-              scene.time.delayedCall(260, () => pair?.active && String(pair.frame.name) === '1' && pair.setFrame(0));
-            }
+            if (!pair?.active) return;
+            ensureEmotes(scene);
+            const m = scene.add.image(pair.x + Phaser.Math.Between(-6, 6), pair.y - pair.displayHeight * 0.78, 'emote2-mini').setDepth(pair.depth + 1).setAlpha(0);
+            scene.tweens.add({ targets: m, alpha: { from: 1, to: 0 }, y: m.y - 14, duration: 1300, ease: 'Sine.Out', onComplete: () => m.destroy() });
           },
         });
         pl.setPosition(couple.x / 3 - 10, couple.y / 3 + 4);

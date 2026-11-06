@@ -11,32 +11,41 @@ const W = PERSONAL.weng.name;
 /** Como a Bella chama o padrasto (personal.ts). */
 const CHAMADO = PERSONAL.bellaStepdad.chamado;
 
+/** 2º encontro: o filme no sofá (quando os dois sentam). */
+async function filmeNoSofa(ctx: Parameters<Script>[0]): Promise<void> {
+  await ctx.say('bella', 'Senta aqui. Esse sofá é o melhor lugar da casa.');
+  await ctx.sit(730, 714, [
+    ['narrador', 'Um filme qualquer passando na TV. Ninguém prestou muita atenção.'],
+    ['bella', 'Weng... você tá vendo o filme ou olhando pra mim?'],
+    ['weng', 'Tem filme passando?'],
+    ['mae-bella', '(da cozinha) Querem pipoca?!'],
+    ['bella', 'NÃO, MÃE, OBRIGADA!'],
+    ['pai-bella', '(da cozinha) Eu quero.'],
+    ['weng', 'Bora passear depois? Quero ir na nossa praça.'],
+    ['bella', 'A do coreto? São uns 25 minutos a pé, passando por Fragoso.'],
+    ['weng', 'Com você, 25 minutos passam em 5.'],
+  ]);
+  ctx.objective('dq-e2', 'filme');
+  // depois do filme a casa fica livre: dá pra conversar com todo mundo antes de sair
+  ctx.toast('Quando quiserem passear, saiam pela porta da sala');
+}
+
 export const casaScripts: Record<string, Script> = {
   async entrar(ctx) {
-    // 2º encontro: depois do churrasco, filme no sofá da sala
-    if (ctx.questActive('dq-e2') && ctx.objectiveDone('dq-e2', 'mesa') && !ctx.objectiveDone('dq-e2', 'filme')) {
+    // 2º encontro: depois do churrasco, antes do filme: apresentar a Lala
+    if (ctx.questActive('dq-e2') && ctx.objectiveDone('dq-e2', 'mesa') && !ctx.objectiveDone('dq-e2', 'lala')) {
       // na cozinha, cada um num canto (sem cadeira e sem ficar um em cima do outro)
       ctx.place('pai-bella', 19.6, 7.2, 'down');
       ctx.place('mae-bella', 28.0, 9.4, 'left');
       ctx.follow('weng', true);
       ctx.place('weng', 16.2, 15.6, 'up');
       await ctx.wait(300);
-      await ctx.say('bella', 'Senta aqui. Esse sofá é o melhor lugar da casa.');
-      await ctx.sit(730, 714, [
-        ['narrador', 'Um filme qualquer passando na TV. Ninguém prestou muita atenção.'],
-        ['bella', 'Weng... você tá vendo o filme ou olhando pra mim?'],
-        ['weng', 'Tem filme passando?'],
-        ['mae-bella', '(da cozinha) Querem pipoca?!'],
-        ['bella', 'NÃO, MÃE, OBRIGADA!'],
-        ['weng', 'Bora passear depois? Quero ir na nossa praça.'],
-        ['bella', 'A do coreto? São uns 25 minutos a pé, passando por Fragoso.'],
-        ['weng', 'Com você, 25 minutos passam em 5.'],
-      ]);
-      ctx.objective('dq-e2', 'filme');
-      await ctx.fadeOut(400);
-      await ctx.teleport('piabeta-quintal', 'porta');
+      await ctx.say('bella', 'Antes do filme... você PRECISA conhecer a Lala direito. Ela tá dormindo no meu quarto.');
+      await ctx.say('weng', 'A que ignorou o Alexandre por dois anos? Tô com medo.');
+      ctx.toast('Leve o Weng até a Lala, no quarto');
       return;
     }
+    if (ctx.questActive('dq-e2')) return;
     if (ctx.flag('intro-vista')) return casaScripts.voltou(ctx);
     ctx.setFlag('intro-vista');
     ctx.startQuest(Q);
@@ -218,6 +227,40 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async lala(ctx) {
+    if (ctx.questActive('dq-e2') && ctx.objectiveDone('dq-e2', 'mesa') && !ctx.objectiveDone('dq-e2', 'lala')) {
+      ctx.follow('weng', false);
+      ctx.face('player', 'lala');
+      ctx.face('weng', 'lala');
+      await ctx.say('bella', 'Lala... acorda, princesa. Olha quem veio te ver de novo.');
+      ctx.pose('lala', 'lala-poses', 2);
+      await ctx.emote('lala', 'question');
+      ctx.pose('lala', 'lala-poses', 0);
+      await ctx.say('weng', 'Oi, Lala. Sou eu. O do churrasco. O que virou a picanha.');
+      ctx.face('lala', 'left');
+      await ctx.say('lala', '...');
+      await ctx.say('weng', 'Ela virou a cara. Ela literalmente virou a cara pra mim.');
+      const c = await ctx.choose('bella', '(Como conquistar a Lala?)', ['"Abaixa devagar e estende a mão. Deixa ela cheirar."', '"Fala fininho. Ela ama voz fininha."', '"Finge que não liga. Gato ama quem não liga."']);
+      if (c === 0) await ctx.say('weng', '(abaixando bem devagar) Pode cheirar... sem pressa...');
+      else if (c === 1) await ctx.say('weng', '(voz fininha) Quem é a gatinha mais linda dessa casa? Quem é?');
+      else {
+        await ctx.say('weng', '(assobiando, olhando pro teto) Nossa, que teto bonito esse...');
+        await ctx.wait(500);
+      }
+      ctx.face('lala', 'weng');
+      await ctx.emote('lala', 'exclaim');
+      ctx.pose('lala', 'lala-poses', 3);
+      ctx.hearts('lala', 10);
+      await ctx.say('lala', 'Prrrrr... prrrrrr...');
+      await ctx.emote('weng', 'heart');
+      await ctx.say('weng', 'ELA DEIXOU! Bella, ela tá ronronando pra mim!');
+      await ctx.say('bella', 'O Alexandre levou dois anos. Você levou dois minutos.');
+      await ctx.say('weng', 'Não conta pra ele. Ele já me deu o pegador hoje, não quero perder o cargo.');
+      ctx.pose('lala', 'lala-poses', 1);
+      ctx.follow('weng', true);
+      ctx.objective('dq-e2', 'lala');
+      ctx.toast('Agora sim: sentem no sofá da sala pro filme');
+      return;
+    }
     const n = Number(GameState.getFlag<number>('lala-carinhos') ?? 0);
     ctx.pose('lala', 'lala-poses', 3);
     ctx.hearts('lala', 6);
@@ -238,6 +281,13 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async mae(ctx) {
+    if (ctx.questActive('dq-e2')) {
+      const f = ['Vão passear? Leva um casaquinho, que de noite esfria!', 'O Weng comeu bem? Embrulhei um pedaço de pudim pra ele levar.', 'Gostei dele, viu. Educado, ajudou a tirar a mesa...'];
+      const n = (Number(ctx.flag('mae-dom-n') || 0) + 1) % f.length;
+      ctx.setFlag('mae-dom-n', n);
+      await ctx.say('mae-bella', f[n]);
+      return;
+    }
     if (!ctx.flag('weng-entrou')) {
       if (ctx.objectiveDone(Q, 'guarda-chuva')) {
         await ctx.say('mae-bella', 'Vai logo, menina! Não deixa o rapaz esperando na chuva!');
@@ -290,6 +340,13 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async pai(ctx) {
+    if (ctx.questActive('dq-e2')) {
+      const f = ['...A picanha tava boa. Ele que virou.', 'Juízo na rua, hein. E traz ela cedo.', 'Hm. Pode voltar domingo que vem. Se quiser.'];
+      const n = (Number(ctx.flag('pai-dom-n') || 0) + 1) % f.length;
+      ctx.setFlag('pai-dom-n', n);
+      await ctx.say('pai-bella', f[n]);
+      return;
+    }
     if (!ctx.flag('weng-entrou')) {
       await ctx.say('pai-bella', 'Hm. Então hoje é o tal encontro.');
       await ctx.say('pai-bella', '...Que horas você volta?');
@@ -336,6 +393,13 @@ export const casaScripts: Record<string, Script> = {
     await ctx.say('bella', 'Uma louça pra lavar. Ela pode esperar até amanhã. Hoje não.');
   },
   async sofa(ctx) {
+    if (ctx.questActive('dq-e2') && ctx.objectiveDone('dq-e2', 'mesa')) {
+      if (!ctx.objectiveDone('dq-e2', 'lala')) {
+        await ctx.say('bella', 'Calma! Primeiro a Lala. Ela tá no meu quarto.');
+        return;
+      }
+      if (!ctx.objectiveDone('dq-e2', 'filme')) return filmeNoSofa(ctx);
+    }
     if (ctx.flag('weng-segue') && !ctx.objectiveDone(Q, 'pai')) {
       await ctx.say('bella', 'Ainda não dá pra sentar. Falta apresentar o Weng pro Alexandre!');
       return;

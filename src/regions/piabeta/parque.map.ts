@@ -23,8 +23,8 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Foi ali. Debaixo da chuva.');
       await ctx.emote('bella', 'heart');
       await ctx.say('bella', 'Eu lembro de cada segundo.');
-      await ctx.say('weng', 'Tem um restaurante mexicano aqui do lado, saindo pela direita. Bora conhecer?');
-      ctx.toast('Saia da praça pela direita');
+      await ctx.say('weng', 'Tem um restaurante mexicano aqui do lado, seguindo a calçada pra esquerda. Bora conhecer?');
+      ctx.toast('Siga pela calçada para a esquerda');
       return;
     }
     if (!ctx.questActive(Q) || ctx.objectiveDone(Q, 'parque')) return;
@@ -105,6 +105,8 @@ const scripts: Record<string, Script> = {
     await ctx.memory('mem-pia-03');
     ctx.unlockRegion('duque-de-caxias');
     ctx.follow('weng', true);
+    // troca de capítulo: tela preta por trás (o mapa não aparece entre os cartões)
+    await ctx.fadeOut(600);
     await ctx.chapterCard('Fim do Prólogo', 'Piabetá', 'Onde tudo começou.', 'Continuar');
     await ctx.chapterCard('Capítulo 1', 'Piabetá', 'O segundo encontro', 'Começar');
     await ctx.phone({ contact: 'Weng ♥', avatar: 'portrait-weng', clock: '23:48', caption: 'Naquela mesma noite...' }, [
@@ -127,7 +129,7 @@ const scripts: Record<string, Script> = {
   },
 
   async placaMex(ctx) {
-    await ctx.say('weng', 'O mexicano é logo ali, saindo por essa ponta da praça. Bora?');
+    await ctx.say('weng', 'O mexicano é logo ali, seguindo a calçada pra esquerda. Bora?');
   },
 
   async coreto(ctx) {
@@ -227,6 +229,9 @@ export const parqueMap: MapDef = {
     R(1180, 372, 1255, 420), // pedras da margem
     R(1300, 372, 1378, 430), // samambaia
     R(1455, 420, 1520, 480), // tronco da árvore do lago
+    // grama debaixo das copas das duas árvores do meio (não tem caminho ali: ninguém fica "dentro" da árvore)
+    R(470, 520, 680, 700),
+    R(880, 500, 1110, 700),
     // postes
     R(395, 600, 440, 640),
     R(930, 410, 968, 448),
@@ -309,10 +314,10 @@ export const parqueMap: MapDef = {
 
   hotspots: [
     {
-      rect: R(1470, 690, 1536, 830),
+      rect: R(0, 925, 70, 1005),
       interact: 'placaMex',
-      label: 'Restaurante →',
-      marker: { x: 0.25, y: -0.35, dir: 'right' },
+      label: '← Restaurante',
+      marker: { x: 0.6, y: -0.2, dir: 'left' },
       markerIf: () => QuestSystem.isActive('dq-e2') && QuestSystem.isObjectiveDone('dq-e2', 'passeio') && !QuestSystem.isObjectiveDone('dq-e2', 'mexicano'),
     },
     { rect: R(505, 30, 840, 432), interact: 'coreto', label: 'Coreto', markerIf: () => objActive('abrigo') && objDone('passear') },
@@ -324,14 +329,15 @@ export const parqueMap: MapDef = {
     { rect: R(200, 205, 350, 295), interact: 'banco4', label: 'Sentar' },
   ],
 
+  // quem vem de Fragoso chega pela calçada da DIREITA; o restaurante mexicano fica pra ESQUERDA
   spawns: {
-    'from-rota66': { tx: 14.9, ty: 19.1, facing: 'up' },
-    'from-mexicano': { tx: 30.4, ty: 15.0, facing: 'left' },
+    'from-rota66': { tx: 30.4, ty: 20.0, facing: 'left' },
+    'from-mexicano': { tx: 1.6, ty: 20.0, facing: 'right' },
   },
   exits: [
-    { rect: R(650, 985, 830, 1005), toMap: 'piabeta-fragoso', toSpawn: 'from-parque' },
+    { rect: R(1515, 925, 1536, 1005), toMap: 'piabeta-fragoso', toSpawn: 'from-parque' },
     {
-      rect: R(1515, 690, 1536, 830),
+      rect: R(0, 925, 22, 1005),
       toMap: 'piabeta-mexicano-fora',
       toSpawn: 'from-parque',
       blockedIf: () => (QuestSystem.isDone('pia-m3') ? false : 'Hoje o caminho é outro.'),

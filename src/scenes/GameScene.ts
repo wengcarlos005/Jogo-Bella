@@ -52,9 +52,13 @@ export class GameScene extends Phaser.Scene {
   umbrellas = new Map<string, { img: Phaser.GameObjects.Image; shaft: Phaser.GameObjects.Image; mode: 'up' | 'hide' }>();
   weather!: WeatherSystem;
   interactions!: InteractionSystem;
-  private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2; right?: boolean }[] = [];
+  private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2; side?: 'left' | 'right' }[] = [];
   private scriptRunning = false;
   private transitioning = false;
+  /** Cada entrada num mapa ganha um número: o que sobrou do mapa anterior não mexe no novo. */
+  private gen = 0;
+  /** Até o script de entrada começar, ninguém sai pelas bordas (segurar a seta não "volta" de mapa). */
+  private entering = false;
   private blockedCooldown = 0;
   private lastTick = 0;
   private autosaveTimer = 0;
@@ -74,7 +78,12 @@ export class GameScene extends Phaser.Scene {
     this.markers = [];
     this.scriptRunning = false;
     this.transitioning = false;
+    this.entering = true;
+    this.gen++;
     this.pendingMemories = [];
+    // cenas do mapa anterior que ficaram pela metade não podem deixar o controle travado
+    InputSystem.reset();
+    UI.dialogue.close();
     this.registry.set('gameSceneData', data);
   }
 
@@ -151,8 +160,12 @@ export class GameScene extends Phaser.Scene {
     if (def.music) AudioSystem.playMusic(def.music);
     this.lastTick = this.time.now;
 
+    const gen = this.gen;
     void UI.fade(0, 350).then(async () => {
+      if (gen !== this.gen || this.transitioning) return;
       if (def.onEnter) await this.runScript(def.onEnter);
+      if (gen !== this.gen) return;
+      this.entering = false;
       this.syncPosition();
       void SaveSystem.autosave();
     });
@@ -246,6 +259,10 @@ export class GameScene extends Phaser.Scene {
         body.setOffset((npc.frame.width - bw / sc) / 2, npc.frame.height - 10 / sc);
         // a Bella não empurra o NPC, mas o NPC continua batendo nas paredes e nos móveis
         body.pushable = false;
+      }
+      if (def.chore) {
+        npc.chore = { xs: def.chore.xs.map((x) => x * TILE), y: tileToFeet(0, def.chore.y).y, wy: tileToFeet(0, def.chore.wy ?? def.chore.y).y, i: 0, dir: 1, wipe: 1500 };
+        this.addWipeCloth(npc);
       }
       if (def.wanderRadius !== undefined) npc.wanderRadius = def.wanderRadius * TILE;
       if (def.wanderAxis) npc.wanderAxis = def.wanderAxis;
@@ -444,6 +461,7 @@ export class GameScene extends Phaser.Scene {
   /** Vidros das janelas: céu cinza + gotas caindo, enquanto estiver chovendo lá fora. */
   private addRainWindows(): void {
     this.rainWindowObjs = [];
+    this.sunWindowObjs = [];
     const rw = this.def.rainWindows;
     if (!rw) return;
     for (const r of rw.rects) {
@@ -462,12 +480,28 @@ export class GameScene extends Phaser.Scene {
       });
       drops.setDepth(-6).setMask(shape.createGeometryMask());
       this.rainWindowObjs.push(glass, drops);
+      if (rw.sunny) {
+        // vidro de dia de sol: céu azul clarinho, nuvenzinha e reflexo na diagonal
+        const g = this.add.graphics().setDepth(-6.5);
+        g.fillGradientStyle(0x8fcdf2, 0x8fcdf2, 0xe6f4fb, 0xe6f4fb, 1);
+        g.fillRect(rect.x, rect.y, rect.width, rect.height);
+        g.fillStyle(0xffffff, 0.85);
+        g.fillRect(rect.x + rect.width * 0.2, rect.y + rect.height * 0.3, Math.max(2, rect.width * 0.3), 1.5);
+        g.fillRect(rect.x + rect.width * 0.28, rect.y + rect.height * 0.3 - 1, Math.max(1, rect.width * 0.14), 1);
+        g.fillStyle(0xffffff, 0.35);
+        g.fillTriangle(rect.x + rect.width * 0.55, rect.y, rect.x + rect.width * 0.75, rect.y, rect.x + rect.width * 0.35, rect.bottom);
+        this.sunWindowObjs.push(g);
+      }
     }
     this.refreshRainWindows();
     this.refreshLighting();
   }
 
+  private sunWindowObjs: Phaser.GameObjects.GameObject[] = [];
+
   private refreshRainWindows(): void {
+    const sun = this.def.rainWindows?.sunny?.() ?? false;
+    for (const o of this.sunWindowObjs) (o as unknown as Phaser.GameObjects.Components.Visible).setVisible(sun);
     const on = this.def.rainWindows?.when() ?? false;
     AudioSystem.setMuffledRain(on);
     for (const o of this.rainWindowObjs) (o as unknown as Phaser.GameObjects.Components.Visible).setVisible(on);
@@ -563,6 +597,43 @@ export class GameScene extends Phaser.Scene {
   }
 
   /** Explosão de brilhos/corações (feedback de coleta, objetivo cumprido). */
+  /** Paninho de limpar que acompanha um NPC com rotina (esfregando o balcão, com brilhinhos). */
+  private addWipeCloth(npc: NPC): void {
+    if (!this.textures.exists('fx-pano')) {
+      const t = this.textures.createCanvas('fx-pano', 10, 7)!;
+      const c = t.getContext();
+      c.fillStyle = '#1e3a5c';
+      c.fillRect(1, 0, 8, 7);
+      c.fillRect(0, 1, 10, 5);
+      c.fillStyle = '#e8f4ff';
+      c.fillRect(1, 1, 8, 5);
+      c.fillStyle = '#8cc2f0';
+      c.fillRect(1, 3, 8, 1);
+      c.fillRect(4, 1, 1, 5);
+      t.refresh();
+    }
+    const cloth = this.add.image(npc.x, npc.y, 'fx-pano').setVisible(false);
+    let sparkle = 0;
+    const tick = (time: number, delta: number) => {
+      if (!npc.active) {
+        this.events.off('update', tick);
+        cloth.destroy();
+        return;
+      }
+      cloth.setVisible(npc.wiping && npc.visible);
+      if (!npc.wiping) return;
+      // vai e volta em cima do balcão, um pouco acima da cabeça (atrás dela)
+      cloth.setPosition(npc.x + Math.sin(time / 110) * 6, npc.headY - 6 + Math.cos(time / 220) * 1.5);
+      cloth.setDepth(npc.depth - 1);
+      sparkle -= delta;
+      if (sparkle <= 0) {
+        sparkle = 900;
+        this.sparkleBurst(cloth.x, cloth.y - 2, 2);
+      }
+    };
+    this.events.on('update', tick);
+  }
+
   sparkleBurst(x: number, y: number, count = 10, hearts = false): void {
     for (let i = 0; i < count; i++) {
       const key = hearts || i % 4 === 0 ? 'fx-heart' : 'fx-spark';
@@ -635,7 +706,7 @@ export class GameScene extends Phaser.Scene {
       if (h.markerIf) {
         const m = h.marker;
         const at = m ? { x: r.x + (m.x ?? 0.5) * r.width, y: r.y + (m.y ?? 0) * r.height - 4 } : { x: r.centerX, y: r.y - 4 };
-        this.addMarker(h.markerIf, () => at, () => true, m?.dir === 'right');
+        this.addMarker(h.markerIf, () => at, () => true, m?.dir === 'down' ? undefined : m?.dir);
       }
     });
   }
@@ -656,11 +727,11 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  private addMarker(cond: () => boolean, anchor: () => Vec2, visible: () => boolean, right = false): void {
+  private addMarker(cond: () => boolean, anchor: () => Vec2, visible: () => boolean, side?: 'left' | 'right'): void {
     const sprite = this.add.image(0, 0, 'fx-marker').setDepth(150_000).setVisible(false);
-    // seta deitada apontando pra direita (ex.: "o restaurante é pra lá")
-    if (right) sprite.setRotation(-Math.PI / 2);
-    this.markers.push({ sprite, cond: () => visible() && cond(), anchor, right });
+    // seta deitada apontando pro lado (ex.: "o restaurante é pra lá")
+    if (side) sprite.setRotation(side === 'right' ? -Math.PI / 2 : Math.PI / 2);
+    this.markers.push({ sprite, cond: () => visible() && cond(), anchor, side });
   }
 
   /** Reavalia visibleIf de props e NPCs (chamado quando flags mudam). */
@@ -695,6 +766,7 @@ export class GameScene extends Phaser.Scene {
       return;
     }
     if (this.scriptRunning) return;
+    const gen = this.gen;
     this.scriptRunning = true;
     InputSystem.push('script');
     UI.hud.setPrompt(null);
@@ -703,10 +775,13 @@ export class GameScene extends Phaser.Scene {
     } catch (err) {
       console.error(`Erro no script ${name}:`, err);
     } finally {
-      UI.dialogue.close();
-      InputSystem.pop('script');
-      this.scriptRunning = false;
-      this.syncPosition();
+      // se o script levou pra outro mapa, o mapa novo já começou limpo: não mexe nele
+      if (gen === this.gen) {
+        UI.dialogue.close();
+        InputSystem.pop('script');
+        this.scriptRunning = false;
+        this.syncPosition();
+      }
     }
     await this.flushMemories();
   }
@@ -790,7 +865,11 @@ export class GameScene extends Phaser.Scene {
   update(time: number, delta: number): void {
     this.player.update();
     this.cornerAssist();
-    for (const { npc } of this.npcs.values()) npc.update(time, delta);
+    for (const { npc } of this.npcs.values()) {
+      // em cena, quem tem rotina para e presta atenção
+      if (npc.chore && (this.busy || !InputSystem.gameplayEnabled)) npc.holdChore(600);
+      npc.update(time, delta);
+    }
     // o Weng nunca fica "dentro" da Bella: se encavalar, ele vai pro lado livre mais próximo
     const wg = this.npcs.get('weng')?.npc;
     if (wg && wg.visible && wg.behavior === 'follow' && !this.busy) {
@@ -859,7 +938,7 @@ export class GameScene extends Phaser.Scene {
       if (on) {
         const a = m.anchor();
         const bob = Math.abs(Math.sin(time / 260)) * 5;
-        if (m.right) m.sprite.setPosition(Math.round(a.x + bob), Math.round(a.y));
+        if (m.side) m.sprite.setPosition(Math.round(a.x + (m.side === 'right' ? bob : -bob)), Math.round(a.y));
         else m.sprite.setPosition(Math.round(a.x), Math.round(a.y - 2 - bob));
         m.sprite.setScale(1 + Math.max(0, Math.sin(time / 260)) * 0.12);
       }
@@ -875,6 +954,7 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    if (this.entering) return;
     this.checkExitsAndTriggers(delta);
     this.updatePrompt();
   }
@@ -884,6 +964,7 @@ export class GameScene extends Phaser.Scene {
     this.blockedCooldown -= delta;
 
     for (const exit of this.def.exits ?? []) {
+      if (exit.when && !exit.when()) continue;
       if (!tileRect(exit.rect).contains(feet.x, feet.y)) continue;
       const blocked = exit.blockedIf?.();
       if (blocked) {

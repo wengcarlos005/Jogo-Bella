@@ -56,9 +56,19 @@ class InputSystemImpl extends Phaser.Events.EventEmitter {
     this.stack.push(ctx);
   }
 
+  /** Esvazia a pilha (ao entrar num mapa novo) e solta as teclas presas. */
+  reset(): void {
+    this.stack = [];
+  }
+
   pop(ctx: string): void {
     const i = this.stack.lastIndexOf(ctx);
     if (i >= 0) this.stack.splice(i, 1);
+  }
+
+  /** Pilha de contextos (depuração). */
+  get contexts(): string[] {
+    return [...this.stack];
   }
 
   get context(): string {

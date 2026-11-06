@@ -64,8 +64,9 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Eu? Agora? Tá. Tá bom. Eu consigo.');
       // o Weng vai pra churrasqueira; a Bella fica olhando, torcendo
       ctx.follow('weng', false);
-      await ctx.move('pai-bella', 8.6, 13.2, 45);
-      await ctx.move('weng', 7.2, 11.5, 50);
+      await ctx.move('pai-bella', 8.8, 13.9, 45);
+      // na frente da bancada (fora dos tijolos e do isopor)
+      await ctx.move('weng', 7.3, 12.6, 50);
       ctx.face('weng', 'left');
       ctx.face('pai-bella', 'left');
       ctx.face('player', 'weng');
@@ -116,6 +117,17 @@ const scripts: Record<string, Script> = {
       await ctx.say('pai-bella', 'E a Lala? Já deixou você fazer carinho nela?');
       await ctx.say('weng', 'Ainda não. Ela me ignora.');
       await ctx.say('pai-bella', 'Comigo ela fez isso por dois anos. Boa sorte.');
+      await ctx.say('mae-bella', 'Agora a sobremesa! O pudim que o Weng trouxe!');
+      await ctx.say('avo-bella', 'Deixa eu ver esse pudim... Hm. Furadinho. Do jeito certo.');
+      await ctx.say('pai-bella', '...');
+      await ctx.say('pai-bella', '...O pudim também é bom.');
+      await ctx.emote('weng', 'heart');
+      await ctx.say('bella', '(Dois elogios do Alexandre num dia só. Isso é histórico.)');
+      const c2 = await ctx.choose('weng', '(A mãe da Bella está olhando, esperando...)', ['"Foi a minha avó que me ensinou a escolher pudim."', '"Comprei na padaria mais longe só pra garantir."', '"Pudim é o caminho pro coração de qualquer família."']);
+      if (c2 === 0) await ctx.say('mae-bella', 'Então manda um beijo pra ela! Ela criou você muito bem.');
+      else if (c2 === 1) await ctx.say('mae-bella', 'Andou tudo isso por um pudim? Bella, esse é pra casar.');
+      else await ctx.say('avo-bella', 'Esse menino é esperto. Gostei.');
+      await ctx.say('bella', 'MÃE!');
       ctx.hearts('player', 6);
       if (mesaArt) {
         await ctx.fadeOut(400);
@@ -129,7 +141,7 @@ const scripts: Record<string, Script> = {
       ctx.follow('weng', true);
       if (mesaArt) await ctx.fadeIn(400);
       ctx.objective(Q, 'mesa');
-      await ctx.say('bella', 'Weng, vem! Vamos ver um filme lá dentro.');
+      await ctx.say('bella', 'Weng, vem! Vamos entrar. Quero te apresentar a Lala direito. E depois: filme!');
       ctx.toast('Entre pela porta da cozinha');
       return;
     }

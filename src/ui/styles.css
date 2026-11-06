@@ -287,7 +287,7 @@ html, body {
   backdrop-filter: blur(2px);
   color: var(--cream);
 }
-.screen.opaque { background: radial-gradient(ellipse at 50% 30%, var(--navy-600), var(--navy-900)); }
+.screen.opaque { background: radial-gradient(ellipse at 50% 30%, var(--navy-600), var(--navy-900)); backdrop-filter: none; }
 
 .title-logo {
   font-family: var(--font-pixel);
@@ -1946,8 +1946,7 @@ html.hud-kit #rightbar .sb-btn.sb-kit img { width: auto !important; height: auto
 html.hud-kit #rightbar .sb-btn.sb-kit .sb-label { font-size: clamp(11px, 0.95vw, 15px); line-height: 1; }
 
 /* ---------------------------------------------------------------- Celular (transições) */
-.ph-screen { z-index: 70; gap: calc(var(--u) * 4); opacity: 0; transition: opacity .35s; background: radial-gradient(ellipse at 50% 40%, rgba(70, 40, 90, .9), rgba(14, 12, 32, .96)); }
-.ph-screen.show { opacity: 1; }
+.ph-screen { z-index: 70; gap: calc(var(--u) * 4); background: radial-gradient(ellipse at 50% 40%, #46285a, #0e0c20); }
 .ph-caption { font-family: var(--font-pixel); color: var(--gold); font-size: clamp(9px, calc(var(--u) * 5.5), 18px); letter-spacing: .5px; text-shadow: 0 2px 0 #000; transform: translateY(-6px); opacity: 0; transition: .5s .15s; }
 .ph-screen.show .ph-caption { transform: none; opacity: 1; }
 .ph-phone {

@@ -7,7 +7,12 @@ import { InputSystem } from '@/systems/InputSystem';
 export class NPC extends Character {
   readonly npcId: string;
   interactScript?: string;
-  behavior: 'idle' | 'wander' | 'follow' | 'scripted' = 'idle';
+  behavior: 'idle' | 'wander' | 'follow' | 'scripted' | 'chore' = 'idle';
+  /** Rotina de trabalho (ex.: garçonete limpando o balcão): pontos x onde para e limpa, numa linha y. */
+  chore: { xs: number[]; y: number; wy: number; i: number; dir: number; wipe: number } | null = null;
+  /** Está limpando agora (a cena desenha o paninho). */
+  wiping = false;
+  private choreHold = 0;
   private target: Phaser.Math.Vector2 | null = null;
   private onArrive: (() => void) | null = null;
   private speed = 55;
@@ -148,6 +153,54 @@ export class NPC extends Character {
       return;
     }
 
+    if (this.behavior === 'chore' && this.chore) {
+      const c = this.chore;
+      if (this.choreHold > 0) {
+        // alguém veio conversar: para e espera
+        this.choreHold -= delta;
+        this.wiping = false;
+        body.setVelocity(0, 0);
+        this.animateFromVelocity();
+        return;
+      }
+      if (c.wipe > 0) {
+        // entra no vão entre os banquinhos e limpa o balcão
+        if (Math.abs(c.wy - this.y) > 1.2) {
+          body.setVelocity(0, Math.sign(c.wy - this.y) * 22);
+          this.wiping = false;
+          this.animateFromVelocity();
+          return;
+        }
+        c.wipe -= delta;
+        body.setVelocity(0, 0);
+        if (this.facing !== 'up') this.face('up');
+        this.wiping = true;
+        if (c.wipe <= 0) {
+          c.i += c.dir;
+          if (c.i >= c.xs.length || c.i < 0) {
+            c.dir *= -1;
+            c.i += 2 * c.dir;
+          }
+        }
+        this.animateFromVelocity();
+        return;
+      }
+      this.wiping = false;
+      // antes de andar pro lado, sai do vão (volta pro corredor)
+      if (Math.abs(c.y - this.y) > 1.2) {
+        body.setVelocity(0, Math.sign(c.y - this.y) * 22);
+        this.animateFromVelocity();
+        return;
+      }
+      const dx = c.xs[c.i] - this.x;
+      if (Math.abs(dx) < 1.5) {
+        c.wipe = Phaser.Math.Between(2400, 4400);
+        body.setVelocity(0, 0);
+      } else body.setVelocity(Math.sign(dx) * 22, (c.y - this.y) * 3);
+      this.animateFromVelocity();
+      return;
+    }
+
     if (this.behavior === 'wander') {
       const dx = this.home.x - this.x;
       const dy = this.home.y - this.y;
@@ -188,8 +241,16 @@ export class NPC extends Character {
   }
 
   /** Para a caminhada aleatória (ex.: ao conversar). */
+  /** Segura a rotina por um tempo (cena acontecendo). */
+  holdChore(ms: number): void {
+    this.choreHold = Math.max(this.choreHold, ms);
+    this.wiping = false;
+  }
+
   pause(): void {
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+    this.choreHold = 4000;
+    this.wiping = false;
     this.wanderTimer = 2500;
     this.animateFromVelocity();
   }

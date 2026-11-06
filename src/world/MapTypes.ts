@@ -39,7 +39,7 @@ export interface HotspotDef {
   label?: string;
   markerIf?: () => boolean;
   /** Onde fica o marcador (fração da área: x 0..1, y 0..1) e se aponta pra direita. Padrão: centro, em cima, pra baixo. */
-  marker?: { x?: number; y?: number; dir?: 'down' | 'right' };
+  marker?: { x?: number; y?: number; dir?: 'down' | 'right' | 'left' };
   enabledIf?: () => boolean;
 }
 
@@ -50,7 +50,9 @@ export interface NpcPlacement {
   ty: number;
   facing?: Direction;
   interact?: string;
-  behavior?: 'idle' | 'wander';
+  behavior?: 'idle' | 'wander' | 'chore';
+  /** Rotina (behavior 'chore'): pontos x (tiles) onde para pra limpar, andando na linha y (tiles). */
+  chore?: { xs: number[]; y: number; /** linha onde ela fica limpando (padrão: a mesma) */ wy?: number };
   /** Raio (em tiles) que o NPC pode se afastar de onde nasceu. Padrão: 1,5. */
   wanderRadius?: number;
   /** Eixos permitidos na caminhada aleatória. Padrão: ambos. */
@@ -68,6 +70,8 @@ export interface ExitDef {
   /** Se retornar string, a saída é bloqueada e a string é exibida. */
   blockedIf?: () => string | false;
   sfx?: 'door';
+  /** A saída só existe enquanto `when()` for verdadeiro (ex.: a mesma porta leva a lugares diferentes). */
+  when?: () => boolean;
 }
 
 export interface TriggerDef {
@@ -156,7 +160,7 @@ export interface MapDef {
    */
   blackout?: { when: () => boolean; radius?: number; glows?: { x: number; y: number; r: number; alpha?: number }[] };
   /** Janelas (vidros) onde aparece chuva lá fora enquanto `when()` for verdadeiro. */
-  rainWindows?: { rects: TileRect[]; when: () => boolean; /** false: a arte já tem o vidro chuvoso, só cai a chuva. */ glass?: boolean };
+  rainWindows?: { rects: TileRect[]; when: () => boolean; /** false: a arte já tem o vidro chuvoso, só cai a chuva. */ glass?: boolean; /** dia de sol: pinta céu azul por cima do vidro chuvoso da arte */ sunny?: () => boolean };
   /** Vapor subindo (chapas, panelas, xícaras): pontos em px do cenário ORIGINAL. */
   steam?: { x: number; y: number }[];
   /** Partículas de ambiente: poeira de luz, vaga-lumes, pétalas. */

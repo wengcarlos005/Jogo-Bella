@@ -296,7 +296,8 @@ export const rota66Map: MapDef = {
     { rect: R(150, 60, 330, 330), interact: 'quadro', label: 'Neon' },
   ],
 
-  npcs: [{ id: 'atendente', sprite: 'atendente', tx: 16.2, ty: 10.9, facing: 'down', interact: 'atendente' }],
+  // a atendente não fica parada: vai limpando o balcão, parando entre os banquinhos
+  npcs: [{ id: 'atendente', sprite: 'atendente', tx: 14.4, ty: 9.8, facing: 'up', interact: 'atendente', behavior: 'chore', chore: { xs: [14.4, 17.0, 19.6, 22.2], y: 9.8, wy: 8.7 } }],
   spawns: {
     'from-fora': { tx: 15.5, ty: 14.6, facing: 'up' },
   },

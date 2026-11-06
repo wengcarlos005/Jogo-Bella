@@ -79,4 +79,4 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // Acesso de depuração no console: window.bw
-(window as unknown as { bw: unknown }).bw = { game, GameState, SaveSystem, UI };
+(window as unknown as { bw: unknown }).bw = { game, GameState, SaveSystem, UI, InputSystem };

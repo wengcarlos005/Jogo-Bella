@@ -108,10 +108,20 @@ class UIManagerImpl {
   }
 
   openMenu(tab: PauseTab = 'missoes'): void {
-    if (this.dialogue.isOpen) return;
-    // não abre no meio de cenas/minigames (só no jogo livre ou trocando de aba)
-    if (!this.pause.isOpen && !InputSystem.gameplayEnabled) return;
-    this.pause.open(tab);
+    if (this.pause.isOpen || InputSystem.gameplayEnabled) {
+      this.pause.open(tab);
+      return;
+    }
+    // no meio de uma cena (entre falas): dá pra abrir Opções e consultar missões, mochila e álbum.
+    // Mapa e Salvar ficam pra depois da cena (viajar/salvar no meio dela quebraria a história).
+    const ctxNow = InputSystem.context;
+    if (ctxNow !== 'script' && ctxNow !== 'dialogue' && ctxNow !== 'choice') return;
+    const only: PauseTab[] = ['missoes', 'inventario', 'album', 'config'];
+    if (!only.includes(tab)) {
+      this.toasts.show('Dá pra abrir isso depois da cena!');
+      return;
+    }
+    this.pause.open(tab, undefined, only);
   }
 
   memory(id: string): Promise<void> {

@@ -27,9 +27,10 @@ export const DUQUE_QUESTS: QuestDef[] = [
     objectives: [
       { id: 'churrasco', text: 'O Weng ajuda o Alexandre na churrasqueira', hint: 'A churrasqueira fica no canto esquerdo do quintal.' },
       { id: 'mesa', text: 'Sentar à mesa com a família', hint: 'A mesa de toalha xadrez, no meio do quintal.' },
-      { id: 'filme', text: 'Ver um filme no sofá', hint: 'Entre pela porta da cozinha, no fundo do quintal.' },
+      { id: 'lala', text: 'Apresentar a Lala pro Weng', hint: 'Entre pela porta da cozinha. A Lala costuma dormir no quarto da Bella.' },
+      { id: 'filme', text: 'Ver um filme no sofá', hint: 'O sofá azul fica na sala.' },
       { id: 'passeio', text: 'Passear até a praça do primeiro beijo', hint: 'Saia pelo portão. A praça fica depois de Fragoso.' },
-      { id: 'mexicano', text: 'Ir ao restaurante mexicano', hint: 'Saia da praça pela direita.' },
+      { id: 'mexicano', text: 'Ir ao restaurante mexicano', hint: 'Saia da praça pelo portão e siga a calçada para a esquerda.' },
     ],
     rewardMemory: 'mem-dq-04',
   },

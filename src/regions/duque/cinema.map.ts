@@ -134,7 +134,7 @@ export const cinemaMap: MapDef = {
   blocks: [
     R(0, 0, 1536, 398), // fundo: bilheteria, entrada da sala, pipoca
     R(170, 380, 600, 585), // balcão da bilheteria
-    R(240, 470, 650, 700), // fila com cordões
+    R(240, 470, 645, 690), // fila com cordões (só os pés dos pedestais)
     R(955, 398, 1395, 528), // balcão da pipoca
     R(50, 455, 185, 645), // planta da esquerda
     R(0, 620, 150, 880), // sofá da esquerda
@@ -146,8 +146,9 @@ export const cinemaMap: MapDef = {
     R(1375, 560, 1536, 790), // sofá do canto
     R(120, 842, 470, 1024), // floreira da esquerda
     R(1070, 842, 1410, 1024), // floreira da direita
-    R(515, 715, 565, 970), // antifurto
-    R(970, 715, 1020, 970),
+    // antifurto: só a base bloqueia; o resto fica na frente/atrás de quem passa (recorte)
+    R(515, 905, 565, 970),
+    R(970, 905, 1020, 970),
     R(0, 880, 120, 1024),
     R(1410, 850, 1536, 1024),
   ],

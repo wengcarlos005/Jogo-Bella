@@ -88,6 +88,7 @@ export const casaBellaMap: MapDef = {
   rainWindows: {
     glass: false,
     when: () => !QuestSystem.isActive('dq-e2'),
+    sunny: () => QuestSystem.isActive('dq-e2'),
     rects: [
       R(310, 74, 372, 96), R(382, 74, 444, 96), R(310, 103, 372, 143), R(382, 103, 444, 143), // quarto
       R(1206, 74, 1270, 96), R(1281, 74, 1344, 96), R(1206, 103, 1270, 138), R(1281, 103, 1344, 138), // cozinha
@@ -129,7 +130,7 @@ export const casaBellaMap: MapDef = {
     // Sala
     { rect: R(215, 650, 318, 888), interact: 'tv', label: 'TV' },
     { rect: R(1062, 545, 1290, 758), interact: 'estante', label: 'Estante' },
-    { rect: R(550, 600, 910, 748), interact: 'sofa', label: 'Sentar' },
+    { rect: R(550, 600, 910, 748), interact: 'sofa', label: 'Sentar', markerIf: () => QuestSystem.isActive('dq-e2') && QuestSystem.isObjectiveDone('dq-e2', 'lala') && !QuestSystem.isObjectiveDone('dq-e2', 'filme') },
     {
       rect: R(620, 820, 700, 925),
       interact: 'guarda-chuva',
@@ -142,7 +143,7 @@ export const casaBellaMap: MapDef = {
     // Pombo, o gato preto, passeando pela sala
     { id: 'pombo', sprite: 'pombo', tx: 20.5, ty: 17.0, facing: 'left', interact: 'pombo', behavior: 'wander', wanderRadius: 3, wanderAxis: 'x' },
     // Lala, a gata da Bella, dormindo no chão do quarto
-    { id: 'lala', sprite: 'lala', tx: 14.1, ty: 8.2, facing: 'down', interact: 'lala', pose: { key: 'lala-poses', frame: 1 } },
+    { id: 'lala', sprite: 'lala', tx: 14.1, ty: 8.2, facing: 'down', interact: 'lala', pose: { key: 'lala-poses', frame: 1 }, markerIf: () => QuestSystem.isActive('dq-e2') && QuestSystem.isObjectiveDone('dq-e2', 'mesa') && !QuestSystem.isObjectiveDone('dq-e2', 'lala') },
     { id: 'mae-bella', sprite: 'mae-bella', tx: 23.6, ty: 16.4, facing: 'down', interact: 'mae', behavior: 'wander', wanderRadius: 2.2, wanderAxis: 'x', markerIf: () => objActive('mae') && GameState.is('weng-entrou') },
     { id: 'pai-bella', sprite: 'pai-bella', tx: 19.8, ty: 7.6, facing: 'down', interact: 'pai', behavior: 'wander', wanderRadius: 1.0, wanderAxis: 'x', markerIf: () => objActive('pai') && GameState.is('weng-entrou') },
     {
@@ -161,6 +162,8 @@ export const casaBellaMap: MapDef = {
     'from-quintal': { tx: 14.6, ty: 15.6, facing: 'up' },
   },
   exits: [
+    // no 2º encontro (domingo do churrasco) a porta da sala dá pro quintal
+    { rect: R(690, 935, 800, 1000), toMap: 'piabeta-quintal', toSpawn: 'porta', sfx: 'door', when: () => QuestSystem.isActive('dq-e2') },
     {
       rect: R(690, 935, 800, 1000),
       toMap: 'piabeta-rua',

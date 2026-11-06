@@ -33,12 +33,17 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Nossas fotos... uma cartinha na cama... chocolates...');
     await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', 'Peraí. A minha irmã não tava passando mal, né?');
-    // ele vem da sala, passa pela porta do quarto e para atrás dela
-    ctx.place('weng', 4.4, 12.4, 'up');
+    // ele estava escondido no guarda-roupa: a porta range, ele sai e para atrás dela
+    ctx.sfx('door');
+    ctx.shake(150);
+    await ctx.emote('bella', 'exclaim');
+    ctx.place('weng', 15.0, 7.1, 'down');
     ctx.visible('weng', true);
-    await ctx.move('weng', 4.4, 9.7, 30);
-    await ctx.move('weng', 7.6, 8.9, 30);
-    ctx.face('weng', 'right');
+    await ctx.move('weng', 11.4, 8.2, 35);
+    ctx.face('weng', 'left');
+    ctx.face('player', 'weng');
+    await ctx.say('bella', 'AAAH! Weng?! Você tava dentro do meu GUARDA-ROUPA?!');
+    await ctx.say('weng', 'Tava. Sua mãe me escondeu aí faz uma hora. Tem um cabide me cutucando até agora.');
     await ctx.say('weng', 'Bella.');
     await ctx.fadeOut(500);
     await ctx.backdrop('cena-pedido');
@@ -60,6 +65,8 @@ const scripts: Record<string, Script> = {
     ctx.objective(Q, 'pedido');
     ctx.visible('weng', true);
     await ctx.memory('mem-dq-05');
+    // troca de capítulo: tela preta por trás (o mapa não aparece entre os cartões)
+    await ctx.fadeOut(600);
     await ctx.chapterCard('Fim do Capítulo 1', 'Piabetá', 'Namorando!', 'Continuar');
     await ctx.chapterCard('Capítulo 2', 'Duque de Caxias', 'Nosso cantinho. A primeira vez no apê do Weng.', 'Começar');
     ctx.setFlag('weng-segue');

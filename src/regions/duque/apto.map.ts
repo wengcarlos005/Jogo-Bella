@@ -197,6 +197,7 @@ const scripts: Record<string, Script> = {
       await ctx.illustration('cena-primeira-noite', ['A primeira noite.', 'A TV ainda ligada, a Meli nos pés da cama, e a gente conversando baixinho até pegar no sono.']);
       ctx.objective('dq-m3', 'dormir');
       await ctx.memory('mem-dq-07');
+      ctx.outfit('casual');
       // dias depois: a briga boba
       await ctx.narrate('Uns dias depois. Uma tarde qualquer, cada um no seu celular.');
       ctx.startQuest('dq-m4');
@@ -335,6 +336,34 @@ const scripts: Record<string, Script> = {
       ]);
       ctx.objective('dq-m3', 'filme');
       await ctx.say('weng', 'Tá tarde. Vamos dormir?');
+      await ctx.say('bella', 'Vamos! Só vou trocar de roupa rapidinho. Não espia!');
+      // a Bella vai até o banheiro (contornando a mesinha de centro e a mesa de jantar)
+      ctx.follow('weng', false);
+      ctx.face('weng', 'right');
+      await ctx.move('player', 17.4, 14.9, 60);
+      await ctx.move('player', 17.4, 16.6, 60);
+      await ctx.move('player', 25.0, 16.6, 60);
+      await ctx.move('player', 27.4, 16.6, 50);
+      ctx.sfx('door');
+      ctx.visible('player', false);
+      await ctx.wait(400);
+      await ctx.narrate('Barulhinho de água. Escova de dente. Um "cadê minha pantufa?" abafado lá de dentro.');
+      await ctx.emote('meli', 'question');
+      await ctx.say('weng', '(cochichando pra Meli) Ela vai dormir aqui, Meli. Se comporta, tá?');
+      await ctx.wait(300);
+      ctx.outfit('pijama-oculos');
+      ctx.sfx('door');
+      ctx.visible('player', true);
+      ctx.face('player', 'left');
+      await ctx.frame(23.5, 16.4, 400);
+      ctx.hearts('player', 5);
+      await ctx.say('bella', 'Tcharam! Pijama de coração e pantufa de coelhinho.');
+      await ctx.emote('weng', 'heart');
+      await ctx.say('weng', '...Você fica linda até de pantufa.');
+      await ctx.say('bella', 'PRINCIPALMENTE de pantufa.');
+      await ctx.unfocus(400);
+      await ctx.move('player', 24.4, 16.6, 60);
+      ctx.follow('weng', true);
       ctx.toast('Vá até a cama do quarto do Weng');
       return;
     }
@@ -660,6 +689,8 @@ export const aptoMap: MapDef = {
         await ctx.say('weng', 'Hoje não. Pode repetir.');
         ctx.objective('dq-m5', 'convite');
         ctx.unlockRegion('petropolis');
+        // troca de capítulo: tela preta por trás (o mapa não aparece entre os cartões)
+        await ctx.fadeOut(600);
         await ctx.chapterCard('Fim do Capítulo 2', 'Duque de Caxias', 'Nosso cantinho.', 'Continuar');
         await ctx.chapterCard('Capítulo 3', 'Petrópolis', 'O aniversário dela.', 'Começar');
         await ctx.teleport('pt-hotel-fora', 'portao');
