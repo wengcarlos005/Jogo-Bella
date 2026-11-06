@@ -280,6 +280,12 @@ export const parqueMap: MapDef = {
 
   // Cena do beijo: pilastras da frente e telhado do coreto por cima dos dois
   overlays: [
+    // pilares do portão (com os lampiões), folhas do portão e pilares da grade: na frente de quem passa atrás
+    { x0: 576, y0: 746, x1: 641, y1: 952, base: 948, cut: 'outline' },
+    { x0: 858, y0: 746, x1: 926, y1: 952, base: 948, cut: 'outline' },
+    { x0: 638, y0: 774, x1: 678, y1: 940, base: 936, cut: 'outline' },
+    { x0: 825, y0: 774, x1: 866, y1: 940, base: 936, cut: 'outline' },
+    ...[[52, 104], [302, 356], [1102, 1154], [1299, 1353], [1497, 1536]].map(([x0, x1]) => ({ x0, y0: 820, x1, y1: 950, base: 946, cut: 'outline' as const })),
     // ponte: fatiada (a frente do tabuleiro passa na frente dos pés de quem atravessa)
     { x0: 1238, y0: 140, x1: 1452, y1: 278, base: 276, cut: 'furniture', slice: true },
     { x0: 590, y0: 200, x1: 627, y1: 360, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
