@@ -139,10 +139,10 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | MAP-013 | Mercado (interior) | maps/duque-mercado-bg.png | depois |
 | MAP-014 | Shopping da Multidão (interior: corredor de lojinhas de cabelo, casa, doces) | maps/duque-multidao-bg.png | pedido |
 | ICON-020.. | Achadinhos: piranha de cabelo, creme de cabelo, scrunchie, potinho organizador, vela cheirosa, pano de prato fofo, paçoca, bala de goma, chocolate | ui/icon-achado-*.png | ✅ recortados |
-| MAP-017 | Quintal da casa da Bella com churrasqueira (dia) | maps/piabeta-quintal-bg.png | pedido |
-| MAP-018 | Rua ao lado da praça do primeiro beijo com a fachada do restaurante mexicano (a praça é o parque que já existe) | maps/piabeta-mexicano-fora-bg.png | pedido |
+| MAP-017 | Quintal da casa da Bella com churrasqueira (dia) | maps/piabeta-quintal-bg.png | ✅ no jogo |
+| MAP-018 | Rua ao lado da praça do primeiro beijo com a fachada do restaurante mexicano (a praça é o parque que já existe) | maps/piabeta-mexicano-fora-bg.png | ✅ no jogo |
 | MAP-019 | Restaurante mexicano (interior) | maps/piabeta-mexicano-bg.png | ✅ no jogo |
-| CIN-015 | Os dois de chapéu mexicano brindando a bebida de cortesia | cinematics/mexicano.png | pedido |
+| CIN-015 | Os dois de chapéu mexicano brindando a bebida de cortesia | cinematics/mexicano.png | ✅ no jogo |
 | MAP-015 | Cinema do Caxias Shopping (saguão) | maps/duque-cinema-bg.png | ✅ no jogo |
 | MAP-016 | Casa da Bella decorada para o pedido | maps/piabeta-casa-pedido-bg.png | ✅ no jogo |
 | CIN-011 | O pedido de namoro | cinematics/pedido.png | ✅ no jogo |
@@ -151,8 +151,8 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | MG-A | Ingredientes do açaí (12) | minigames/acai-*.png | ✅ no minijogo do açaí |
 | MG-C | Cartas do Bate-Gato (8) | minigames/carta-*.png | ✅ no minijogo de cartas |
 | CIN-014 | Fazendo as pazes depois da briga | cinematics/pazes.png | depois |
-| CHAR-025 | Avó da Bella (4×4 + retrato) | characters/avo-bella.png | pedido |
-| CHAR-026 | Tia Jaque (4×4 + retrato) | characters/tia-jaque.png | pedido |
+| CHAR-025 | Avó da Bella (4×4 + retrato) | characters/avo-bella.png | ✅ no jogo |
+| CHAR-026 | Tia Jaque (4×4 + retrato) | characters/tia-jaque.png | ✅ no jogo |
 | CHAR-027 | Kelly, prima da Bella | npcs/kelly-walk.png | ✅ no jogo (churrasco) |
 | CHAR-028 | Garçom do restaurante mexicano (4×4 andando) | npcs/garcom-walk.png | pedido (até chegar, usa a folha do atendente) |
 | PORT-020 | Retrato do garçom mexicano | portraits/garcom.png | pedido |
@@ -200,7 +200,7 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | MAP-025 | Fachada do mexicano vazia | maps/piabeta-mexicano-fora-base.webp | ✅ no jogo |
 | OBJ-MX | Folhas do mexicano (dentro e fachada) | objects/mex-folha.webp, mexfora-folha.webp → mx-*, mxf-* | ✅ no jogo |
 | OBJ-QT | Folha de objetos do quintal | objects/quintal-folha.webp → qt-* | ✅ recortada (aguardando o quintal vazio) |
-| MAP-026 | Quintal vazio | maps/piabeta-quintal-base.png | pedido |
-| MG-CH | Churrasco: carnes (4 tipos x 4 estados), grelha, bandeja (fundo magenta) | minigames/churrasco-*.png | pedido |
+| MAP-026 | Quintal vazio | maps/piabeta-quintal-base.webp | ✅ no jogo |
+| MG-CH | Churrasco: carnes (4 tipos x 4 estados), grelha, bandeja (fundo magenta) | minigames/churrasco-*.png | não precisa (a churrasqueira de 10 fases desenha tudo) |
 | MAP-027 | Cinema vazio | maps/duque-cinema-base.webp | ✅ no jogo |
 | OBJ-CN | Folha de objetos do cinema | objects/cinema-folha.webp → cn-* | ✅ no jogo |

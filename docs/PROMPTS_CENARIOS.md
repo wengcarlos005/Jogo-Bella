@@ -457,3 +457,202 @@ Draw these 8 objects, each one complete and separate, arranged in a loose grid, 
 
 Rules: crisp pixel art with clean dark outlines, no anti-aliasing blending into the background, no drop shadows on the ground, no text, no labels, no numbers, no people.
 ```
+
+
+# Cenas novas (ainda não existem no jogo)
+
+Gere primeiro o cenário vazio; depois a folha anexando o cenário vazio novo.
+
+## Quarto do hotel em Petrópolis (novo)
+
+Anexe o hotel por fora (pt-hotel-fora) como referência de estilo. É um cenário NOVO: não tem imagem atual.
+
+**Cenário vazio**
+
+```
+Pixel art top-down 3/4 view interior of a cozy mountain hotel room in Petrópolis, Brazil, on a cold evening, same art style as the attached reference image (cozy Stardew-like pixel art, warm lighting). Canvas 1536x1024 pixels, landscape, seen from above with the front wall cut away.
+
+Draw ONLY the room itself, EMPTY:
+- Wooden plank floor, wooden half-timbered walls in cream and dark brown, a soft beige rug in the middle.
+- A big window on the back wall showing misty mountains and pine trees at dusk, with heavy red curtains.
+- A stone fireplace on the right wall with a warm crackling fire.
+- A door on the bottom wall (center), and a small bathroom door on the left wall.
+- Framed paintings of mountains on the walls, a wall lamp on each side of the window.
+
+DO NOT draw: the bed, nightstands, armchairs, tables, wardrobe, plants, suitcases, people or animals. The floor must be empty where furniture would go.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Folha de objetos**
+
+```
+Pixel art sprite sheet of props for the mountain hotel room scene shown in the attached images. Use EXACTLY the same art style, outline thickness, colors, lighting and the same top-down 3/4 camera angle as the attached images, and the same scale: a standing adult person would be about 140 pixels tall.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no texture, no checkerboard, no floor, no ground, no shadows on the background.
+
+Draw these 8 objects, each one complete and separate, arranged in a loose grid, with at least 60 pixels of empty magenta space between any two objects. Nothing may touch or overlap another object or the canvas edge:
+1. A double bed with a thick red plaid quilt, white pillows and a knitted throw at the foot, wooden headboard, seen from above at the same angle (about 300x330 px).
+2. A wooden nightstand with a small warm lamp (about 70x90 px).
+3. A cozy armchair in green velvet with a cushion, facing the fireplace (about 110x120 px).
+4. A small round wooden table with two cups of hot chocolate and a plate of cookies (about 90x80 px).
+5. A tall wooden wardrobe (about 120x200 px).
+6. Two suitcases, one pink and one dark blue, standing together (about 110x110 px).
+7. A tall potted plant (about 70x110 px).
+8. A birthday cake with lit candles on a small cart (about 90x110 px).
+
+Rules: crisp pixel art with clean dark outlines, no anti-aliasing blending into the background, no drop shadows on the ground, no text, no labels, no numbers, no people.
+```
+
+## Restaurante chique em Petrópolis (novo)
+
+Anexe o hotel por fora como referência de estilo.
+
+**Cenário vazio**
+
+```
+Pixel art top-down 3/4 view interior of an elegant fine-dining restaurant in Petrópolis, Brazil, at lunchtime, same art style as the attached reference image. Canvas 1536x1024 pixels, landscape, seen from above with the front wall cut away.
+
+Draw ONLY the room itself, EMPTY:
+- Polished dark wood floor with a long burgundy carpet runner, cream walls with dark wood panels at the bottom, tall arched windows on the back wall showing a garden and mountains, crystal chandeliers hanging from the ceiling.
+- A small wooden reception podium near the entrance door at the bottom.
+- A wine shelf along the left wall and a doorway to the kitchen on the right wall.
+
+DO NOT draw: dining tables, chairs, plants, the piano, people or animals.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Folha de objetos**
+
+```
+Pixel art sprite sheet of props for the fine dining restaurant scene shown in the attached images. Use EXACTLY the same art style, outline thickness, colors, lighting and the same top-down 3/4 camera angle as the attached images, and the same scale: a standing adult person would be about 140 pixels tall.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no texture, no checkerboard, no floor, no ground, no shadows on the background.
+
+Draw these 6 objects, each one complete and separate, arranged in a loose grid, with at least 60 pixels of empty magenta space between any two objects. Nothing may touch or overlap another object or the canvas edge:
+1. A round dining table for two with a white tablecloth, a candle, a small vase with a red rose, wine glasses and plates, with two elegant upholstered chairs (about 210x180 px).
+2. A square dining table for four with a white tablecloth and a centerpiece of flowers, with four upholstered chairs (about 230x230 px).
+3. A black grand piano (about 260x200 px).
+4. A tall potted palm plant in a big ceramic pot (about 100x160 px).
+5. A waiter's serving cart with a silver cloche (about 100x90 px).
+6. A decorative column with a flower vase on top (about 70x170 px).
+
+Rules: crisp pixel art with clean dark outlines, no anti-aliasing blending into the background, no drop shadows on the ground, no text, no labels, no numbers, no people.
+```
+
+## Palácio Quitandinha (novo)
+
+Anexe o hotel por fora como referência de estilo.
+
+**Cenário vazio**
+
+```
+Pixel art top-down 3/4 view of the outside of a huge white Normandy-style palace hotel with dark grey roofs and many windows (inspired by the Palácio Quitandinha in Petrópolis), with a big lake in the shape of Brazil in front of it, on a sunny cold afternoon, same art style as the attached reference image. Canvas 1536x1024 pixels, landscape.
+
+Draw ONLY the scenery, EMPTY:
+- The palace facade across the top, with a grand entrance and stairs.
+- A wide stone walkway along the lake shore, the lake with a few lily pads and ducks' ripples, green lawns, and misty mountains in the background.
+- A small pier going into the lake.
+
+DO NOT draw: trees standing on the lawn, lamp posts, benches, trash bins, flower planters, pedal boats, people or animals.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Folha de objetos**
+
+```
+Pixel art sprite sheet of props for the palace lake park scene shown in the attached images. Use EXACTLY the same art style, outline thickness, colors, lighting and the same top-down 3/4 camera angle as the attached images, and the same scale: a standing adult person would be about 140 pixels tall.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no texture, no checkerboard, no floor, no ground, no shadows on the background.
+
+Draw these 8 objects, each one complete and separate, arranged in a loose grid, with at least 60 pixels of empty magenta space between any two objects. Nothing may touch or overlap another object or the canvas edge:
+1. A white swan-shaped pedal boat floating (about 140x100 px).
+2. A tall Brazilian pine tree (araucária) (about 160x330 px).
+3. A round leafy tree with a brown trunk (about 230x260 px).
+4. A classic black iron lamp post with a lantern (about 50x190 px).
+5. A wooden park bench with iron legs, seen from the front (about 140x85 px).
+6. A stone planter full of blue and pink hydrangeas (about 140x90 px).
+7. A small wooden trash bin (about 40x55 px).
+8. A popcorn and cotton candy cart with a striped umbrella (about 120x150 px).
+
+Rules: crisp pixel art with clean dark outlines, no anti-aliasing blending into the background, no drop shadows on the ground, no text, no labels, no numbers, no people.
+```
+
+## Piquenique (novo)
+
+Anexe o hotel por fora como referência de estilo.
+
+**Cenário vazio**
+
+```
+Pixel art top-down 3/4 view of a sunny grassy hill in the mountains of Petrópolis, Brazil, perfect for a picnic, same art style as the attached reference image. Canvas 1536x1024 pixels, landscape.
+
+Draw ONLY the landscape, EMPTY:
+- Soft green grass with small white and yellow wildflowers, a narrow dirt path coming from the bottom left, a small stream with stones on the right side.
+- A view of misty blue mountains and pine forest across the top, a few clouds, warm afternoon light.
+
+DO NOT draw: trees standing on the grass, the picnic blanket, baskets, rocks, bushes, people or animals.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Folha de objetos**
+
+```
+Pixel art sprite sheet of props for the mountain picnic hill scene shown in the attached images. Use EXACTLY the same art style, outline thickness, colors, lighting and the same top-down 3/4 camera angle as the attached images, and the same scale: a standing adult person would be about 140 pixels tall.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no texture, no checkerboard, no floor, no ground, no shadows on the background.
+
+Draw these 8 objects, each one complete and separate, arranged in a loose grid, with at least 60 pixels of empty magenta space between any two objects. Nothing may touch or overlap another object or the canvas edge:
+1. A red and white checkered picnic blanket laid on the ground, seen from above (about 260x170 px).
+2. A wicker picnic basket with a baguette and a bottle sticking out (about 90x80 px).
+3. A plate with sandwiches, fruit and a small cake, and two glasses of juice (about 120x70 px).
+4. A big shady tree with a wide round canopy and a thick trunk (about 330x360 px).
+5. A tall Brazilian pine tree (araucária) (about 150x320 px).
+6. A mossy rock (about 90x60 px).
+7. A bush with small pink flowers (about 110x80 px).
+8. A bunch of colorful balloons tied to a small stone (about 70x150 px).
+
+Rules: crisp pixel art with clean dark outlines, no anti-aliasing blending into the background, no drop shadows on the ground, no text, no labels, no numbers, no people.
+```
+
+## Shopping da Multidão (dentro, novo)
+
+Anexe a rua do Weng (com a fachada do Multidão) como referência de estilo.
+
+**Cenário vazio**
+
+```
+Pixel art top-down 3/4 view interior of a busy, colorful small Brazilian discount shopping center ("Shopping da Multidão"), same art style as the attached reference image. Canvas 1536x1024 pixels, landscape, seen from above with the front wall cut away.
+
+Draw ONLY the building, EMPTY:
+- A light tiled floor with a wide central corridor, glass entrance doors at the bottom center.
+- Along the back wall and side walls, small shop fronts with colorful awnings and shelves full of items: a hair accessories shop (scrunchies, claw clips, hair creams), a home goods shop (pots, organizers, scented candles, dish towels), a candy shop (paçoca, gummy candies, chocolates), a phone accessories shop.
+- Fluorescent ceiling lights and hanging promo banners with no readable text.
+
+DO NOT draw: standalone shelves or display racks in the middle, baskets, plants, benches, people or animals.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Folha de objetos**
+
+```
+Pixel art sprite sheet of props for the discount shopping center scene shown in the attached images. Use EXACTLY the same art style, outline thickness, colors, lighting and the same top-down 3/4 camera angle as the attached images, and the same scale: a standing adult person would be about 140 pixels tall.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no texture, no checkerboard, no floor, no ground, no shadows on the background.
+
+Draw these 7 objects, each one complete and separate, arranged in a loose grid, with at least 60 pixels of empty magenta space between any two objects. Nothing may touch or overlap another object or the canvas edge:
+1. A freestanding display rack full of colorful scrunchies and hair claw clips (about 120x150 px).
+2. A freestanding shelf with scented candles and organizer pots (about 130x150 px).
+3. A big bin full of gummy candies with a scoop (about 100x90 px).
+4. A shopping basket stand with red plastic baskets (about 70x90 px).
+5. A cash register counter (about 180x110 px).
+6. A potted plant (about 70x100 px).
+7. A bench (about 130x70 px).
+
+Rules: crisp pixel art with clean dark outlines, no anti-aliasing blending into the background, no drop shadows on the ground, no text, no labels, no numbers, no people.
+```
+
