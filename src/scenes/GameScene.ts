@@ -620,8 +620,9 @@ export class GameScene extends Phaser.Scene {
         cloth.destroy();
         return;
       }
-      cloth.setVisible(npc.wiping && npc.visible);
-      if (!npc.wiping) return;
+      // paninho desenhado à mão desligado: fica só a pausa no balcão até chegar a folha dela limpando
+      cloth.setVisible(false);
+      if (!npc.wiping || !this.textures.exists('atendente-limpando')) return;
       // vai e volta em cima do balcão, um pouco acima da cabeça (atrás dela)
       cloth.setPosition(npc.x + Math.sin(time / 110) * 6, npc.headY - 6 + Math.cos(time / 220) * 1.5);
       cloth.setDepth(npc.depth - 1);

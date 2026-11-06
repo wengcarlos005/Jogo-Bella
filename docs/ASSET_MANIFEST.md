@@ -188,3 +188,4 @@ Backup da versão pintada inteira em `backups/rota66-v1/`.
 
 Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estilo), depois a folha
 (anexando a Rota 66 atual e a base nova). Fundo da folha: magenta #FF00FF liso.
+| NPC-004L | Atendente da Rota 66 limpando (2 linhas x 4 quadros, fundo magenta) | npcs/atendente-limpando.png | pedido |
