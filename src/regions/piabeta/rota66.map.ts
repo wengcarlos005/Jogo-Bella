@@ -20,11 +20,10 @@ const WENG_ORDER: IngredientId[] = ['pao-baixo', 'carne', 'queijo', 'picles', 'a
 const scripts: Record<string, Script> = {
   async chegada(ctx) {
     // entrando pela porta de vidro: os dois aparecem atrás dela e caminham pra dentro
+    // (o ponto de entrada já é atrás da porta: nada de teleporte, eles só andam pra dentro)
     const t = ctx.playerTile();
-    if (t.y > 13.8 && t.x > 13 && t.x < 18.5) {
+    if (t.y > 15.8 && t.x > 13 && t.x < 18.5) {
       ctx.follow('weng', false);
-      ctx.place('player', 15.2, 16.7, 'up');
-      ctx.place('weng', 16.6, 17.0, 'up');
       ctx.sfx('door');
       void ctx.move('weng', 16.9, 14.6, 55);
       await ctx.move('player', 15.2, 14.6, 55);
@@ -312,7 +311,7 @@ export const rota66Map: MapDef = {
   // a atendente não fica parada: vai limpando o balcão, parando entre os banquinhos
   npcs: [{ id: 'atendente', sprite: 'atendente', tx: 14.4, ty: 9.8, facing: 'up', interact: 'atendente', behavior: 'chore', chore: { xs: [14.4, 17.0, 19.6, 22.2], y: 9.8, wy: 8.7 } }],
   spawns: {
-    'from-fora': { tx: 15.5, ty: 14.6, facing: 'up' },
+    'from-fora': { tx: 15.2, ty: 16.7, facing: 'up' }, // atrás da porta de vidro; a cena de entrada traz pra dentro
   },
   exits: [
     {
