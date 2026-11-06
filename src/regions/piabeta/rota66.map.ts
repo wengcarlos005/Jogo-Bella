@@ -315,7 +315,7 @@ export const rota66Map: MapDef = {
   ],
 
   // a atendente anda pelo salão (com as mesmas colisões dos outros personagens)
-  npcs: [{ id: 'atendente', sprite: 'atendente', tx: 16.2, ty: 10.7, facing: 'down', interact: 'atendente', behavior: 'wander', wanderRadius: 4, wanderAxis: 'both' }],
+  npcs: [{ id: 'atendente', sprite: 'atendente', tx: 16.5, ty: 11.8, facing: 'down', interact: 'atendente', behavior: 'wander', wanderRadius: 1.6, wanderAxis: 'y' }], // no corredor entre as cabines, sem ficar na frente do balcão
   spawns: {
     'from-fora': { tx: 15.2, ty: 16.7, facing: 'up' }, // atrás da porta de vidro; a cena de entrada traz pra dentro
   },
