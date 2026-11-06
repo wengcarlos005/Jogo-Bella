@@ -201,7 +201,16 @@ export const parqueMap: MapDef = {
     R(425, 215, 520, 335), // flores dos lados do coreto
     R(830, 165, 925, 350),
     // lago, pedras, ponte e plantas da beira
-    R(1000, 115, 1500, 400),
+    // lago com a ponte LIBERADA: água e pedras bloqueiam; o tabuleiro da ponte é caminho
+    R(1000, 115, 1160, 250), // plantas e flores da margem de cima à esquerda
+    R(1020, 240, 1250, 400), // lago (parte da esquerda)
+    R(1160, 212, 1238, 250), // pedra grande da esquerda da ponte
+    R(1250, 272, 1440, 400), // água debaixo da ponte
+    R(1380, 268, 1445, 300), // pedra do pé direito da ponte
+    R(1440, 115, 1536, 232), // pedras atrás da ponte (direita)
+    // tabuleiro da ponte (sobe na diagonal): bloqueia atrás do corrimão e a água logo abaixo
+    R(1250, 115, 1280, 192), R(1280, 115, 1310, 199), R(1310, 115, 1340, 205), R(1340, 115, 1370, 212), R(1370, 115, 1400, 218), R(1400, 115, 1430, 225), R(1430, 115, 1460, 232),
+    R(1250, 242, 1280, 272), R(1280, 246, 1310, 272), R(1310, 250, 1340, 272), R(1340, 255, 1370, 272), R(1370, 259, 1400, 272), R(1400, 263, 1430, 272), R(1430, 267, 1460, 272),
     R(1140, 380, 1310, 415),
     R(1285, 380, 1390, 440),
     R(1250, 482, 1420, 570),
@@ -271,6 +280,8 @@ export const parqueMap: MapDef = {
 
   // Cena do beijo: pilastras da frente e telhado do coreto por cima dos dois
   overlays: [
+    // ponte: fatiada (a frente do tabuleiro passa na frente dos pés de quem atravessa)
+    { x0: 1238, y0: 140, x1: 1452, y1: 278, base: 276, cut: 'furniture', slice: true },
     { x0: 590, y0: 200, x1: 627, y1: 360, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
     { x0: 710, y0: 200, x1: 748, y1: 360, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
     { x0: 500, y0: 25, x1: 845, y1: 205, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },

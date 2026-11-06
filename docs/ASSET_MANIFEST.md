@@ -193,3 +193,6 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | OBJ-FRG | Folha de objetos de Fragoso (8 objetos em fundo magenta) | objects/fragoso-folha.webp → objects/frg-*.png | ✅ no jogo |
 | MAP-022 | Parque vazio (caminhos, coreto, lago, ponte, praça redonda sem chafariz, grade) | maps/piabeta-parque-base.webp | ✅ no jogo |
 | OBJ-PRQ | Folha de objetos do parque (9 objetos + coreto) | objects/parque-folha.webp → objects/prq-*.png | ✅ no jogo |
+| MAP-023 | Casa da Bella vazia | maps/piabeta-casa-bella-base.webp | ✅ no jogo |
+| OBJ-CASA | Folha de objetos da casa (6 objetos) | objects/casa-folha.webp → objects/casa-*.png | ✅ no jogo |
+| MAP-016b | Casa decorada do pedido (noite) a partir da casa vazia nova | maps/piabeta-casa-pedido-base.png | pedido |

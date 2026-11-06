@@ -72,6 +72,10 @@ export const ASSETS: AssetEntry[] = [
   ),
 
   // Casal sentado no banco (4 quadros 200x150: normal, piscando, expressão, normal)
+  // Casa da Bella v2: objetos recortados da folha
+  ...['mesa', 'sofa', 'abajur', 'tv', 'planta', 'vasinho'].map(
+    (n, i): AssetEntry => ({ id: `OBJ-CASA-${i}`, key: `casa-${n}`, file: `assets/objects/casa-${n}.png`, kind: 'image' }),
+  ),
   // Parque v2: objetos recortados da folha
   ...['arvore', 'arvore2', 'ipe', 'poste', 'banco', 'lixeira', 'chafariz', 'arco', 'vaso', 'coreto'].map(
     (n, i): AssetEntry => ({ id: `OBJ-PRQ-${i}`, key: `prq-${n}`, file: `assets/objects/prq-${n}.png`, kind: 'image' }),
