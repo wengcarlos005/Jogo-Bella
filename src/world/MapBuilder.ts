@@ -217,8 +217,31 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
   }
 
   // Objetos soltos (folha de objetos): cada um com a própria profundidade, sem recorte do cenário.
+  if ((def.objects ?? []).length && !scene.textures.exists('fx-shadow')) {
+    // sombra de contato: oval escuro e macio, pra o objeto "pisar" no chão
+    const t = scene.textures.createCanvas('fx-shadow', 64, 32)!;
+    const c = t.getContext();
+    const g = c.createRadialGradient(32, 16, 2, 32, 16, 32);
+    g.addColorStop(0, 'rgba(20,6,10,0.75)');
+    g.addColorStop(0.55, 'rgba(20,6,10,0.45)');
+    g.addColorStop(1, 'rgba(20,6,10,0)');
+    c.save();
+    c.scale(1, 0.5);
+    c.fillStyle = g;
+    c.fillRect(0, 0, 64, 64);
+    c.restore();
+    t.refresh();
+  }
   for (const ob of def.objects ?? []) {
     if (!scene.textures.exists(ob.key)) continue;
+    if (ob.shadow !== false) {
+      const sw = ((ob.w ?? 60) * (ob.shadow ?? 1.05)) / 3;
+      scene.add
+        .image(ob.x / 3, ob.y / 3 - 1, 'fx-shadow')
+        .setDisplaySize(sw, Math.max(4, sw * 0.22))
+        .setDepth(-4)
+        .setAlpha(0.8);
+    }
     const img = scene.add.image(ob.x / 3, ob.y / 3, ob.key).setOrigin(0.5, 1);
     if (ob.w) img.setScale(ob.w / 3 / img.width);
     else img.setScale(1 / RENDER_SCALE);

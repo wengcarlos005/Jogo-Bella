@@ -105,7 +105,7 @@ export interface MapDef {
    * `x` = centro, `y` = base (onde o objeto encosta no chão). `w` = largura desejada (px da arte).
    * A colisão continua nos `blocks`.
    */
-  objects?: { key: string; x: number; y: number; w?: number; base?: number; fade?: boolean; front?: boolean; tall?: boolean; flip?: boolean; when?: () => boolean }[];
+  objects?: { key: string; x: number; y: number; w?: number; base?: number; /** sombra no chão (largura relativa) ou false */ shadow?: number | false; fade?: boolean; front?: boolean; tall?: boolean; flip?: boolean; when?: () => boolean }[];
   /** Colisões extras em retângulos (unidades de tile, fracionários). Ideal para cenários pintados. */
   blocks?: TileRect[];
   /**

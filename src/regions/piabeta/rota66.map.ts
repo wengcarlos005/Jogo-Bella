@@ -221,40 +221,43 @@ export const rota66Map: MapDef = {
   // Versão anterior (cenário pintado inteiro com recortes) em backups/rota66-v1/.
   blocks: [
     // paredes: fundo, janela à esquerda (inclinada), parede da direita, muretinha de baixo
-    R(0, 0, 1536, 365),
-    R(0, 0, 118, 500),
-    R(0, 500, 90, 620),
-    R(0, 620, 60, 720),
+    R(0, 0, 1536, 370),
+    R(0, 0, 125, 500),
+    R(0, 500, 95, 620),
+    R(0, 620, 65, 720),
     R(0, 720, 40, 830),
-    R(0, 830, 85, 1100),
-    R(1472, 0, 1536, 520),
-    R(1495, 520, 1536, 680),
-    R(1515, 680, 1536, 830),
-    R(1455, 830, 1536, 1100),
-    R(0, 918, 645, 1100),
-    R(885, 918, 1536, 1100),
-    R(640, 790, 895, 1100), // porta de vidro (ninguém fica em cima dela)
+    R(0, 830, 45, 1100),
+    R(1475, 0, 1536, 520),
+    R(1498, 520, 1536, 700),
+    R(1512, 700, 1536, 900),
+    R(1455, 900, 1536, 1100),
+    R(0, 918, 630, 1100),
+    R(905, 918, 1536, 1100),
+    R(630, 780, 905, 1100), // porta de vidro (ninguém fica em cima dela)
     // balcão + banquetas, bomba de gasolina, planta e jukebox
-    R(500, 300, 1250, 425),
+    R(515, 300, 1250, 425),
     R(595, 425, 1160, 452),
-    R(410, 330, 500, 398),
-    R(1245, 330, 1310, 412),
+    R(412, 330, 498, 398),
+    R(1252, 330, 1312, 414),
     R(1300, 330, 1442, 432),
     // mesinhas da janela (a de baixo é a "mesa para dois")
-    R(115, 380, 305, 475),
-    R(80, 520, 285, 648),
+    R(125, 385, 300, 475),
+    R(90, 525, 285, 650),
     // cabines do meio e de baixo (com a divisória de vidro na frente)
-    R(430, 490, 724, 668),
-    R(873, 490, 1167, 668),
-    R(108, 725, 408, 925),
-    R(1138, 725, 1438, 925),
+    R(434, 490, 723, 668),
+    R(876, 490, 1164, 668),
+    R(108, 725, 408, 930),
+    R(1140, 725, 1435, 930),
+    R(45, 860, 540, 930),
+    R(1000, 860, 1458, 930),
     // plantas
     R(355, 625, 412, 664),
     R(1157, 625, 1214, 666),
     R(25, 745, 95, 782),
-    R(1445, 725, 1515, 762),
-    R(540, 885, 600, 922),
-    R(920, 885, 980, 922),
+    R(1455, 705, 1525, 745),
+    R(1440, 755, 1505, 792),
+    R(545, 940, 625, 990),
+    R(910, 940, 990, 990),
   ],
 
   steam: [{ x: 880, y: 192 }, { x: 918, y: 190 }, { x: 958, y: 192 }],
@@ -262,27 +265,29 @@ export const rota66Map: MapDef = {
 
   // Objetos: x = centro, y = base (px da arte original), w = largura. Cada um com a sua profundidade.
   objects: [
-    { key: 'r66-bomba', x: 455, y: 396, w: 92 },
-    ...[629, 753, 876, 1000, 1127].map((x) => ({ key: 'r66-banqueta', x, y: 450, w: 62 })),
-    { key: 'r66-planta', x: 1278, y: 412, w: 74, fade: true },
-    { key: 'r66-jukebox', x: 1370, y: 432, w: 140 },
-    { key: 'r66-mesinha', x: 210, y: 474, w: 190 },
-    { key: 'r66-mesinha', x: 182, y: 648, w: 205 },
-    { key: 'r66-cabine', x: 577, y: 668, w: 295 },
-    { key: 'r66-cabine', x: 1020, y: 668, w: 295 },
-    { key: 'r66-cabine', x: 258, y: 905, w: 300 },
-    { key: 'r66-cabine', x: 1288, y: 905, w: 300 },
-    { key: 'r66-divisoria', x: 258, y: 926, w: 330 },
-    { key: 'r66-divisoria', x: 1288, y: 926, w: 330 },
-    { key: 'r66-planta', x: 383, y: 664, w: 80, fade: true },
-    { key: 'r66-planta', x: 1185, y: 666, w: 80, fade: true },
-    { key: 'r66-planta', x: 60, y: 782, w: 80, fade: true },
-    { key: 'r66-planta', x: 1480, y: 762, w: 80, fade: true, flip: true },
-    { key: 'r66-planta', x: 570, y: 922, w: 85, fade: true },
-    { key: 'r66-planta', x: 950, y: 922, w: 85, fade: true, flip: true },
-    ...[220, 450, 1090, 1320].map((x) => ({ key: 'r66-floreira', x, y: 1022, w: 130 })),
+    { key: 'r66-bomba', x: 455, y: 396, w: 94 },
+    ...[629, 753, 876, 1000, 1127].map((x) => ({ key: 'r66-banqueta', x, y: 448, w: 66, shadow: 0.8 })),
+    { key: 'r66-planta', x: 1283, y: 414, w: 76, fade: true, shadow: 0.7 },
+    { key: 'r66-jukebox', x: 1370, y: 432, w: 144 },
+    { key: 'r66-mesinha', x: 212, y: 474, w: 182 },
+    { key: 'r66-mesinha', x: 188, y: 650, w: 200 },
+    { key: 'r66-cabine', x: 578, y: 668, w: 290 },
+    { key: 'r66-cabine', x: 1020, y: 668, w: 290 },
+    { key: 'r66-cabine', x: 258, y: 905, w: 295 },
+    { key: 'r66-cabine', x: 1288, y: 905, w: 290 },
+    { key: 'r66-planta', x: 383, y: 664, w: 88, fade: true, shadow: 0.7 },
+    { key: 'r66-planta', x: 1185, y: 666, w: 88, fade: true, shadow: 0.7 },
+    { key: 'r66-planta', x: 60, y: 782, w: 88, fade: true, shadow: 0.7 },
+    { key: 'r66-planta', x: 1490, y: 745, w: 82, fade: true, flip: true, shadow: 0.7 },
+    { key: 'r66-planta', x: 1470, y: 792, w: 88, fade: true, shadow: 0.7 },
+    // divisórias de vidro na frente das cabines de baixo (duas de cada lado, emendadas)
+    ...[160, 385, 1115, 1345].map((x) => ({ key: 'r66-divisoria', x, y: 932, w: 228, shadow: false as const })),
+    // floreiras em cima da muretinha e plantas dos lados da porta
+    ...[213, 427, 1100, 1280].map((x) => ({ key: 'r66-floreira', x, y: 972, w: 134, shadow: false as const })),
+    { key: 'r66-planta', x: 585, y: 988, w: 100, fade: true, shadow: 0.7 },
+    { key: 'r66-planta', x: 950, y: 988, w: 100, fade: true, flip: true, shadow: 0.7 },
     // porta de vidro: sempre por cima de quem encosta nela, transparente
-    { key: 'r66-porta', x: 765, y: 1000, w: 245, front: true },
+    { key: 'r66-porta', x: 768, y: 1002, w: 268, front: true, shadow: false },
   ],
 
   hotspots: [
@@ -300,7 +305,7 @@ export const rota66Map: MapDef = {
   },
   exits: [
     {
-      rect: R(645, 772, 890, 790), // encostar na porta de vidro = sair
+      rect: R(640, 760, 895, 780), // encostar na porta de vidro = sair
       toMap: 'piabeta-rota66-fora',
       toSpawn: 'from-rota66',
       sfx: 'door',
