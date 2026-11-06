@@ -391,6 +391,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       // Com o Weng junto e arte do casal no banco: um sprite só, cobrindo o banco pintado.
       let pair: Phaser.GameObjects.Sprite | null = null;
       let pairTimer: Phaser.Time.TimerEvent | null = null;
+      let hiddenBench: Phaser.GameObjects.Image[] = [];
       if (withWeng && couple && scene.textures.exists(couple.key)) {
         pl.setVisible(false);
         weng!.stopFollowing();
@@ -400,6 +401,9 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         const BENCH_W: Record<string, number> = { 'bench-pq-ang-r': 150, 'bench-pq-front-lamp': 166, 'bench-pq-ang-l': 139, 'bench-pq-front-bin': 185, 'bench-rua': 166, 'bench-rua-bin': 185 };
         const sc = couple.w && BENCH_W[couple.key] ? couple.w / 3 / BENCH_W[couple.key] : 1 / RENDER_SCALE;
         pair = scene.add.sprite(couple.x / 3, couple.y / 3, couple.key, 0).setOrigin(0.5, 1).setScale(sc);
+        // banco solto (objeto da folha) embaixo do casal: some enquanto eles estão sentados
+        hiddenBench = scene.built.overlays.filter((o) => o.img.texture.key.includes('banco') && o.img.visible && o.rect.contains(couple.x / 3, couple.y / 3 - 4)).map((o) => o.img);
+        hiddenBench.forEach((img) => img.setVisible(false));
         pair.setDepth(couple.y / 3 + 60);
         // as poses da folha foram desenhadas separadas (cabelo muda de um quadro pro outro):
         // fica a pose principal, respirando de leve, com coraçõezinhos subindo de vez em quando
@@ -447,6 +451,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       if (pair) {
         pairTimer?.remove();
         pair.destroy();
+        hiddenBench.forEach((img) => img.setVisible(true));
         pl.setVisible(true);
         weng!.setVisible(true);
       }
