@@ -191,3 +191,5 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | NPC-004L | Atendente da Rota 66 limpando (2 linhas x 4 quadros, fundo magenta) | npcs/atendente-limpando.png | descartado (atendente fica parada no balcão) |
 | MAP-021 | Fragoso vazio (ruas, calçadas, casas, muros, sem postes/árvore do meio/bananeira/gato) | maps/piabeta-fragoso-base.webp | ✅ no jogo |
 | OBJ-FRG | Folha de objetos de Fragoso (8 objetos em fundo magenta) | objects/fragoso-folha.webp → objects/frg-*.png | ✅ no jogo |
+| MAP-022 | Parque vazio (caminhos, coreto, lago, ponte, praça redonda sem chafariz, grade) | maps/piabeta-parque-base.png | pedido |
+| OBJ-PRQ | Folha de objetos do parque (9 objetos em fundo magenta) | objects/parque-folha.png | pedido |
