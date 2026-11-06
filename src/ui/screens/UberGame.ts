@@ -95,8 +95,10 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
     InputSystem.push('minigame');
     InputSystem.releaseAll();
 
+    // quem está mais embaixo na tela fica na frente (o carro também, conforme a faixa)
     const place = () => {
       player.style.top = `${LANE_Y[lane]}%`;
+      player.style.zIndex = String(11 + lane * 2);
     };
     const move = (d: number) => {
       if (!running) return;
@@ -110,9 +112,11 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
     place();
 
     const spawn = () => {
-      const kinds: Kind[] = ['cone', 'poca', 'buraco', 'carro', 'carro', 'veiculo', 'veiculo', 'veiculo', 'poca', 'caixa', 'barreira'];
+      const kinds: Kind[] = ['cone', 'poca', 'buraco', 'carro', 'veiculo', 'veiculo', 'veiculo', 'veiculo', 'veiculo', 'caixa', 'barreira'];
       const kind = kinds[Math.floor(Math.random() * kinds.length)];
-      const free = [0, 1, 2].filter((l) => !obstacles.some((o) => o.lane === l && o.x > 74));
+      // nada nasce colado (nem do lado) de outro obstáculo: assim um não fica por cima do outro
+      if (obstacles.some((o) => o.x > 82)) return;
+      const free = [0, 1, 2].filter((l) => !obstacles.some((o) => o.lane === l && o.x > 64));
       // nunca fecha as 3 faixas ao mesmo tempo
       const busy = [0, 1, 2].filter((l) => obstacles.some((o) => o.lane === l && o.x > 60 && o.x < 112));
       if (!free.length || busy.length >= 2) return;
@@ -131,9 +135,21 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
         el.classList.add(kind);
       }
       el.style.top = `${LANE_Y[l]}%`;
+      el.style.zIndex = String(10 + l * 2);
       el.style.left = '110%'; // nasce fora da tela (sem piscar no canto esquerdo)
       track.append(el);
       obstacles.push({ el, lane: l, x: 110, kind, hit: false });
+    };
+
+    const touching = (el: HTMLElement): boolean => {
+      const a = player.getBoundingClientRect();
+      const b = el.getBoundingClientRect();
+      // margem: o carro tem espaço vazio na frente/atrás do desenho
+      const ax0 = a.left + a.width * 0.12;
+      const ax1 = a.right - a.width * 0.12;
+      const bx0 = b.left + b.width * 0.15;
+      const bx1 = b.right - b.width * 0.15;
+      return Math.min(ax1, bx1) - Math.max(ax0, bx0) > 4;
     };
 
     const tick = (t: number) => {
@@ -153,7 +169,8 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
       for (const o of obstacles) {
         o.x -= v * dt * (o.kind === 'carro' || o.kind === 'veiculo' ? 0.7 : 1);
         o.el.style.left = `${o.x}%`;
-        if (!o.hit && o.lane === lane && o.x < 24 && o.x > 6) {
+        // batida só quando encostam de verdade: mesma faixa e as caixas se cruzando na horizontal
+        if (!o.hit && o.lane === lane && o.x < 40 && o.x > -10 && touching(o.el)) {
           o.hit = true;
           hits++;
           hitsEl.textContent = `Batidas: ${hits}`;
