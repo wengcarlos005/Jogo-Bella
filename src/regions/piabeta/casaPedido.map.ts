@@ -3,11 +3,11 @@ import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
 import { QuestSystem } from '@/systems/QuestSystem';
 import { PERSONAL } from '@/data/personal';
-import { CASA_BLOCKS, CASA_OVERLAYS } from './casaBella.map';
+import { CASA_BLOCKS, CASA_OBJECTS } from './casaBella.map';
 
 const Q = 'dq-e3';
 const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
-/** Retângulo no cenário ORIGINAL (art-source/maps/piabeta-casa-pedido.jpg, 1536x1024). 48 px = 1 tile. */
+/** Retângulo no cenário ORIGINAL (art-source/maps/piabeta-casa-pedido-base.webp, 1536x1024). 48 px = 1 tile. */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
 const scripts: Record<string, Script> = {
@@ -101,7 +101,8 @@ export const casaPedidoMap: MapDef = {
   blocks: CASA_BLOCKS,
 
 
-  overlays: CASA_OVERLAYS,
+  // v2: casa decorada à noite (art-source/maps/piabeta-casa-pedido-base.webp) + os mesmos móveis soltos da casa
+  objects: CASA_OBJECTS,
 
   // tudo apagado até a Bella entrar no quarto: só a lanterna do celular e uma luzinha vazando do quarto
   blackout: {
@@ -115,12 +116,13 @@ export const casaPedidoMap: MapDef = {
 
 
   lighting: {
-    darkness: 0.25,
+    darkness: 0.42,
     lights: [
-      { x: 160, y: 300, r: 260, color: 0xffc070 },
-      { x: 500, y: 90, r: 220, color: 0xffc070 },
-      { x: 500, y: 200, r: 120, flicker: true },
-      { x: 510, y: 610, r: 160 },
+      // luzinhas do quarto (o resto da casa está apagado)
+      { x: 150, y: 300, r: 230, color: 0xffc070 },
+      { x: 420, y: 120, r: 230, color: 0xffc070 },
+      { x: 700, y: 110, r: 200, color: 0xffc070 },
+      { x: 430, y: 380, r: 180, color: 0xff9ab0, flicker: true },
     ],
   },
 

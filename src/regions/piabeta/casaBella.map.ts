@@ -72,6 +72,21 @@ export const CASA_OVERLAYS: NonNullable<MapDef['overlays']> = [
   { x0: 1295, y0: 872, x1: 1392, y1: 1006, base: 1004, cut: 'furniture' },
 ];
 
+/** Móveis soltos da casa (folha objects/casa-*), usados na casa do prólogo e na do pedido. */
+export const CASA_OBJECTS: NonNullable<MapDef['objects']> = [
+  { key: 'casa-mesa', x: 1163, y: 478, w: 212, shadow: 0.8 },
+  // sofá: profundidade um pouco acima da frente, pra quem senta ficar na frente dele
+  { key: 'casa-sofa', x: 730, y: 748, w: 360, base: 690, shadow: 0.9 },
+  { key: 'casa-abajur', x: 505, y: 722, w: 80, shadow: 0.7 },
+  { key: 'casa-tv', x: 270, y: 888, w: 100, shadow: 0.7 },
+  { key: 'casa-planta', x: 610, y: 325, w: 72, shadow: 0.6 },
+  { key: 'casa-planta', x: 1450, y: 390, w: 100, shadow: 0.6, flip: true },
+  { key: 'casa-planta', x: 100, y: 735, w: 115, shadow: 0.6 },
+  { key: 'casa-planta', x: 1428, y: 810, w: 115, shadow: 0.6, flip: true },
+  { key: 'casa-vasinho', x: 180, y: 1000, w: 72, shadow: false },
+  { key: 'casa-vasinho', x: 1342, y: 1000, w: 72, shadow: false },
+];
+
 /** Prólogo — casa da Bella em Piabetá (interior, cenário pintado). */
 export const casaBellaMap: MapDef = {
   id: 'piabeta-casa-bella',
@@ -110,19 +125,7 @@ export const casaBellaMap: MapDef = {
   // Profundidade: TV e planta da sala na frente de quem passa atrás
   // v2: cenário vazio (art-source/maps/piabeta-casa-bella-base.webp) + objetos da folha (objects/casa-*).
   // A casa do pedido continua com o cenário antigo e os recortes (CASA_OVERLAYS). Backup em backups/casa-bella-v1/.
-  objects: [
-    { key: 'casa-mesa', x: 1163, y: 478, w: 212, shadow: 0.8 },
-    // sofá: profundidade um pouco acima da frente, pra quem senta ficar na frente dele
-    { key: 'casa-sofa', x: 730, y: 748, w: 360, base: 690, shadow: 0.9 },
-    { key: 'casa-abajur', x: 505, y: 722, w: 80, shadow: 0.7 },
-    { key: 'casa-tv', x: 270, y: 888, w: 100, shadow: 0.7 },
-    { key: 'casa-planta', x: 610, y: 325, w: 72, shadow: 0.6 },
-    { key: 'casa-planta', x: 1450, y: 390, w: 100, shadow: 0.6, flip: true },
-    { key: 'casa-planta', x: 100, y: 735, w: 115, shadow: 0.6 },
-    { key: 'casa-planta', x: 1428, y: 810, w: 115, shadow: 0.6, flip: true },
-    { key: 'casa-vasinho', x: 180, y: 1000, w: 72, shadow: false },
-    { key: 'casa-vasinho', x: 1342, y: 1000, w: 72, shadow: false },
-  ],
+  objects: CASA_OBJECTS,
 
 
   hotspots: [
