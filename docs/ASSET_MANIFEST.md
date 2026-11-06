@@ -204,3 +204,7 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | MG-CH | Churrasco: carnes (4 tipos x 4 estados), grelha, bandeja (fundo magenta) | minigames/churrasco-*.png | não precisa (a churrasqueira de 10 fases desenha tudo) |
 | MAP-027 | Cinema vazio | maps/duque-cinema-base.webp | ✅ no jogo |
 | OBJ-CN | Folha de objetos do cinema | objects/cinema-folha.webp → cn-* | ✅ no jogo |
+| MAP-028 | Rua da Bella vazia | maps/piabeta-rua-base.webp | ✅ no jogo |
+| OBJ-RB | Folha da rua da Bella | objects/rua-folha.webp → rb-* | ✅ no jogo |
+| MAP-029 | Rua do Weng vazia | maps/duque-rua-base.webp | ✅ no jogo |
+| OBJ-DR | Folha da rua do Weng | objects/duque-rua-folha.webp → dr-* | ✅ no jogo |

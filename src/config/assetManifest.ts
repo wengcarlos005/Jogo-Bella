@@ -73,7 +73,7 @@ export const ASSETS: AssetEntry[] = [
 
   // Casal sentado no banco (4 quadros 200x150: normal, piscando, expressão, normal)
   // Mexicano v2 (dentro e fachada) e quintal: objetos recortados das folhas
-  ...['mx-mesa', 'mx-banqueta', 'mx-cacto', 'mx-cactoflor', 'mx-planta', 'mx-cabideiro', 'mxf-mesa', 'mxf-guardasol', 'mxf-cacto', 'mxf-flores', 'mxf-lousa', 'mxf-poste', 'mxf-banco', 'qt-mesa', 'qt-isopor', 'qt-varal', 'qt-abacateiro', 'qt-vaso', 'qt-floreira', 'qt-moita', 'ap-sofa', 'ap-mesinha', 'ap-mesa', 'ap-tv', 'ap-abajur', 'ap-arranhador', 'ap-cesto', 'ap-planta', 'ap-vasinho', 'cn-cordao', 'cn-poste', 'cn-antifurto', 'cn-sofa', 'cn-poltrona', 'cn-mesinha', 'cn-floreira', 'cn-planta'].map(
+  ...['mx-mesa', 'mx-banqueta', 'mx-cacto', 'mx-cactoflor', 'mx-planta', 'mx-cabideiro', 'mxf-mesa', 'mxf-guardasol', 'mxf-cacto', 'mxf-flores', 'mxf-lousa', 'mxf-poste', 'mxf-banco', 'qt-mesa', 'qt-isopor', 'qt-varal', 'qt-abacateiro', 'qt-vaso', 'qt-floreira', 'qt-moita', 'ap-sofa', 'ap-mesinha', 'ap-mesa', 'ap-tv', 'ap-abajur', 'ap-arranhador', 'ap-cesto', 'ap-planta', 'ap-vasinho', 'cn-cordao', 'cn-poste', 'cn-antifurto', 'cn-sofa', 'cn-poltrona', 'cn-mesinha', 'cn-floreira', 'cn-planta', 'rb-poste', 'rb-carro', 'rb-arvore', 'rb-banco', 'rb-lixeira', 'rb-hortensia', 'rb-flores', 'dr-poste', 'dr-arvore', 'dr-ipe', 'dr-banco', 'dr-lixeira', 'dr-floreira', 'dr-ponto', 'dr-vaso'].map(
     (n, i): AssetEntry => ({ id: `OBJ-MXQ-${i}`, key: n, file: `assets/objects/${n}.png`, kind: 'image' }),
   ),
   // Casa da Bella v2: objetos recortados da folha

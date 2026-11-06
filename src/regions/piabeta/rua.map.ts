@@ -6,8 +6,8 @@ import { PERSONAL } from '@/data/personal';
 import type { Script } from '@/core/script';
 
 /**
- * Retângulo medido no cenário ORIGINAL (art-source/maps/piabeta-rua.png,
- * 1619x971). 48 px da imagem = 1 tile (16 px lógicos).
+ * Retângulo medido no cenário ORIGINAL (art-source/maps/piabeta-rua-v2.webp,
+ * 1619x971; reescalado pelo R()). 48 px da imagem = 1 tile (16 px lógicos).
  */
 const ROTA = PERSONAL.places.hamburgueria;
 
@@ -19,12 +19,18 @@ const chovendo = () =>
   (QuestSystem.isActive('pia-m1') && QuestSystem.isObjectiveDone('pia-m1', 'guarda-chuva')) ||
   (QuestSystem.isActive('pia-m2') && !QuestSystem.isObjectiveDone('pia-m2', 'uber'));
 
+// v2: o cenário novo (art-source/maps/piabeta-rua-base.webp, 1536x1024) é o mesmo desenho do antigo
+// (1619x971) reescalado; as medidas antigas continuam valendo via SX/SY. Backup em backups/rua-bella-v1/.
+const SX = 1536 / 1619;
+const SY = 1024 / 971;
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({
-  x: x0 / 48,
-  y: y0 / 48,
-  w: (x1 - x0) / 48,
-  h: (y1 - y0) / 48,
+  x: (x0 * SX) / 48,
+  y: (y0 * SY) / 48,
+  w: ((x1 - x0) * SX) / 48,
+  h: ((y1 - y0) * SY) / 48,
 });
+/** Retângulo já nas medidas do cenário novo. */
+const RN = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
 /** Canteiros pintados da pracinha onde dá para colher uma flor (missão da Dona Cida). */
 const FLOWER_BEDS: TileRect[] = [
@@ -60,7 +66,7 @@ const scripts: Record<string, Script> = {
 
   async entrar(ctx) {
     // Saindo de casa com o Weng: ele aparece AO LADO da Bella (atrás dela fica o portão)
-    if (ctx.flag('weng-segue') && Math.abs(ctx.playerTile().x - 6.2) < 1.5 && ctx.playerTile().y < 8.5) {
+    if (ctx.flag('weng-segue') && Math.abs(ctx.playerTile().x - 5.86) < 1.5 && ctx.playerTile().y < 9.02) {
       const t = ctx.playerTile();
       ctx.place('weng', t.x + 1.5, t.y, 'down');
     }
@@ -92,23 +98,23 @@ const scripts: Record<string, Script> = {
   async encontro(ctx) {
     // Ela vê o Weng lá na esquina e vai chegando, passo a passo, cada vez mais nervosa.
     const here = ctx.playerTile();
-    const sx = Math.min(here.x, 24.5);
-    const stop = 26.7;
+    const sx = Math.min(here.x, 23.22);
+    const stop = 25.31;
     const step = (stop - sx) / 3;
     // vindo pela rua: primeiro sobe para a calçada, na frente dele
-    if (Math.abs(here.y - 8.0) > 0.3) await ctx.move('player', sx, 8.0, 40);
+    if (Math.abs(here.y - 8.49) > 0.3) await ctx.move('player', sx, 8.49, 40);
     ctx.face('player', 'right');
     await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', '(É ele. Ali na esquina. Com um guarda-chuva azul.)');
-    await ctx.move('player', sx + step, 8.0, 32);
+    await ctx.move('player', sx + step, 8.49, 32);
     ctx.nerves(75);
     await ctx.emote('bella', 'sweat');
     await ctx.say('bella', '(Ai. Ele é mais bonito pessoalmente.)');
-    await ctx.move('player', sx + step * 2, 8.0, 28);
+    await ctx.move('player', sx + step * 2, 8.49, 28);
     ctx.nerves(90);
     await ctx.emote('bella', 'sweat');
     await ctx.say('bella', '(O que eu falo? "Oi"? "Olá"? Desde quando eu falo "olá"?!)');
-    await ctx.move('player', stop, 8.0, 24);
+    await ctx.move('player', stop, 8.49, 24);
     ctx.face('weng', 'bella');
     await ctx.emote('weng', 'exclaim');
     ctx.nerves(100, 'O coração da Bella disparou!');
@@ -143,8 +149,8 @@ const scripts: Record<string, Script> = {
   async uber(ctx) {
     // os dois esperam juntos na beira da calçada, depois do carro vermelho estacionado
     ctx.follow('weng', false);
-    const px = 13.2;
-    await Promise.all([ctx.move('player', px, 8.6, 45), ctx.move('weng', px + 1.6, 8.6, 45)]);
+    const px = 12.5;
+    await Promise.all([ctx.move('player', px, 9.12, 45), ctx.move('weng', px + 1.5, 9.12, 45)]);
     ctx.face('player', 'right');
     ctx.face('weng', 'left');
     await ctx.say('weng', 'Pronto, pedi. O app diz que o Uber chega em três minutos.');
@@ -165,8 +171,8 @@ const scripts: Record<string, Script> = {
     ctx.face('weng', 'right');
     await ctx.emote('weng', 'exclaim');
     await ctx.say('weng', 'Olha ele ali! O carro com o farol piscando.');
-    const carX = px + 1.4;
-    const lane = 12.6;
+    const carX = px + 1.33;
+    const lane = 13.34;
     ctx.prop('uber', 'uber-car', 38, lane, 0);
     await ctx.moveProp('uber', carX + 7, lane, 2600);
     await ctx.moveProp('uber', carX, lane, 1500);
@@ -287,10 +293,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'O carro do vizinho. Sempre estacionado exatamente aqui.');
   },
   async banco(ctx) {
-    await ctx.sit(555, 756, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']], { key: 'bench-rua', x: 555, y: 780, w: 144 });
+    await ctx.sit(527, 797, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']], { key: 'bench-rua', x: 527, y: 823, w: 137 });
   },
   async banco2(ctx) {
-    await ctx.sit(1063, 756, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']], { key: 'bench-rua', x: 1063, y: 780, w: 147 });
+    await ctx.sit(1008, 797, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']], { key: 'bench-rua', x: 1008, y: 823, w: 139 });
   },
 };
 
@@ -303,7 +309,7 @@ export const ruaMap: MapDef = {
   background: '#3f6a2e',
   art: 'native',
   legend: { '.': T.GRASS },
-  ground: Array.from({ length: 21 }, () => '.'.repeat(34)),
+  ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
   // Medido elemento por elemento sobre art-source/maps/piabeta-rua-v2.webp (1619x971)
   blocks: [
@@ -319,8 +325,6 @@ export const ruaMap: MapDef = {
     R(1612, 0, 1700, 1100),
     R(0, 950, 1700, 1100),
     // postes (base e a calçada logo ao sul da luminária)
-    R(122, 610, 162, 640), // pé do poste esquerdo (só a base; a haste e a luminária não bloqueiam)
-    R(1468, 610, 1508, 640), // pé do poste direito
     // carro (corpo)
     R(265, 470, 497, 533),
     // pracinha: cerca viva com a passagem do meio (x 770–848)
@@ -330,11 +334,10 @@ export const ruaMap: MapDef = {
     R(1552, 628, 1619, 971),
     R(0, 918, 1619, 971),
     // bancos (assento e encosto), lixeira, troncos
-    R(483, 688, 627, 776),
-    R(990, 688, 1137, 776),
-    R(927, 697, 973, 765),
-    R(266, 815, 326, 892), // tronco esquerdo, até a raiz (a copa fica por cima, dá pra passar por baixo)
-    R(1296, 815, 1352, 892), // tronco direito, até a raiz
+    // objetos soltos (medidas do cenário novo): pés dos postes, bancos, lixeira e troncos
+    RN(122, 596, 150, 615), RN(1400, 596, 1428, 615),
+    RN(462, 770, 592, 823), RN(943, 770, 1073, 823), RN(882, 792, 918, 815),
+    RN(250, 870, 310, 935), RN(1250, 870, 1310, 935),
     // canteiros: sólidos desde as flores do topo (ninguém fica dentro das hortênsias)
     R(76, 845, 205, 920),
     R(596, 860, 754, 952),
@@ -344,22 +347,16 @@ export const ruaMap: MapDef = {
     ...FLOWER_BEDS,
   ],
 
-  // Profundidade (o que passa NA FRENTE de quem está atrás)
-  props: [
-    { key: 'rua-carro-vermelho', tx: 250 / 48, ty: 536 / 48 - 1, scale: 0.5, block: false },
-  ],
-
-  overlays: [
-    { x0: 128, y0: 372, x1: 212, y1: 468, base: 470, cut: 'lamp' }, // poste esquerdo (luminária)
-    { x0: 122, y0: 468, x1: 162, y1: 640, base: 638, cut: 'lamp' }, // poste esquerdo (haste)
-    { x0: 1418, y0: 372, x1: 1502, y1: 468, base: 470, cut: 'lamp' }, // poste direito (luminária)
-    { x0: 1468, y0: 468, x1: 1508, y1: 640, base: 638, cut: 'lamp' }, // poste direito (haste)
-    { x0: 478, y0: 722, x1: 632, y1: 780, base: 776, cut: 'furniture' }, // banco esq. (assento da frente e pés)
-    { x0: 985, y0: 722, x1: 1142, y1: 780, base: 776, cut: 'furniture' }, // banco dir. (assento da frente e pés)
-    // canteiros da beira da pracinha: as flores ficam na frente dos pés de quem pisa atrás delas
-    // copas das árvores: na frente de quem passa atrás, translúcidas
-    { x0: 165, y0: 556, x1: 455, y1: 800, base: 892, cut: 'foliage', fade: true },
-    { x0: 1180, y0: 566, x1: 1500, y1: 800, base: 892, cut: 'foliage', fade: true },
+  // Objetos da folha (objects/rb-*): x = centro, y = base (px do cenário novo). Profundidade fixa na base.
+  objects: [
+    { key: 'rb-poste', x: 154, y: 615, w: 75, shadow: 0.4 },
+    { key: 'rb-poste', x: 1396, y: 615, w: 75, shadow: 0.4, flip: true },
+    { key: 'rb-carro', x: 362, y: 562, w: 228, shadow: 0.9 },
+    { key: 'rb-arvore', x: 280, y: 935, w: 320, fade: true, shadow: 0.5 },
+    { key: 'rb-arvore', x: 1280, y: 935, w: 320, fade: true, shadow: 0.5, flip: true },
+    { key: 'rb-banco', x: 527, y: 823, w: 140, shadow: 0.9 },
+    { key: 'rb-banco', x: 1008, y: 823, w: 140, shadow: 0.9 },
+    { key: 'rb-lixeira', x: 900, y: 815, w: 42, shadow: 0.9 },
   ],
 
   hotspots: [
@@ -377,18 +374,18 @@ export const ruaMap: MapDef = {
     {
       id: 'weng',
       sprite: 'weng',
-      tx: 28.6,
-      ty: 8.0,
+      tx: 27.11,
+      ty: 8.49,
       facing: 'left',
       interact: 'weng',
       visibleIf: () => GameState.is('weng-segue') || esperandoNaEsquina(),
     },
-    { id: 'tia-jaque', sprite: 'tia-jaque', tx: 11.4, ty: 8.4, facing: 'left', interact: 'tiaJaque', behavior: 'wander', wanderRadius: 1.0, wanderAxis: 'x' }, // na calçada, longe do poste e do carro
-    { id: 'kelly', sprite: 'kelly', tx: 16.2, ty: 15.0, facing: 'down', interact: 'kelly', behavior: 'wander', wanderRadius: 1.2, wanderAxis: 'x' },
-    { id: 'vizinha', sprite: 'vizinha', tx: 14.7, ty: 7.8, facing: 'down', interact: 'vizinha', behavior: 'wander', wanderRadius: 3, wanderAxis: 'x' },
+    { id: 'tia-jaque', sprite: 'tia-jaque', tx: 10.79, ty: 8.91, facing: 'left', interact: 'tiaJaque', behavior: 'wander', wanderRadius: 1.0, wanderAxis: 'x' }, // na calçada, longe do poste e do carro
+    { id: 'kelly', sprite: 'kelly', tx: 15.34, ty: 15.87, facing: 'down', interact: 'kelly', behavior: 'wander', wanderRadius: 1.2, wanderAxis: 'x' },
+    { id: 'vizinha', sprite: 'vizinha', tx: 13.92, ty: 8.28, facing: 'down', interact: 'vizinha', behavior: 'wander', wanderRadius: 3, wanderAxis: 'x' },
   ],
   spawns: {
-    'from-casa': { tx: 6.2, ty: 7.3, facing: 'down' },
+    'from-casa': { tx: 5.86, ty: 7.75, facing: 'down' },
   },
   exits: [
     { rect: R(292, 340, 356, 374), toMap: 'piabeta-casa-bella', toSpawn: 'from-rua', sfx: 'door' },

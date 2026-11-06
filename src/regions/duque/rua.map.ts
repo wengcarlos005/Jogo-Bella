@@ -3,7 +3,7 @@ import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
 
 /**
- * Retângulo medido no cenário ORIGINAL (art-source/maps/duque-rua.webp, 1536x1024).
+ * Retângulo medido no cenário ORIGINAL (art-source/maps/duque-rua-base.webp, 1536x1024).
  * 48 px da imagem = 1 tile (16 px lógicos).
  * Em cima: portaria do prédio do Weng (esq.) e a praça com o Teatro Raul Cortez (dir.);
  * meio: a avenida; embaixo: o Shopping da Multidão.
@@ -70,56 +70,58 @@ export const duqueRuaMap: MapDef = {
   legend: { '.': T.SIDEWALK },
   ground: Array.from({ length: 22 }, () => ROW),
 
+  // v2: cenário vazio (art-source/maps/duque-rua-base.webp) + objetos da folha (objects/dr-*). Backup em backups/duque-rua-v1/.
   blocks: [
     // Em cima, à esquerda: prédio, muro, portaria e guarita (o portão é a entrada)
     R(0, 0, 330, 385),
     R(430, 0, 650, 385),
     R(330, 0, 430, 365),
-    // Praça: ipê rosa, árvores, teatro e rampa
-    R(610, 0, 890, 275),
-    R(668, 280, 752, 318), // canteiro redondo do ipê
+    // Praça: fundo, teatro e rampa; canteiros baixos
+    R(610, 0, 880, 200),
     R(880, 0, 1470, 235), // teatro
     R(1180, 135, 1450, 305), // rampa
-    R(895, 150, 1042, 332), // árvore da frente (copa sólida)
     R(1450, 0, 1536, 330), // árvores da direita
-    R(830, 308, 950, 381), // canteiros
-    R(1049, 292, 1110, 369),
+    R(668, 285, 812, 330), // canteiro do ipê
+    R(905, 345, 1105, 385), // canteiros
     R(1210, 315, 1291, 373),
-    R(1399, 315, 1536, 381),
-    R(765, 280, 832, 323), // banco perto do ipê
-    R(964, 327, 1053, 385), // bancos
-    R(1291, 327, 1391, 385),
-    R(1118, 342, 1145, 385), // lixeira
-    R(787, 385, 810, 400), // postes
-    R(853, 395, 872, 418),
-    R(1064, 380, 1099, 398),
-    R(1414, 395, 1449, 418),
-    R(25, 535, 60, 555), // postes da avenida
-    R(1475, 535, 1510, 555),
+    R(1325, 345, 1505, 385),
+    // objetos soltos: só a base
+    R(770, 300, 826, 323), R(965, 362, 1051, 385), R(1295, 362, 1387, 385), R(1119, 368, 1143, 385),
+    R(787, 384, 812, 400), R(851, 402, 874, 418), R(1070, 382, 1094, 398), R(1418, 402, 1441, 418),
+    R(30, 540, 55, 555), R(1478, 540, 1503, 555),
+    R(1325, 755, 1375, 780), // tronco da árvore do Multidão
     // Embaixo: Shopping da Multidão (a porta fica em x 610–900)
     R(115, 560, 1420, 868),
-    R(38, 680, 62, 705), // poste da calçada esquerda
-    R(1465, 690, 1495, 710), // poste da calçada direita
-    R(560, 840, 600, 882), // vasos da porta
-    R(898, 840, 955, 882),
-    R(240, 900, 378, 955), // floreiras
-    R(997, 900, 1103, 955),
-    R(1110, 900, 1149, 950), // lixeira
-    R(1150, 860, 1390, 965), // ponto de ônibus
-    R(1380, 900, 1410, 962), // placa do ponto
+    R(555, 850, 605, 882), // vasos da porta
+    R(898, 850, 955, 882),
+    R(240, 905, 378, 955), // floreiras
+    R(997, 905, 1103, 955),
+    R(1112, 928, 1148, 950), // lixeira
+    R(1155, 905, 1405, 965), // ponto de ônibus
     R(0, 985, 1536, 1024), // meio-fio de baixo
   ],
 
-  overlays: [
-    { x0: 1245, y0: 525, x1: 1456, y1: 780, base: 780, cut: 'foliage', fade: true }, // árvore do Multidão
-    { x0: 548, y0: 775, x1: 604, y1: 884, base: 882, cut: 'foliage' },
-    { x0: 893, y0: 775, x1: 960, y1: 884, base: 882, cut: 'foliage' },
-    { x0: 236, y0: 862, x1: 380, y1: 956, base: 955, cut: 'foliage' },
-    { x0: 994, y0: 860, x1: 1106, y1: 956, base: 955, cut: 'foliage' },
-    { x0: 780, y0: 225, x1: 818, y1: 402, base: 400, cut: 'lamp' },
-    { x0: 848, y0: 110, x1: 878, y1: 420, base: 418, cut: 'lamp' },
-    { x0: 1060, y0: 222, x1: 1104, y1: 400, base: 398, cut: 'lamp' },
-    { x0: 1408, y0: 205, x1: 1455, y1: 420, base: 418, cut: 'lamp' },
+  objects: [
+    { key: 'dr-ipe', x: 740, y: 318, w: 250, fade: true, shadow: false },
+    { key: 'dr-arvore', x: 1005, y: 372, w: 230, fade: true, shadow: false },
+    { key: 'dr-arvore', x: 1415, y: 372, w: 210, fade: true, shadow: false, flip: true },
+    { key: 'dr-arvore', x: 1350, y: 780, w: 220, fade: true, shadow: 0.5 },
+    { key: 'dr-poste', x: 821, y: 400, w: 77, shadow: 0.4 },
+    { key: 'dr-poste', x: 885, y: 418, w: 77, shadow: 0.4 },
+    { key: 'dr-poste', x: 1104, y: 398, w: 77, shadow: 0.4 },
+    { key: 'dr-poste', x: 1408, y: 418, w: 77, shadow: 0.4, flip: true },
+    { key: 'dr-poste', x: 61, y: 555, w: 63, shadow: 0.4 },
+    { key: 'dr-poste', x: 1473, y: 555, w: 63, shadow: 0.4, flip: true },
+    { key: 'dr-banco', x: 798, y: 323, w: 80, shadow: 0.8 },
+    { key: 'dr-banco', x: 1008, y: 385, w: 92, shadow: 0.8 },
+    { key: 'dr-banco', x: 1341, y: 385, w: 96, shadow: 0.8 },
+    { key: 'dr-lixeira', x: 1131, y: 385, w: 28, shadow: 0.8 },
+    { key: 'dr-lixeira', x: 1130, y: 950, w: 38, shadow: 0.8 },
+    { key: 'dr-vaso', x: 580, y: 882, w: 55, shadow: 0.7 },
+    { key: 'dr-vaso', x: 926, y: 882, w: 60, shadow: 0.7, flip: true },
+    { key: 'dr-floreira', x: 309, y: 955, w: 140, shadow: false },
+    { key: 'dr-floreira', x: 1050, y: 955, w: 110, shadow: false },
+    { key: 'dr-ponto', x: 1280, y: 965, w: 262, shadow: 0.6 },
   ],
 
   lighting: {
