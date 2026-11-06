@@ -282,7 +282,7 @@ export const casaScripts: Record<string, Script> = {
 
   async mae(ctx) {
     if (ctx.questActive('dq-e2')) {
-      const f = ['Vão passear? Leva um casaquinho, que de noite esfria!', 'O Weng comeu bem? Embrulhei um pedaço de pudim pra ele levar.', 'Gostei dele, viu. Educado, ajudou a tirar a mesa...'];
+      const f = ['Vão passear? Leva um casaquinho, que de noite esfria!', 'O Weng comeu bem? Embrulhei um pedaço da banoffee pra ele levar.', 'Gostei dele, viu. Educado, ajudou a tirar a mesa...'];
       const n = (Number(ctx.flag('mae-dom-n') || 0) + 1) % f.length;
       ctx.setFlag('mae-dom-n', n);
       await ctx.say('mae-bella', f[n]);

@@ -311,7 +311,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     },
 
     travel: (label, icon, ms) => UI.travel(label, icon, ms),
-    chapterCard: (k, t, s, b) => UI.chapterCard(k, t, s, b),
+    chapterCard: (k, t, s, b, r) => UI.chapterCard(k, t, s, b, r),
     unlockRegion(id) {
       if (!GameState.data.regionsUnlocked.includes(id)) GameState.data.regionsUnlocked.push(id);
     },
@@ -408,7 +408,6 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         pair.setDepth(couple.y / 3 + 60);
         // as poses da folha foram desenhadas separadas (cabelo muda de um quadro pro outro):
         // fica a pose principal, respirando de leve, com coraçõezinhos subindo de vez em quando
-        scene.tweens.add({ targets: pair, scaleY: sc * 1.012, duration: 1700, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
         pairTimer = scene.time.addEvent({
           delay: 2600,
           loop: true,
@@ -538,9 +537,10 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       if (scene.textures.exists('bella-kiss')) b.setTexture('bella-kiss');
       if (scene.textures.exists('weng-kiss')) w.setTexture('weng-kiss');
       // 3) o beijo: brilho rosa e um coração grande que pulsa atrás dos dois
-      const glow = scene.add.image(midX, headY, 'fx-glow').setTint(0xff7aa8).setBlendMode(Phaser.BlendModes.ADD).setDepth(b.depth - 2).setAlpha(0).setDisplaySize(10, 10);
-      const big = scene.add.image(midX, headY - 10, 'fx-bigheart').setDepth(b.depth - 1).setScale(0).setAlpha(0.9);
-      tw({ targets: glow, alpha: 0.9, displayWidth: 120, displayHeight: 120, duration: 900, ease: 'Sine.easeOut' });
+      // por cima de tudo (o telhado do coreto fica por cima dos dois, mas não do coração)
+      const glow = scene.add.image(midX, headY, 'fx-glow').setTint(0xff7aa8).setBlendMode(Phaser.BlendModes.ADD).setDepth(160_000).setAlpha(0).setDisplaySize(10, 10);
+      const big = scene.add.image(midX, headY - 22, 'fx-bigheart').setDepth(160_001).setScale(0).setAlpha(0.9);
+      tw({ targets: glow, alpha: 0.55, displayWidth: 90, displayHeight: 90, duration: 900, ease: 'Sine.easeOut' });
       await tw({ targets: big, scale: 0.55, duration: 700, ease: 'Back.easeOut' });
       scene.tweens.add({ targets: big, scale: 0.62, duration: 380, yoyo: true, repeat: 3, ease: 'Sine.easeInOut' });
       // 4) corações subindo em espiral + brilhos

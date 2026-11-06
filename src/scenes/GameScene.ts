@@ -891,6 +891,16 @@ export class GameScene extends Phaser.Scene {
     }
     this.weather.update(this.cameras.main);
     this.updateBlackout();
+    const br = this.def.bridge;
+    if (br) {
+      for (const a2 of [this.player, this.npcs.get('weng')?.npc]) {
+        if (!a2) continue;
+        const ox = a2.x * 3;
+        const oy = a2.y * 3;
+        const on = ox > br.x0 && ox < br.x1 && oy > br.y0 && oy < br.y1;
+        a2.setLift(on ? (Math.sin(((ox - br.x0) / (br.x1 - br.x0)) * Math.PI) * br.h) / 3 : 0);
+      }
+    }
     // Um recorte só cobre quem está DE FATO atrás do objeto (pés entre o topo e a base).
     // Quem está mais ao norte (acima do objeto) passa por cima, sem corte.
     for (const o of this.built.overlays) {

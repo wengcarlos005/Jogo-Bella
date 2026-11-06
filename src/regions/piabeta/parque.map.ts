@@ -55,8 +55,8 @@ const scripts: Record<string, Script> = {
     await ctx.fadeOut(300);
     ctx.follow('weng', false);
     // dentro do coreto, no piso, entre as colunas da frente
-    ctx.place('player', 13.0, 5.85, 'right');
-    ctx.place('weng', 14.0, 5.85, 'left');
+    ctx.place('player', 13.25, 5.3, 'right');
+    ctx.place('weng', 14.65, 5.3, 'left');
     ctx.scale('player', 0.86);
     ctx.scale('weng', 0.86);
     await ctx.fadeIn(500);
@@ -81,7 +81,6 @@ const scripts: Record<string, Script> = {
       await ctx.choose('bella', '(...)', ['"Pode."', 'Responder com um sorriso']);
     }
 
-    await Promise.all([ctx.move('player', 13.3, 5.85, 12), ctx.move('weng', 13.72, 5.85, 12)]);
     ctx.face('player', 'right');
     ctx.face('weng', 'left');
     await ctx.focus(13.5, 4.7, 2.1, 2200);
@@ -107,22 +106,59 @@ const scripts: Record<string, Script> = {
     ctx.follow('weng', true);
     // troca de capítulo: tela preta por trás (o mapa não aparece entre os cartões)
     await ctx.fadeOut(600);
-    await ctx.chapterCard('Fim do Prólogo', 'Piabetá', 'Onde tudo começou.', 'Continuar');
+    await ctx.narrate('A chuva passou. E ele fez questão de levar a Bella até a porta de casa.');
+    await ctx.chapterCard('Fim do Prólogo', 'Piabetá', 'Onde tudo começou.', 'Continuar', {
+      title: 'O primeiro encontro',
+      photos: ['memory-pia-01', 'cena-rota66-mesa', 'memory-pia-04', 'memory-pia-03'],
+      lines: [
+        'Ela se arrumou nervosa, pegou o guarda-chuva rosa e foi buscar o Weng na esquina.',
+        'Ele trouxe uma rosa, conheceu a mãe e o Alexandre... e saiu de lá com um "bom rapaz".',
+        'Na Rota 66 montaram hambúrgueres, e ela deu a ele um Vale Beijo e um Vale Abraço.',
+        'Por Fragoso, de mãos dadas, o nervoso foi embora.',
+        'E no coreto, debaixo de chuva, veio o primeiro beijo.',
+      ],
+    });
     await ctx.chapterCard('Capítulo 1', 'Piabetá', 'O segundo encontro', 'Começar');
     await ctx.phone({ contact: 'Weng ♥', avatar: 'portrait-weng', clock: '23:48', caption: 'Naquela mesma noite...' }, [
-      { from: 'them', text: 'Chegou em casa?' },
-      { from: 'me', text: 'Cheguei. Encharcada kkkkk' },
-      { from: 'them', text: 'Eu também. Mas valeu cada gota.' },
-      { from: 'me', text: 'Bobo 🙈' },
+      { from: 'them', text: 'cheguei' },
+      { from: 'them', text: 'encharcado até a meia kkkkkk' },
+      { from: 'me', text: 'KKKKKK eu tô igual' },
+      { from: 'me', text: 'minha mãe abriu a porta e falou "o que aconteceu com você menina"' },
+      { from: 'them', text: 'e o que você falou?' },
+      { from: 'me', text: 'nada' },
+      { from: 'me', text: 'só sorri e subi pro quarto 🙈' },
+      { from: 'them', text: 'kkkkk justo' },
+      { from: 'them', text: 'obrigado por hoje, sério' },
+      { from: 'them', text: 'eu tava muito nervoso e você deixou tudo leve' },
+      { from: 'me', text: 'você que trouxe uma rosa rosa' },
+      { from: 'me', text: 'como eu ia ficar nervosa assim' },
+      { from: 'me', text: '(eu fiquei nervosa o dia inteiro)' },
+      { from: 'them', text: 'eu rodei o quarteirão 3 vezes antes de te chamar' },
+      { from: 'me', text: 'NA CHUVA??' },
+      { from: 'them', text: 'na chuva' },
+      { from: 'me', text: 'bobo demais 😭❤' },
+      { from: 'them', text: 'vai dormir, encharcada' },
+      { from: 'me', text: 'boa noite, encharcado 💕' },
       { from: 'info', text: 'Alguns dias depois' },
-      { from: 'me', text: 'Domingo vai ter churrasco aqui em casa.' },
-      { from: 'me', text: 'Minha mãe quer te conhecer direito. O Alexandre também.' },
-      { from: 'me', text: 'Ele já tá afiando a faca kkkkk' },
-      { from: 'them', text: '...isso é piada, né?' },
-      { from: 'me', text: '😇' },
-      { from: 'them', text: 'Bella.' },
-      { from: 'me', text: 'Vem uma da tarde! Traz fome.' },
-      { from: 'them', text: 'Levo fome. E coragem.' },
+      { from: 'me', text: 'oiii' },
+      { from: 'me', text: 'tá fazendo o que domingo?' },
+      { from: 'them', text: 'nada ainda, por quê?' },
+      { from: 'me', text: 'vai ter churrasco aqui em casa' },
+      { from: 'me', text: 'minha mãe quer te conhecer direito' },
+      { from: 'me', text: 'e o Alexandre também 😇' },
+      { from: 'them', text: 'o Alexandre do "bom rapaz"?' },
+      { from: 'me', text: 'esse mesmo' },
+      { from: 'me', text: 'ele já tá até afiando a faca kkkkkk' },
+      { from: 'them', text: '...' },
+      { from: 'them', text: 'isso é piada né' },
+      { from: 'me', text: 'é sim kkkkk relaxa' },
+      { from: 'me', text: 'ele vai te amar. eu acho.' },
+      { from: 'them', text: 'que horas eu chego?' },
+      { from: 'me', text: 'uma da tarde. traz fome!' },
+      { from: 'them', text: 'levo fome. e coragem.' },
+      { from: 'them', text: 'e alguma coisa pra sua mãe, né? o que ela gosta?' },
+      { from: 'me', text: 'qualquer doce! todo mundo aqui é formiga' },
+      { from: 'them', text: 'deixa comigo então 📝🍌' },
     ]);
     ctx.startQuest('dq-e2');
     await ctx.teleport('piabeta-quintal', 'porta');
@@ -278,6 +314,9 @@ export const parqueMap: MapDef = {
     { key: 'prq-arco', x: 752, y: 810, w: 300, fade: true, shadow: false },
   ],
 
+  // ponte em arco: quem atravessa sobe e desce
+  bridge: { x0: 1245, x1: 1450, y0: 180, y1: 280, h: 30 },
+
   // Cena do beijo: pilastras da frente e telhado do coreto por cima dos dois
   overlays: [
     // pilares do portão (com os lampiões), folhas do portão e pilares da grade: na frente de quem passa atrás
@@ -289,7 +328,7 @@ export const parqueMap: MapDef = {
     // ponte: fatiada (a frente do tabuleiro passa na frente dos pés de quem atravessa)
     { x0: 1238, y0: 140, x1: 1452, y1: 278, base: 276, cut: 'furniture', slice: true },
     // só o telhado (até a viga): as pilastras da frente ficam dos lados, não por cima dos dois
-    { x0: 500, y0: 25, x1: 845, y1: 178, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    { x0: 500, y0: 25, x1: 845, y1: 203, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
   ],
 
   // Noite (o passeio é depois do lanche): véu escuro + postes e lanternas acesos

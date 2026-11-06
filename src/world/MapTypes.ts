@@ -165,6 +165,8 @@ export interface MapDef {
    * e alguns brilhos fracos (px do cenário ORIGINAL). Some devagar quando `when()` vira falso.
    */
   blackout?: { when: () => boolean; radius?: number; glows?: { x: number; y: number; r: number; alpha?: number }[] };
+  /** Ponte em arco: quem anda nela sobe até `h` px (arte original) no meio. x0..x1 = vão; y0..y1 = faixa do tabuleiro. */
+  bridge?: { x0: number; x1: number; y0: number; y1: number; h: number };
   /** Janelas (vidros) onde aparece chuva lá fora enquanto `when()` for verdadeiro. */
   rainWindows?: { rects: TileRect[]; when: () => boolean; /** false: a arte já tem o vidro chuvoso, só cai a chuva. */ glass?: boolean; /** dia de sol: pinta céu azul por cima do vidro chuvoso da arte */ sunny?: () => boolean };
   /** Vapor subindo (chapas, panelas, xícaras): pontos em px do cenário ORIGINAL. */

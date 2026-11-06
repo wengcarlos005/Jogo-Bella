@@ -198,6 +198,17 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  private liftPx = 0;
+  /** Desenha o personagem `px` pixels mais alto (subindo uma ponte), sem mexer na posição física. */
+  setLift(px: number): void {
+    const body = this.body as Phaser.Physics.Arcade.Body | null;
+    if (!body || Math.abs(px - this.liftPx) < 0.05) return;
+    const d = (px - this.liftPx) / (this.scaleY || 1);
+    this.liftPx = px;
+    this.setDisplayOrigin(this.displayOriginX, this.displayOriginY + d);
+    body.setOffset(body.offset.x, body.offset.y + d);
+  }
+
   faceTowards(x: number, y: number): void {
     const dx = x - this.x;
     const dy = y - this.y;

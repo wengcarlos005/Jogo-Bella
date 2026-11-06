@@ -14,7 +14,7 @@ const VO = PERSONAL.wengGrandparents.avoh;
 const VOH = PERSONAL.wengGrandparents.avo;
 
 /**
- * Retângulo medido no cenário ORIGINAL (art-source/maps/duque-apto.png, 1536x1024).
+ * Retângulo medido no cenário ORIGINAL (art-source/maps/duque-apto-base.webp, 1536x1024).
  * 48 px da imagem = 1 tile (16 px lógicos).
  */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
@@ -562,13 +562,20 @@ export const aptoMap: MapDef = {
     R(1110, 815, 1165, 850), // arranhador da sala
   ],
 
-  // Profundidade: o que fica na frente de quem passa atrás
-  overlays: [
-    { x0: 950, y0: 580, x1: 1105, y1: 790, base: 780, cut: 'furniture' }, // mesa de jantar
-    { x0: 512, y0: 488, x1: 606, y1: 612, base: 610, cut: 'foliage' }, // planta grande da sala
-    { x0: 1102, y0: 715, x1: 1172, y1: 853, base: 850, cut: 'furniture' }, // arranhador da sala
-    { x0: 515, y0: 850, x1: 607, y1: 960, base: 955, cut: 'foliage' }, // planta da porta (esq.)
-    { x0: 925, y0: 850, x1: 1013, y1: 960, base: 955, cut: 'foliage' }, // planta da porta (dir.)
+  // v2: cenário vazio (art-source/maps/duque-apto-base.webp) + móveis soltos da folha (objects/ap-*).
+  // Versão anterior em backups/apto-v1/.
+  objects: [
+    // sofá: profundidade um pouco acima da frente, pra quem senta ficar na frente dele
+    { key: 'ap-sofa', x: 750, y: 690, w: 320, base: 640, shadow: 0.9 },
+    { key: 'ap-mesinha', x: 715, y: 780, w: 160, shadow: 0.8 },
+    { key: 'ap-mesa', x: 1028, y: 782, w: 165, shadow: 0.8 },
+    { key: 'ap-tv', x: 475, y: 842, w: 80, shadow: 0.7 },
+    { key: 'ap-abajur', x: 913, y: 646, w: 58, shadow: 0.6 },
+    { key: 'ap-cesto', x: 1124, y: 602, w: 66, shadow: 0.8 },
+    { key: 'ap-arranhador', x: 1140, y: 852, w: 70, shadow: 0.7 },
+    { key: 'ap-planta', x: 565, y: 612, w: 100, shadow: 0.6 },
+    { key: 'ap-planta', x: 560, y: 958, w: 88, shadow: 0.6 },
+    { key: 'ap-planta', x: 968, y: 958, w: 88, shadow: 0.6, flip: true },
   ],
 
   lighting: {
@@ -691,7 +698,17 @@ export const aptoMap: MapDef = {
         ctx.unlockRegion('petropolis');
         // troca de capítulo: tela preta por trás (o mapa não aparece entre os cartões)
         await ctx.fadeOut(600);
-        await ctx.chapterCard('Fim do Capítulo 2', 'Duque de Caxias', 'Nosso cantinho.', 'Continuar');
+        await ctx.chapterCard('Fim do Capítulo 2', 'Duque de Caxias', 'Nosso cantinho.', 'Continuar', {
+          title: 'Nosso cantinho',
+          photos: ['cena-pascoa', 'cena-primeira-noite', 'cena-pazes'],
+          lines: [
+            'Ela conheceu o apê do Weng, e a Meli aprovou a visita (depois de um sachê e um novelo).',
+            'Teve Páscoa com chocolate demais, jantar a dois e a primeira noite juntos.',
+            'Teve a primeira briga boba, por causa de casais perfeitos da internet...',
+            '...e as primeiras pazes: a gente não é régua de ninguém. A gente é a gente.',
+            'E aí veio o convite: o aniversário dela seria na serra.',
+          ],
+        });
         await ctx.chapterCard('Capítulo 3', 'Petrópolis', 'O aniversário dela.', 'Começar');
         await ctx.teleport('pt-hotel-fora', 'portao');
         return;

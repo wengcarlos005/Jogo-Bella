@@ -74,7 +74,8 @@ export interface ScriptContext {
   /** Explosão de corações sobre um personagem. */
   hearts(who: string, count?: number): void;
   travel(label: string, icon?: string, ms?: number): Promise<void>;
-  chapterCard(kicker: string, title: string, sub: string, button?: string): Promise<void>;
+  /** Cartão de capítulo. `recap`: resumo do que aconteceu (fotos + frases que aparecem uma a uma). */
+  chapterCard(kicker: string, title: string, sub: string, button?: string, recap?: { title?: string; photos?: string[]; lines: string[] }): Promise<void>;
   unlockRegion(id: import('./types').RegionId): void;
   /** Cria um objeto temporário de cena (ex.: o carro do Uber). Base-centro em (tx*16, ty*16). */
   prop(id: string, key: string, tx: number, ty: number, frame?: number, scale?: number, depth?: number): void;

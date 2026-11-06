@@ -67,7 +67,17 @@ const scripts: Record<string, Script> = {
     await ctx.memory('mem-dq-05');
     // troca de capítulo: tela preta por trás (o mapa não aparece entre os cartões)
     await ctx.fadeOut(600);
-    await ctx.chapterCard('Fim do Capítulo 1', 'Piabetá', 'Namorando!', 'Continuar');
+    await ctx.chapterCard('Fim do Capítulo 1', 'Piabetá', 'Namorando!', 'Continuar', {
+      title: 'Dois encontros e um pedido',
+      photos: ['cena-churrasco-mesa', 'memory-dq-04', 'cena-pedido'],
+      lines: [
+        'No churrasco, o Weng sobreviveu à churrasqueira do Alexandre e conquistou a família com uma banoffee de banana.',
+        'A Lala, que ignorou o Alexandre por dois anos, deixou ele fazer carinho em dois minutos.',
+        'Voltaram à praça do primeiro beijo e brindaram de chapéu mexicano.',
+        'Depois veio o cinema, uma ligação muito suspeita da mãe...',
+        '...e um quarto cheio de luzinhas, tsurus e pétalas. Ela disse sim antes dele terminar a frase.',
+      ],
+    });
     await ctx.chapterCard('Capítulo 2', 'Duque de Caxias', 'Nosso cantinho. A primeira vez no apê do Weng.', 'Começar');
     ctx.setFlag('weng-segue');
     await ctx.teleport('duque-apto', 'porta');

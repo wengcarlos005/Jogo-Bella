@@ -9,7 +9,7 @@ const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
 const objActive = (o: string) => QuestSystem.isActive(Q) && !objDone(o);
 const ALE = PERSONAL.bellaStepdad.name;
 
-/** Retângulo no cenário ORIGINAL (art-source/maps/piabeta-quintal.webp, 1536x1024). 48 px = 1 tile. */
+/** Retângulo no cenário ORIGINAL (art-source/maps/piabeta-quintal-base.webp, 1536x1024). 48 px = 1 tile. */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
 const scripts: Record<string, Script> = {
@@ -34,22 +34,23 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'É ele! MÃE! O WENG CHEGOU!');
     await ctx.say('mae-bella', 'Então vai abrir, menina! Tá esperando o quê?');
     await ctx.move('player', 19.6, 17.3, 70);
-    await ctx.move('player', 16.9, 17.3, 70);
+    await ctx.move('player', 17.9, 17.3, 70);
     ctx.face('player', 'down');
     ctx.sfx('door');
     ctx.visible('weng', true);
-    await ctx.move('weng', 15.4, 17.5, 40);
+    // personagens maiores no quintal: espaço de sobra entre os dois
+    await ctx.move('weng', 15.3, 17.4, 40);
     ctx.face('weng', 'bella');
     ctx.face('player', 'weng');
-    await ctx.say('weng', 'Oi! Trouxe um refri. E um pudim.');
-    await ctx.say('bella', 'Um PUDIM? Você pesquisou "o que levar no churrasco da família dela"?');
+    await ctx.say('weng', 'Oi! Trouxe um refri. E uma banoffee de banana. Fui eu que fiz.');
+    await ctx.say('bella', 'Você FEZ uma banoffee? Pra minha família? Weng...');
     await ctx.emote('weng', 'sweat');
-    await ctx.say('weng', 'Talvez. O primeiro resultado dizia "leve pudim".');
+    await ctx.say('weng', 'Fiz duas. A primeira desmontou toda. Essa é a que deu certo.');
     ctx.hearts('player', 4);
     await ctx.say('bella', 'Vem, entra! Todo mundo tá te esperando.');
     ctx.follow('weng', true);
     await ctx.say('mae-bella', 'Chegou o Weng! Entra, querido, fica à vontade. O Alexandre já acendeu a churrasqueira.');
-    await ctx.say('mae-bella', 'Ai, trouxe pudim! Alexandre, ele trouxe PUDIM!');
+    await ctx.say('mae-bella', 'Ai, trouxe sobremesa! Alexandre, ele mesmo FEZ uma banoffee!');
     await ctx.say('pai-bella', '...Sabe virar carne?');
     await ctx.emote('weng', 'sweat');
     await ctx.say('weng', 'Sei! Quer dizer... sei aprender rápido.');
@@ -62,13 +63,15 @@ const scripts: Record<string, Script> = {
       await ctx.say('pai-bella', 'Weng. Vem cá. Toma o pegador.');
       await ctx.emote('weng', 'exclaim');
       await ctx.say('weng', 'Eu? Agora? Tá. Tá bom. Eu consigo.');
-      // o Weng vai pra churrasqueira; a Bella fica olhando, torcendo
+      // o Weng assume a churrasqueira (na frente, ao lado do Alexandre); a Bella vai pra trás, torcendo
       ctx.follow('weng', false);
-      await ctx.move('pai-bella', 8.8, 13.9, 45);
-      // na frente da bancada (fora dos tijolos e do isopor)
-      await ctx.move('weng', 7.3, 12.6, 50);
-      ctx.face('weng', 'left');
-      ctx.face('pai-bella', 'left');
+      await ctx.fadeOut(250);
+      ctx.place('weng', 6.9, 12.5, 'left');
+      ctx.place('pai-bella', 8.4, 12.3, 'left');
+      ctx.place('player', 7.6, 15.5, 'up');
+      await ctx.frame(7.6, 13.4, 0);
+      await ctx.fadeIn(300);
+      ctx.face('pai-bella', 'weng');
       ctx.face('player', 'weng');
       await ctx.say('bella', '(Vai, Weng! Você consegue! ...Eu acho.)');
       const r = await ctx.grill({ title: 'O Weng na churrasqueira', helper: 'Alexandre' });
@@ -81,6 +84,7 @@ const scripts: Record<string, Script> = {
         await ctx.say('pai-bella', 'Hm. Com treino melhora.');
         await ctx.say('weng', '(Pelo menos ele não me expulsou.)');
       }
+      await ctx.unfocus(300);
       ctx.follow('weng', true);
       ctx.objective(Q, 'churrasco');
       await ctx.say('mae-bella', 'Tá pronto? Então vem todo mundo pra mesa!');
@@ -117,15 +121,15 @@ const scripts: Record<string, Script> = {
       await ctx.say('pai-bella', 'E a Lala? Já deixou você fazer carinho nela?');
       await ctx.say('weng', 'Ainda não. Ela me ignora.');
       await ctx.say('pai-bella', 'Comigo ela fez isso por dois anos. Boa sorte.');
-      await ctx.say('mae-bella', 'Agora a sobremesa! O pudim que o Weng trouxe!');
-      await ctx.say('avo-bella', 'Deixa eu ver esse pudim... Hm. Furadinho. Do jeito certo.');
+      await ctx.say('mae-bella', 'Agora a sobremesa! A banoffee que o Weng fez!');
+      await ctx.say('avo-bella', 'Deixa eu provar essa banoffee... Hm. Doce de leite no ponto. Banana fresquinha.');
       await ctx.say('pai-bella', '...');
-      await ctx.say('pai-bella', '...O pudim também é bom.');
+      await ctx.say('pai-bella', '...A banoffee também é boa.');
       await ctx.emote('weng', 'heart');
       await ctx.say('bella', '(Dois elogios do Alexandre num dia só. Isso é histórico.)');
-      const c2 = await ctx.choose('weng', '(A mãe da Bella está olhando, esperando...)', ['"Foi a minha avó que me ensinou a escolher pudim."', '"Comprei na padaria mais longe só pra garantir."', '"Pudim é o caminho pro coração de qualquer família."']);
+      const c2 = await ctx.choose('weng', '(A mãe da Bella está olhando, esperando...)', ['"Foi a minha avó que me ensinou a receita."', '"Fiz duas. A primeira desmontou."', '"Doce é o caminho pro coração de qualquer família."']);
       if (c2 === 0) await ctx.say('mae-bella', 'Então manda um beijo pra ela! Ela criou você muito bem.');
-      else if (c2 === 1) await ctx.say('mae-bella', 'Andou tudo isso por um pudim? Bella, esse é pra casar.');
+      else if (c2 === 1) await ctx.say('mae-bella', 'Fez DUAS? Bella, esse é pra casar.');
       else await ctx.say('avo-bella', 'Esse menino é esperto. Gostei.');
       await ctx.say('bella', 'MÃE!');
       ctx.hearts('player', 6);
@@ -223,26 +227,42 @@ export const quintalMap: MapDef = {
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
+  // v2: cenário vazio (art-source/maps/piabeta-quintal-base.webp) + objetos da folha (objects/qt-*).
+  // Versão anterior em backups/quintal-v1/.
   blocks: [
-    R(0, 0, 1536, 425), // muro, casa e telhado
+    R(0, 0, 1536, 372), // muro, casa e telhado
     R(0, 0, 40, 1024),
     R(1500, 0, 1536, 1024),
-    R(40, 80, 335, 600), // churrasqueira
-    R(330, 300, 562, 575), // bancada com pia
-    R(562, 300, 672, 500),
-    R(110, 600, 292, 742), // isopor
-    R(0, 470, 105, 845), // arbusto da esquerda
-    R(0, 700, 185, 845),
-    R(440, 365, 870, 800), // mesa com cadeiras
-    R(1150, 425, 1400, 592), // varal: entre o muro e o varal não se anda (as roupas ficam sempre atrás de quem passa na frente)
-    R(1390, 0, 1536, 565), // tronco da árvore
-    R(1290, 590, 1536, 830), // floreira
+    R(40, 80, 290, 690), // churrasqueira
+    R(290, 300, 560, 585), // bancada com pia
     R(0, 845, 604, 1024), // muro de baixo (portão em x 604–905)
     R(905, 845, 1536, 1024),
     R(604, 885, 905, 1024),
+    // objetos: só a base
+    R(445, 520, 865, 815), // mesa com as cadeiras
+    R(120, 700, 285, 762), // isopor
+    R(1160, 445, 1185, 480), // postes do varal
+    R(1405, 445, 1430, 480),
+    R(1185, 372, 1405, 470), // entre o muro e o varal não se anda
+    R(1385, 515, 1475, 565), // tronco do abacateiro
+    R(735, 340, 805, 382), // vaso ao lado da porta
+    R(1060, 345, 1140, 392), // vaso da direita
+    R(1300, 760, 1536, 842), // floreira
+    R(0, 590, 110, 642), // moita da esquerda
+    R(0, 780, 175, 842), // moita do canto
   ],
 
-  overlays: [{ x0: 1390, y0: 0, x1: 1536, y1: 340, base: 565, cut: 'foliage', fade: true }],
+  objects: [
+    { key: 'qt-mesa', x: 655, y: 815, w: 420, shadow: 0.8 },
+    { key: 'qt-isopor', x: 200, y: 762, w: 175, shadow: 0.8 },
+    { key: 'qt-varal', x: 1295, y: 482, w: 290, shadow: false },
+    { key: 'qt-abacateiro', x: 1425, y: 565, w: 400, fade: true, shadow: 0.5 },
+    { key: 'qt-vaso', x: 770, y: 384, w: 80, shadow: 0.7 },
+    { key: 'qt-vaso', x: 1100, y: 394, w: 92, shadow: 0.7, flip: true },
+    { key: 'qt-floreira', x: 1415, y: 842, w: 220, shadow: false },
+    { key: 'qt-moita', x: 52, y: 645, w: 130, shadow: false, fade: true },
+    { key: 'qt-moita', x: 85, y: 845, w: 175, shadow: false, fade: true, flip: true },
+  ],
 
   hotspots: [
     { rect: R(150, 330, 335, 600), interact: 'churrasqueira', label: 'Churrasqueira', markerIf: () => objActive('churrasco') },

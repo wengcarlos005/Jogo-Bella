@@ -15,6 +15,7 @@ import { TitleScreen, type TitleActions } from './screens/TitleScreen';
 import { showMemoryPopup } from './screens/MemoryPopup';
 import { playBurgerGame, type BurgerOptions, type BurgerResult } from './screens/BurgerGame';
 import { InputSystem } from '@/systems/InputSystem';
+import { AudioSystem } from '@/systems/AudioSystem';
 import { bindTextures, textureURL, textureWidth } from './textures';
 import { openWardrobe, type WardrobeOption } from './screens/Wardrobe';
 import { Sidebar } from './components/Sidebar';
@@ -324,23 +325,63 @@ class UIManagerImpl {
     });
   }
 
-  /** Cartão de capítulo (ex.: fim do prólogo). Resolve ao confirmar. */
-  chapterCard(kicker: string, title: string, sub: string, button = 'Continuar'): Promise<void> {
+  /** Cartão de capítulo (ex.: fim do prólogo). Resolve ao confirmar. Com `recap`, mostra antes um resumo da história. */
+  chapterCard(kicker: string, title: string, sub: string, button = 'Continuar', recap?: { title?: string; photos?: string[]; lines: string[] }): Promise<void> {
     return new Promise((resolve) => {
+      const btn = h('button', { class: 'btn primary' }, button);
+      const card = h('div', { class: 'chapter-card' }, h('div', { class: 'k' }, kicker), h('div', { class: 't' }, title), h('div', { class: 's' }, sub));
+      const screen = h('div', { class: 'screen opaque cc-screen' });
+      let skip: (() => void) | null = null;
+      const wait = (ms: number) =>
+        new Promise<void>((r) => {
+          const t = setTimeout(r, ms);
+          skip = () => {
+            clearTimeout(t);
+            r();
+          };
+        });
+      let ready = false;
       const close = () => {
+        if (!ready) return skip?.();
         InputSystem.off('chapter:interact', close);
         InputSystem.pop('chapter');
-        screen.remove();
+        screen.classList.add('out');
+        setTimeout(() => screen.remove(), 350);
         resolve();
       };
-      const screen = h(
-        'div',
-        { class: 'screen opaque' },
-        h('div', { class: 'chapter-card' }, h('div', { class: 'k' }, kicker), h('div', { class: 't' }, title), h('div', { class: 's' }, sub), h('button', { class: 'btn primary', onclick: close }, button)),
-      );
+      btn.addEventListener('click', close);
       this.root.append(screen);
       InputSystem.push('chapter');
-      setTimeout(() => InputSystem.on('chapter:interact', close), 600);
+      InputSystem.on('chapter:interact', close);
+      void (async () => {
+        if (recap?.lines.length) {
+          const photos = h('div', { class: 'cc-photos' });
+          const list = h('div', { class: 'cc-lines' });
+          const box = h('div', { class: 'cc-recap' }, h('div', { class: 'cc-rt' }, recap.title ?? 'Até aqui...'), photos, list);
+          screen.append(box);
+          (recap.photos ?? []).forEach((key, i) => {
+            const url = textureURL(key);
+            if (!url) return;
+            const ph = h('div', { class: 'cc-photo', style: `--r:${(i % 2 ? 1 : -1) * (3 + i)}deg;animation-delay:${0.2 + i * 0.35}s` }, h('img', { src: url, alt: '' }));
+            photos.append(ph);
+          });
+          await wait(600 + (recap.photos?.length ?? 0) * 300);
+          for (const line of recap.lines) {
+            list.append(h('p', { class: 'cc-line' }, line));
+            AudioSystem.play('blip');
+            await wait(1500 + line.length * 22);
+          }
+          list.append(h('p', { class: 'cc-next' }, '▼'));
+          await new Promise<void>((r) => (skip = r));
+          box.classList.add('out');
+          await new Promise((r) => setTimeout(r, 400));
+          box.remove();
+        }
+        screen.append(card);
+        await new Promise((r) => setTimeout(r, 700));
+        card.append(btn);
+        ready = true;
+      })();
     });
   }
 
