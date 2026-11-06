@@ -159,6 +159,7 @@ export class NPC extends Character {
         // alguém veio conversar: para e espera
         this.choreHold -= delta;
         this.wiping = false;
+        this.endWipeTexture();
         body.setVelocity(0, 0);
         this.animateFromVelocity();
         return;
@@ -175,6 +176,24 @@ export class NPC extends Character {
         body.setVelocity(0, 0);
         if (this.facing !== 'up') this.face('up');
         this.wiping = true;
+        // folha dela limpando (de costas, passando o pano no balcão)
+        const wipeKey = `${this.charKey}-limpando`;
+        if (this.scene.textures.exists(wipeKey)) {
+          this.wipeAnimMs += delta;
+          this.anims.stop();
+          const seq = [0, 1, 2, 3, 2, 1];
+          this.setTexture(wipeKey, seq[Math.floor(this.wipeAnimMs / 170) % seq.length]);
+          this.wipeTex = true;
+          if (c.wipe <= 0) this.endWipeTexture();
+          if (c.wipe <= 0) {
+            c.i += c.dir;
+            if (c.i >= c.xs.length || c.i < 0) {
+              c.dir *= -1;
+              c.i += 2 * c.dir;
+            }
+          }
+          return;
+        }
         if (c.wipe <= 0) {
           c.i += c.dir;
           if (c.i >= c.xs.length || c.i < 0) {
@@ -186,6 +205,7 @@ export class NPC extends Character {
         return;
       }
       this.wiping = false;
+      this.endWipeTexture();
       // antes de andar pro lado, sai do vão (volta pro corredor)
       if (Math.abs(c.y - this.y) > 1.2) {
         body.setVelocity(0, Math.sign(c.y - this.y) * 22);
@@ -241,16 +261,28 @@ export class NPC extends Character {
   }
 
   /** Para a caminhada aleatória (ex.: ao conversar). */
+  private wipeTex = false;
+  private wipeAnimMs = 0;
+  /** Volta da folha de limpar pra folha de andar. */
+  private endWipeTexture(): void {
+    if (!this.wipeTex) return;
+    this.wipeTex = false;
+    this.setTexture(this.charKey, 12);
+    this.face(this.facing);
+  }
+
   /** Segura a rotina por um tempo (cena acontecendo). */
   holdChore(ms: number): void {
     this.choreHold = Math.max(this.choreHold, ms);
     this.wiping = false;
+    this.endWipeTexture();
   }
 
   pause(): void {
     (this.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
     this.choreHold = 4000;
     this.wiping = false;
+    this.endWipeTexture();
     this.wanderTimer = 2500;
     this.animateFromVelocity();
   }

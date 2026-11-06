@@ -232,11 +232,16 @@ export const rota66Map: MapDef = {
   blocks: [
     // paredes: fundo, janela à esquerda (inclinada), parede da direita, muretinha de baixo
     R(0, 0, 1536, 370),
-    R(0, 0, 125, 500),
-    R(0, 500, 95, 620),
-    R(0, 620, 65, 720),
-    R(0, 720, 40, 830),
-    R(0, 830, 45, 1100),
+    // parede da janela (inclinada): degrauzinhos seguindo o rodapé, até encostar no vidro
+    R(0, 0, 135, 360),
+    R(0, 360, 134, 380), R(0, 380, 130, 400), R(0, 400, 126, 420), R(0, 420, 122, 440),
+    R(0, 440, 118, 460), R(0, 460, 114, 480), R(0, 480, 110, 500), R(0, 500, 106, 520),
+    R(0, 520, 102, 540), R(0, 540, 98, 560), R(0, 560, 94, 580), R(0, 580, 90, 600),
+    R(0, 600, 86, 620), R(0, 620, 82, 640), R(0, 640, 78, 660), R(0, 660, 74, 680),
+    R(0, 680, 70, 700), R(0, 700, 66, 720), R(0, 720, 62, 740), R(0, 740, 58, 760),
+    R(0, 760, 54, 780), R(0, 780, 50, 800), R(0, 800, 48, 820), R(0, 820, 48, 840),
+    R(0, 840, 48, 860), R(0, 860, 48, 880), R(0, 880, 48, 900), R(0, 900, 48, 920),
+    R(0, 920, 48, 1100),
     R(1475, 0, 1536, 520),
     R(1498, 520, 1536, 700),
     R(1512, 700, 1536, 900),
@@ -251,8 +256,9 @@ export const rota66Map: MapDef = {
     R(1252, 330, 1312, 414),
     R(1300, 330, 1442, 432),
     // mesinhas da janela (a de baixo é a "mesa para dois")
-    R(125, 385, 300, 475),
-    R(90, 465, 290, 650), // a de baixo começa onde terminam as cadeiras da de cima (sem corredor no meio)
+    // mesinhas da janela: só o chão debaixo dos pés (dá pra passar atrás delas e entre as duas)
+    R(132, 438, 298, 474),
+    R(100, 606, 282, 650),
     // cabines do meio e de baixo (com a divisória de vidro na frente)
     R(434, 490, 723, 668),
     R(876, 490, 1164, 668),

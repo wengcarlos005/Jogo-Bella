@@ -53,6 +53,7 @@ export const ASSETS: AssetEntry[] = [
   char('NPC-003', 'vizinha', 'npcs/vizinha-walk.png', 136),
 
   char('NPC-004', 'atendente', 'npcs/atendente-walk.png', 136),
+  { id: 'NPC-004L', key: 'atendente-limpando', file: 'assets/npcs/atendente-limpando.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 136 },
   char('NPC-020', 'garcom', 'npcs/garcom-walk.png', 136),
   char('NPC-010', 'vof-weng', 'npcs/vof-weng-walk.png', 136),
   char('NPC-011', 'vom-weng', 'npcs/vom-weng-walk.png', 136),
