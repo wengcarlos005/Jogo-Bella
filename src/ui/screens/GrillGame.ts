@@ -4,17 +4,15 @@ import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
 
 /**
- * Minigame — "Hora do churrasco" (2º encontro, quintal da Bella). O Weng assume a churrasqueira do Alexandre.
- *
- * A família vai pedindo (mãe, Alexandre, avó, Bella), cada um com a carne e o ponto que gosta.
- *  1. Pegue a carne crua na bandeja e coloque numa das 6 vagas da grelha.
- *  2. Quando aparecer a setinha, VIRE (o lado de baixo já dourou; se esquecer, queima).
- *  3. Quando estiver no ponto do pedido, tire da grelha e entregue pra quem pediu.
- *  - "Sal grosso!": o Alexandre pede sal; salgue uma carne crua pra ganhar bônus.
- *  - Labareda: gordura pinga e sobe fogo; abane rápido.
- * Dura ~2 minutos (o sol vai se pondo). Estrelas pela pontuação.
- *
- * Arte: usa os sprites de minigames/churrasco-*.png quando existirem; senão, desenha em pixel art no canvas.
+ * Minigame — Churrasqueira do Alexandre (2º encontro, quintal da Bella). 10 FASES DE TIMING.
+ * Em cada fase uma carne vai pra grelha; o marcador corre pela barra de ponto (e a carne muda de cor
+ * junto). Aperte "Virar!" quando o marcador estiver no verde. As fases vão ficando mais rápidas, o verde
+ * mais estreito e, das últimas, o verde muda de lugar ou o fogo dá uns "trancos".
+ * (Descrição antiga abaixo, das versões anteriores.)
+ * A grelha é desenhada em pixel art num canvas (brasa, fumaça, faíscas, labareda, carne mudando de cor).
+ * Duas carnes ao mesmo tempo, dois lados cada: clique na carne quando a barrinha estiver no verde.
+ * De vez em quando sobe uma labareda: "Abanar!" antes que queime tudo.
+ * Ponto = 2, quase = 1, crua/queimada = 0 (por lado). Máximo: 16.
  */
 export interface GrillResult {
   points: number;
@@ -22,218 +20,171 @@ export interface GrillResult {
 }
 
 type Kind = 'picanha' | 'linguica' | 'frango' | 'pao';
-type Ponto = 'mal' | 'ponto' | 'bem';
 interface MeatDef {
   id: Kind;
   name: string;
-  rate: number; // quanto cozinha por segundo (cada lado)
+  rate: number;
   raw: string;
   ok: string;
   burnt: string;
-  pontos: Ponto[];
 }
+
 const MEATS: MeatDef[] = [
-  { id: 'picanha', name: 'Picanha', rate: 0.075, raw: '#e4596c', ok: '#94492a', burnt: '#2a1712', pontos: ['mal', 'ponto', 'bem'] },
-  { id: 'linguica', name: 'Linguiça', rate: 0.09, raw: '#e98a86', ok: '#a5452a', burnt: '#2a1712', pontos: ['ponto', 'bem'] },
-  { id: 'frango', name: 'Frango', rate: 0.065, raw: '#f3d0b3', ok: '#cf8c3c', burnt: '#33200f', pontos: ['ponto', 'bem'] },
-  { id: 'pao', name: 'Pão de alho', rate: 0.12, raw: '#f7e7bb', ok: '#e7a845', burnt: '#33200f', pontos: ['ponto'] },
+  { id: 'picanha', name: 'Picanha', rate: 0.1, raw: '#e4596c', ok: '#94492a', burnt: '#2a1712' },
+  { id: 'linguica', name: 'Linguiça', rate: 0.12, raw: '#e98a86', ok: '#a5452a', burnt: '#2a1712' },
+  { id: 'frango', name: 'Frango', rate: 0.085, raw: '#f3d0b3', ok: '#cf8c3c', burnt: '#33200f' },
+  { id: 'pao', name: 'Pão de alho', rate: 0.15, raw: '#f7e7bb', ok: '#e7a845', burnt: '#33200f' },
 ];
-const PONTO_TXT: Record<Ponto, string> = { mal: 'mal passada', ponto: 'ao ponto', bem: 'bem passada' };
-// faixas do "cozimento total" (0..2: 1 por lado)
-const RANGE: Record<Ponto, [number, number]> = { mal: [1.1, 1.38], ponto: [1.38, 1.66], bem: [1.66, 1.9] };
-const BURN = 2.0;
-const SIDE_BURN = 1.15; // um lado sozinho passou disso = queimou embaixo
 
-interface Guest {
-  id: string;
-  name: string;
-  portrait: string;
-  likes: Kind[];
-  el: HTMLElement;
-  bubble: HTMLElement;
-  bar: HTMLElement;
-  patience: number;
-  max: number;
-  wait: number;
-  served: number;
-}
-interface Slot {
-  el: HTMLElement;
-  img: HTMLElement;
-  gauge: HTMLElement;
-  fill: HTMLElement;
-  tip: HTMLElement;
-  flame: HTMLElement;
-  meat: MeatDef | null;
-  down: number; // lado de baixo
-  up: number; // lado de cima (já cozido antes de virar)
-  flipped: boolean;
-  salted: boolean;
-  flare: number;
-}
 
-const DURATION = 120;
-type Order = { kind: Kind; ponto: Ponto };
 
-// ------------------------------------------------------------------ desenho (fallback sem sprite)
+// ------------------------------------------------------------------ cores
 const hex = (c: string) => {
   const n = parseInt(c.slice(1), 16);
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 };
+const rgb = (r: number, g: number, b: number) => `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
 const mixC = (a: string, b: string, t: number) => {
   const A = hex(a);
   const B = hex(b);
   const k = Math.max(0, Math.min(1, t));
-  return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * k)).join(',')})`;
+  return rgb(A[0] + (B[0] - A[0]) * k, A[1] + (B[1] - A[1]) * k, A[2] + (B[2] - A[2]) * k);
 };
-const STATE_T = [0, 0.55, 0.85, 1.25]; // cru, ao ponto, bem passado, queimado
-const meatColor = (m: MeatDef, t: number) => (t <= 0.74 ? mixC(m.raw, m.ok, t / 0.74) : mixC(m.ok, m.burnt, (t - 0.74) / 0.6));
-const artCache = new Map<string, string>();
-/** Imagem da carne num estado (0..3). Sprite real (minigames/churrasco-carnes.png, 4x4) ou pixel art desenhada. */
-function meatArt(m: MeatDef, state: number, marked: boolean): string {
-  const key = `${m.id}-${state}-${marked}`;
-  const hit = artCache.get(key);
-  if (hit) return hit;
-  const W = 48;
-  const H = 30;
-  const cv = document.createElement('canvas');
-  cv.width = W;
-  cv.height = H;
-  const c = cv.getContext('2d')!;
-  const base = meatColor(m, STATE_T[state]);
+const shade = (c: string, f: number) => {
+  const m = c.match(/\d+/g)!.map(Number);
+  const g = (v: number) => (f >= 0 ? v + (255 - v) * f : v * (1 + f));
+  return rgb(g(m[0]), g(m[1]), g(m[2]));
+};
+const meatColor = (m: MeatDef, d: number) => (d <= 0.74 ? mixC(m.raw, m.ok, d / 0.74) : mixC(m.ok, m.burnt, (d - 0.74) / 0.5));
+
+/** Desenha uma carne em pixel art centrada em (cx, cy). `sq` achata na vertical (virando). */
+function drawMeat(c: CanvasRenderingContext2D, m: MeatDef, cook: number, cx: number, cy: number, marked: boolean, sq = 1, sc = 1): void {
+  const base = meatColor(m, cook);
+  const top = shade(base, 0.22);
+  const low = shade(base, -0.28);
+  const line = shade(base, -0.62);
   const px = (x: number, y: number, col: string) => {
     c.fillStyle = col;
-    c.fillRect(x, y, 1, 1);
+    c.fillRect(Math.round(cx + x * sc), Math.round(cy + y * sc * sq), Math.ceil(sc), Math.ceil(sc * Math.max(sq, 0.2)));
   };
-  const shape: Record<Kind, (x: number, y: number) => boolean> = {
-    picanha: (x, y) => ((x - 24) ** 2) / 400 + ((y - 16) ** 2) / 120 <= 1,
-    linguica: (x, y) => Math.max(0, Math.abs(x - 24) - 15) ** 2 + (y - 16) ** 2 <= 42,
-    frango: (x, y) => ((x - 21) ** 2) / 230 + ((y - 15) ** 2) / 110 <= 1 || (x > 33 && x < 44 && Math.abs(y - 15) < 3),
-    pao: (x, y) => Math.max(0, Math.abs(x - 24) - 15) ** 2 + Math.max(0, Math.abs(y - 15) - 4) ** 2 <= 30,
-  };
-  const inside = shape[m.id];
-  for (let y = 0; y < H; y++)
-    for (let x = 0; x < W; x++) {
+  // forma: devolve true se (x,y) está dentro, e se é borda
+  let inside: (x: number, y: number) => boolean;
+  let hw = 22;
+  let hh = 11;
+  if (m.id === 'picanha') {
+    hw = 22;
+    hh = 12;
+    inside = (x, y) => (x * x) / (hw * hw) + (y * y) / (hh * hh) <= 1;
+  } else if (m.id === 'linguica') {
+    hw = 26;
+    hh = 7;
+    inside = (x, y) => {
+      const ax = Math.max(0, Math.abs(x) - (hw - hh));
+      return ax * ax + y * y <= hh * hh;
+    };
+  } else if (m.id === 'frango') {
+    hw = 16;
+    hh = 12;
+    inside = (x, y) => ((x + 4) * (x + 4)) / (hw * hw) + (y * y) / (hh * hh) <= 1;
+  } else {
+    hw = 24;
+    hh = 9;
+    inside = (x, y) => {
+      const ax = Math.max(0, Math.abs(x) - (hw - 6));
+      const ay = Math.max(0, Math.abs(y) - (hh - 6));
+      return ax * ax + ay * ay <= 36;
+    };
+  }
+  // osso do frango (por trás)
+  if (m.id === 'frango') {
+    for (let x = 10; x <= 22; x++) for (let y = -2; y <= 2; y++) px(x, y, Math.abs(y) === 2 ? '#8a7a66' : y < 0 ? '#fffaf0' : '#ecdcc4');
+    for (const [kx, ky] of [[22, -4], [22, 3]])
+      for (let x = -2; x <= 2; x++) for (let y = -2; y <= 2; y++) if (x * x + y * y <= 5) px(kx + x, ky + y, x * x + y * y >= 4 ? '#8a7a66' : '#fffaf0');
+  }
+  for (let y = -hh - 1; y <= hh + 1; y++)
+    for (let x = -hw - 1; x <= hw + 1; x++) {
       if (!inside(x, y)) continue;
       const edge = !inside(x - 1, y) || !inside(x + 1, y) || !inside(x, y - 1) || !inside(x, y + 1);
-      let col = base;
-      if (m.id === 'picanha' && y < 10) col = mixC('#fbf1e2', '#5a3010', STATE_T[state]);
-      if (m.id === 'frango' && x > 33) col = '#fff6e6';
-      if (m.id === 'pao' && y < 13 && (x * 7 + y * 13) % 11 === 0) col = '#4f8a2e';
-      if (marked && (x - y * 1.6 + 200) % 8 < 1.5) col = mixC(base, '#140805', 0.6);
-      px(x, y, edge ? '#3a1a10' : col);
+      let col = y < -hh * 0.35 ? top : y > hh * 0.45 ? low : base;
+      // capa de gordura da picanha
+      if (m.id === 'picanha' && y < -hh * 0.45) col = mixC('#fbf1e2', '#e9b45a', Math.min(1, cook * 1.1));
+      if (m.id === 'picanha' && y < -hh * 0.45 && cook > 0.95) col = mixC('#e9b45a', '#3a2412', (cook - 0.95) * 3);
+      // brilho da linguiça
+      if (m.id === 'linguica' && y === -hh + 2 && Math.abs(x) < hw - 9 && x % 5 !== 0) col = shade(base, 0.45);
+      // pão de alho: cortes e salsinha
+      if (m.id === 'pao' && (x + 40) % 12 === 0 && Math.abs(y) < hh - 2) col = shade(base, -0.35);
+      if (m.id === 'pao' && y < 0 && (x * 7 + y * 13 + 91) % 17 === 0) col = '#4f8a2e';
+      // marcas da grelha depois de virar
+      if (marked && (x - y * 1.6 + 200) % 9 < 1.6 && !edge) col = shade(base, -0.55);
+      px(x, y, edge ? line : col);
     }
-  const url = cv.toDataURL();
-  artCache.set(key, url);
-  return url;
+  // brilho
+  if (cook < 0.9) px(-hw * 0.45, -hh * 0.5, 'rgba(255,255,255,0.75)');
 }
+
+
+interface Phase { meat: Kind; speed: number; okW: number; okC: number; twist?: 'fogo' | 'anda' | 'dupla'; line: string }
+const PHASES: Phase[] = [
+  { meat: 'pao', speed: 0.3, okW: 0.26, okC: 0.6, line: 'Começa pelo pão de alho. Esse é tranquilo.' },
+  { meat: 'linguica', speed: 0.34, okW: 0.24, okC: 0.6, line: 'Linguiça. Nem crua, nem carvão.' },
+  { meat: 'frango', speed: 0.38, okW: 0.22, okC: 0.62, line: 'Frango tem que ficar bem feitinho.' },
+  { meat: 'picanha', speed: 0.42, okW: 0.2, okC: 0.58, line: 'Agora a picanha. Respeita a picanha.' },
+  { meat: 'linguica', speed: 0.48, okW: 0.18, okC: 0.62, twist: 'fogo', line: 'Cuidado que a gordura pinga e o fogo dá tranco!' },
+  { meat: 'pao', speed: 0.52, okW: 0.17, okC: 0.55, line: 'Mais pão de alho. A vó pediu.' },
+  { meat: 'frango', speed: 0.56, okW: 0.16, okC: 0.6, twist: 'anda', line: 'Esse frango tem vontade própria... o ponto muda.' },
+  { meat: 'picanha', speed: 0.6, okW: 0.15, okC: 0.66, twist: 'fogo', line: 'A picanha do Alexandre. Sem pressão.' },
+  { meat: 'linguica', speed: 0.66, okW: 0.14, okC: 0.6, twist: 'dupla', line: 'Duas viradas seguidas! Uma de cada lado.' },
+  { meat: 'picanha', speed: 0.72, okW: 0.13, okC: 0.62, twist: 'anda', line: 'Última. A melhor parte do boi. Capricha.' },
+];
+const W = 200;
+const H = 112;
 
 export function playGrillGame(parent: HTMLElement, opts: { title?: string; helper?: string } = {}): Promise<GrillResult> {
   return new Promise((resolve) => {
     const who = opts.helper ?? 'Alexandre';
-    let score = 0;
-    let served = 0;
-    let missed = 0;
-    let time = 0;
+    let phase = 0;
+    let points = 0;
+    let pos = 0;
+    let dir = 1;
+    let okC = 0.6;
+    let okW = 0.2;
+    let speedMul = 1;
     let running = false;
     let done = false;
     let raf = 0;
     let last = 0;
-    let picked: Kind | null = null;
-    const orders = new Map<string, Order>();
-    const orderOf = (g: Guest): Order | null => orders.get(g.id) ?? null;
-    let holding: { meat: MeatDef; total: number; salted: boolean; from: Slot } | null = null;
-    let saltOn = false;
-    let saltCall = 18;
-    let flareIn = 14;
-    let talkLock = 0;
-    const sprite = (name: string) => textureURL(`churrasco-${name}`);
+    let time = 0;
+    let flipT = 1;
+    let marked = false;
+    let side = 0;
+    let shake = 0;
+    let dropT = 1;
+    const grades: number[] = [];
 
-    // ---------------------------------------------------------------- tela
-    const talk = (text: string, force = false) => {
-      if (!force && performance.now() < talkLock) return;
-      msg.textContent = text;
-      msg.classList.remove('pop');
-      void msg.offsetWidth;
-      msg.classList.add('pop');
-      talkLock = performance.now() + 2200;
-    };
-    const msg = h('div', { class: 'gp-bubble' }, 'Os pedidos vão aparecer ali. Pega na bandeja, bota na grelha, vira e entrega no ponto que cada um gosta!');
+    const canvas = h('canvas', { class: 'gp-canvas', width: String(W), height: String(H) }) as HTMLCanvasElement;
+    const c = canvas.getContext('2d')!;
+    const fx = h('div', { class: 'gp-fx' });
+    const bg = textureURL('map-piabeta-quintal-bg');
+    const stage = h('div', { class: 'gp-stage gt-stage' }, bg ? h('div', { class: 'gp-bg', style: `background-image:url(${bg})` }) : null, h('div', { class: 'gp-glow' }), canvas, fx);
+    const cursor = h('div', { class: 'gt-cursor' });
+    const zone = h('div', { class: 'gt-ok' });
+    const bar = h('div', { class: 'gt-bar' }, h('div', { class: 'gt-raw' }), zone, h('div', { class: 'gt-burn' }), cursor);
+    const labels = h('div', { class: 'gt-labels' }, h('span', {}, 'crua'), h('span', {}, 'no ponto'), h('span', {}, 'carvão'));
+    const phaseEl = h('div', { class: 'gt-phase' });
+    const dots = h('div', { class: 'gt-dots' }, ...PHASES.map(() => h('i')));
+    const meatName = h('div', { class: 'gt-meat' });
     const helperPic = textureURL('portrait-pai-bella');
-    const sun = h('div', { class: 'gh-sunfill' });
-    const scoreEl = h('b', {}, '0');
-    const hud = h('div', { class: 'gh-hud' }, h('div', { class: 'gh-sun' }, h('span', {}, '☀️'), h('div', { class: 'gh-sunbar' }, sun), h('span', {}, '🌙')), h('div', { class: 'gp-chip' }, '♥ ', scoreEl));
-
-    // bandeja de carnes cruas
-    const tray = h('div', { class: 'gh-tray' });
-    const trayBtns = new Map<Kind, HTMLElement>();
-    for (const m of MEATS) {
-      const b = h('button', { class: 'gh-raw', title: m.name }, h('img', { src: sprite(`${m.id}-0`) ?? meatArt(m, 0, false), alt: '' }), h('small', {}, m.name));
-      b.addEventListener('click', () => pick(m.id));
-      trayBtns.set(m.id, b);
-      tray.append(b);
-    }
-    const saltBtn = h('button', { class: 'gh-salt', title: 'Sal grosso' }, '🧂', h('small', {}, 'Sal'));
-    const fanBtn = h('button', { class: 'gh-fan', title: 'Abanar' }, '🪭', h('small', {}, 'Abanar'));
-    saltBtn.addEventListener('click', () => {
-      if (!running) return;
-      saltOn = !saltOn;
-      picked = null;
-      refreshPick();
-    });
-    fanBtn.addEventListener('click', () => fan());
-
-    // grelha com 6 vagas
-    const grate = h('div', { class: 'gh-grate' });
-    const slots: Slot[] = [];
-    for (let i = 0; i < 6; i++) {
-      const img = h('div', { class: 'gh-meat' });
-      const fill = h('i');
-      const gauge = h('div', { class: 'gh-gauge' }, h('span', { class: 'z mal' }), h('span', { class: 'z ponto' }), h('span', { class: 'z bem' }), fill);
-      const tip = h('div', { class: 'gh-tip' });
-      const flame = h('div', { class: 'gh-flame' }, h('i'), h('i'), h('i'));
-      const el = h('button', { class: 'gh-slot empty' }, flame, img, gauge, tip);
-      const s: Slot = { el, img, gauge, fill, tip, flame, meat: null, down: 0, up: 0, flipped: false, salted: false, flare: 0 };
-      el.addEventListener('click', () => clickSlot(s));
-      slots.push(s);
-      grate.append(el);
-    }
-    const grill = h(
-      'div',
-      { class: 'gh-grill', style: sprite('grelha') ? `background-image:url(${sprite('grelha')})` : '' },
-      h('div', { class: 'gh-coals' }),
-      grate,
-      h('div', { class: 'gh-smoke' }, h('i'), h('i'), h('i'), h('i')),
-    );
-    const hand = h('div', { class: 'gh-hand' });
-
-    // família pedindo
-    const guestsEl = h('div', { class: 'gh-guests' });
-    const guests: Guest[] = (
-    [
-      { id: 'mae', name: 'Mãe', portrait: 'portrait-mae-bella', likes: ['frango', 'pao', 'linguica'] },
-      { id: 'ale', name: 'Alexandre', portrait: 'portrait-pai-bella', likes: ['picanha', 'linguica'] },
-      { id: 'avo', name: 'Vó', portrait: 'portrait-avo-bella', likes: ['pao', 'frango', 'picanha'] },
-      { id: 'bella', name: 'Bella', portrait: 'portrait-bella', likes: ['picanha', 'linguica', 'pao'] },
-    ] as { id: string; name: string; portrait: string; likes: Kind[] }[]).map((g, i) => {
-      const bubble = h('div', { class: 'gh-order' });
-      const bar = h('i');
-      const url = textureURL(g.portrait);
-      const el = h('button', { class: 'gh-guest' }, url ? h('img', { src: url, alt: '' }) : h('span', {}, g.name[0]), h('b', {}, g.name), bubble, h('div', { class: 'gh-pat' }, bar));
-      const gg: Guest = { ...g, el, bubble, bar, patience: 0, max: 1, wait: 2 + i * 3.5, served: 0 };
-      el.addEventListener('click', () => serve(gg));
-      guestsEl.append(el);
-      return gg;
-    });
-
-    const startBtn = h('button', { class: 'btn primary gp-start' }, '🔥 Acender a churrasqueira!');
+    const msg = h('div', { class: 'gp-bubble' }, '10 rodadas. Aperta "Virar!" (ou espaço) quando o marcador estiver no verde.');
+    const flipBtn = h('button', { class: 'gt-flip' }, '↻ Virar!');
+    const startBtn = h('button', { class: 'btn primary gp-start' }, '🔥 Acender a brasa!');
     const actions = h('div', { class: 'bg-actions' }, startBtn);
     const panel = h(
       'div',
-      { class: 'bg-panel panel gp-panel gh-panel' },
+      { class: 'bg-panel panel gp-panel gt-panel' },
       h('div', { class: 'gp-title' }, h('span', {}, '🔥'), opts.title ?? 'Na churrasqueira', h('span', {}, '🔥')),
-      hud,
-      h('div', { class: 'gh-main' }, h('div', { class: 'gh-left' }, tray, h('div', { class: 'gh-tools' }, saltBtn, fanBtn)), h('div', { class: 'gh-center' }, grill, hand), guestsEl),
+      h('div', { class: 'gt-top' }, phaseEl, dots),
+      stage,
+      h('div', { class: 'gt-under' }, meatName, bar, labels),
       h('div', { class: 'gp-talk' }, helperPic ? h('img', { class: 'gp-face', src: helperPic, alt: '' }) : h('div'), h('div', { class: 'gp-who' }, who), msg),
       actions,
     );
@@ -242,332 +193,228 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
     InputSystem.push('minigame');
     InputSystem.releaseAll();
 
-    // ---------------------------------------------------------------- regras
-    const pop = (anchor: HTMLElement, text: string, cls: string) => {
-      const r = anchor.getBoundingClientRect();
-      const R = panel.getBoundingClientRect();
+    const talk = (t: string) => {
+      msg.textContent = t;
+      msg.classList.remove('pop');
+      void msg.offsetWidth;
+      msg.classList.add('pop');
+    };
+    const pop = (text: string, cls: string) => {
       const p = h('div', { class: `gp-pop ${cls}` }, text);
-      p.style.left = `${r.left - R.left + r.width / 2}px`;
-      p.style.top = `${r.top - R.top}px`;
-      panel.append(p);
+      p.style.left = '50%';
+      fx.append(p);
       setTimeout(() => p.remove(), 1200);
     };
-    const bump = () => {
-      scoreEl.textContent = String(score);
-      scoreEl.parentElement!.classList.remove('bump');
-      void scoreEl.offsetWidth;
-      scoreEl.parentElement!.classList.add('bump');
+    const burst = (n: number) => {
+      for (let i = 0; i < n; i++) {
+        const g = h('i', { class: 'gp-burst' }, ['♥', '★', '✦'][i % 3]);
+        const a = (i / n) * Math.PI * 2;
+        g.style.left = '50%';
+        g.style.top = '45%';
+        g.style.setProperty('--dx', `${Math.cos(a) * 70}px`);
+        g.style.setProperty('--dy', `${Math.sin(a) * 50 - 20}px`);
+        g.style.color = ['#ff7eb6', '#ffd75e', '#8dff86'][i % 3];
+        fx.append(g);
+        setTimeout(() => g.remove(), 900);
+      }
     };
-    const refreshPick = () => {
-      trayBtns.forEach((b, k) => b.classList.toggle('on', picked === k));
-      saltBtn.classList.toggle('on', saltOn);
-      hand.classList.toggle('on', !!holding);
-      hand.replaceChildren(...(holding ? [h('img', { src: sprite(`${holding.meat.id}-${stateOf(holding.total)}`) ?? meatArt(holding.meat, stateOf(holding.total), true), alt: '' }), h('small', {}, 'entregue pra quem pediu →')] : []));
-      screen.classList.toggle('gh-placing', !!picked || saltOn);
-      screen.classList.toggle('gh-holding', !!holding);
+    const P = () => PHASES[Math.min(phase, PHASES.length - 1)];
+    const meatDef = () => MEATS.find((m) => m.id === P().meat)!;
+    const layoutZone = () => {
+      zone.style.left = `${(okC - okW / 2) * 100}%`;
+      zone.style.width = `${okW * 100}%`;
     };
-    const stateOf = (total: number) => (total < RANGE.mal[0] * 0.75 ? 0 : total < RANGE.ponto[1] ? 1 : total < BURN ? 2 : 3);
-    const pontoOf = (total: number): Ponto | 'crua' | 'queimada' => {
-      if (total >= BURN) return 'queimada';
-      for (const p of ['mal', 'ponto', 'bem'] as Ponto[]) if (total >= RANGE[p][0] && total < RANGE[p][1]) return p;
-      return total >= RANGE.bem[1] ? 'bem' : 'crua';
+    const setPhase = () => {
+      const p = P();
+      okC = p.okC;
+      okW = p.okW;
+      pos = 0;
+      dir = 1;
+      side = 0;
+      marked = false;
+      dropT = 0;
+      layoutZone();
+      phaseEl.textContent = `Fase ${phase + 1} de ${PHASES.length}`;
+      meatName.textContent = meatDef().name + (p.twist === 'dupla' ? ' · 2 viradas' : '');
+      [...dots.children].forEach((d, i) => d.className = i < grades.length ? `g${grades[i]}` : i === phase ? 'now' : '');
+      talk(`${who}: "${p.line}"`);
     };
 
-    const pick = (k: Kind) => {
-      if (!running || holding) return;
-      picked = picked === k ? null : k;
-      saltOn = false;
-      AudioSystem.play('blip');
-      refreshPick();
-    };
-
-    const renderSlot = (s: Slot) => {
-      if (!s.meat) {
-        s.el.classList.add('empty');
-        s.el.classList.remove('flip', 'flaring', 'ready', 'burn');
-        s.img.style.backgroundImage = '';
-        s.tip.textContent = '';
+    const flip = () => {
+      if (!running || done || flipT < 1 || dropT < 1) return;
+      const p = P();
+      const d = Math.abs(pos - okC);
+      const g = d <= okW / 2 ? 2 : d <= okW / 2 + 0.09 ? 1 : 0;
+      flipT = 0;
+      AudioSystem.play(g === 2 ? 'pickup' : g === 1 ? 'blip' : 'cancel');
+      if (p.twist === 'dupla' && side === 0) {
+        // primeira virada da fase dupla: conta metade e vira pro outro lado
+        side = 1;
+        marked = true;
+        pop(g === 2 ? 'Boa! Agora o outro lado' : g ? 'Quase...' : 'Ih...', g === 2 ? 'g2' : g ? 'g1' : 'g0');
+        points += g / 2;
+        pos = 0;
+        dir = 1;
         return;
       }
-      const total = s.down + s.up;
-      // o que se vê é o lado de cima: antes de virar, cru; depois, o lado que dourou embaixo
-      const seen = s.flipped ? s.up / 1.0 : 0;
-      const st = s.flipped ? (seen < 0.5 ? 0 : seen < 0.95 ? 1 : seen < SIDE_BURN ? 2 : 3) : 0;
-      s.img.style.backgroundImage = `url(${sprite(`${s.meat.id}-${st}`) ?? meatArt(s.meat, st, s.flipped)})`;
-      s.fill.style.width = `${Math.min(1, total / BURN) * 100}%`;
-      const needFlip = !s.flipped && s.down > 0.6;
-      s.el.classList.toggle('flip', needFlip);
-      s.el.classList.toggle('ready', s.flipped && total >= RANGE.mal[0] && total < BURN);
-      s.el.classList.toggle('burn', s.down > SIDE_BURN || total >= BURN);
-      s.el.classList.toggle('flaring', s.flare > 0);
-      s.el.classList.toggle('salted', s.salted);
-      s.tip.textContent = needFlip ? '↻ virar!' : s.flipped ? (pontoOf(total) === 'crua' ? '' : pontoOf(total) === 'queimada' ? 'queimou!' : PONTO_TXT[pontoOf(total) as Ponto]) : '';
+      const got = p.twist === 'dupla' ? g / 2 : g;
+      points += got;
+      grades.push(g);
+      marked = true;
+      if (g === 2) {
+        pop('PERFEITO!', 'g2');
+        burst(14);
+        talk(`${who}: "${['No ponto. Aprovado.', 'Hm. Sabe fazer churrasco.', 'Isso. Isso aí.', 'Olha a cor dessa carne...'][phase % 4]}"`);
+      } else if (g === 1) {
+        pop(pos < okC ? 'Quase... tava cruinha' : 'Passou um pouco', 'g1');
+        talk(`${who}: "Quase. Dá pra comer."`);
+      } else {
+        pop(pos < okC ? 'Crua!' : 'Queimou!', 'g0');
+        shake = 0.35;
+        talk(`${who}: "${pos < okC ? 'Tá mugindo ainda, rapaz.' : '...Isso aí é carvão.'}"`);
+      }
+      running = false;
+      setTimeout(() => {
+        phase++;
+        if (phase >= PHASES.length) return end();
+        setPhase();
+        running = true;
+      }, 1500);
     };
 
-    const clickSlot = (s: Slot) => {
-      if (!running || done) return;
-      if (saltOn) {
-        if (s.meat && !s.salted && !s.flipped) {
-          s.salted = true;
-          AudioSystem.play('pickup');
-          pop(s.el, 'Sal grosso! +1', 'g1');
-          score += 1;
-          bump();
+    const draw = () => {
+      c.clearRect(0, 0, W, H);
+      c.save();
+      if (shake > 0) c.translate(Math.round((Math.random() - 0.5) * 4), 0);
+      for (let y = 0; y < H; y += 6)
+        for (let x = -(y % 12 === 0 ? 0 : 6); x < W; x += 12) {
+          c.fillStyle = (x * 3 + y * 7) % 5 === 0 ? '#b5502f' : '#a3452a';
+          c.fillRect(x, y, 11, 5);
+          c.fillStyle = '#c86640';
+          c.fillRect(x, y, 11, 1);
         }
-        saltOn = false;
-        refreshPick();
-        renderSlot(s);
-        return;
-      }
-      if (!s.meat && holding) {
-        // ninguém pediu essa? volta pra grelha (continua cozinhando de onde parou)
-        s.meat = holding.meat; s.down = 0; s.up = holding.total; s.flipped = true; s.salted = holding.salted; s.flare = 0;
-        s.el.classList.remove('empty');
-        holding = null;
-        AudioSystem.play('blip');
-        refreshPick();
-        renderSlot(s);
-        return;
-      }
-      if (!s.meat) {
-        if (!picked) return;
-        const m = MEATS.find((x) => x.id === picked)!;
-        s.meat = m; s.down = 0; s.up = 0; s.flipped = false; s.salted = false; s.flare = 0;
-        s.el.classList.remove('empty');
-        s.el.classList.remove('drop');
-        void s.el.offsetWidth;
-        s.el.classList.add('drop');
-        AudioSystem.play('blip');
-        picked = null;
-        refreshPick();
-        renderSlot(s);
-        return;
-      }
-      if (holding) return;
-      if (!s.flipped) {
-        // virar
-        if (s.down < 0.35) {
-          talk(`${who}: "Calma! Deixa dourar embaixo primeiro."`);
-          return;
+      const bx = 10, by = 10, bw = W - 20, bh = 92;
+      c.fillStyle = '#1b0f0b';
+      c.fillRect(bx, by, bw, bh);
+      for (let y = by + 50; y < by + bh; y += 2)
+        for (let x = bx + 2; x < bx + bw - 2; x += 2) {
+          const lump = Math.sin(x * 0.55) * Math.sin(y * 0.9 + x * 0.21);
+          const n = Math.sin(x * 0.7 + time * 2.1) + Math.sin(y * 1.3 - time * 1.6) + Math.sin((x + y) * 0.3 + time * 1.1);
+          const heat = Math.max(0, Math.min(1, (n + 1.5) / 3.4 + (y - by - 50) / 70 + lump * 0.25));
+          c.fillStyle = heat > 0.92 ? '#ffd36a' : heat > 0.78 ? '#ff8d2e' : heat > 0.6 ? '#d8441f' : heat > 0.42 ? '#6e2414' : '#24120d';
+          c.fillRect(x, y, 2, 2);
         }
-        [s.down, s.up] = [0, s.down];
-        s.flipped = true;
-        s.el.classList.remove('flipping');
-        void s.el.offsetWidth;
-        s.el.classList.add('flipping');
-        AudioSystem.play('confirm');
-        renderSlot(s);
-        return;
+      for (let y = by + 8; y < by + bh - 8; y += 7) {
+        c.fillStyle = '#2a2424';
+        c.fillRect(bx + 2, y, bw - 4, 2);
+        c.fillStyle = '#8b8080';
+        c.fillRect(bx + 2, y, bw - 4, 1);
       }
-      // tirar da grelha (com o pegador)
-      const total = s.down + s.up;
-      holding = { meat: s.meat, total, salted: s.salted, from: s };
-      s.meat = null;
-      AudioSystem.play('pickup');
-      renderSlot(s);
-      refreshPick();
-      talk(`${who}: "Agora entrega. Quem pediu ${holding.meat.name.toLowerCase()}?"`);
-    };
-
-    const LINES = {
-      perfeito: ['"No ponto! Do jeitinho que eu gosto!"', '"Hmm, que delícia, querido!"', '"Esse menino sabe das coisas."'],
-      quase: ['"Tá bom... só passou um tiquinho."', '"Dá pra comer sim!"'],
-      ruim: ['"Isso aí tá cru, meu filho!"', '"...É carvão?"', '"Não era bem isso que eu pedi..."'],
-      errado: ['"Não pedi isso não!"', '"Hm? Eu pedi outra coisa."'],
-    };
-    const pick1 = (a: string[]) => a[Math.floor(Math.random() * a.length)];
-
-    const serve = (g: Guest): void => {
-      const hand2 = holding;
-      const order0 = orderOf(g);
-      if (!running || hand2 === null) return;
-      const matches = order0 !== null && order0.kind === hand2.meat.id;
-      if (!matches) {
-        AudioSystem.play('cancel');
-        pop(g.el, 'Não é isso!', 'g0');
-        talk(`${g.name}: ${pick1(LINES.errado)}`, true);
-        return;
+      // a carne no meio, grande; cor = ponto atual
+      const m = meatDef();
+      let y = 58;
+      let sq = 1;
+      if (dropT < 1) {
+        y = 58 - (1 - dropT) * (1 - dropT) * 70;
       }
-      const got = pontoOf(hand2.total);
-      const want = order0.ponto;
-      const order = ['crua', 'mal', 'ponto', 'bem', 'queimada'];
-      const dist = Math.abs(order.indexOf(got) - order.indexOf(want));
-      const pts = got === 'crua' || got === 'queimada' ? 0 : dist === 0 ? 3 : dist === 1 ? 1 : 0;
-      const bonus = pts > 0 && hand2.salted ? 1 : 0;
-      const fast = pts > 0 && g.patience > g.max * 0.5 ? 1 : 0;
-      score += pts + bonus + fast;
-      served++;
-      g.served++;
-      bump();
-      AudioSystem.play(pts === 3 ? 'pickup' : pts ? 'blip' : 'cancel');
-      pop(g.el, pts === 3 ? `PERFEITO! +${pts + bonus + fast}` : pts ? `+${pts + bonus + fast}` : 'Eita...', pts === 3 ? 'g2' : pts ? 'g1' : 'g0');
-      talk(`${g.name}: ${pts === 3 ? pick1(LINES.perfeito) : pts ? pick1(LINES.quase) : pick1(LINES.ruim)}`, true);
-      g.el.classList.remove('happy');
-      void g.el.offsetWidth;
-      if (pts) g.el.classList.add('happy');
-      orders.delete(g.id);
-      g.wait = 3 + Math.random() * 4;
-      renderGuest(g);
-      holding = null;
-      refreshPick();
-    };
-
-    const renderGuest = (g: Guest) => {
-      const o = orderOf(g);
-      g.el.classList.toggle('waiting', !!o);
-      if (!o) {
-        g.bubble.replaceChildren();
-        g.bar.style.width = '0';
-        return;
+      if (flipT < 1) {
+        y -= Math.sin(flipT * Math.PI) * 22;
+        sq = Math.max(0.12, Math.abs(Math.cos(flipT * Math.PI)));
       }
-      const m = MEATS.find((x) => x.id === o.kind)!;
-      g.bubble.replaceChildren(h('img', { src: sprite(`${m.id}-${o.ponto === 'bem' ? 2 : 1}`) ?? meatArt(m, o.ponto === 'bem' ? 2 : 1, true), alt: '' }), h('span', {}, `${m.name}`), h('small', {}, PONTO_TXT[o.ponto]));
-      const k = g.patience / g.max;
-      g.bar.style.width = `${k * 100}%`;
-      g.bar.style.background = k > 0.5 ? '#6fc46a' : k > 0.25 ? '#f2cf62' : '#ff6b5a';
+      c.fillStyle = 'rgba(0,0,0,0.35)';
+      c.fillRect(W / 2 - 40, 74, 80, 4);
+      if (P().twist === 'fogo' && Math.sin(time * 3) > 0.55) drawFlames(W / 2, 80, 70);
+      drawMeat(c, m, Math.min(1.25, pos * 1.25), W / 2, y, marked, sq, 2.2);
+      // fumaça
+      c.fillStyle = `rgba(235,230,225,${0.15 + pos * 0.25})`;
+      for (let k = 0; k < 4; k++) {
+        const t = (time * 0.6 + k / 4) % 1;
+        c.beginPath();
+        c.arc(W / 2 - 30 + k * 20 + Math.sin(time + k) * 4, 50 - t * 45, 3 + t * 6, 0, Math.PI * 2);
+        c.fill();
+      }
+      c.restore();
     };
+    function drawFlames(cx: number, by2: number, w: number): void {
+      for (let k = 0; k < 9; k++) {
+        const fx2 = cx - w / 2 + (k + 0.5) * (w / 9);
+        const hgt = 14 + Math.sin(time * 14 + k * 1.7) * 5 + (k % 2) * 7;
+        for (let yy = 0; yy < hgt; yy++) {
+          const t = yy / hgt;
+          const half = Math.max(0, (1 - t) * 3.4);
+          c.fillStyle = t < 0.3 ? '#fff4b0' : t < 0.55 ? '#ffc23d' : t < 0.8 ? '#ff7a1e' : '#d8341f';
+          c.fillRect(Math.round(fx2 - half), Math.round(by2 - yy), Math.max(1, Math.round(half * 2)), 1);
+        }
+      }
+    }
 
-    const fan = () => {
-      if (!running) return;
-      const any = slots.some((s) => s.flare > 0);
-      slots.forEach((s) => (s.flare = 0));
-      grill.classList.remove('fanning');
-      void grill.offsetWidth;
-      grill.classList.add('fanning');
-      AudioSystem.play(any ? 'confirm' : 'blip');
-      if (any) talk(`${who}: "Boa. Fogo baixo, carne feliz."`, true);
-      fanBtn.classList.remove('hot');
-    };
-
-    // ---------------------------------------------------------------- loop
     const tick = (t: number) => {
       const dt = last ? Math.min(0.05, (t - last) / 1000) : 0;
       last = t;
-      if (running) {
-        time += dt;
-        sun.style.width = `${Math.min(1, time / DURATION) * 100}%`;
-        grill.style.setProperty('--dusk', String(Math.min(1, time / DURATION)));
-        for (const s of slots) {
-          if (!s.meat) continue;
-          if (s.flare > 0) s.flare = Math.max(0, s.flare - dt);
-          s.down += s.meat.rate * (s.flare > 0 ? 2.6 : 1) * dt;
-          if (!s.flipped && s.down > SIDE_BURN + 0.25) {
-            // esqueceu de virar: queimou de um lado
-            pop(s.el, 'Queimou embaixo!', 'g0');
-            AudioSystem.play('cancel');
-            talk(`${who}: "Tem que virar, rapaz! Virou carvão de um lado."`, true);
-            missed++;
-            s.meat = null;
-          } else if (s.flipped && s.down + s.up > BURN + 0.2) {
-            pop(s.el, 'Carvão!', 'g0');
-            AudioSystem.play('cancel');
-            talk(`${who}: "...Essa aí já era."`, true);
-            missed++;
-            s.meat = null;
-          }
-          renderSlot(s);
+      time += dt;
+      if (shake > 0) shake -= dt;
+      if (flipT < 1) flipT = Math.min(1, flipT + dt * 2.4);
+      if (dropT < 1) dropT = Math.min(1, dropT + dt * 2.2);
+      if (running && dropT >= 1) {
+        const p = P();
+        // fogo: o marcador dá trancos; anda: o verde passeia
+        speedMul = p.twist === 'fogo' && Math.sin(time * 3) > 0.55 ? 1.9 : 1;
+        if (p.twist === 'anda') {
+          okC = p.okC + Math.sin(time * 1.3) * 0.16;
+          layoutZone();
         }
-        // pedidos
-        for (const g of guests) {
-          if (orderOf(g)) {
-            g.patience -= dt;
-            if (g.patience <= 0) {
-              talk(`${g.name}: "Ah, deixa... vou pegar farofa."`, true);
-              pop(g.el, 'Cansou de esperar', 'g0');
-              orders.delete(g.id);
-              g.wait = 4;
-              missed++;
-            }
-            renderGuest(g);
-          } else if (time < DURATION - 12) {
-            g.wait -= dt;
-            if (g.wait <= 0) {
-              const kind = g.likes[Math.floor(Math.random() * g.likes.length)];
-              const m = MEATS.find((x) => x.id === kind)!;
-              const ponto = g.id === 'ale' && kind === 'picanha' ? 'mal' : m.pontos[Math.floor(Math.random() * m.pontos.length)];
-              orders.set(g.id, { kind, ponto });
-              g.max = 48 - Math.min(14, time / 8);
-              g.patience = g.max;
-              AudioSystem.play('msg');
-              renderGuest(g);
-            }
-          }
+        pos += dir * p.speed * speedMul * dt;
+        if (pos >= 1) {
+          pos = 1;
+          dir = -1;
+        } else if (pos <= 0) {
+          pos = 0;
+          dir = 1;
         }
-        // sal grosso: o Alexandre pede de vez em quando
-        saltCall -= dt;
-        if (saltCall <= 0) {
-          saltCall = 22 + Math.random() * 10;
-          saltBtn.classList.add('call');
-          setTimeout(() => saltBtn.classList.remove('call'), 4000);
-          talk(`${who}: "Não esquece o sal grosso na carne crua! Faz toda a diferença."`, true);
-        }
-        // labareda
-        flareIn -= dt;
-        if (flareIn <= 0) {
-          flareIn = 11 + Math.random() * 8;
-          const cands = slots.filter((s) => s.meat);
-          if (cands.length) {
-            const s = cands[Math.floor(Math.random() * cands.length)];
-            s.flare = 5;
-            fanBtn.classList.add('hot');
-            AudioSystem.play('horn');
-            talk(`${who}: "Labareda! Abana, abana!"`, true);
-          }
-        }
-        if (!slots.some((s) => s.flare > 0)) fanBtn.classList.remove('hot');
-        if (time >= DURATION && orders.size === 0 && !holding) end();
-        else if (time >= DURATION + 15) end();
+        cursor.style.left = `${pos * 100}%`;
+        bar.classList.toggle('hot', Math.abs(pos - okC) <= okW / 2);
       }
+      draw();
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
 
     const start = () => {
       if (running || done) return;
+      actions.replaceChildren(flipBtn);
+      setPhase();
       running = true;
-      actions.replaceChildren();
-      talk(`${who}: "A família tá com fome. Bora, churrasqueiro!"`, true);
-      guests.forEach(renderGuest);
     };
-
     const end = () => {
-      if (done) return;
       done = true;
       running = false;
-      const stars = score >= 30 ? 3 : score >= 16 ? 2 : 1;
-      talk(stars === 3 ? `${who}: "...Bom rapaz. Pode voltar sempre."` : stars === 2 ? `${who}: "Dá pro gasto. Com treino melhora."` : `${who}: "Deixa que eu termino. Vai lá conversar."`, true);
+      const score = Math.round(points);
+      const stars = score >= 16 ? 3 : score >= 10 ? 2 : 1;
+      [...dots.children].forEach((d, i) => (d.className = `g${grades[i] ?? 0}`));
+      talk(stars === 3 ? `${who}: "...Bom rapaz. Pode voltar sempre."` : stars === 2 ? `${who}: "Dá pro gasto. Com treino melhora."` : `${who}: "Deixa que eu termino. Vai lá conversar."`);
       AudioSystem.play('quest');
+      if (stars === 3) burst(24);
       const close = () => {
         InputSystem.off('minigame:interact', close);
         cleanup();
         resolve({ points: score, stars });
       };
       actions.replaceChildren(
-        h('div', { class: 'gh-final' }, `${served} pedidos entregues · ${score} ♥${missed ? ` · ${missed} perdidos` : ''}`),
+        h('div', { class: 'gh-final' }, `${grades.filter((g) => g === 2).length} perfeitas de ${PHASES.length}`),
         h('div', { class: 'bg-stars' }, ...[0, 1, 2].map((k) => h('span', { class: k < stars ? 'on' : '', style: `animation-delay:${k * 0.25}s` }, '★'))),
         h('button', { class: 'btn primary', onclick: close }, 'Servir a mesa ♥'),
       );
-      setTimeout(() => InputSystem.once('minigame:interact', close), 400);
+      setTimeout(() => InputSystem.once('minigame:interact', close), 500);
     };
 
     startBtn.addEventListener('click', start);
-    const onInteract = () => {
-      if (!running && !done) start();
-    };
-    const keys = (e: KeyboardEvent) => {
-      if (!running) return;
-      const n = Number(e.key);
-      if (n >= 1 && n <= 4) pick(MEATS[n - 1].id);
-      if (e.key.toLowerCase() === 'f') fan();
-    };
-    window.addEventListener('keydown', keys);
+    flipBtn.addEventListener('click', flip);
+    const onInteract = () => (!running && !done && actions.contains(startBtn) ? start() : flip());
     InputSystem.on('minigame:interact', onInteract);
-    // estado legível (testes automáticos)
-    (screen as HTMLElement & { __grill?: unknown }).__grill = { slots, guests, orders, get holding() { return holding; }, get time() { return time; }, set time(v: number) { time = v; } };
+    (screen as HTMLElement & { __grill?: unknown }).__grill = { get pos() { return pos; }, get okC() { return okC; }, get okW() { return okW; }, get phase() { return phase; }, get running() { return running; } };
 
     function cleanup() {
       cancelAnimationFrame(raf);
-      window.removeEventListener('keydown', keys);
       InputSystem.off('minigame:interact', onInteract);
       InputSystem.pop('minigame');
       screen.remove();

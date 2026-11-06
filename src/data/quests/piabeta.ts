@@ -54,7 +54,7 @@ export const PIABETA_QUESTS: QuestDef[] = [
     description: 'Depois do lanche, uma caminhada por Fragoso até o parque.',
     objectives: [
       { id: 'gatos', text: 'Fazer carinho nos 3 gatinhos de Fragoso', hint: 'Eles fogem se você chega perto... vá de mansinho, ou espere eles pararem pra se lamber.' },
-      { id: 'fragoso', text: 'Caminhar por Fragoso com o Weng', hint: `Saia da ${ROTA} e siga pela calçada à esquerda.` },
+      { id: 'fragoso', text: 'Caminhar por Fragoso com o Weng', hint: `Saia da ${ROTA} e siga pela calçada à direita.` },
       { id: 'parque', text: 'Chegar no parque', hint: 'No fim da rua de baixo de Fragoso.' },
       { id: 'passear', text: 'Passear pelo parque com o Weng', hint: 'Siga o caminho de terra até o meio do parque.' },
       { id: 'abrigo', text: 'Correr para o coreto!', hint: 'O coreto fica no alto do parque, no centro.' },

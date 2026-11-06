@@ -55,13 +55,13 @@ const scripts: Record<string, Script> = {
     await ctx.fadeOut(300);
     ctx.follow('weng', false);
     // dentro do coreto, no piso, entre as colunas da frente
-    ctx.place('player', 13.25, 5.3, 'right');
-    ctx.place('weng', 14.65, 5.3, 'left');
+    ctx.place('player', 12.7, 5.65, 'right');
+    ctx.place('weng', 14.05, 5.65, 'left');
     ctx.scale('player', 0.86);
     ctx.scale('weng', 0.86);
     await ctx.fadeIn(500);
     ctx.letterbox(true);
-    await ctx.focus(13.5, 4.9, 1.5, 1200);
+    await ctx.focus(13.4, 5.0, 1.5, 1200);
 
     await ctx.say('bella', 'Que chuva é essa?! Do nada!');
     await ctx.say('weng', 'Pelo menos a gente achou o coreto a tempo. Mais ou menos a tempo.');
@@ -83,7 +83,7 @@ const scripts: Record<string, Script> = {
 
     ctx.face('player', 'right');
     ctx.face('weng', 'left');
-    await ctx.focus(13.5, 4.7, 2.1, 2200);
+    await ctx.focus(13.4, 4.9, 2.1, 2200);
     await ctx.kiss();
     await ctx.fadeOut(1600, '#fff3f6');
     ctx.objective(Q, 'beijo');

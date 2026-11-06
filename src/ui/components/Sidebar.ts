@@ -147,7 +147,7 @@ export class Sidebar {
       h('div', { class: 'tb-place' }, h('span', { class: 'tb-moon' }, '☾'), place),
       heart,
       h('div', { class: 'tb-spacer' }),
-      obj ? h('div', { class: 'tb-quest' }, h('span', { class: 'tb-qheart' }, '♥'), h('b', {}, `${QuestSystem.def(tracked!).title}: `), obj.text) : '',
+      obj ? h('div', { class: 'tb-quest', title: `${QuestSystem.def(tracked!).title}: ${obj.text}` }, h('span', { class: 'tb-qheart' }, '♥ '), h('span', { class: 'tb-qtext' }, obj.text)) : '',
       h('div', { class: 'tb-spacer' }),
       h('div', { class: 'tb-mem' }, h('span', { class: 'tb-album' }), 'Lembranças ', h('b', {}, `${n}/${MEMORY_GOAL}`)),
     );

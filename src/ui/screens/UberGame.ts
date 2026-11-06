@@ -144,12 +144,15 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
     const touching = (el: HTMLElement): boolean => {
       const a = player.getBoundingClientRect();
       const b = el.getBoundingClientRect();
-      // margem: o carro tem espaço vazio na frente/atrás do desenho
-      const ax0 = a.left + a.width * 0.12;
+      // corpo do carro: tira as bordas transparentes do desenho
+      const ax0 = a.left + a.width * 0.16;
       const ax1 = a.right - a.width * 0.12;
-      const bx0 = b.left + b.width * 0.15;
-      const bx1 = b.right - b.width * 0.15;
-      return Math.min(ax1, bx1) - Math.max(ax0, bx0) > 4;
+      const bx0 = b.left + b.width * 0.18;
+      const bx1 = b.right - b.width * 0.18;
+      const overlapX = Math.min(ax1, bx1) - Math.max(ax0, bx0);
+      // mesma faixa DE VERDADE na tela (durante a troca de faixa o carro ainda está no meio do caminho)
+      const sameRow = Math.abs(a.bottom - b.bottom) < a.height * 0.22;
+      return overlapX > 6 && sameRow;
     };
 
     const tick = (t: number) => {

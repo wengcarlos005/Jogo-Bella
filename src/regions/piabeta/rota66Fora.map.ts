@@ -35,22 +35,22 @@ const scripts: Record<string, Script> = {
     }
     if (QuestSystem.isDone('pia-m2') && ctx.questActive('pia-m3') && !ctx.objectiveDone('pia-m3', 'parque')) {
       await ctx.wait(300);
-      await ctx.say('weng', 'Vamos por Fragoso? É por ali, seguindo a calçada pra esquerda.');
+      await ctx.say('weng', 'Vamos por Fragoso? É por ali, seguindo a calçada pra direita.');
     }
   },
 
   async direita(ctx) {
     const falas: [string, string][] = [
       ['weng', 'Acho que Fragoso não é por aí não...'],
-      ['bella', 'Ops. Essa não é a esquerda, né?'],
-      ['weng', 'Pra lá é só mais rua e chuva. A gente vai pela esquerda!'],
+      ['bella', 'Ops. Essa não é a direita, né?'],
+      ['weng', 'Pra lá é só mais rua e chuva. A gente vai pela direita!'],
     ];
     const n = Number(ctx.flag('fora-direita-n') ? 1 : 0);
     const [who, txt] = falas[(Math.floor(Math.random() * 3) + n) % 3];
     ctx.setFlag('fora-direita-n');
     await ctx.say(who, txt);
     const t = ctx.playerTile();
-    await ctx.move('player', t.x - 1.6, t.y, 60);
+    await ctx.move('player', t.x + 1.6, t.y, 60);
   },
 
   async neon(ctx) {
@@ -67,7 +67,7 @@ const scripts: Record<string, Script> = {
   },
   async weng(ctx) {
     if (!QuestSystem.isDone('pia-m2')) await ctx.say('weng', 'Vamos entrar? Tô morrendo de fome.');
-    else await ctx.say('weng', 'Vamos por Fragoso? É seguindo a calçada pra esquerda.');
+    else await ctx.say('weng', 'Vamos por Fragoso? É seguindo a calçada pra direita.');
   },
 };
 
@@ -125,19 +125,20 @@ export const rota66ForaMap: MapDef = {
   spawns: {
     'from-uber': { tx: 12.6, ty: 15.0, facing: 'up' },
     'from-rota66': { tx: 13.7, ty: 13.6, facing: 'down' },
-    'from-fragoso': { tx: 1.2, ty: 15.5, facing: 'right' },
+    'from-fragoso': { tx: 23.0, ty: 15.5, facing: 'left' },
   },
   exits: [
     { rect: R(605, 600, 762, 645), toMap: 'piabeta-rota66', toSpawn: 'from-fora', sfx: 'door' },
     {
-      rect: R(0, 700, 40, 1000),
+      rect: R(1165, 700, 1200, 1000), // o cenário vai até x=1200
       toMap: 'piabeta-fragoso',
       toSpawn: 'from-rota66',
       blockedIf: () => (QuestSystem.isDone('pia-m2') || !QuestSystem.isActive('pia-m2') ? false : `${PERSONAL.weng.name}: "Primeiro o lanche!"`),
     },
   ],
   hideActorsOnEnter: () => QuestSystem.isActive('pia-m2') && !QuestSystem.isObjectiveDone('pia-m2', 'chegar'),
-  triggers: [{ id: 'direita', rect: R(1488, 700, 1536, 1000), script: 'direita' }],
+  // Fragoso fica pra DIREITA; pra esquerda é o caminho errado
+  triggers: [{ id: 'direita', rect: R(0, 700, 48, 1000), script: 'direita' }],
   scripts,
   onEnter: 'entrar',
 };

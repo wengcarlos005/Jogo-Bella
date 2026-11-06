@@ -128,13 +128,13 @@ const scripts: Record<string, Script> = {
   },
 
   async gatinho1(ctx) {
-    await petCat(ctx, 'gato1', 'meli-poses', ['Um laranjinha! Igualzinho... a um que eu ainda vou conhecer.', 'Weng: "Ele parou pra você. Ninguém resiste."']);
+    await petCat(ctx, 'gato1', 'gatofrg1-poses', ['Um cinzinha rajado! Parece um tigrinho de pelúcia.', 'Weng: "Ele parou pra você. Ninguém resiste."']);
   },
   async gatinho2(ctx) {
-    await petCat(ctx, 'gato2', 'lala-poses', ['Branquinha com manchinha! Que princesa.', 'Weng: "Você para pra fazer carinho em TODO gato?"', 'Bella: "Em todo."']);
+    await petCat(ctx, 'gato2', 'gatofrg2-poses', ['Um frajolinha! De smoking e tudo.', 'Weng: "Você para pra fazer carinho em TODO gato?"', 'Bella: "Em todo."']);
   },
   async gatinho3(ctx) {
-    await petCat(ctx, 'gato3', 'pombo-poses', ['Um pretinho! Os mais carinhosos de todos.', 'Weng: "Esse aí tá te olhando apaixonado. Concorrência."']);
+    await petCat(ctx, 'gato3', 'gatofrg3-poses', ['Um creminho! Parece um pãozinho de leite.', 'Weng: "Esse aí tá te olhando apaixonado. Concorrência."']);
   },
 
   async gato(ctx) {
@@ -247,7 +247,7 @@ export const fragosoMap: MapDef = {
   npcs: [
     ...(['gato1', 'gato2', 'gato3'] as const).map((id, i) => ({
       id,
-      sprite: (['meli', 'lala', 'pombo'] as const)[i],
+      sprite: (['gatofrg1', 'gatofrg2', 'gatofrg3'] as const)[i],
       tx: CAT_SPOTS[i * 3][0],
       ty: CAT_SPOTS[i * 3][1],
       facing: 'down' as const,

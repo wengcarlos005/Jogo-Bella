@@ -212,7 +212,12 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'E o café da manhã foi o quê, então?');
       await ctx.choose('bella', '(O clima pesou)', ['"Esquece. Não quero mais falar disso."', '"Você tá me comparando com uma desconhecida?"']);
       await ctx.say('weng', '...Vou ficar um pouco no quarto.');
-      await ctx.move('weng', 13.6, 7.9, 50);
+      // ele sai pela passagem do quarto (sem atravessar parede): anda até o corredor e some no quarto
+      await ctx.move('weng', 16.8, 12.2, 50);
+      await ctx.move('weng', 10.4, 12.2, 50);
+      await ctx.fadeOut(300);
+      ctx.place('weng', 13.6, 6.6, 'up');
+      await ctx.fadeIn(300);
       ctx.face('weng', 'up');
       await ctx.wait(400);
       await ctx.say('bella', '(Que briga mais boba. A gente nem é aquelas pessoas da internet. A gente é a gente.)');
@@ -524,7 +529,7 @@ export const aptoMap: MapDef = {
     // Quarto do Weng ↔ cozinha (passagem para a sala em x 410–495)
     R(0, 440, 410, 470),
     // Parede da sala com quadros (atrás do sofá)
-    R(495, 410, 975, 555),
+    R(495, 410, 975, 522), // parede do fundo da sala (até embaixo dos quadros)
     // Toquinho de parede entre o quarto dos avós e a sala
     R(1075, 410, 1100, 470),
     // Cozinha: bancada, fogão, geladeira; parede da direita (passagem para a sala em y 725–840)
@@ -569,13 +574,13 @@ export const aptoMap: MapDef = {
     { key: 'ap-sofa', x: 750, y: 690, w: 320, base: 640, shadow: 0.9 },
     { key: 'ap-mesinha', x: 715, y: 780, w: 160, shadow: 0.8 },
     { key: 'ap-mesa', x: 1028, y: 782, w: 165, shadow: 0.8 },
-    { key: 'ap-tv', x: 475, y: 842, w: 80, shadow: 0.7 },
+    { key: 'ap-tv', x: 475, y: 842, w: 80, shadow: 0.7, fade: true }, // transparente com alguém atrás
     { key: 'ap-abajur', x: 913, y: 646, w: 58, shadow: 0.6 },
     { key: 'ap-cesto', x: 1124, y: 602, w: 66, shadow: 0.8 },
     { key: 'ap-arranhador', x: 1140, y: 852, w: 70, shadow: 0.7 },
-    { key: 'ap-planta', x: 565, y: 612, w: 100, shadow: 0.6 },
-    { key: 'ap-planta', x: 560, y: 958, w: 88, shadow: 0.6 },
-    { key: 'ap-planta', x: 968, y: 958, w: 88, shadow: 0.6, flip: true },
+    { key: 'ap-planta', x: 565, y: 612, w: 100, shadow: 0.6, fade: true },
+    { key: 'ap-planta', x: 560, y: 958, w: 88, shadow: 0.6, fade: true },
+    { key: 'ap-planta', x: 968, y: 958, w: 88, shadow: 0.6, flip: true, fade: true },
   ],
 
   lighting: {

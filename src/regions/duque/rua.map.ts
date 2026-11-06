@@ -34,7 +34,9 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'O Shopping da Multidão... Weng, segura minha mão. Se eu entrar, eu saio sem dinheiro.');
     await ctx.say('weng', 'Hoje não. Mas outro dia eu te trago com um orçamento. Um orçamento PEQUENO.');
     ctx.toast('Os achadinhos do Multidão chegam em breve!');
-    await ctx.move('player', 15.2, 17.6, 60);
+    // volta um passo pra calçada (pra cima), fora da área da porta: assim a fala não se repete
+    await ctx.move('player', ctx.playerTile().x, 16.3, 60);
+    ctx.face('player', 'up');
   },
   async mercado(ctx) {
     await ctx.say('weng', 'O mercado fica pra lá. Fica pra outro dia.');
@@ -145,7 +147,7 @@ export const duqueRuaMap: MapDef = {
   spawns: {
     portaria: { tx: 7.4, ty: 7.8, facing: 'down' },
     'from-acai': { tx: 30.3, ty: 16.3, facing: 'left' },
-    'from-multidao': { tx: 15.2, ty: 17.7, facing: 'down' },
+    'from-multidao': { tx: 15.2, ty: 16.3, facing: 'up' },
   },
   triggers: [
     { id: 'portaria', rect: R(332, 368, 428, 392), script: 'portaria' },

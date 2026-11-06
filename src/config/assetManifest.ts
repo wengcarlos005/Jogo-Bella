@@ -123,6 +123,11 @@ export const ASSETS: AssetEntry[] = [
   // Bichinhos: folha 4x4 (quadros 64x64, exibidos em meia escala) + faixa de poses (96x64):
   // 0 sentada, 1 dormindo, 2 se espreguiçando, 3 recebendo carinho.
   char('PET-001', 'meli', 'pets/meli-walk.png', 64),
+  // gatinhos de Fragoso (cinza rajado, frajola e creme): só aparecem na caminhada
+  ...[1, 2, 3].flatMap((n): AssetEntry[] => [
+    char(`PET-F${n}`, `gatofrg${n}`, `pets/gatofrg${n}-walk.png`, 64),
+    { id: `PET-F${n}P`, key: `gatofrg${n}-poses`, file: `assets/pets/gatofrg${n}-poses.png`, kind: 'spritesheet', frameWidth: 96, frameHeight: 64 },
+  ]),
   { id: 'PET-001P', key: 'meli-poses', file: 'assets/pets/meli-poses.png', kind: 'spritesheet', frameWidth: 96, frameHeight: 64 },
   char('PET-002', 'lala', 'pets/lala-walk.png', 64),
   { id: 'PET-002P', key: 'lala-poses', file: 'assets/pets/lala-poses.png', kind: 'spritesheet', frameWidth: 96, frameHeight: 64 },

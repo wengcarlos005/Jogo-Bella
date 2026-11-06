@@ -333,8 +333,8 @@ export const ruaMap: MapDef = {
     R(483, 688, 627, 776),
     R(990, 688, 1137, 776),
     R(927, 697, 973, 765),
-    R(262, 800, 330, 848), // tronco esquerdo (a copa fica por cima, dá pra passar por baixo)
-    R(1315, 800, 1372, 848), // tronco direito
+    R(266, 815, 326, 892), // tronco esquerdo, até a raiz (a copa fica por cima, dá pra passar por baixo)
+    R(1296, 815, 1352, 892), // tronco direito, até a raiz
     // canteiros: sólidos desde as flores do topo (ninguém fica dentro das hortênsias)
     R(76, 845, 205, 920),
     R(596, 860, 754, 952),
@@ -358,8 +358,8 @@ export const ruaMap: MapDef = {
     { x0: 985, y0: 722, x1: 1142, y1: 780, base: 776, cut: 'furniture' }, // banco dir. (assento da frente e pés)
     // canteiros da beira da pracinha: as flores ficam na frente dos pés de quem pisa atrás delas
     // copas das árvores: na frente de quem passa atrás, translúcidas
-    { x0: 165, y0: 556, x1: 455, y1: 800, base: 848, cut: 'foliage', fade: true },
-    { x0: 1180, y0: 566, x1: 1500, y1: 800, base: 848, cut: 'foliage', fade: true },
+    { x0: 165, y0: 556, x1: 455, y1: 800, base: 892, cut: 'foliage', fade: true },
+    { x0: 1180, y0: 566, x1: 1500, y1: 800, base: 892, cut: 'foliage', fade: true },
   ],
 
   hotspots: [
@@ -383,7 +383,7 @@ export const ruaMap: MapDef = {
       interact: 'weng',
       visibleIf: () => GameState.is('weng-segue') || esperandoNaEsquina(),
     },
-    { id: 'tia-jaque', sprite: 'tia-jaque', tx: 3.4, ty: 8.4, facing: 'right', interact: 'tiaJaque', behavior: 'wander', wanderRadius: 1.4, wanderAxis: 'x' },
+    { id: 'tia-jaque', sprite: 'tia-jaque', tx: 11.4, ty: 8.4, facing: 'left', interact: 'tiaJaque', behavior: 'wander', wanderRadius: 1.0, wanderAxis: 'x' }, // na calçada, longe do poste e do carro
     { id: 'kelly', sprite: 'kelly', tx: 16.2, ty: 15.0, facing: 'down', interact: 'kelly', behavior: 'wander', wanderRadius: 1.2, wanderAxis: 'x' },
     { id: 'vizinha', sprite: 'vizinha', tx: 14.7, ty: 7.8, facing: 'down', interact: 'vizinha', behavior: 'wander', wanderRadius: 3, wanderAxis: 'x' },
   ],
