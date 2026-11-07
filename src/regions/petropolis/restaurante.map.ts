@@ -14,7 +14,7 @@ const scripts: Record<string, Script> = {
     ctx.follow('weng', true);
     if (!objActive('almoco') || ctx.flag('pt-rest-1')) return;
     ctx.setFlag('pt-rest-1');
-    await ctx.narrate('No dia seguinte. Um almoço chique, de aniversário.');
+    await ctx.narrate('O dia do aniversário. Um almoço chique pra comemorar.');
     await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', 'Weng... tem LUSTRE de cristal. E um piano. Eu tô de casaco de moletom!');
     await ctx.say('weng', 'Você tá linda. O lustre que se adapte.');

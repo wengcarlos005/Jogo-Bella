@@ -739,6 +739,7 @@ export class GameScene extends Phaser.Scene {
   /** Reavalia visibleIf de props e NPCs (chamado quando flags mudam). */
   refreshVisibility(): void {
     this.refreshRainWindows();
+    this.refreshLighting();
     for (const bp of this.built.props) {
       const vis = bp.def.visibleIf ? bp.def.visibleIf() : true;
       bp.sprite.setVisible(vis);

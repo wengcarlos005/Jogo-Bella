@@ -461,6 +461,8 @@ Rules: crisp pixel art with clean dark outlines, no anti-aliasing blending into 
 
 # Cenas novas (ainda não existem no jogo)
 
+Ordem da viagem a Petrópolis: Quitandinha (com o piquenique) → hotel (noite) → almoço de aniversário. O piquenique acontece no gramado do Quitandinha: dá pra usar a folha do piquenique dentro do mapa do Quitandinha.
+
 Gere primeiro o cenário vazio; depois a folha anexando o cenário vazio novo.
 
 ## Quarto do hotel em Petrópolis (novo)
