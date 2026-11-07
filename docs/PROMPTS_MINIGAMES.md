@@ -10,7 +10,7 @@ Já têm sprites (não precisa gerar): hambúrguer (Rota 66), Uber, açaí, cart
 | 2 | Beijo escondido (sofá) | ✅ mãe, sombra e casal no sofá | sprite da mãe, da Bella e do Weng + sala |
 | 3 | Novelo da Meli (apê) | Meli correndo/pulando + novelo | sprite da Meli |
 | 4 | Achadinhos da Multidão | ✅ já jogável (escolha com orçamento nas lojinhas) · folha de itens opcional | fachada do Multidão |
-| 7 | Moça do caixa do Multidão | sprite andando (hoje usa a vizinha) | sprite da atendente |
+| 7 | Moça do caixa do Multidão | ✅ no jogo | sprite da atendente |
 | 5 | Doces do Quitandinha | algodão-doce, pipoca, máquina de foto | folha do Quitandinha |
 | 6 | Gatinhos de Fragoso | cancelado (ficam os atuais) | — |
 

@@ -164,6 +164,9 @@ export class GameScene extends Phaser.Scene {
         if (this.wengLeads) return `portrait-${this.player.texture.key}`;
         return comp ? `portrait-${comp.texture.key}` : `portrait-${this.spriteFor('weng')}`;
       }
+      // NPC com retrato do próprio sprite (ex.: o garçom do mexicano ≠ o de Petrópolis)
+      const npc = this.npcs.get(who)?.npc;
+      if (npc && npc.texture.key !== who && this.textures.exists(`portrait-${npc.texture.key}`)) return `portrait-${npc.texture.key}`;
       return null;
     });
     UI.showGameplayUI(true);

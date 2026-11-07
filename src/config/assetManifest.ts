@@ -56,6 +56,7 @@ export const ASSETS: AssetEntry[] = [
   { id: 'NPC-004L', key: 'atendente-limpando', file: 'assets/npcs/atendente-limpando.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 136 },
   char('NPC-020', 'garcom', 'npcs/garcom-walk.png', 136),
   char('NPC-021', 'garcom-mex', 'npcs/garcom-mex-walk.png', 136),
+  char('NPC-022', 'caixa', 'npcs/caixa-walk.png', 136),
   char('NPC-010', 'vof-weng', 'npcs/vof-weng-walk.png', 136),
   char('NPC-011', 'vom-weng', 'npcs/vom-weng-walk.png', 136),
   char('NPC-012', 'kelly', 'npcs/kelly-walk.png', 136),
@@ -119,6 +120,8 @@ export const ASSETS: AssetEntry[] = [
   { id: 'PORT-005', key: 'portrait-vizinha', file: 'assets/portraits/vizinha.png', kind: 'image' },
   { id: 'PORT-006', key: 'portrait-atendente', file: 'assets/portraits/atendente.png', kind: 'image' },
   { id: 'PORT-020', key: 'portrait-garcom', file: 'assets/portraits/garcom.png', kind: 'image' },
+  { id: 'PORT-021', key: 'portrait-garcom-mex', file: 'assets/portraits/garcom-mex.png', kind: 'image' },
+  { id: 'PORT-022', key: 'portrait-caixa', file: 'assets/portraits/caixa.png', kind: 'image' },
 
   // Cenários pintados (opcionais) — se existirem, substituem os tiles visuais
   // Bichinhos: folha 4x4 (quadros 64x64, exibidos em meia escala) + faixa de poses (96x64):

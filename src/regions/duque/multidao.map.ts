@@ -231,7 +231,7 @@ export const multidaoMap: MapDef = {
     { rect: R(1090, 560, 1370, 770), interact: 'caixa', label: 'Caixa', markerIf: () => objActive('pagar') && cart().length > 0 },
   ],
 
-  npcs: [{ id: 'vendedora', sprite: 'vizinha', tx: 25.1, ty: 11.6, facing: 'down', interact: 'caixa' }],
+  npcs: [{ id: 'vendedora', sprite: 'caixa', tx: 25.1, ty: 11.6, facing: 'down', interact: 'caixa' }],
 
   spawns: {
     porta: { tx: 15.5, ty: 14.3, facing: 'up' },

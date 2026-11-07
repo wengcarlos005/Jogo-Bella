@@ -155,7 +155,8 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CHAR-026 | Tia Jaque (4×4 + retrato) | characters/tia-jaque.png | ✅ no jogo |
 | CHAR-027 | Kelly, prima da Bella | npcs/kelly-walk.png | ✅ no jogo (churrasco) |
 | CHAR-028 | Garçom do restaurante chique de Petrópolis (4×4 andando) | npcs/garcom-walk.png | ✅ no jogo (art-source/npcs/garcom-walk.webp) |
-| CHAR-029 | Garçom do restaurante mexicano (4×4 andando) | npcs/garcom-mex-walk.png | pedido (até chegar, usa o garçom de Petrópolis ou a atendente) |
+| CHAR-030 | Moça do caixa do Multidão (4×4 andando) | npcs/caixa-walk.png | ✅ no jogo (+ retrato portraits/caixa.png) |
+| CHAR-029 | Garçom do restaurante mexicano (4×4 andando) | npcs/garcom-mex-walk.png | ✅ no jogo (+ retrato portraits/garcom-mex.png) |
 | PORT-020 | Retrato do garçom (Petrópolis) | portraits/garcom.png | ✅ feito do quadro de frente |
 
 ### LOTE 4–6 — Viagens do Ano 1 e 2 (Fases 5–6)
