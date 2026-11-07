@@ -354,3 +354,51 @@ Row 2 — the boy (short black hair, black t-shirt), wearing a colorful Mexican 
 
 No text, no labels, no numbers, no watermark.
 ```
+
+## 11. Susto na Sala 3 (minigame novo do cinema)
+
+Jogo: na tela do cinema o corredor do filme vai ficando escuro, a luz pisca, um vulto se aproxima...
+Na hora EXATA do susto, aperte pra segurar a pipoca e a mão da Bella. Cedo demais = ela ri de você; tarde demais = pipoca voando.
+Tem alarmes falsos (um gatinho pula, a luz pisca sozinha): nesses NÃO pode apertar. 8 sustos, cada vez mais rápidos.
+
+### Folha A — a tela do filme (cenas do susto)
+
+Anexe o cenário do cinema (`art-source/maps/duque-cinema-base.webp`) só como referência de estilo.
+
+```
+Pixel art sprite sheet of movie-screen frames for a horror movie scene, cozy pixel art style with clean dark outlines (same style as the attached image), but dark and spooky colors. Each frame is a wide 16:9 picture of what is shown on a cinema screen.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere around the frames.
+
+STRICT GRID of 3 rows and 2 columns (each cell 768x341 px), each frame about 680x300 px centered in its cell, nothing touching:
+1. A dark empty pizzeria hallway at night, checkered floor, one flickering ceiling light, a door at the end.
+2. The same hallway with the light OFF, almost black, only the door outline visible.
+3. The same hallway with two glowing round eyes in the dark doorway at the end.
+4. Jumpscare: an ORIGINAL creepy animatronic mascot (a worn-out robot bunny with a cracked smile and glowing eyes, NOT a character from any existing game or movie) lunging at the camera, close-up, mouth open, dramatic red light.
+5. False alarm: the same hallway with a small black cat jumping out of a box, cute, light on.
+6. The same hallway with the light flickering wildly (bright white flash), nothing there.
+
+No text, no labels, no numbers, no watermark.
+```
+
+### Folha B — o casal na poltrona e a pipoca
+
+Anexe o sprite da Bella (casual, óculos rosa) e do Weng (casual).
+
+```
+Pixel art sprite sheet of a couple sitting in red cinema seats, using EXACTLY the same characters, art style, outline and colors as the attached character sprites, seen from the front (as if from the screen), lit only by the cold blue light of the movie screen, cute chibi proportions.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no shadows on the background.
+
+STRICT GRID of 2 rows and 3 columns (each cell 512x512 px), each drawing centered in its own cell, nothing touching:
+Row 1 — the girl (long curly brown hair, pink glasses) and the boy (short black hair) side by side in two red cinema seats, a big popcorn bucket on her lap:
+1. Both watching calmly, a bit bored, eating popcorn.
+2. Both startled by a jumpscare: eyes wide, she hugs his arm, he holds the popcorn bucket safe.
+3. Startled but too late: popcorn flying everywhere in the air, both with messy hair covered in popcorn.
+Row 2:
+4. She laughs at him pointing, he looks embarrassed (he jumped for nothing).
+5. Both hugging and laughing after the scare, little hearts.
+6. A big striped red-and-white popcorn bucket, full (about 160x200 px).
+
+No text, no labels, no numbers, no watermark.
+```
