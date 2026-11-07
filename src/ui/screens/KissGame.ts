@@ -70,12 +70,21 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     const momSrc = (k: string) => new URL(`assets/minigames/mae-${k}.png`, document.baseURI).href;
     for (const k of ['espia', 'desconfia', 'sobrancelha', 'brava']) new Image().src = momSrc(k);
     const momEl = h('img', { class: 'kg-mom2', src: momSrc('desconfia'), alt: '', style: `${at(968, 668)}` }) as HTMLImageElement;
+    // espiando: só a cabeça e o ombro aparecem atrás do batente esquerdo da porta da cozinha
     const momFace = (k: 'espia' | 'desconfia' | 'sobrancelha' | 'brava') => {
       momEl.src = momSrc(k);
+      momEl.classList.toggle('espia', k === 'espia');
+      momEl.setAttribute('style', k === 'espia' ? at(902, 676) : at(968, 676));
     };
     const lala = h('div', { class: 'kg-char kg-cat', style: `${at(900, 650)};${sheet('lala', 8, 4)}` });
-    const shadow = h('img', { class: 'kg-shadow2', src: mg('sombra-mae'), alt: '', style: at(930, 690) });
-    const steps = h('div', { class: 'kg-steps', style: at(968, 560) }, '👣');
+    // a sombra da mãe chegando: comprida no chão, saindo da porta da cozinha
+    const shadow = h('img', { class: 'kg-shadow2', src: mg('sombra-mae'), alt: '', style: at(918, 664) });
+    // pegadas (passos chegando): pezinhos escuros no chão, da porta da cozinha em direção à sala
+    const steps = h(
+      'div',
+      { class: 'kg-steps2' },
+      ...[[960, 690], [985, 712], [958, 736], [982, 760]].map(([x, y], i) => h('i', { class: i % 2 ? 'r' : 'l', style: `${at(x, y)};animation-delay:${i * 0.18}s` })),
+    );
     const ring = h('div', { class: 'kg-ring', style: at(732, 472) }, h('i'));
     const tv = h('div', { class: 'kg-tv' });
     const flash = h('div', { class: 'kg-flash' });

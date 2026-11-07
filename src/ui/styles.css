@@ -2235,3 +2235,14 @@ html.hud-kit #rightbar .sb-btn.sb-kit img { width: min(100%, 118px) !important; 
 #topbar.idle, #rightbar.idle, #hotbar.idle, #leftbar.idle { pointer-events: none !important; }
 /* menu de pausa/opções sempre por cima das barras laterais */
 #ui .pm-screen { z-index: 40 !important; }
+
+/* beijo escondido: mãe espiando no batente, sombra no chão e pegadas */
+.kg-mom2.espia { height: 35%; transform: translate(0, -92%); }
+.kg-mom2.espia.show { transform: translate(0, -100%); }
+.kg-shadow2 { height: 30% !important; transform: none !important; filter: brightness(0) blur(1px); }
+.kg-shadow2.on { opacity: .28 !important; }
+.kg-steps2 { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.kg-steps2 i { position: absolute; width: 2.2%; aspect-ratio: 1 / 1.6; border-radius: 50% 50% 45% 45%; background: rgba(40, 18, 10, .55); transform: translate(-50%, -50%) rotate(-8deg); opacity: 0; }
+.kg-steps2 i.r { transform: translate(-50%, -50%) rotate(8deg); }
+.kg-steps2.on i { animation: kgStep 1s ease-out infinite; }
+@keyframes kgStep { 0% { opacity: 0; } 15% { opacity: 1; } 70% { opacity: .7; } 100% { opacity: 0; } }
