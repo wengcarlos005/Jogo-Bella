@@ -1,6 +1,7 @@
 import { defineConfig, type Plugin } from 'vite';
 import { readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
+import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
@@ -49,8 +50,24 @@ function availableAssets(): Plugin {
   };
 }
 
+/** Versão do build (commit + data), mostrada na tela de título pra conferir se o site atualizou. */
+function buildId(): string {
+  let sha = (process.env.VERCEL_GIT_COMMIT_SHA ?? '').slice(0, 7);
+  if (!sha) {
+    try {
+      sha = execSync('git rev-parse --short HEAD', { cwd: root }).toString().trim();
+    } catch {
+      sha = 'local';
+    }
+  }
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${sha} · ${pad(d.getDate())}/${pad(d.getMonth() + 1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 export default defineConfig({
   base: './',
+  define: { __BUILD_ID__: JSON.stringify(buildId()) },
   plugins: [availableAssets()],
   resolve: { alias: { '@': join(root, 'src') } },
   build: {

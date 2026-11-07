@@ -255,6 +255,12 @@ export class NPC extends Character {
     }
 
     if (this.behavior === 'wander') {
+      // durante cenas e conversas ninguém fica passeando (e quem fala olha pra Bella)
+      if (!InputSystem.gameplayEnabled) {
+        body.setVelocity(0, 0);
+        this.animateFromVelocity();
+        return;
+      }
       const dx = this.home.x - this.x;
       const dy = this.home.y - this.y;
       const away = Math.hypot(dx, dy);

@@ -83,14 +83,33 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     return a;
   };
 
+  // quem começa a falar olha pra Bella (a não ser que a cena tenha acabado de virar a pessoa de propósito)
+  const turnedAt = new Map<string, number>();
+  const lookAtBella = (speaker: string) => {
+    if (speaker === 'bella' || speaker === 'narrador') return;
+    if (performance.now() - (turnedAt.get(speaker) ?? -1e9) < 4000) return;
+    const a = scene.findActor(speaker);
+    const b = scene.findActor('bella');
+    if (!a || !b || a === b || !a.visible || !b.visible) return;
+    if (a instanceof NPC && a.behavior === 'scripted') return; // andando numa cena
+    if (Math.hypot(a.x - b.x, a.y - b.y) > 120) return;
+    a.faceTowards(b.x, b.y);
+  };
+
   const ctx: ScriptContext = {
     get mapId() {
       return scene.def.id;
     },
 
-    say: (speaker, text) => UI.dialogue.say(speaker, text),
+    say: (speaker, text) => {
+      lookAtBella(speaker);
+      return UI.dialogue.say(speaker, text);
+    },
     narrate: (text) => UI.dialogue.say('narrador', text),
-    choose: (speaker, text, options) => UI.dialogue.choose(speaker, text, options),
+    choose: (speaker, text, options) => {
+      if (speaker) lookAtBella(speaker);
+      return UI.dialogue.choose(speaker, text, options);
+    },
 
     flag: (key) => GameState.is(key),
     setFlag: (key, value = true) => GameState.setFlag(key, value),
@@ -182,6 +201,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     face(who, dir) {
       const a = actor(who);
       if (!a) return;
+      turnedAt.set(who === 'player' ? 'bella' : who, performance.now());
       if (DIRS.includes(dir as Direction)) a.face(dir as Direction);
       else {
         const t = actor(dir);

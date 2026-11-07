@@ -61,7 +61,7 @@ export class TitleScreen {
         h('div', { class: 'title-sub' }, 'Bella ♥ Weng · 3 anos'),
         list,
       ),
-      h('div', { class: 'version' }, `v${VERSION}`),
+      h('div', { class: 'version' }, `v${VERSION} · ${__BUILD_ID__}`),
     );
     this.parent.append(this.el);
   }
@@ -124,7 +124,7 @@ export class TitleScreen {
       h('div', { class: 'tf-glow' }),
       ...buttons,
       h('button', { class: 'tf-cenas', title: 'Cenas liberadas', onclick: choose(() => this.actions.openScenes()) }, '🎬 Cenas'),
-      h('div', { class: 'version' }, `v${VERSION}`),
+      h('div', { class: 'version' }, `v${VERSION} · ${__BUILD_ID__}`),
     );
     this.parent.append(this.el);
     const ready = hideLoader();
