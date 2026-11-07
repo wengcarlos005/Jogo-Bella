@@ -91,6 +91,7 @@ export class GameScene extends Phaser.Scene {
   create(data: GameSceneData): void {
     const def = this.def;
     this.cameras.main.setBackgroundColor(def.background ?? '#1b1838');
+    def.beforeBuild?.();
     this.built = buildMap(this, def);
 
     // Jogador

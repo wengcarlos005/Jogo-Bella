@@ -226,6 +226,12 @@ export class NPC extends Character {
     }
 
     if (this.behavior === 'flee' && this.fleeFrom) {
+      // durante falas e cenas o gatinho fica quietinho no lugar
+      if (!InputSystem.gameplayEnabled) {
+        body.setVelocity(0, 0);
+        this.animateFromVelocity();
+        return;
+      }
       // foge quando a Bella chega perto; de vez em quando para pra se lamber (é a chance de chegar)
       const p = this.fleeFrom as unknown as { x: number; y: number };
       const dx = this.x - p.x;

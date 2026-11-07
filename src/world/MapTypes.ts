@@ -177,6 +177,8 @@ export interface MapDef {
   hideActorsOnEnter?: () => boolean;
   /** Script ao entrar no mapa (após o fade-in). */
   onEnter?: string;
+  /** Roda antes de montar NPCs e objetos (ex.: sortear onde os gatos aparecem), sem nada visível ainda. */
+  beforeBuild?: () => void;
   music?: string;
   indoor?: boolean;
   /** Tamanho dos personagens neste mapa (cenários desenhados mais de perto). Padrão 1. */

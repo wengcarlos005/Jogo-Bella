@@ -18,6 +18,16 @@ const lower = (ctx: ScriptContext, to: number) => ctx.nerves(Math.min(nerves(), 
 const CAT_SPOTS: [number, number][] = [
   [5.6, 7.9], [11.8, 8.2], [17.5, 8.0], [22.4, 8.3], [26.6, 11.2], [27.2, 13.6], [6.4, 14.5], [12.2, 14.5], [18.6, 14.5], [23.6, 14.4],
 ];
+/** Onde cada gatinho aparece nesta visita (sorteado antes do mapa aparecer: sem "pulo" na tela). */
+let catPos: [number, number][] = [CAT_SPOTS[0], CAT_SPOTS[3], CAT_SPOTS[6]];
+const shuffleCats = () => {
+  // um deles sempre na rua de cima, à vista quando a Bella fala "tem GATINHO na rua"
+  const top = [CAT_SPOTS[1], CAT_SPOTS[2], CAT_SPOTS[3]];
+  const first = top[Math.floor(Math.random() * top.length)];
+  const rest = CAT_SPOTS.filter((s) => s !== first && s !== CAT_SPOTS[0]).sort(() => Math.random() - 0.5);
+  catPos = [first, rest[0], rest[1]].sort(() => Math.random() - 0.5);
+  if (!catPos.includes(first)) catPos[0] = first;
+};
 const catsDone = () => ['gato1', 'gato2', 'gato3'].filter((c) => GameState.is(`frg-${c}`)).length;
 
 /** Minigame dos gatinhos: chegar perto (eles fogem!) e fazer carinho. */
@@ -50,13 +60,6 @@ async function petCat(ctx: ScriptContext, id: string, pose: string, lines: strin
 const scripts: Record<string, Script> = {
   async entrar(ctx) {
     if (ctx.questActive('dq-e2')) ctx.weather('sunset');
-    if (ctx.questActive(Q) && !ctx.objectiveDone(Q, 'gatos')) {
-      // os gatinhos aparecem em lugares diferentes a cada vez
-      const spots = [...CAT_SPOTS].sort(() => Math.random() - 0.5);
-      ['gato1', 'gato2', 'gato3'].forEach((id, i) => {
-        if (!ctx.flag(`frg-${id}`)) ctx.place(id, spots[i][0], spots[i][1], 'down');
-      });
-    }
     if (ctx.flag('fragoso-intro') || !ctx.questActive(Q)) return;
     ctx.setFlag('fragoso-intro');
     if (nerves() === 0) ctx.nerves(70);
@@ -248,8 +251,12 @@ export const fragosoMap: MapDef = {
     ...(['gato1', 'gato2', 'gato3'] as const).map((id, i) => ({
       id,
       sprite: (['gatofrg1', 'gatofrg2', 'gatofrg3'] as const)[i],
-      tx: CAT_SPOTS[i * 3][0],
-      ty: CAT_SPOTS[i * 3][1],
+      get tx() {
+        return catPos[i][0];
+      },
+      get ty() {
+        return catPos[i][1];
+      },
       facing: 'down' as const,
       interact: `gatinho${i + 1}`,
       behavior: 'flee' as const,
@@ -288,4 +295,5 @@ export const fragosoMap: MapDef = {
   ],
   scripts,
   onEnter: 'entrar',
+  beforeBuild: shuffleCats,
 };
