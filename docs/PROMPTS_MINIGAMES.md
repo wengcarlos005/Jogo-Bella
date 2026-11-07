@@ -6,13 +6,13 @@ Já têm sprites (não precisa gerar): hambúrguer (Rota 66), Uber, açaí, cart
 
 | # | Minigame | O que falta | Anexar no ChatGPT |
 |---|---|---|---|
-| 1 | Churrasqueira (10 fases) | ✅ carnes · falta a folha 1B (grelha e fogo, opcional) | cenário do quintal |
-| 2 | Beijo escondido (sofá) | ✅ mãe (3 caras) · casal no sofá opcional | sprite da mãe, da Bella e do Weng + sala |
+| 1 | Churrasqueira (10 fases) | ✅ carnes, grelha e fogo | cenário do quintal |
+| 2 | Beijo escondido (sofá) | ✅ mãe, sombra e casal no sofá | sprite da mãe, da Bella e do Weng + sala |
 | 3 | Novelo da Meli (apê) | Meli correndo/pulando + novelo | sprite da Meli |
 | 4 | Achadinhos da Multidão | ✅ já jogável (escolha com orçamento nas lojinhas) · folha de itens opcional | fachada do Multidão |
 | 7 | Moça do caixa do Multidão | sprite andando (hoje usa a vizinha) | sprite da atendente |
 | 5 | Doces do Quitandinha | algodão-doce, pipoca, máquina de foto | folha do Quitandinha |
-| 6 | Gatinhos de Fragoso | 3 gatos novos (andando + poses) | folhas da Meli |
+| 6 | Gatinhos de Fragoso | cancelado (ficam os atuais) | — |
 
 ---
 
