@@ -2,7 +2,7 @@
 
 Todas as folhas vão em fundo magenta liso (#FF00FF) e em **grade fixa**, para o recorte automático (`tools/sprite-sheet.py`) acertar a ordem.
 
-Já têm sprites (não precisa gerar): hambúrguer (Rota 66), Uber, açaí, cartas Bate-Gato, gatinhos de Fragoso.
+Já têm sprites (não precisa gerar): hambúrguer (Rota 66), Uber, açaí, cartas Bate-Gato.
 
 | # | Minigame | O que falta | Anexar no ChatGPT |
 |---|---|---|---|
@@ -11,6 +11,7 @@ Já têm sprites (não precisa gerar): hambúrguer (Rota 66), Uber, açaí, cart
 | 3 | Novelo da Meli (apê) | Meli correndo/pulando + novelo | sprite da Meli |
 | 4 | Achadinhos da Multidão (novo) | 16 achadinhos + cesta | fachada do Multidão |
 | 5 | Doces do Quitandinha | algodão-doce, pipoca, máquina de foto | folha do Quitandinha |
+| 6 | Gatinhos de Fragoso | 3 gatos novos (andando + poses) | folhas da Meli |
 
 ---
 
@@ -124,4 +125,105 @@ Row 1: 1. a big pink cotton candy on a stick, 2. a red and white striped paper b
 Row 2: 4. an instant photo (polaroid) with a blank sky-blue picture, 5. a small birthday cupcake with one lit candle, 6. a juice box with a straw.
 
 No text, no letters, no numbers, no labels, no people, no watermark.
+```
+
+## 6. Gatinhos de Fragoso (3 gatos novos)
+
+Os gatos atuais de Fragoso são a Meli repintada; estes substituem. Cada gato tem 2 folhas: andando e poses.
+Anexe sempre a folha correspondente da **Meli** (andando ou poses) como modelo de estilo e layout; na folha de poses, anexe também a folha andando do gato novo.
+
+### Gato 1 — cinza rajado: andando
+
+```
+Pixel art walking sprite sheet of a cat, using EXACTLY the same art style, outline thickness, size, proportions and LAYOUT as the attached cat sprite sheet, but a DIFFERENT cat: a SILVER-GREY TABBY street cat with dark grey stripes, white chin and white paws, green eyes, NO collar.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet, each frame centered in its own cell, nothing touching:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up, showing its back and tail), 4 frames.
+
+The cat must look identical in every frame (same colors, same markings). No text, no labels, no numbers, no watermark.
+```
+
+### Gato 1 — cinza rajado: poses
+
+```
+Pixel art sprite sheet of 4 poses of a cat, using EXACTLY the same art style, outline, size and LAYOUT as the attached cat poses sheet, and EXACTLY the same cat as the attached walking sheet: a SILVER-GREY TABBY street cat with dark grey stripes, white chin and white paws, green eyes, NO collar.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+ONE ROW of 4 poses, left to right, each centered in its own equal cell, nothing touching:
+1. Sitting facing the viewer, calm.
+2. Curled up sleeping, with small "z z" above.
+3. Startled: back arched, fur puffed up, tail up, wide eyes, small surprise marks above (about to run away).
+4. Sitting happy with eyes half closed and a small red heart above its head (being petted).
+
+No text, no labels, no numbers, no watermark.
+```
+
+### Gato 2 — frajola: andando
+
+```
+Pixel art walking sprite sheet of a cat, using EXACTLY the same art style, outline thickness, size, proportions and LAYOUT as the attached cat sprite sheet, but a DIFFERENT cat: a TUXEDO street cat: black body with a white chest, white muzzle, white paws and white belly, yellow eyes, NO collar.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet, each frame centered in its own cell, nothing touching:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up, showing its back and tail), 4 frames.
+
+The cat must look identical in every frame (same colors, same markings). No text, no labels, no numbers, no watermark.
+```
+
+### Gato 2 — frajola: poses
+
+```
+Pixel art sprite sheet of 4 poses of a cat, using EXACTLY the same art style, outline, size and LAYOUT as the attached cat poses sheet, and EXACTLY the same cat as the attached walking sheet: a TUXEDO street cat: black body with a white chest, white muzzle, white paws and white belly, yellow eyes, NO collar.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+ONE ROW of 4 poses, left to right, each centered in its own equal cell, nothing touching:
+1. Sitting facing the viewer, calm.
+2. Curled up sleeping, with small "z z" above.
+3. Startled: back arched, fur puffed up, tail up, wide eyes, small surprise marks above (about to run away).
+4. Sitting happy with eyes half closed and a small red heart above its head (being petted).
+
+No text, no labels, no numbers, no watermark.
+```
+
+### Gato 3 — siamês: andando
+
+```
+Pixel art walking sprite sheet of a cat, using EXACTLY the same art style, outline thickness, size, proportions and LAYOUT as the attached cat sprite sheet, but a DIFFERENT cat: a SIAMESE street cat: cream body, dark chocolate-brown face mask, ears, paws and tail, bright blue eyes, NO collar.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet, each frame centered in its own cell, nothing touching:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up, showing its back and tail), 4 frames.
+
+The cat must look identical in every frame (same colors, same markings). No text, no labels, no numbers, no watermark.
+```
+
+### Gato 3 — siamês: poses
+
+```
+Pixel art sprite sheet of 4 poses of a cat, using EXACTLY the same art style, outline, size and LAYOUT as the attached cat poses sheet, and EXACTLY the same cat as the attached walking sheet: a SIAMESE street cat: cream body, dark chocolate-brown face mask, ears, paws and tail, bright blue eyes, NO collar.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+ONE ROW of 4 poses, left to right, each centered in its own equal cell, nothing touching:
+1. Sitting facing the viewer, calm.
+2. Curled up sleeping, with small "z z" above.
+3. Startled: back arched, fur puffed up, tail up, wide eyes, small surprise marks above (about to run away).
+4. Sitting happy with eyes half closed and a small red heart above its head (being petted).
+
+No text, no labels, no numbers, no watermark.
 ```
