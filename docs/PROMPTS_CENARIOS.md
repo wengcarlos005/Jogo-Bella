@@ -658,3 +658,27 @@ Draw these 7 objects, each one complete and separate, arranged in a loose grid, 
 Rules: crisp pixel art with clean dark outlines, no anti-aliasing blending into the background, no drop shadows on the ground, no text, no labels, no numbers, no people.
 ```
 
+
+## Rua do Weng — folha 2 (mais parecida com o original)
+
+Anexe a arte ORIGINAL da rua (`art-source/maps/duque-rua.webp`) e o cenário vazio (`duque-rua-base.webp`).
+
+```
+Pixel art sprite sheet of extra props for the city street scene shown in the attached images. Use EXACTLY the same art style, outline thickness, colors, sunset lighting and the same top-down 3/4 camera angle as the attached images, and the same scale: a standing adult person would be about 140 pixels tall. Copy the look of these objects from the first attached image as closely as possible.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no texture, no floor, no ground, no shadows on the background.
+
+STRICT GRID of 2 rows and 4 columns (each cell 384x512 px), every object centered and standing on the bottom of its own cell, nothing touching another object or the cell edge:
+Row 1:
+1. A big leafy tree with a wide round yellow-green canopy and a thick trunk, NO planter, NO grass at the base (about 300x330 px).
+2. A tall slim leafy tree, NO planter, NO grass at the base (about 190x300 px).
+3. A tall gray street lamp with TWO warm glowing lamps on curved arms, like the ones on the corners of the shopping sidewalk (about 120x300 px).
+4. A short gray plaza lamp post with one round warm glowing globe on top (about 50x190 px).
+Row 2:
+5. A long low green hedge with small red flowers (about 260x80 px).
+6. A round green bush with yellow-green leaves (about 120x100 px).
+7. A small flowering shrub with pink and red flowers (about 110x80 px).
+8. A green bush growing behind a low wall, like the ones on the corners of the shopping roof (about 200x120 px).
+
+Rules: crisp pixel art with clean dark outlines, no anti-aliasing blending into the background, no drop shadows, no text, no labels, no numbers, no people.
+```

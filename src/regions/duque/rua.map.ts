@@ -100,9 +100,9 @@ export const duqueRuaMap: MapDef = {
 
   objects: [
     // praça do teatro: uma árvore em cada canteiro, bancos na calçada entre eles e postes na beira da rua
-    { key: 'dr-ipe', x: 740, y: 318, w: 220, fade: true, shadow: false },
-    { key: 'dr-arvore', x: 1005, y: 372, w: 200, fade: true, shadow: false },
-    { key: 'dr-arvore', x: 1415, y: 372, w: 190, fade: true, shadow: false, flip: true },
+    { key: 'dr-ipe-solta', x: 740, y: 312, w: 220, fade: true, shadow: false }, // sem o canteiro do desenho: usa o do cenário
+    { key: 'dr-arvore-solta', x: 1005, y: 366, w: 200, fade: true, shadow: false },
+    { key: 'dr-arvore-solta', x: 1415, y: 366, w: 190, fade: true, shadow: false, flip: true },
     { key: 'dr-banco', x: 860, y: 382, w: 92, shadow: 0.8 },
     { key: 'dr-banco', x: 1215, y: 382, w: 92, shadow: 0.8 },
     { key: 'dr-poste', x: 790, y: 428, w: 70, shadow: 0.4 },
