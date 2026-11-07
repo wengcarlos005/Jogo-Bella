@@ -186,7 +186,7 @@ export const mexicanoMap: MapDef = {
 
   npcs: [
     // garçom: anda pertinho do balcão, entre os banquinhos e a mesa do meio
-    { id: 'garcom', sprite: 'garcom', tx: 12.0, ty: 10.8, facing: 'down', interact: 'garcom', behavior: 'wander', wanderRadius: 1.2, wanderAxis: 'y' },
+    { id: 'garcom', sprite: 'garcom-mex', tx: 12.0, ty: 10.8, facing: 'down', interact: 'garcom', behavior: 'wander', wanderRadius: 1.2, wanderAxis: 'y' },
   ],
 
   hotspots: [

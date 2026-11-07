@@ -246,3 +246,39 @@ Row 4: walking away from the viewer (facing up), 4 frames.
 
 The character must look identical in every frame. No text, no labels, no numbers, no watermark.
 ```
+
+## 8. Garçons (NPCs)
+
+Anexe nos dois a folha andando da atendente (`public/assets/npcs/atendente-walk.png`) como modelo de layout.
+
+### Garçom do restaurante chique de Petrópolis
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person: a friendly young Brazilian male waiter, short dark hair, light brown skin, white shirt with rolled sleeves, black vest, black bow tie, black apron at the waist, black pants and shoes.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+### Garçom do restaurante mexicano
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person: a cheerful Brazilian male waiter at a colorful Mexican restaurant, curly dark hair and a short mustache, tan skin, bright red short-sleeve shirt with a small colorful embroidered pattern on the chest, a green apron with orange stripes at the waist, dark jeans, brown shoes. No hat.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```

@@ -40,7 +40,7 @@ interface NpcEntry {
  * outro MapDef — o motor é o mesmo para todas as cidades.
  */
 /** NPCs que ainda não têm arte própria usam a folha de outro enquanto isso. */
-const SPRITE_FALLBACK: Record<string, string> = { garcom: 'atendente' };
+const SPRITE_FALLBACK: Record<string, string> = { 'garcom-mex': 'garcom', garcom: 'atendente' };
 
 export class GameScene extends Phaser.Scene {
   def!: MapDef;
@@ -267,7 +267,12 @@ export class GameScene extends Phaser.Scene {
    * cai no placeholder (chave original).
    */
   spriteFor(key: string): string {
-    if (key !== 'bella' && key !== 'weng') return this.textures.exists(key) ? key : (SPRITE_FALLBACK[key] ?? key);
+    if (key !== 'bella' && key !== 'weng') {
+      // sem a arte ainda: cai no substituto (ex.: garçom do mexicano → garçom → atendente)
+      let k = key;
+      while (!this.textures.exists(k) && SPRITE_FALLBACK[k]) k = SPRITE_FALLBACK[k];
+      return k;
+    }
     const region = this.def.region;
     const override = key === 'bella' ? GameState.data.regionOutfits[region] : undefined;
     const id = override ?? REGION_OUTFIT[key][region];
