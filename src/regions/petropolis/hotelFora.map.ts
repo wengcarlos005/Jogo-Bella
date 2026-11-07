@@ -38,11 +38,11 @@ const scripts: Record<string, Script> = {
     if (ctx.flag('pt-chegou')) return;
     ctx.setFlag('pt-chegou');
     if (!ctx.questActive(Q) && !QuestSystem.isDone(Q)) ctx.startQuest(Q);
-    await ctx.narrate('Petrópolis. A viagem de aniversário da Bella.');
-    // ordem real: Quitandinha (com o piquenique) → hotel → almoço de aniversário
-    await ctx.narrate('O dia começou no Palácio Quitandinha: piquenique na grama, de frente pro lago em formato de Brasil.');
-    await ctx.narrate('(O passeio pelo Quitandinha vira cena jogável em breve.)');
-    ctx.objective(Q, 'quitandinha');
+    if (!objDone('quitandinha')) {
+      await ctx.narrate('Petrópolis. A viagem de aniversário da Bella.');
+      await ctx.narrate('O dia começou no Palácio Quitandinha: piquenique na grama, de frente pro lago em formato de Brasil.');
+      ctx.objective(Q, 'quitandinha');
+    }
     await ctx.narrate('No fim da tarde, a subida até o hotel, lá no alto do morro. Neblina e frio de verdade.');
     await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', 'QUE FRIO! Weng, eu tô vendo a minha respiração!');

@@ -715,7 +715,7 @@ export const aptoMap: MapDef = {
           ],
         });
         await ctx.chapterCard('Capítulo 3', 'Petrópolis', 'O aniversário dela.', 'Começar');
-        await ctx.teleport('pt-hotel-fora', 'portao');
+        await ctx.teleport('pt-quitandinha', 'entrada');
         return;
       }
       await ctx.say('weng', 'Que foi? Tá me olhando com cara de quem quer açaí.');

@@ -215,3 +215,5 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | MAP-032 | Quarto do hotel vazio | maps/pt-quarto-base.png | pedido |
 | MAP-033 | Restaurante chique em Petrópolis | maps/pt-restaurante.webp | ✅ no jogo |
 | OBJ-RS | Folha do restaurante | objects/restaurante-folha.webp → rs-* | ✅ no jogo |
+| MAP-034 | Palácio Quitandinha com lago em formato de Brasil | maps/pt-quitandinha.webp | ✅ no jogo |
+| OBJ-QD | Folha do Quitandinha | objects/quitandinha-folha.webp → qd-* (toalha e cesta feitas em código) | ✅ no jogo |

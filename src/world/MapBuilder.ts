@@ -247,7 +247,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     else img.setScale(1 / RENDER_SCALE);
     if (ob.flip) img.setFlipX(true);
     const base = (ob.base ?? ob.y) / 3;
-    img.setDepth(ob.front ? 150_000 : base);
+    img.setDepth(ob.front ? 150_000 : ob.flat ? -3 : base);
     const b = img.getBounds();
     // profundidade fixa na base (tall): objeto separado não troca de camada quando alguém passa por ele
     overlays.push({ img, rect: new Phaser.Geom.Rectangle(b.x, b.y, b.width, b.height), base, fade: !!ob.fade || !!ob.front, front: ob.front, tall: ob.tall ?? true, when: ob.when });
