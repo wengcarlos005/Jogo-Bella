@@ -2230,3 +2230,8 @@ html.hud-kit #rightbar .sb-btn.sb-kit img { width: min(100%, 118px) !important; 
 .kg-couple { position: absolute; width: auto; transform: translate(-50%, -100%); z-index: 4; pointer-events: none; image-rendering: auto; filter: drop-shadow(0 3px 0 rgba(30, 10, 20, .25)); }
 .kg-shadow2 { position: absolute; height: 40%; width: auto; transform: translate(-50%, -100%); opacity: 0; transition: opacity .35s; z-index: 1; pointer-events: none; }
 .kg-shadow2.on { opacity: .75; }
+
+/* barras laterais escondidas (tela de título, transições) não podem roubar cliques do menu */
+#topbar.idle, #rightbar.idle, #hotbar.idle, #leftbar.idle { pointer-events: none !important; }
+/* menu de pausa/opções sempre por cima das barras laterais */
+#ui .pm-screen { z-index: 40 !important; }

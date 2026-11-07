@@ -331,8 +331,8 @@ export const ruaMap: MapDef = {
     R(1612, 0, 1700, 1100),
     R(0, 950, 1700, 1100),
     // postes (base e a calçada logo ao sul da luminária)
-    // carro (corpo)
-    R(265, 470, 497, 533),
+    // carro (corpo) — estacionado encostado no meio-fio
+    R(265, 424, 497, 487),
     // pracinha: cerca viva com a passagem do meio (x 770–848)
     R(0, 628, 770, 700),
     R(848, 628, 1619, 700),
@@ -357,7 +357,7 @@ export const ruaMap: MapDef = {
   objects: [
     { key: 'rb-poste', x: 154, y: 615, w: 75, shadow: 0.4 },
     { key: 'rb-poste', x: 1396, y: 615, w: 75, shadow: 0.4, flip: true },
-    { key: 'rb-carro', x: 362, y: 562, w: 228, shadow: 0.9 },
+    { key: 'rb-carro', x: 362, y: 514, w: 228, shadow: 0.9 },
     { key: 'rb-arvore', x: 280, y: 935, w: 320, fade: true, shadow: 0.5 },
     { key: 'rb-arvore', x: 1280, y: 935, w: 320, fade: true, shadow: 0.5, flip: true },
     { key: 'rb-banco', x: 527, y: 823, w: 140, shadow: 0.9 },
@@ -370,7 +370,7 @@ export const ruaMap: MapDef = {
     { rect: R(372, 285, 414, 382), interact: 'caixa', label: 'Caixa de correio' },
     { rect: R(700, 300, 760, 372), interact: 'portao-vizinha', label: 'Casa da Dona Cida' },
     { rect: R(1005, 200, 1085, 340), interact: 'placa-parque', label: 'Ler' },
-    { rect: R(262, 410, 500, 535), interact: 'carro', label: 'Carro' },
+    { rect: R(262, 364, 500, 489), interact: 'carro', label: 'Carro' },
     { rect: R(483, 650, 627, 776), interact: 'banco', label: 'Sentar' },
     { rect: R(990, 650, 1137, 776), interact: 'banco2', label: 'Sentar' },
     { rect: R(1325, 290, 1415, 372), interact: 'casa-vizinho', label: 'Portão' },

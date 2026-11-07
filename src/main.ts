@@ -59,7 +59,7 @@ UI.init(
       AudioSystem.setRain(false);
       AudioSystem.setMuffledRain(false);
       GameState.load(c.data);
-      const data: GameSceneData = { mapId: c.mapId, position: c.position, facing: c.facing };
+      const data: GameSceneData = c.position ? { mapId: c.mapId, position: c.position, facing: c.facing } : { mapId: c.mapId, spawn: c.spawn };
       if (game.scene.isActive('Game')) gameScene().scene.restart(data);
       else startGame(data);
     },

@@ -345,7 +345,7 @@ export class PauseMenu {
   /** Cenas já liberadas: joga de novo a partir do começo de qualquer missão principal. */
   private renderScenes(): void {
     const cenas = SceneCheckpoints.list();
-    this.body.append(this.header('Cenas', 'Pule direto pra qualquer parte da história que já foi liberada', [`${cenas.length} liberada${cenas.length === 1 ? '' : 's'}`]));
+    this.body.append(this.header('Cenas', 'Pule direto pra qualquer parte da história', [`${cenas.length} cenas`]));
     if (!cenas.length) {
       this.body.append(h('div', { class: 'pm-empty' }, '🎬 Nenhuma cena liberada ainda. Cada missão que começa vira uma cena aqui!'));
       return;
