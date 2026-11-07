@@ -180,6 +180,7 @@ export const ASSETS: AssetEntry[] = [
     (n, i): AssetEntry => ({ id: `ICO-${String(21 + i).padStart(3, '0')}`, key: `icon-achado-${n}`, file: `assets/ui/icon-achado-${n}.png`, kind: 'image' }),
   ),
   { id: 'MAP-011', key: 'map-duque-rua-bg', file: 'assets/maps/duque-rua-bg.png', kind: 'image' },
+  { id: 'MAP-036', key: 'map-pt-quarto-bg', file: 'assets/maps/pt-quarto-bg.png', kind: 'image' },
   { id: 'MAP-035', key: 'map-dq-multidao-bg', file: 'assets/maps/dq-multidao-bg.png', kind: 'image' },
   { id: 'MAP-034', key: 'map-pt-quitandinha-bg', file: 'assets/maps/pt-quitandinha-bg.png', kind: 'image' },
   { id: 'MAP-033', key: 'map-pt-restaurante-bg', file: 'assets/maps/pt-restaurante-bg.png', kind: 'image' },

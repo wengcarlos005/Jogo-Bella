@@ -35,6 +35,27 @@ async function tirarFoto(ctx: ScriptContext, flag: string, texto: string, fala: 
 const scripts: Record<string, Script> = {
   async chegada(ctx) {
     ctx.follow('weng', true);
+    // manhã do aniversário: saindo do quarto
+    if (ctx.flag('pt-manha') && !ctx.flag('pt-manha-1')) {
+      ctx.setFlag('pt-manha-1');
+      ctx.weather('clear');
+      await ctx.narrate('Na manhã seguinte. Sol, neblina se abrindo e o cheiro de pão quentinho.');
+      await ctx.phone({ contact: 'Mãe', avatar: 'portrait-mae-bella', clock: '08:02', caption: 'No celular da Bella' }, [
+        { from: 'them', text: 'PARABÉNS MINHA FILHA!!!!!! 🎉🎂🎈' },
+        { from: 'them', text: 'Que Deus te abençoe muito, te amo demais' },
+        { from: 'me', text: 'Obrigada mãe!!! Te amo 💕' },
+        { from: 'them', text: 'Fui a primeira a dar parabéns né??' },
+        { from: 'me', text: 'kkkkkk segunda. o Weng me acordou à meia-noite com bolo' },
+        { from: 'them', text: 'ESSE MENINO 😭 tá aprovado de novo' },
+        { from: 'them', text: 'Tá frio aí? Tá usando o casaco?' },
+        { from: 'me', text: 'Tô de casaco, de meia (dele), de manta e de Weng kkkkk' },
+        { from: 'them', text: 'Kkkkk manda beijo pra ele. O Alexandre mandou parabéns também' },
+        { from: 'them', text: '(ele disse "parabéns". só isso. mas disse com carinho)' },
+        { from: 'me', text: 'kkkkkk vindo dele é um abraço' },
+      ]);
+      ctx.toast('Tomem café da manhã na varanda do hotel');
+      return;
+    }
     if (ctx.flag('pt-chegou')) return;
     ctx.setFlag('pt-chegou');
     if (!ctx.questActive(Q) && !QuestSystem.isDone(Q)) ctx.startQuest(Q);
@@ -76,31 +97,14 @@ const scripts: Record<string, Script> = {
       await ctx.say('recepcionista', 'Boa noite! Quarto 12, com lareira. E chocolate quente de boas-vindas pros dois.');
       await ctx.say('bella', 'LAREIRA?! Weng, você pensou em tudo.');
       await ctx.say('weng', 'Pensei. Inclusive no chocolate.');
-      await ctx.fadeOut(700);
-      await ctx.narrate('Lareira acesa, chocolate quente e uma manta xadrez. A primeira noite na serra.');
-      await ctx.narrate('Uma série boba na TV, os pés gelados dela nas pernas dele, e conversa até tarde.');
-      await ctx.narrate('Às 23:59, ele já estava acordado de propósito.');
-      await ctx.narrate('À meia-noite em ponto: "Feliz aniversário, meu amor." Ele foi o primeiro.');
-      ctx.setFlag('pt-manha');
-      ctx.weather('clear');
-      ctx.refresh();
-      // manhã do aniversário: os dois saem do hotel
-      ctx.place('player', 13.0, 8.6, 'down');
-      ctx.place('weng', 14.6, 8.6, 'down');
-      ctx.follow('weng', true);
-      await ctx.fadeIn(800);
-      await ctx.narrate('Na manhã seguinte. Sol, neblina se abrindo e o cheiro de pão quentinho.');
-      await ctx.phone({ contact: 'Mãe', avatar: 'portrait-mae-bella', clock: '08:02', caption: 'No celular da Bella' }, [
-        { from: 'them', text: 'PARABÉNS MINHA FILHA!!!!!! 🎉🎂🎈' },
-        { from: 'them', text: 'Que Deus te abençoe muito, te amo demais' },
-        { from: 'me', text: 'Obrigada mãe!!! Te amo 💕' },
-        { from: 'them', text: 'Tá frio aí? Tá usando o casaco?' },
-        { from: 'me', text: 'Tô de casaco, de meia, de manta e de Weng kkkkk' },
-        { from: 'them', text: 'Kkkkk manda beijo pra ele. O Alexandre mandou parabéns também' },
-        { from: 'them', text: '(ele disse "parabéns". só isso. mas disse com carinho)' },
-        { from: 'me', text: 'kkkkkk vindo dele é um abraço' },
-      ]);
-      ctx.toast('Tomem café da manhã na varanda do hotel');
+      await ctx.say('recepcionista', '(baixinho, pro Weng) E aquela encomenda do senhor já está guardada, tá?');
+      await ctx.say('bella', 'Que encomenda?');
+      await ctx.say('weng', 'Nada! Toalha extra. Bora subir?');
+      await ctx.teleport('pt-quarto', 'porta');
+      return;
+    }
+    if (objActive('noite')) {
+      await ctx.teleport('pt-quarto', 'porta');
       return;
     }
     if (objActive('almoco')) {
@@ -262,6 +266,8 @@ export const hotelForaMap: MapDef = {
 
   spawns: {
     portao: { tx: 17.7, ty: 18.6, facing: 'up' },
+    // saindo da recepção (manhã do aniversário)
+    manha: { tx: 13.0, ty: 8.6, facing: 'down' },
   },
   triggers: [{ id: 'saida', rect: R(745, 955, 940, 1000), script: 'saida' }],
   scripts,

@@ -223,6 +223,7 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | MAP-034 | Palácio Quitandinha com lago em formato de Brasil | maps/pt-quitandinha.webp | ✅ no jogo |
 | OBJ-DR2 | Rua do Weng, folha 2 (árvores grandes, postes, cerca viva, arbustos) | objects/duque-rua-folha2.webp → dr-arvoregrande, dr-postedupla, dr-postebola, dr-cercaviva, dr-arbusto, dr-arbustoflor (+ dr-arvorefina, dr-arbustomuro de reserva) | ✅ no jogo |
 | OBJ-PQ | Folha do piquenique | objects/piquenique-folha.webp → pq-* | ✅ no Quitandinha |
+| MAP-036 | Quarto 12 do hotel em Petrópolis (vazio) | maps/pt-quarto.webp | ✅ no jogo (móveis hq-*) |
 | MAP-035 | Shopping da Multidão (dentro) | maps/dq-multidao.webp | ✅ no jogo |
 | OBJ-MT | Folha do Multidão | objects/multidao-folha.webp → mt-* | ✅ no jogo |
 | OBJ-QD | Folha do Quitandinha | objects/quitandinha-folha.webp → qd-* | ✅ no jogo |
