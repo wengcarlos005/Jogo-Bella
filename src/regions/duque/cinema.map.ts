@@ -25,8 +25,9 @@ const scripts: Record<string, Script> = {
     await ctx.emote('weng', 'sweat');
     await ctx.say('weng', '(E ela não pode desconfiar de NADA do que vem depois.)');
     ctx.face('player', 'weng');
-    await ctx.say('bella', 'Você tá estranho. Tá com medo do filme?');
-    await ctx.say('weng', 'Eu? Medo? De um urso animatrônico? ...Um pouco.');
+    await ctx.say('bella', 'Você tá estranho. Aconteceu alguma coisa?');
+    await ctx.say('weng', 'Eu? Nada! Só... ansioso pro filme. Muito ansioso. Pelo urso animatrônico.');
+    await ctx.say('bella', '(Ele não liga pra urso nenhum.)');
     ctx.follow('weng', true);
     ctx.toast('Pegue a pipoca no balcão da direita');
   },
@@ -35,23 +36,20 @@ const scripts: Record<string, Script> = {
     ctx.objective(Q, 'filme');
     await ctx.fadeOut(600);
     ctx.letterbox(true);
-    await ctx.narrate('Sala 3. As luzes se apagam...');
-    ctx.shake(400);
-    ctx.sfx('cancel');
-    await ctx.say('bella', 'AAAAH! (aperta o braço do Weng)');
-    await ctx.say('weng', '(Ela tá segurando meu braço. Melhor filme da minha vida.)');
-    ctx.shake(300);
-    await ctx.say('bella', 'Não olha pra mim! Olha pro filme!');
-    await ctx.say('weng', 'Tem filme passando?');
-    await ctx.narrate('Duas horas, um balde de pipoca e quarenta e três apertões depois...');
+    await ctx.narrate('Sala 3, última fileira. As luzes se apagam...');
+    await ctx.narrate("Five Nights at Freddy's. O filme que a gente escolheu. E que a gente quase não viu.");
+    const r = await ctx.cinema();
+    ctx.setFlag('dq-cine-estrelas', r.stars);
+    await ctx.narrate('Duas horas e um balde de pipoca intacto depois...');
     ctx.letterbox(false);
     ctx.place('player', 15.4, 8.6, 'right');
     ctx.place('weng', 17.0, 8.6, 'left');
     await ctx.fadeIn(600);
-    await ctx.say('weng', 'E aí? Deu medo?');
-    await ctx.say('bella', 'Medo nenhum. Eu só apertei o seu braço umas... quarenta vezes.');
-    await ctx.say('weng', 'Quarenta e três. Eu contei.');
+    await ctx.say('weng', 'E aí... gostou do filme?');
+    await ctx.say('bella', 'Que filme?');
+    await ctx.say('weng', 'Tinha um urso. Eu acho. Talvez fosse um coelho.');
     await ctx.emote('bella', 'heart');
+    await ctx.say('bella', r.shh >= 3 ? 'O lanterninha passou com a lanterna na nossa cara umas mil vezes.' : 'A pipoca ficou inteirinha. Nunca aconteceu isso na história.');
     await ctx.say('bella', 'Bora tomar alguma coisa antes de ir embora?');
     await ctx.emote('weng', 'sweat');
     await ctx.say('weng', '(Ela não pode desconfiar de nada. Age normal, Weng. Normal.)');
@@ -108,13 +106,13 @@ const scripts: Record<string, Script> = {
       ctx.sfx('pickup');
       await ctx.emote('bella', 'heart');
       await ctx.say('weng', 'Aposto que acaba antes do filme começar.');
-      await ctx.say('bella', 'Clássico.');
+      await ctx.say('bella', 'Ou a gente nem encosta nela. Vai saber.');
       await ctx.say('weng', 'Bora? A sessão já vai começar.');
       await scripts.filme(ctx);
       return;
     }
-    await ctx.say('weng', 'Pipoca grande. Que a gente comeu antes do filme começar.');
-    await ctx.say('bella', 'Clássico.');
+    await ctx.say('weng', 'Pipoca grande. Que voltou cheia.');
+    await ctx.say('bella', 'A gente tava ocupado.');
   },
   async cartaz(ctx) {
     await ctx.say('bella', 'Um cartaz de terror com uma casa mal-assombrada. Não, obrigada.');

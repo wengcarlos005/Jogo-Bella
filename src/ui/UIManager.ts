@@ -4,6 +4,8 @@ import { playCardGame, type CardResult } from './screens/CardGame';
 import { playKissGame, type KissResult } from './screens/KissGame';
 import { playPhoneChat, type PhoneMsg, type PhoneOptions } from './screens/PhoneChat';
 import { playAcaiGame, type AcaiOptions, type AcaiResult } from './screens/AcaiGame';
+import { playTacoGame, type TacoResult } from './screens/TacoGame';
+import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
 import { UI_WIDTH } from '@/config/gameConfig';
@@ -145,6 +147,16 @@ class UIManagerImpl {
 
   burger(opts: BurgerOptions): Promise<BurgerResult> {
     return playBurgerGame(this.root, opts);
+  }
+
+  cinema(): Promise<CinemaResult> {
+    this.dialogue.close();
+    return playCinemaGame(this.root);
+  }
+
+  tacos(opts: { title?: string } = {}): Promise<TacoResult> {
+    this.dialogue.close();
+    return playTacoGame(this.root, opts);
   }
 
   acai(opts: AcaiOptions): Promise<AcaiResult> {

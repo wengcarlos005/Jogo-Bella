@@ -61,7 +61,7 @@ export const MEMORIES: MemoryDef[] = [
     title: 'A Meli aprovou',
     year: 'Ano 1',
     text: 'A primeira vez no apê do Weng. A Meli se escondeu, eu conquistei ela com sachê, novelo e carinho, e da janela a gente viu o Teatro Raul Cortez todo iluminado.',
-    image: 'memory-dq-01',
+    image: 'cena-duque-janela',
   },
   {
     id: 'mem-dq-02',

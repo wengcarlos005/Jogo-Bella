@@ -2250,3 +2250,96 @@ html.hud-kit #rightbar .sb-btn.sb-kit img { width: min(100%, 118px) !important; 
 /* beijo escondido: a mãe desce pelo corredor da cozinha e para na entrada da sala */
 .kg-mom2 { transform: translate(-50%, -128%) scale(.92) !important; transition: opacity .25s, transform .45s cubic-bezier(.3, 1.3, .5, 1) !important; }
 .kg-mom2.show { transform: translate(-50%, -100%) scale(1) !important; }
+
+/* ---------------------------------------------------------------- Noite do Taco */
+.tc-panel { background: linear-gradient(#fff4e3, #ffe2bd); border-color: #b8401e; }
+.tc-title { background: linear-gradient(90deg, #e8343f, #ff9a2e, #2fb36b); color: #fff; text-shadow: 0 2px 0 #7a1a10; border-radius: calc(var(--u) * 2); padding: calc(var(--u) * 1.5); }
+.tc-main { display: flex; gap: calc(var(--u) * 3); align-items: stretch; }
+.tc-stage { position: relative; flex: 1 1 70%; aspect-ratio: 16 / 10; overflow: hidden; border-radius: calc(var(--u) * 3); border: calc(var(--u) * 1.2) solid #7a2a10; background: #6a2a12; touch-action: none; cursor: none; }
+.tc-bg { position: absolute; inset: -6%; background: center / cover; filter: blur(2px) brightness(.7) saturate(1.2); }
+.tc-bunting { position: absolute; left: 0; right: 0; top: 0; display: flex; justify-content: space-around; z-index: 2; pointer-events: none; }
+.tc-bunting i { width: 6%; aspect-ratio: 1 / 1.2; background: var(--c); clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%); opacity: .95; animation: tcFlag 1.6s ease-in-out infinite alternate; transform-origin: 50% 0; }
+.tc-bunting i:nth-child(2n) { animation-delay: .5s; }
+@keyframes tcFlag { to { transform: rotate(6deg); } }
+.tc-tortilla { position: absolute; bottom: 4%; width: 22%; aspect-ratio: 2 / 1; transform: translateX(-50%); z-index: 6; }
+.tc-tort-css { position: absolute; inset: 20% 0 0 0; border-radius: 50% 50% 46% 46% / 30% 30% 70% 70%; background: radial-gradient(circle at 30% 40%, #c88a3a 0 4%, transparent 5%), radial-gradient(circle at 70% 60%, #c88a3a 0 3%, transparent 4%), radial-gradient(ellipse at 50% 30%, #ffe08a, #f2b84a 70%, #c98a30); border: 3px solid #6a3a10; box-shadow: 0 4px 0 rgba(0,0,0,.35); }
+.tc-tort-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+.tc-tortilla.fold .tc-tort-css { border-radius: 50% 50% 10% 10% / 100% 100% 10% 10%; transition: border-radius .4s; }
+.tc-tortilla.fold { animation: tcFold .6s cubic-bezier(.2, 1.6, .4, 1); }
+@keyframes tcFold { 40% { transform: translateX(-50%) scale(1.15) rotate(-6deg); } }
+.tc-pile { position: absolute; inset: 0 10% 30% 10%; display: flex; justify-content: center; align-items: flex-end; }
+.tc-in { position: absolute; bottom: 25%; left: calc(50% + var(--dx) * .6); transform: translateX(-50%) rotate(var(--r)); width: 34%; font-size: clamp(14px, calc(var(--u) * 9), 30px); animation: drop 200ms ease-out; }
+.tc-fall { position: absolute; z-index: 4; transform: translate(-50%, -50%); pointer-events: none; }
+.tc-fall .tc-ico { width: calc(var(--u) * 16); font-size: clamp(18px, calc(var(--u) * 11), 38px); filter: drop-shadow(0 3px 0 rgba(0,0,0,.35)); }
+.tc-ico { display: inline-block; text-align: center; line-height: 1; image-rendering: pixelated; }
+img.tc-ico { height: auto; }
+.tc-banner { position: absolute; inset: 40% 0 auto 0; text-align: center; font-family: var(--font-pixel); font-size: clamp(18px, calc(var(--u) * 12), 38px); color: #fff; text-shadow: 0 3px 0 #b8401e, 0 0 12px #ff9a2e; opacity: 0; transform: scale(.6); transition: .3s cubic-bezier(.2, 1.6, .4, 1); z-index: 8; pointer-events: none; }
+.tc-banner.on { opacity: 1; transform: none; }
+.tc-clock { position: absolute; right: 2%; top: 14%; z-index: 7; font-family: var(--font-pixel); color: #fff; background: rgba(0,0,0,.45); padding: 2px 8px; border-radius: 99px; font-size: clamp(11px, calc(var(--u) * 6), 18px); }
+.tc-clock:empty { display: none; }
+.tc-clock.hurry { color: #ffd23f; animation: gp-hot .4s infinite alternate; }
+.tc-pop { position: absolute; z-index: 9; transform: translate(-50%, -50%); font-family: var(--font-pixel); font-size: clamp(12px, calc(var(--u) * 7), 22px); pointer-events: none; animation: tcPop .8s ease-out forwards; }
+.tc-pop.good { color: #7bff8a; text-shadow: 0 2px 0 #1a5a20; }
+.tc-pop.bad { color: #ff6a6a; text-shadow: 0 2px 0 #5a1a1a; }
+@keyframes tcPop { to { transform: translate(-50%, -160%); opacity: 0; } }
+.tc-side { flex: 0 0 28%; display: flex; flex-direction: column; gap: calc(var(--u) * 2); background: #fff; border: calc(var(--u) * 1) dashed #e8343f; border-radius: calc(var(--u) * 2); padding: calc(var(--u) * 3); }
+.tc-round { display: flex; flex-direction: column; font-family: var(--font-pixel); color: #b8401e; font-size: clamp(10px, calc(var(--u) * 5.2), 16px); }
+.tc-round small { font-family: var(--font-body); color: #8a5a3a; font-weight: 800; }
+.tc-order { display: flex; flex-direction: column; gap: calc(var(--u) * 1.2); }
+.tc-line { display: flex; align-items: center; gap: calc(var(--u) * 1.5); font-weight: 800; color: #4a2a20; font-size: clamp(10px, calc(var(--u) * 5), 15px); }
+.tc-line .tc-ico { width: 1.6em; font-size: 1.3em; }
+.tc-line b { margin-left: auto; }
+.tc-line.ok { color: #2a8a3a; text-decoration: line-through; }
+.tc-err { margin-top: auto; font-family: var(--font-pixel); color: #e8343f; }
+.tc-msg { min-height: 2.6em; }
+.tc-arrow { font-size: clamp(16px, calc(var(--u) * 9), 28px); width: 2.6em; height: 2em; border-radius: 12px; border: 3px solid #b8401e; background: #fff6e6; color: #b8401e; cursor: pointer; touch-action: none; }
+@media (max-aspect-ratio: 1/1) { .tc-main { flex-direction: column; } }
+.tc-panel > * { flex: none; }
+.tc-title { padding: calc(var(--u) * 1) calc(var(--u) * 14) !important; }
+.tc-stage { aspect-ratio: 16 / 9; }
+
+/* encantômetro da Meli (barra de cima) */
+.tb-encanto { display: flex; align-items: center; gap: 6px; padding: 4px 14px; border-radius: 99px; background: #fff3e0; border: 2px solid #ff9a3a; box-shadow: 0 2px 0 #b8581e; font-weight: 900; color: #b8581e; font-size: clamp(10px, .95vw, 14px); }
+.tb-enc-cat { font-size: 1.35em; line-height: 1; }
+.tb-enc-bar { position: relative; width: clamp(60px, 8vw, 130px); height: 10px; border-radius: 99px; background: #f3d8bf; overflow: hidden; border: 1.5px solid #b8581e; }
+.tb-enc-bar i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #ffb35a, #ff6a9a); transition: width .25s ease-out; }
+.tb-encanto.full { animation: tbEnc 1s ease-in-out infinite alternate; }
+.tb-encanto.full .tb-enc-bar i { background: linear-gradient(90deg, #ff6a9a, #ff3a7a); }
+@keyframes tbEnc { to { box-shadow: 0 2px 0 #b8581e, 0 0 12px 3px rgba(255, 106, 154, .7); } }
+
+/* ---------------------------------------------------------------- No escurinho do cinema */
+.cg-panel { background: linear-gradient(#2a1838, #1a1028); border-color: #6a3a8a; color: #f3e6ff; }
+.cg-panel > * { flex: none; }
+.cg-title { background: linear-gradient(90deg, #6a2a8a, #b8304a) !important; box-shadow: 0 3px 0 #2a0e30 !important; }
+.cg-top { display: flex; gap: calc(var(--u) * 3); align-items: center; }
+.cg-meter { flex: 1; display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: clamp(10px, calc(var(--u) * 5), 15px); }
+.cg-bar { position: relative; flex: 1; height: 12px; border-radius: 99px; background: #3a2448; border: 2px solid #8a5aa8; overflow: hidden; }
+.cg-bar i { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #ff6a9a, #ff3a7a); transition: width .15s linear; }
+.cg-time .cg-bar i { background: linear-gradient(90deg, #8a8aff, #c8c8ff); }
+.cg-shh { min-width: 6em; text-align: right; font-family: var(--font-pixel); color: #ffd23f; }
+.cg-stage { position: relative; aspect-ratio: 16 / 8; overflow: hidden; border-radius: calc(var(--u) * 3); border: calc(var(--u) * 1.2) solid #4a2a5a; background: radial-gradient(ellipse at 50% 0%, #3a3058 0%, #120a1a 60%); }
+.cg-screen { position: absolute; left: 14%; right: 14%; top: 4%; height: 26%; border-radius: 4px; background: linear-gradient(#5a5a7a, #2a2a40); box-shadow: 0 0 40px 10px rgba(140, 140, 220, .35); display: flex; align-items: center; justify-content: center; animation: cgFlick 2.4s steps(6) infinite; }
+.cg-screen span { font-family: var(--font-pixel); color: rgba(255,255,255,.25); font-size: clamp(9px, calc(var(--u) * 5), 16px); }
+.cg-screen.warn { background: linear-gradient(#a01a2a, #4a0a12); box-shadow: 0 0 50px 14px rgba(255, 40, 60, .55); animation: cgWarn .18s infinite alternate; }
+@keyframes cgFlick { 50% { filter: brightness(1.3); } }
+@keyframes cgWarn { to { filter: brightness(1.5); } }
+.cg-rows { position: absolute; inset: 40% 0 0 0; }
+.cg-row { position: absolute; left: 4%; right: 4%; display: flex; justify-content: space-between; }
+.cg-row i { width: 9%; aspect-ratio: 1 / .8; border-radius: 40% 40% 10% 10%; background: #2a1a34; box-shadow: inset 0 3px 0 #4a2e58; }
+.cg-row.r0 { top: 0; transform: scale(.82); }
+.cg-row.r1 { top: 22%; transform: scale(.9); }
+.cg-row.r2 { top: 66%; z-index: 4; }
+.cg-couple { position: absolute; left: 50%; bottom: 14%; height: 52%; transform: translateX(-50%); z-index: 3; filter: brightness(.45) saturate(.7); transition: filter .2s; }
+.cg-stage.lit .cg-couple { filter: brightness(1.05); }
+.cg-beam { position: absolute; bottom: 0; width: 26%; height: 100%; transform: translateX(-50%); z-index: 5; pointer-events: none; background: radial-gradient(ellipse 50% 40% at 50% 62%, rgba(255, 245, 190, .55), rgba(255, 245, 190, .12) 60%, transparent 75%); mix-blend-mode: screen; }
+.cg-usher { position: absolute; bottom: 2%; transform: translateX(-50%); z-index: 6; font-size: clamp(14px, calc(var(--u) * 9), 28px); filter: drop-shadow(0 0 6px #ffe9a0); }
+.cg-flash { position: absolute; inset: 0; z-index: 7; pointer-events: none; background: rgba(255, 250, 240, .75); opacity: 0; transition: opacity .08s; }
+.cg-flash.on { opacity: 1; }
+.cg-hearts { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.cg-hearts i { position: absolute; bottom: 55%; color: #ff6a9a; font-style: normal; font-size: clamp(12px, calc(var(--u) * 7), 22px); animation: kgHeart 1.1s ease-out forwards; }
+@keyframes kgHeart { to { transform: translate(var(--dx), -80px) scale(1.3); opacity: 0; } }
+.cg-msg { color: #4a2a20; }
+.cg-panel { width: min(94%, calc(var(--u) * 380)) !important; gap: calc(var(--u) * 2.5) !important; }
+.cg-stage { aspect-ratio: 16 / 7; }
+.cg-meter { color: #6a2a6a; }
+.cg-shh { color: #c8304a; }

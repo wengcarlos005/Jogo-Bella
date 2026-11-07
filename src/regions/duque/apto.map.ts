@@ -30,6 +30,20 @@ const P = {
   caminha: { x: 6.44, y: 7.55 }, // caminha no quarto do Weng (dormindo dentro dela)
 };
 
+/** Encantômetro da Meli: sobe a cada passo (0–100) e aparece no topo da tela. */
+async function encanto(ctx: ScriptContext, to: number, msg: string): Promise<void> {
+  const from = Number(GameState.getFlag<number>('meli-encanto') ?? 0);
+  if (to <= from) return;
+  // sobe aos pouquinhos (a barra enche animada)
+  for (let v = from + 5; v < to; v += 5) {
+    ctx.setFlag('meli-encanto', v);
+    await ctx.wait(45);
+  }
+  ctx.setFlag('meli-encanto', to);
+  ctx.sfx('pickup');
+  ctx.toast(msg);
+}
+
 /** Onde a Meli está de acordo com o andamento (usado ao montar o mapa e ao recarregar). */
 function meliSpot(): { x: number; y: number } {
   if (questDone() || objDone('carinho')) return P.caminha;
@@ -106,6 +120,7 @@ const scripts: Record<string, Script> = {
       ctx.pose('meli', null);
       await ctx.move('meli', 6.4, 16.7, 120);
       ctx.hearts('meli', 3);
+      void encanto(ctx, 55, 'Encantômetro: 55%');
       ctx.sfx('blip');
       void ctx.moveProp('novelo', 2.9, 16.5, 700);
       await ctx.wait(250);
@@ -116,6 +131,7 @@ const scripts: Record<string, Script> = {
       await ctx.move('meli', 5.3, 17.0, 120);
       ctx.face('meli', 'right');
       ctx.hearts('meli', 6);
+      await encanto(ctx, 70, 'Encantômetro da Meli: 70% (ela tá se divertindo!)');
       await ctx.say('meli', 'Mrrrau!');
       ctx.face('player', 'meli');
       await ctx.say('weng', 'Ela NUNCA brinca assim com visita. Tô passado.');
@@ -143,8 +159,10 @@ const scripts: Record<string, Script> = {
       // cansou de tanto brincar: vai sozinha pra caminha, no quarto do Weng
       ctx.pose('meli', null);
       void (async () => {
-        await ctx.move('meli', 8.9, P.brinca.y, 70);
-        await ctx.move('meli', 8.9, 8.3, 70);
+        await ctx.move('meli', 8.2, P.brinca.y, 70);
+        await ctx.move('meli', 8.2, 10.6, 70);
+        await ctx.move('meli', 9.6, 10.6, 70);
+        await ctx.move('meli', 9.6, 8.3, 70);
         await ctx.move('meli', P.caminha.x, P.caminha.y, 60);
         ctx.face('meli', 'down');
         ctx.pose('meli', 'meli-poses', 1);
@@ -153,6 +171,7 @@ const scripts: Record<string, Script> = {
       await ctx.unfocus(500);
       ctx.follow('weng', true);
       ctx.objective(Q, 'carinho');
+      await encanto(ctx, 100, 'Encantômetro da Meli: 100%! Apaixonada ♥');
       await ctx.say('weng', 'Agora vem cá, quero te mostrar a vista do meu quarto.');
       ctx.toast('Vá até a janela do quarto do Weng');
       return;
@@ -181,6 +200,7 @@ const scripts: Record<string, Script> = {
       await ctx.emote('meli', 'sweat');
       await ctx.say('weng', 'Ela é desconfiada, mas é interesseira. Tenta com sachê, fica no armário da cozinha.');
       ctx.objective(Q, 'achar-meli');
+      await encanto(ctx, 10, 'Encantômetro da Meli: 10% (ela tá desconfiada...)');
       ctx.toast('Pegue um sachê no armário da cozinha');
       return;
     }
@@ -222,8 +242,11 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', '...Vou ficar um pouco no quarto.');
       // ele sai pela passagem do quarto (sem atravessar parede): anda até o corredor e some no quarto
       // contorna o sofá pela frente, sobe pelo corredor da esquerda (acima da TV) e entra no quarto
-      await ctx.move('weng', 16.8, 15.2, 50);
-      await ctx.move('weng', 9.6, 15.2, 50);
+      // pela frente da mesinha, pelo corredor entre a cozinha e a TV, e sobe pro quarto
+      await ctx.move('weng', 16.8, 16.8, 50);
+      await ctx.move('weng', 8.2, 16.8, 50);
+      await ctx.move('weng', 8.2, 10.6, 50);
+      await ctx.move('weng', 9.6, 10.6, 50);
       await ctx.move('weng', 9.6, 8.8, 50);
       await ctx.fadeOut(300);
       ctx.place('weng', 13.6, 6.6, 'up');
@@ -276,9 +299,11 @@ const scripts: Record<string, Script> = {
       // ...e atravessa o apê correndo: sai do quarto, desce o corredor e entra na cozinha
       const corrida = (async () => {
         await ctx.move('meli', 17.2, 7.4, 120);
-        await ctx.move('meli', 8.9, 7.4, 120);
-        // desce pelo corredor, passa ACIMA da TV e entra na cozinha pela passagem
-        await ctx.move('meli', 8.9, 15.2, 120);
+        await ctx.move('meli', 9.6, 7.4, 120);
+        // sai do quarto, desce pelo corredor entre a cozinha e a TV e entra na cozinha
+        await ctx.move('meli', 9.6, 10.6, 120);
+        await ctx.move('meli', 8.2, 10.6, 120);
+        await ctx.move('meli', 8.2, 15.2, 120);
         await ctx.move('meli', 4.2, 15.2, 110);
         await ctx.move('meli', P.potinho.x, P.potinho.y, 90);
         ctx.face('meli', 'down');
@@ -295,6 +320,7 @@ const scripts: Record<string, Script> = {
       await ctx.unfocus(500);
       ctx.follow('weng', true);
       ctx.objective(Q, 'potinho');
+      await encanto(ctx, 35, 'Encantômetro da Meli: 35% (sachê funciona!)');
       await ctx.say('weng', 'Agora ela já gosta de você uns 30%. Pra chegar nos 100%, só brincando.');
       ctx.toast('Pegue um novelo no cesto da sala');
       return;
@@ -329,6 +355,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', 'Um cesto cheio de novelos coloridos! Vou levar o azul.');
       await ctx.give('novelo');
       ctx.objective(Q, 'novelo');
+      await encanto(ctx, 45, 'Encantômetro da Meli: 45% (ela viu o novelo...)');
       ctx.toast('Leve o novelo até a Meli');
       return;
     }
@@ -341,6 +368,8 @@ const scripts: Record<string, Script> = {
   async sofa(ctx) {
     if (objActive('achar-meli')) {
       await ctx.say('bella', 'Atrás do sofá... nada. Só poeira e um controle perdido.');
+      await ctx.say('weng', 'Ela adora o quarto. Tenta lá em cima, perto da casinha dela.');
+      ctx.setFlag('dq-pista');
       return;
     }
     if (QuestSystem.isActive('dq-m3') && QuestSystem.isObjectiveDone('dq-m3', 'jantar') && !QuestSystem.isObjectiveDone('dq-m3', 'filme')) {
@@ -629,7 +658,7 @@ export const aptoMap: MapDef = {
     { rect: R(50, 840, 152, 897), interact: 'potinhos', label: 'Potinhos', markerIf: () => objActive('potinho') && objDone('sache') },
     // Sala
     { rect: R(420, 535, 505, 842), interact: 'tv', label: 'Videogame' },
-    { rect: R(595, 530, 905, 692), interact: 'sofa', label: 'Sentar', markerIf: () => QuestSystem.isActive('dq-m2') || (QuestSystem.isActive('dq-m3') && QuestSystem.isObjectiveDone('dq-m3', 'jantar') && !QuestSystem.isObjectiveDone('dq-m3', 'filme')) },
+    { rect: R(595, 530, 905, 692), interact: 'sofa', label: 'Sentar', markerIf: () => (QuestSystem.isDone('dq-m1') && QuestSystem.isActive('dq-m2')) || (QuestSystem.isActive('dq-m3') && QuestSystem.isObjectiveDone('dq-m3', 'jantar') && !QuestSystem.isObjectiveDone('dq-m3', 'filme')) },
     { rect: R(955, 590, 1100, 782), interact: 'mesa', label: 'Mesa' },
     { rect: R(1090, 525, 1160, 602), interact: 'cesto', label: 'Cesto', markerIf: () => objActive('novelo') && objDone('potinho') },
     { rect: R(1105, 720, 1168, 852), interact: 'arranhadorSala', label: 'Arranhador' },

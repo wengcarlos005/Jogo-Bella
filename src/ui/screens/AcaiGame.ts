@@ -110,22 +110,37 @@ export function playAcaiGame(parent: HTMLElement, opts: AcaiOptions): Promise<Ac
       cup.classList.add('bg-shake');
     };
 
-    // posições espalhadas por cima do açaí (sementes fixas para não "pular" ao desfazer)
-    const spot = (i: number) => {
-      const a = i * 2.399963; // ângulo áureo
-      const r = 0.25 + 0.75 * Math.sqrt(((i * 7) % 12) / 12);
-      return { x: 50 + Math.cos(a) * r * 28, y: 10 + Math.sin(a) * r * 13 - i * 0.7 };
-    };
+    // como num açaí de verdade: cada complemento ganha o seu "cantinho" numa faixa em arco por cima do
+    // açaí (repetidos empilham no mesmo cantinho); as caldas escorrem por cima, no topo
+    const SAUCE: AcaiItemId[] = ['leite-condensado', 'creme-avela'];
     const renderToppings = () => {
+      const kinds = [...new Set(toppings.filter((t) => !SAUCE.includes(t)))];
+      const n = kinds.length;
+      const step = n > 1 ? Math.min(15, 60 / (n - 1)) : 0;
+      const seen: Record<string, number> = {};
       toppingLayer.replaceChildren(
         ...toppings.map((id, i) => {
-          const p = spot(i);
+          const rep = (seen[id] = (seen[id] ?? 0) + 1) - 1;
+          let x: number;
+          let y: number;
+          let w = 19;
+          if (SAUCE.includes(id)) {
+            x = 50 + (rep % 2 ? 7 : -5);
+            y = 4 + rep * 5;
+            w = 30;
+          } else {
+            const k = kinds.indexOf(id);
+            const off = (k - (n - 1) / 2) * step;
+            x = 50 + off + (rep % 2 ? 4 : -3) * Math.min(rep, 1);
+            y = 30 - Math.abs(off) * 0.35 - rep * 6;
+          }
           const url = textureURL(`acai-${id}`);
           const el = url ? h('img', { src: url, alt: nameOf(id), class: 'ac-top' }) : h('span', { class: 'ac-top' }, nameOf(id));
-          el.style.left = `${p.x}%`;
-          el.style.top = `${p.y}%`;
-          el.style.zIndex = String(10 + i);
-          el.style.setProperty('--rot', `${((i * 37) % 50) - 25}deg`);
+          el.style.left = `${x}%`;
+          el.style.top = `${y}%`;
+          el.style.width = `${w}%`;
+          el.style.zIndex = String(SAUCE.includes(id) ? 30 + i : 10 + Math.round(y));
+          el.style.setProperty('--rot', `${((i * 37) % 24) - 12}deg`);
           return el;
         }),
       );

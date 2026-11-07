@@ -1,6 +1,8 @@
 import { T } from '@/world/tiles';
 import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
+import { GameState } from '@/core/GameState';
+import { QuestSystem } from '@/systems/QuestSystem';
 
 /**
  * Retângulo medido no cenário ORIGINAL (art-source/maps/duque-rua-base.webp, 1536x1024).
@@ -13,6 +15,14 @@ const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0
 const ROW = '.'.repeat(32);
 
 const scripts: Record<string, Script> = {
+  async weng(ctx) {
+    if (QuestSystem.isActive('dq-m5')) {
+      await ctx.say('weng', 'Quando a gente voltar pro apê, eu tenho uma coisa pra te contar. Uma coisa boa.');
+      await ctx.say('bella', 'Fala agora! ...Não? Tá bom. Mas eu vou ficar curiosa.');
+      return;
+    }
+    await ctx.say('weng', 'Tô aqui. Do seu lado. Pra onde a gente vai?');
+  },
   async chegada(ctx) {
     ctx.follow('weng', true);
     if (ctx.flag('dq-rua-1')) return;
@@ -20,7 +30,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Essa é a minha rua. Ali na frente, o Multidão. E ali do lado, o teatro.');
     await ctx.emote('bella', 'heart');
     await ctx.say('bella', 'Você mora no melhor lugar do mundo e nunca me contou.');
-    ctx.toast('A açaiteria fica à direita, pela calçada do Multidão');
+    ctx.toast('Explore: o Shopping da Multidão (porta da frente) e a açaiteria, à direita');
   },
   async portaria(ctx) {
     await ctx.teleport('duque-apto', 'porta');
@@ -36,6 +46,10 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Entra. Mas com orçamento. Um orçamento PEQUENO.');
     }
     await ctx.teleport('dq-multidao', 'porta');
+  },
+  async placa(ctx) {
+    await ctx.say('bella', 'A placa: "→ Açaiteria" e "← Mercado". Weng, a seta do açaí tá brilhando pra mim.');
+    await ctx.say('weng', 'Ela brilha pra você toda vez que a gente passa aqui.');
   },
   async mercado(ctx) {
     await ctx.say('weng', 'O mercado fica pra lá. Fica pra outro dia.');
@@ -85,7 +99,7 @@ export const duqueRuaMap: MapDef = {
     R(1210, 315, 1291, 373),
     R(1325, 345, 1505, 385),
     // objetos soltos: só a base
-    R(820, 362, 900, 382), R(1172, 362, 1258, 382), R(1119, 368, 1143, 385), // bancos e lixeira da praça
+    R(1119, 368, 1143, 385), // lixeira da praça
     R(778, 410, 802, 428), R(1088, 410, 1112, 428), R(1420, 410, 1444, 428), // postes na beira da praça
     R(1462, 330, 1512, 368), // tronco da árvore grande da direita
     R(33, 688, 57, 706), R(1480, 690, 1504, 708), // postes duplos das esquinas do Multidão
@@ -97,6 +111,7 @@ export const duqueRuaMap: MapDef = {
     R(997, 905, 1103, 955),
     R(1112, 928, 1148, 950), // lixeira
     R(1155, 905, 1405, 965), // ponto de ônibus
+    R(1458, 958, 1482, 975), // placa
     R(0, 985, 1536, 1024), // meio-fio de baixo
   ],
 
@@ -105,8 +120,6 @@ export const duqueRuaMap: MapDef = {
     { key: 'dr-ipe-solta', x: 740, y: 312, w: 220, fade: true, shadow: false }, // sem o canteiro do desenho: usa o do cenário
     { key: 'dr-arvore-solta', x: 1005, y: 366, w: 200, fade: true, shadow: false },
     { key: 'dr-arvore-solta', x: 1415, y: 366, w: 190, fade: true, shadow: false, flip: true },
-    { key: 'dr-banco', x: 860, y: 382, w: 92, shadow: 0.8 },
-    { key: 'dr-banco', x: 1215, y: 382, w: 92, shadow: 0.8 },
     { key: 'dr-postebola', x: 790, y: 428, w: 32, shadow: 0.4 },
     { key: 'dr-postebola', x: 1100, y: 428, w: 32, shadow: 0.4 },
     { key: 'dr-postebola', x: 1432, y: 428, w: 32, shadow: 0.4 },
@@ -120,15 +133,13 @@ export const duqueRuaMap: MapDef = {
     // postes duplos nas esquinas da calçada do Multidão
     { key: 'dr-postedupla', x: 45, y: 706, w: 140, shadow: 0.4 },
     { key: 'dr-postedupla', x: 1492, y: 708, w: 140, shadow: 0.4, flip: true },
-    // arbustos atrás da platibanda do telhado do Multidão
-    { key: 'dr-arbusto', x: 228, y: 690, w: 125, shadow: false, fade: true },
-    { key: 'dr-arbusto', x: 1330, y: 690, w: 135, shadow: false, fade: true, flip: true },
     { key: 'dr-lixeira', x: 1131, y: 385, w: 28, shadow: 0.8 },
     { key: 'dr-lixeira', x: 1130, y: 950, w: 38, shadow: 0.8 },
     { key: 'dr-vaso', x: 580, y: 882, w: 55, shadow: 0.7 },
     { key: 'dr-vaso', x: 926, y: 882, w: 60, shadow: 0.7, flip: true },
     { key: 'dr-floreira', x: 309, y: 955, w: 140, shadow: false },
     { key: 'dr-floreira', x: 1050, y: 955, w: 110, shadow: false },
+    { key: 'hf-placa', x: 1470, y: 975, w: 56, shadow: 0.5 }, // placa: → açaiteria, ← mercado
     { key: 'dr-ponto', x: 1280, y: 965, w: 262, shadow: 0.6 },
   ],
 
@@ -147,9 +158,14 @@ export const duqueRuaMap: MapDef = {
   },
 
   hotspots: [
+    // portaria do prédio do Weng: seta quando o próximo passo é voltar pro apê
+    { rect: R(332, 300, 428, 392), interact: 'portaria', label: 'Apê do Weng', markerIf: () => QuestSystem.isActive('dq-m5') && GameState.is('acai-1') },
+    { rect: R(1440, 880, 1500, 978), interact: 'placa', label: 'Placa' },
+    // saída pra açaiteria: seta enquanto ela ainda não foi
+    { rect: R(1490, 770, 1536, 960), interact: 'placa', label: 'Açaiteria →', marker: { x: 0.5, y: 0.5, dir: 'right' }, markerIf: () => QuestSystem.isDone('dq-m1') && !GameState.is('acai-1') },
+    // porta do Multidão: marcador até a Bella entrar pela primeira vez
+    { rect: R(615, 820, 895, 880), interact: 'multidao', label: 'Entrar no Multidão', markerIf: () => !GameState.is('mt-chegou') && QuestSystem.isDone('dq-m1') },
     { rect: R(1040, 180, 1300, 300), interact: 'teatro', label: 'Teatro' },
-    { rect: R(812, 320, 908, 392), interact: 'banco1', label: 'Sentar' },
-    { rect: R(1167, 320, 1263, 392), interact: 'banco2', label: 'Sentar' },
     { rect: R(1150, 790, 1410, 965), interact: 'onibus', label: 'Ponto' },
     { rect: R(955, 700, 1150, 882), interact: 'vitrine', label: 'Vitrine' },
   ],

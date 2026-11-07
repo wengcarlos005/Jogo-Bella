@@ -1,6 +1,8 @@
 import { T } from '@/world/tiles';
 import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
+import { QuestSystem } from '@/systems/QuestSystem';
+import { GameState } from '@/core/GameState';
 
 /**
  * Retângulo medido no cenário ORIGINAL (art-source/maps/duque-acai-base.webp, 1536x1024).
@@ -12,6 +14,14 @@ const ROW = '.'.repeat(32);
 
 
 const scripts: Record<string, Script> = {
+  async weng(ctx) {
+    if (QuestSystem.isActive('dq-m5')) {
+      await ctx.say('weng', 'Quando a gente voltar pro apê, eu tenho uma coisa pra te contar. Uma coisa boa.');
+      await ctx.say('bella', 'Fala agora! ...Não? Tá bom. Mas eu vou ficar curiosa.');
+      return;
+    }
+    await ctx.say('weng', 'Tô aqui. Do seu lado. Pra onde a gente vai?');
+  },
   async chegada(ctx) {
     ctx.follow('weng', true);
     if (ctx.flag('acai-1')) return;
@@ -63,6 +73,7 @@ const scripts: Record<string, Script> = {
       ctx.setFlag('acai-1');
       await ctx.memory('mem-dq-02');
     }
+    if (QuestSystem.isActive('dq-m5')) ctx.toast('Agora é voltar pro apê: o Weng tem uma coisa pra contar');
   },
 
   async cardapio(ctx) {
@@ -155,8 +166,10 @@ export const acaiMap: MapDef = {
   },
 
   hotspots: [
-    { rect: R(630, 455, 1070, 627), interact: 'balcao', label: 'Balcão' },
+    { rect: R(630, 455, 1070, 627), interact: 'balcao', label: 'Balcão', markerIf: () => !GameState.is('acai-hoje') },
     { rect: R(1150, 620, 1340, 780), interact: 'mesa', label: 'Mesa' },
+    // depois do açaí: seta na porta pra voltar pra rua
+    { rect: R(640, 940, 870, 990), interact: 'saida', label: 'Sair', markerIf: () => GameState.is('acai-hoje') },
   ],
 
   spawns: {

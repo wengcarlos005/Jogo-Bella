@@ -252,6 +252,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
 
     burger: (opts) => UI.burger(opts),
     acai: (opts) => UI.acai(opts),
+    tacos: (opts) => UI.tacos(opts),
+    cinema: () => UI.cinema(),
     cards: (opts) => UI.cards(opts),
     grill: (opts) => UI.grill(opts),
     phone: (opts, msgs) => UI.phone(opts, msgs),

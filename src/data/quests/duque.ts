@@ -105,6 +105,6 @@ export const DUQUE_QUESTS: QuestDef[] = [
     title: 'Um presente de aniversário',
     kind: 'principal',
     description: 'O aniversário da Bella está chegando. O Weng tem um plano.',
-    objectives: [{ id: 'convite', text: 'Ouvir o que o Weng tem pra contar', hint: 'Fale com o Weng.' }],
+    objectives: [{ id: 'convite', text: 'Ouvir o que o Weng tem pra contar (no apê)', hint: 'Volte pro apê e fale com o Weng. Antes, se quiser: açaí e Multidão aqui na rua.' }],
   },
 ];

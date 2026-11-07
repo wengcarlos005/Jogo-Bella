@@ -145,9 +145,9 @@ export const SceneCheckpoints = {
     const all: Cena[] = PRESETS.map((pr) => {
       const q = QUESTS[pr.quest];
       const base: Cena = { quest: pr.sub ? `${pr.quest}:${pr.sub}` : pr.quest, title: pr.title ?? q.title, chapter: q.chapter, mapId: pr.mapId, spawn: pr.spawn, facing: 'down', data: presetData(pr), at: 0 };
-      // a missão já jogada volta pro momento exato em que começou; as cenas do meio usam sempre o ponto pronto
-      const p = !pr.sub ? played[pr.quest] : undefined;
-      return p ? { ...p, title: base.title } : base;
+      // sempre o ponto pronto: o momento gravado em jogo podia ser de antes da missão anterior acabar
+      // (ex.: Páscoa começando com a Meli ainda escondida) e deixava duas missões abertas ao mesmo tempo
+      return base;
     });
     for (const c of Object.values(played)) if (!all.some((x) => x.quest === c.quest)) all.push(c);
     return all;

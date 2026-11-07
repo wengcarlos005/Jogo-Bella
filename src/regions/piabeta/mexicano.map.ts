@@ -41,6 +41,20 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Hmm... que bebida gostosa! O que tem nisso?');
     await ctx.say('garcom', 'Segredo da casa, señorita.');
     await ctx.say('weng', 'A gente vai ter que voltar até descobrir.');
+    await ctx.say('garcom', 'E hoje é quinta del taco! Cada um monta o taco do outro. ¿Aceitam o desafio?');
+    await ctx.say('bella', 'Aceito! Weng, se colocar pimenta no meu, a gente termina.');
+    await ctx.say('weng', 'Anotado: zero pimenta pra você. Três pra mim.');
+    await ctx.backdrop(null);
+    const tc = await ctx.tacos();
+    ctx.setFlag('dq-tacos-estrelas', tc.stars);
+    await ctx.backdrop('memory-dq-04');
+    if (tc.stars === 3) {
+      await ctx.say('garcom', 'Ganharam mais uma rodada da bebida da casa. ¡Felicidades!');
+      await ctx.say('bella', 'Melhor taco da minha vida. E nem é pelo taco.');
+    } else {
+      await ctx.say('bella', 'O meu ficou com gosto de cacto. Mas foi você que montou, então tá ótimo.');
+    }
+    await ctx.say('weng', '(com a boca pegando fogo) ...Valeu cada pimenta.');
     await ctx.backdrop(null);
     ctx.objective(Q, 'mexicano');
     await ctx.memory('mem-dq-04');
@@ -83,10 +97,11 @@ const scripts: Record<string, Script> = {
       { from: 'them', text: 'SIMMM 🐥🐥' },
       { from: 'them', text: 'que filme?' },
       { from: 'me', text: "Five Nights at Freddy's" },
-      { from: 'me', text: 'se você tiver coragem' },
-      { from: 'them', text: 'eu nasci com coragem' },
-      { from: 'them', text: '(vou apertar seu braço o filme inteiro, tá avisado)' },
-      { from: 'me', text: 'aceito o risco' },
+      { from: 'me', text: 'última fileira 😏' },
+      { from: 'them', text: 'ÚLTIMA fileira?' },
+      { from: 'them', text: 'a gente vai ver o filme ou...' },
+      { from: 'me', text: 'claro que vai ver o filme' },
+      { from: 'me', text: '(talvez)' },
       { from: 'them', text: 'e depois a gente come alguma coisa?' },
       { from: 'me', text: 'depois... a gente vê 😌' },
       { from: 'them', text: 'que carinha é essa' },

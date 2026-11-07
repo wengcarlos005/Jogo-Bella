@@ -282,3 +282,33 @@ Row 4: walking away from the viewer (facing up), 4 frames.
 
 The character must look identical in every frame. No text, no labels, no numbers, no watermark.
 ```
+
+## 9. Lembranças que ainda estão sem foto
+
+Anexe uma lembrança que já existe como modelo de estilo (`public/assets/cinematics/pascoa.png`) e os sprites da Bella e do Weng.
+
+### Açaí cheio de complemento (mem-dq-02)
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Inside a small purple-neon açaí shop at night in Duque de Caxias, Brazil: the attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) sit side by side at a small wooden table. In front of them, one HUGE cup of açaí overflowing with toppings: granola, banana slices, strawberries, condensed milk drizzle, paçoca, colorful candy. She is happily eating the part full of toppings; he holds a spoon with only plain purple açaí and makes a funny resigned face. Warm lighting, a purple neon "Açaiteria" sign glowing behind them, little hearts in the air. No text other than the neon sign, no UI, no watermark.
+```
+
+### O imbatível perdeu (mem-dq-03)
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. In a cozy apartment living room at night: the attached girl (long curly brown hair, pink glasses) and the attached boy (short black hair) sit on the floor facing each other with playing cards spread between them. She raises her arms in victory, laughing, with a big pile of won cards; he covers his face with one hand in fake despair. An orange cat sits next to them looking at the cards. Warm lamp light, a blue couch behind them. No text, no UI, no watermark.
+```
+
+## 10. Folha opcional do minigame de tacos (se quiser trocar os emojis)
+
+Anexe o cenário do restaurante mexicano.
+
+```
+Pixel art sprite sheet of Mexican food ingredients for a catching minigame, same art style as the attached image (crisp pixel art, clean dark outlines, bright warm colors). Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere, no shadows.
+STRICT GRID of 3 rows and 4 columns (each cell 384x341 px), each item centered in its own cell, about 150x150 px, nothing touching:
+Row 1: 1. an open soft corn tortilla (flat, slightly curved, about 260x130 px), 2. grilled beef pieces, 3. shredded yellow cheese, 4. a bowl of guacamole.
+Row 2: 5. diced tomatoes, 6. chopped onion, 7. shredded lettuce, 8. sweet corn kernels.
+Row 3: 9. a red chili pepper, 10. a lime wedge, 11. a small green cactus in a pot, 12. a colorful tropical drink with a little umbrella.
+No text, no labels, no numbers, no watermark.
+```
+Nomes ao recortar: taco-tortilha, taco-carne, taco-queijo, taco-guaca, taco-tomate, taco-cebola, taco-alface, taco-milho, taco-pimenta, taco-limao, taco-cacto, taco-bebida.

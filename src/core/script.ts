@@ -59,6 +59,8 @@ export interface ScriptContext {
   /** Conversa no celular (transições entre cenas). */
   phone(opts: import('@/ui/screens/PhoneChat').PhoneOptions, msgs: import('@/ui/screens/PhoneChat').PhoneMsg[]): Promise<void>;
   cards(opts?: { title?: string; rounds?: number }): Promise<import('@/ui/screens/CardGame').CardResult>;
+  cinema(): Promise<import('@/ui/screens/CinemaGame').CinemaResult>;
+  tacos(opts?: { title?: string }): Promise<import('@/ui/screens/TacoGame').TacoResult>;
   acai(opts: import('@/ui/screens/AcaiGame').AcaiOptions): Promise<import('@/ui/screens/AcaiGame').AcaiResult>;
   focus(tx: number, ty: number, zoom?: number, ms?: number): Promise<void>;
   /** Volta a câmera para seguir a Bella. */

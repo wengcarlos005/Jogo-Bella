@@ -202,7 +202,7 @@ export const multidaoMap: MapDef = {
     R(360, 562, 480, 590), // arara de cabelo
     R(640, 560, 800, 600), // balcão de balas
     R(945, 532, 1075, 560), // estante de casa
-    R(1100, 600, 1360, 740), // caixa
+    R(1060, 520, 1400, 750), // caixa (e o espaço atrás dele, onde fica a moça)
     R(470, 798, 510, 815), // cestinhas
     R(160, 600, 200, 620), // planta
     R(1310, 455, 1350, 470), // planta
@@ -213,7 +213,7 @@ export const multidaoMap: MapDef = {
     { key: 'mt-rack', x: 420, y: 590, w: 180, shadow: 0.7 },
     { key: 'mt-balas', x: 720, y: 600, w: 210, shadow: 0.7 },
     { key: 'mt-estante', x: 1010, y: 560, w: 190, shadow: 0.7 },
-    { key: 'mt-caixa', x: 1230, y: 740, w: 280, shadow: 0.7 },
+    { key: 'mt-caixa', x: 1230, y: 752, w: 340, shadow: 0.7 },
     { key: 'mt-cestas', x: 490, y: 815, w: 95, shadow: 0.6 },
     { key: 'mt-planta', x: 180, y: 620, w: 95, shadow: 0.6 },
     { key: 'mt-planta', x: 1330, y: 470, w: 85, shadow: 0.6, flip: true },
@@ -228,7 +228,7 @@ export const multidaoMap: MapDef = {
     { rect: R(340, 470, 500, 600), interact: 'cabelo', label: 'Cabelo' },
     { rect: R(620, 480, 820, 610), interact: 'doces', label: 'Doces' },
     { rect: R(920, 400, 1100, 570), interact: 'casa', label: 'Casa' },
-    { rect: R(1090, 560, 1370, 770), interact: 'caixa', label: 'Caixa', markerIf: () => objActive('pagar') && cart().length > 0 },
+    { rect: R(1060, 560, 1400, 800), interact: 'caixa', label: 'Caixa', markerIf: () => objActive('pagar') && cart().length > 0 },
   ],
 
   npcs: [{ id: 'vendedora', sprite: 'caixa', tx: 25.1, ty: 11.6, facing: 'down', interact: 'caixa' }],

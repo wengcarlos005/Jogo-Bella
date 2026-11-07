@@ -145,9 +145,22 @@ export class Sidebar {
             h('span', { class: 'tb-nerves-txt' }, nerves >= 80 ? 'Muito nervosa' : nerves >= 50 ? 'Nervosa' : nerves >= 20 ? 'Quase calma' : 'Tranquila'),
           )
         : '';
+    // encantômetro da Meli (só no apê, enquanto ela está sendo conquistada)
+    const enc = Number(GameState.getFlag<number>('meli-encanto') ?? 0);
+    const showEnc = GameState.data.mapId === 'duque-apto' && QuestSystem.isActive('dq-m1');
+    const encEl = showEnc
+      ? h(
+          'div',
+          { class: `tb-encanto ${enc >= 100 ? 'full' : ''}`, title: 'Encantômetro da Meli' },
+          h('span', { class: 'tb-enc-cat' }, enc >= 100 ? '😻' : enc >= 55 ? '😺' : enc >= 30 ? '🐱' : '😾'),
+          h('span', { class: 'tb-enc-bar' }, h('i', { style: `width:${Math.max(4, enc)}%` })),
+          h('span', { class: 'tb-enc-txt' }, enc >= 100 ? 'Apaixonada ♥' : enc >= 55 ? 'Brincalhona' : enc >= 30 ? 'Curiosa' : enc > 0 ? 'Desconfiada' : 'Escondida'),
+        )
+      : '';
     this.top.replaceChildren(
       h('div', { class: 'tb-place' }, h('span', { class: 'tb-moon' }, '☾'), place),
       heart,
+      encEl,
       h('div', { class: 'tb-spacer' }),
       obj ? h('div', { class: 'tb-quest', title: `${QuestSystem.def(tracked!).title}: ${obj.text}` }, h('span', { class: 'tb-qheart' }, '♥ '), h('span', { class: 'tb-qtext' }, obj.text)) : '',
       h('div', { class: 'tb-spacer' }),
