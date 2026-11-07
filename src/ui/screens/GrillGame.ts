@@ -9,7 +9,7 @@ import { textureURL } from '../textures';
  * junto). Aperte "Virar!" quando o marcador estiver no verde. As fases vão ficando mais rápidas, o verde
  * mais estreito e, das últimas, o verde muda de lugar ou o fogo dá uns "trancos".
  * (Descrição antiga abaixo, das versões anteriores.)
- * A grelha é desenhada em pixel art num canvas (brasa, fumaça, faíscas, labareda, carne mudando de cor).
+ * A grelha é desenhada num canvas (brasa, fumaça, faíscas, labareda); as carnes são sprites com 4 pontos.
  * Duas carnes ao mesmo tempo, dois lados cada: clique na carne quando a barrinha estiver no verde.
  * De vez em quando sobe uma labareda: "Abanar!" antes que queime tudo.
  * Ponto = 2, quase = 1, crua/queimada = 0 (por lado). Máximo: 16.
@@ -56,6 +56,41 @@ const shade = (c: string, f: number) => {
   return rgb(g(m[0]), g(m[1]), g(m[2]));
 };
 const meatColor = (m: MeatDef, d: number) => (d <= 0.74 ? mixC(m.raw, m.ok, d / 0.74) : mixC(m.ok, m.burnt, (d - 0.74) / 0.5));
+
+/** Sprites das carnes (art-source/minigames/churrasco-carnes.webp): 4 pontos cada — cru, dourando, no ponto, carvão. */
+const MEAT_IMG: Record<string, HTMLImageElement[]> = {};
+function meatImgs(id: string): HTMLImageElement[] {
+  if (!MEAT_IMG[id])
+    MEAT_IMG[id] = [0, 1, 2, 3].map((k) => {
+      const im = new Image();
+      im.src = new URL(`assets/minigames/churr-${id}-${k}.png`, document.baseURI).href;
+      return im;
+    });
+  return MEAT_IMG[id];
+}
+/** Desenha a carne com sprite, misturando os 4 pontos conforme o cozimento; a base fica sempre no mesmo lugar. */
+function drawMeatSprite(c: CanvasRenderingContext2D, id: string, cook: number, cx: number, cy: number, sq: number, w: number): boolean {
+  const imgs = meatImgs(id);
+  if (!imgs.every((im) => im.complete && im.naturalWidth > 0)) return false;
+  const st = cook <= 0.37 ? cook / 0.37 : cook <= 0.74 ? 1 + (cook - 0.37) / 0.37 : Math.min(3, 2 + (cook - 0.74) / 0.36);
+  const k = Math.floor(st);
+  const f = st - k;
+  const sc = w / imgs[0].naturalWidth;
+  const base = cy + (imgs[0].naturalHeight * sc) / 2;
+  c.save();
+  c.imageSmoothingEnabled = true;
+  const put = (im: HTMLImageElement, a: number) => {
+    if (a <= 0) return;
+    const iw = im.naturalWidth * sc;
+    const ih = im.naturalHeight * sc * sq;
+    c.globalAlpha = a;
+    c.drawImage(im, Math.round(cx - iw / 2), Math.round(base - (base - cy) * (1 - sq) - ih), iw, ih);
+  };
+  put(imgs[k], 1);
+  if (k < 3) put(imgs[k + 1], f);
+  c.restore();
+  return true;
+}
 
 /** Desenha uma carne em pixel art centrada em (cx, cy). `sq` achata na vertical (virando). */
 function drawMeat(c: CanvasRenderingContext2D, m: MeatDef, cook: number, cx: number, cy: number, marked: boolean, sq = 1, sc = 1): void {
@@ -220,6 +255,7 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
     };
     const P = () => PHASES[Math.min(phase, PHASES.length - 1)];
     const meatDef = () => MEATS.find((m) => m.id === P().meat)!;
+    for (const mm of MEATS) meatImgs(mm.id);
     const layoutZone = () => {
       zone.style.left = `${(okC - okW / 2) * 100}%`;
       zone.style.width = `${okW * 100}%`;
@@ -324,7 +360,7 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
       c.fillStyle = 'rgba(0,0,0,0.35)';
       c.fillRect(W / 2 - 40, 74, 80, 4);
       if (P().twist === 'fogo' && Math.sin(time * 3) > 0.55) drawFlames(W / 2, 80, 70);
-      drawMeat(c, m, Math.min(1.25, pos * 1.25), W / 2, y, marked, sq, 2.2);
+      if (!drawMeatSprite(c, m.id, Math.min(1.25, pos * 1.25), W / 2, y, sq, 104)) drawMeat(c, m, Math.min(1.25, pos * 1.25), W / 2, y, marked, sq, 2.2);
       // fumaça
       c.fillStyle = `rgba(235,230,225,${0.15 + pos * 0.25})`;
       for (let k = 0; k < 4; k++) {

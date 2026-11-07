@@ -201,7 +201,8 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | OBJ-MX | Folhas do mexicano (dentro e fachada) | objects/mex-folha.webp, mexfora-folha.webp → mx-*, mxf-* | ✅ no jogo |
 | OBJ-QT | Folha de objetos do quintal | objects/quintal-folha.webp → qt-* | ✅ recortada (aguardando o quintal vazio) |
 | MAP-026 | Quintal vazio | maps/piabeta-quintal-base.webp | ✅ no jogo |
-| MG-CH | Churrasco: carnes (4 tipos x 4 estados), grelha, bandeja (fundo magenta) | minigames/churrasco-*.png | não precisa (a churrasqueira de 10 fases desenha tudo) |
+| MG-CH | Churrasco: carnes (4 tipos x 4 pontos) | minigames/churrasco-carnes.webp → churr-*.png | ✅ no minijogo da churrasqueira |
+| MG-MAE | Mãe no minijogo do beijo (desconfiada, sobrancelha, brava) | minigames/mae-flagra.webp → mae-*.png | ✅ no beijo escondido |
 | MAP-027 | Cinema vazio | maps/duque-cinema-base.webp | ✅ no jogo |
 | OBJ-CN | Folha de objetos do cinema | objects/cinema-folha.webp → cn-* | ✅ no jogo |
 | MAP-028 | Rua da Bella vazia | maps/piabeta-rua-base.webp | ✅ no jogo |
@@ -216,4 +217,7 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | MAP-033 | Restaurante chique em Petrópolis | maps/pt-restaurante.webp | ✅ no jogo |
 | OBJ-RS | Folha do restaurante | objects/restaurante-folha.webp → rs-* | ✅ no jogo |
 | MAP-034 | Palácio Quitandinha com lago em formato de Brasil | maps/pt-quitandinha.webp | ✅ no jogo |
-| OBJ-QD | Folha do Quitandinha | objects/quitandinha-folha.webp → qd-* (toalha e cesta feitas em código) | ✅ no jogo |
+| OBJ-PQ | Folha do piquenique | objects/piquenique-folha.webp → pq-* | ✅ no Quitandinha |
+| MAP-035 | Shopping da Multidão (dentro) | maps/dq-multidao.webp | ✅ no jogo |
+| OBJ-MT | Folha do Multidão | objects/multidao-folha.webp → mt-* | ✅ no jogo |
+| OBJ-QD | Folha do Quitandinha | objects/quitandinha-folha.webp → qd-* | ✅ no jogo |

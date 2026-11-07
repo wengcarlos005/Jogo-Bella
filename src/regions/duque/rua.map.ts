@@ -31,12 +31,11 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Combinado. E depois açaí.');
   },
   async multidao(ctx) {
-    await ctx.say('bella', 'O Shopping da Multidão... Weng, segura minha mão. Se eu entrar, eu saio sem dinheiro.');
-    await ctx.say('weng', 'Hoje não. Mas outro dia eu te trago com um orçamento. Um orçamento PEQUENO.');
-    ctx.toast('Os achadinhos do Multidão chegam em breve!');
-    // volta um passo pra calçada (pra cima), fora da área da porta: assim a fala não se repete
-    await ctx.move('player', ctx.playerTile().x, 16.3, 60);
-    ctx.face('player', 'up');
+    if (!ctx.flag('mt-chegou')) {
+      await ctx.say('bella', 'O Shopping da Multidão... Weng, segura minha mão. Se eu entrar, eu saio sem dinheiro.');
+      await ctx.say('weng', 'Entra. Mas com orçamento. Um orçamento PEQUENO.');
+    }
+    await ctx.teleport('dq-multidao', 'porta');
   },
   async mercado(ctx) {
     await ctx.say('weng', 'O mercado fica pra lá. Fica pra outro dia.');

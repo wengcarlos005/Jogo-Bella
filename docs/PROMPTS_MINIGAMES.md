@@ -6,10 +6,11 @@ Já têm sprites (não precisa gerar): hambúrguer (Rota 66), Uber, açaí, cart
 
 | # | Minigame | O que falta | Anexar no ChatGPT |
 |---|---|---|---|
-| 1 | Churrasqueira (10 fases) | 2 folhas: carnes em 4 pontos + churrasqueira/fogo | cenário do quintal |
-| 2 | Beijo escondido (sofá) | poses da mãe espiando/flagrando + casal no sofá | sprite da mãe, da Bella e do Weng + sala |
+| 1 | Churrasqueira (10 fases) | ✅ carnes · falta a folha 1B (grelha e fogo, opcional) | cenário do quintal |
+| 2 | Beijo escondido (sofá) | ✅ mãe (3 caras) · casal no sofá opcional | sprite da mãe, da Bella e do Weng + sala |
 | 3 | Novelo da Meli (apê) | Meli correndo/pulando + novelo | sprite da Meli |
-| 4 | Achadinhos da Multidão (novo) | 16 achadinhos + cesta | fachada do Multidão |
+| 4 | Achadinhos da Multidão | ✅ já jogável (escolha com orçamento nas lojinhas) · folha de itens opcional | fachada do Multidão |
+| 7 | Moça do caixa do Multidão | sprite andando (hoje usa a vizinha) | sprite da atendente |
 | 5 | Doces do Quitandinha | algodão-doce, pipoca, máquina de foto | folha do Quitandinha |
 | 6 | Gatinhos de Fragoso | 3 gatos novos (andando + poses) | folhas da Meli |
 
@@ -226,4 +227,22 @@ ONE ROW of 4 poses, left to right, each centered in its own equal cell, nothing 
 4. Sitting happy with eyes half closed and a small red heart above its head (being petted).
 
 No text, no labels, no numbers, no watermark.
+```
+
+## 7. Moça do caixa do Multidão (NPC)
+
+Anexe: a folha andando da atendente (`npcs/atendente-walk.png`) como modelo de layout.
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person: a cheerful young Brazilian woman, store cashier, short curly dark hair in a puff with a yellow headband, warm brown skin, red store polo shirt with a small name badge (no readable text), dark jeans, white sneakers.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
 ```

@@ -2,6 +2,18 @@ import type { QuestDef } from './index';
 
 export const DUQUE_QUESTS: QuestDef[] = [
   {
+    id: 'dq-s1',
+    region: 'duque-de-caxias',
+    chapter: 'Capítulo 2',
+    title: 'Achadinhos do Multidão',
+    kind: 'secundaria',
+    description: 'Cinquenta reais, quatro lojinhas e uma Bella no paraíso.',
+    objectives: [
+      { id: 'achar', text: 'Escolher achadinhos nas lojinhas', hint: 'As lojinhas ficam no fundo do shopping: cabelo, casa, doces e celular.' },
+      { id: 'pagar', text: 'Pagar no caixa sem passar dos R$ 50', hint: 'O caixa fica à direita, perto da porta.' },
+    ],
+  },
+  {
     id: 'dq-e3',
     region: 'piabeta',
     chapter: 'Capítulo 1 · Piabetá',

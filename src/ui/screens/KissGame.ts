@@ -55,7 +55,13 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     const wengSit = h('div', { class: 'kg-char', style: `${at(772, 735)};${sheet('weng-sit', 0, 2)}` });
     const bellaKiss = h('div', { class: 'kg-char kiss', style: `${at(712, 735)};background-image:url(${url('bella-kiss')});background-size:100% 100%` });
     const wengKiss = h('div', { class: 'kg-char kiss', style: `${at(752, 735)};background-image:url(${url('weng-kiss')});background-size:100% 100%` });
-    const momEl = h('div', { class: 'kg-char kg-mom', style: `${at(968, 660)};${sheet('mae-bella', 0, 4)}` });
+    // mãe na porta da cozinha: sprites próprios (desconfiada → sobrancelha levantada → brava no flagra)
+    const momSrc = (k: string) => new URL(`assets/minigames/mae-${k}.png`, document.baseURI).href;
+    for (const k of ['desconfia', 'sobrancelha', 'brava']) new Image().src = momSrc(k);
+    const momEl = h('img', { class: 'kg-mom2', src: momSrc('desconfia'), alt: '', style: `${at(968, 668)}` }) as HTMLImageElement;
+    const momFace = (k: 'desconfia' | 'sobrancelha' | 'brava') => {
+      momEl.src = momSrc(k);
+    };
     const lala = h('div', { class: 'kg-char kg-cat', style: `${at(900, 650)};${sheet('lala', 8, 4)}` });
     const shadow = h('div', { class: 'kg-shadow', style: `${at(970, 640)}` });
     const steps = h('div', { class: 'kg-steps', style: at(968, 560) }, '👣');
@@ -161,9 +167,11 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
             lala.classList.add('walk');
             say(pick(['(...era só a Lala.)', 'Lala: "Miau." (passou e foi embora)']));
           } else {
+            momFace('desconfia');
             momEl.classList.add('show');
           }
         } else if (mom === 'look') {
+          if (!fake && momT < 0.9 && performance.now() > caughtLock) momFace('sobrancelha');
           if (!fake && kissing) caught();
           if (momT <= 0) {
             if (!fake && performance.now() > caughtLock) say(pick(MOM_OK));
@@ -190,6 +198,7 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
       progress = 0;
       holding = false;
       caughtLock = performance.now() + 1500;
+      momFace('brava');
       setKiss(false);
       AudioSystem.play('cancel');
       flash.classList.remove('on');

@@ -111,8 +111,8 @@ const scripts: Record<string, Script> = {
     ctx.place('player', 8.0, 18.6, 'right');
     ctx.place('weng', 9.9, 18.6, 'left');
     await ctx.fadeIn(500);
-    await ctx.narrate('Toalha xadrez na grama, de frente pro palácio. Sanduíche, frutas, suco e um bolinho.');
-    await ctx.say('bella', 'Você montou tudo isso? Até o bolinho?');
+    await ctx.narrate('Toalha xadrez na grama, de frente pro palácio. Sanduíche, frutas, suco, um bolinho... e balões.');
+    await ctx.say('bella', 'Você montou tudo isso? Até o bolinho? E BALÕES?');
     await ctx.say('weng', 'O bolinho é de treino. O de verdade é amanhã.');
     await ctx.emote('bella', 'heart');
     await ctx.narrate('Deitados na toalha, olhando pro céu.');
@@ -204,7 +204,10 @@ export const quitandinhaMap: MapDef = {
     R(172, 404, 228, 430),
     R(1322, 404, 1378, 430),
     R(1443, 475, 1527, 505),
-    R(453, 898, 487, 912),
+    R(522, 866, 558, 880), // cesta
+    R(292, 888, 312, 900), // balões
+    R(1468, 540, 1532, 560), // arbusto
+    R(578, 974, 622, 990), // pedra
   ],
 
   objects: [
@@ -224,8 +227,12 @@ export const quitandinhaMap: MapDef = {
     { key: 'qd-carrinho', x: 1485, y: 505, w: 105, shadow: 0.7 },
     { key: 'qd-cisne', x: 520, y: 575, w: 120, shadow: false },
     { key: 'qd-cisne', x: 900, y: 770, w: 130, shadow: false, flip: true },
-    { key: 'qd-toalha', x: 425, y: 930, w: 175, flat: true, shadow: false },
-    { key: 'qd-cesta', x: 470, y: 912, w: 42, shadow: 0.6 },
+    { key: 'pq-toalha', x: 430, y: 940, w: 235, flat: true, shadow: false },
+    { key: 'pq-prato', x: 430, y: 935, w: 78, flat: true, shadow: false },
+    { key: 'pq-cesta', x: 540, y: 880, w: 66, shadow: 0.6 },
+    { key: 'pq-baloes', x: 302, y: 900, w: 62, shadow: 0.5 },
+    { key: 'pq-arbusto', x: 1500, y: 560, w: 110, shadow: 0.5 },
+    { key: 'pq-pedra', x: 600, y: 990, w: 80, shadow: 0.5 },
   ],
 
   hotspots: [
