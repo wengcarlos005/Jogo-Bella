@@ -154,9 +154,9 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CHAR-025 | Avó da Bella (4×4 + retrato) | characters/avo-bella.png | ✅ no jogo |
 | CHAR-026 | Tia Jaque (4×4 + retrato) | characters/tia-jaque.png | ✅ no jogo |
 | CHAR-027 | Kelly, prima da Bella | npcs/kelly-walk.png | ✅ no jogo (churrasco) |
-| CHAR-028 | Garçom do restaurante chique de Petrópolis (4×4 andando) | npcs/garcom-walk.png | pedido (até chegar, usa a folha do atendente) |
+| CHAR-028 | Garçom do restaurante chique de Petrópolis (4×4 andando) | npcs/garcom-walk.png | ✅ no jogo (art-source/npcs/garcom-walk.webp) |
 | CHAR-029 | Garçom do restaurante mexicano (4×4 andando) | npcs/garcom-mex-walk.png | pedido (até chegar, usa o garçom de Petrópolis ou a atendente) |
-| PORT-020 | Retrato do garçom mexicano | portraits/garcom.png | pedido |
+| PORT-020 | Retrato do garçom (Petrópolis) | portraits/garcom.png | ✅ feito do quadro de frente |
 
 ### LOTE 4–6 — Viagens do Ano 1 e 2 (Fases 5–6)
 Por cidade: 2–4 cenários pintados + camadas frontais, 3–6 NPCs, objetos-chave dos minigames, 3–4 ilustrações de memória. Lista detalhada será gerada no início de cada fase.

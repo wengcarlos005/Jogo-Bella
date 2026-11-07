@@ -104,7 +104,9 @@ for i, cell in enumerate(cells):
             r, g, b, a = bp[x, y]
             bp[x, y] = (r, g, b, 255 if a >= 128 else 0)
     bb2 = big.getbbox()
-    cx = (cw / 2) * scale  # centro da célula
+    # centraliza pela cabeça (o terço de cima): o corpo não "dança" de um quadro pro outro
+    head = big.crop((0, bb2[1], big.width, bb2[1] + (bb2[3] - bb2[1]) // 3)).getbbox()
+    cx = (head[0] + head[2]) / 2 if head else (cw / 2) * scale
     ox = round(F / 2 - cx)
     oy = 135 - bb2[3]
     r, c = divmod(i, 4)

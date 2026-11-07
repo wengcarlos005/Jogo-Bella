@@ -14,13 +14,21 @@ const scripts: Record<string, Script> = {
     ctx.follow('weng', true);
     if (!objActive('almoco') || ctx.flag('pt-rest-1')) return;
     ctx.setFlag('pt-rest-1');
+    // entram pela porta uns passos (ficam acima da caixa de diálogo) e o garçom vem receber
+    ctx.follow('weng', false);
+    await Promise.all([ctx.move('player', 15.0, 16.0, 45), ctx.move('weng', 16.6, 16.0, 45)]);
+    ctx.face('player', 'up');
+    ctx.face('weng', 'up');
     await ctx.narrate('O dia do aniversário. Um almoço chique pra comemorar.');
     await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', 'Weng... tem LUSTRE de cristal. E um piano. Eu tô de casaco de moletom!');
     await ctx.say('weng', 'Você tá linda. O lustre que se adapte.');
+    await ctx.move('garcom', 15.8, 14.4, 50);
+    ctx.face('garcom', 'down');
     await ctx.say('garcom', 'Boa tarde! Reserva em nome de...?');
     await ctx.say('weng', 'Weng. Mesa pra dois. É aniversário dela.');
     await ctx.say('garcom', 'Ah, a mesa da rosa! Por aqui, por favor. Bem no meio, debaixo do lustre.');
+    ctx.follow('weng', true);
     ctx.toast('Sentem na mesa da rosa, no meio do salão');
   },
 
