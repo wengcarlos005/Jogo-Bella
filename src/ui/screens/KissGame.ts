@@ -17,7 +17,7 @@ export interface KissResult {
 const NEED = 7;
 const HOLD = 2.0;
 /** Nos 2 últimos beijos a mãe fica desconfiada: aparece mais, avisa menos e o beijo demora mais. */
-const HARD_HOLD = 2.6;
+const HARD_HOLD = 2.3;
 const LIVES = 3;
 
 // recorte da sala no cenário original (px): é o "palco" do minigame
@@ -129,7 +129,7 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     let warnedHard = false;
     const nextMom = () => {
       mom = 'away';
-      momT = hard() ? 0.9 + Math.random() * 1.7 : Math.max(1.4, 2.2 + Math.random() * 3.2 - kisses * 0.3);
+      momT = hard() ? 1.3 + Math.random() * 1.8 : Math.max(1.6, 2.2 + Math.random() * 3.2 - kisses * 0.25);
     };
 
     const setKiss = (on: boolean) => {
@@ -169,10 +169,10 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
         // mãe
         momT -= dt;
         if (mom === 'away' && momT <= 0) {
-          fake = kisses >= 1 && Math.random() < (hard() ? 0.35 : 0.28);
-          const noWarn = !fake && kisses >= 3 && Math.random() < (hard() ? 0.32 : 0.14);
+          fake = kisses >= 1 && Math.random() < (hard() ? 0.3 : 0.28);
+          const noWarn = !fake && kisses >= 3 && Math.random() < (hard() ? 0.2 : 0.1);
           mom = 'steps';
-          momT = noWarn ? 0.22 : hard() ? 0.42 : Math.max(0.5, 1.1 - kisses * 0.1);
+          momT = noWarn ? 0.3 : hard() ? 0.6 : Math.max(0.65, 1.1 - kisses * 0.08);
           if (!noWarn) {
             steps.classList.add('on');
             shadow.classList.add('on');
