@@ -86,7 +86,9 @@ export const duqueRuaMap: MapDef = {
     R(1325, 345, 1505, 385),
     // objetos soltos: só a base
     R(820, 362, 900, 382), R(1172, 362, 1258, 382), R(1119, 368, 1143, 385), // bancos e lixeira da praça
-    R(778, 410, 802, 428), R(1088, 410, 1112, 428), R(1478, 410, 1502, 428), // postes na beira da praça
+    R(778, 410, 802, 428), R(1088, 410, 1112, 428), R(1420, 410, 1444, 428), // postes na beira da praça
+    R(1462, 330, 1512, 368), // tronco da árvore grande da direita
+    R(33, 688, 57, 706), R(1480, 690, 1504, 708), // postes duplos das esquinas do Multidão
     // Embaixo: Shopping da Multidão (a porta fica em x 610–900)
     R(115, 560, 1420, 868),
     R(555, 850, 605, 882), // vasos da porta
@@ -105,9 +107,22 @@ export const duqueRuaMap: MapDef = {
     { key: 'dr-arvore-solta', x: 1415, y: 366, w: 190, fade: true, shadow: false, flip: true },
     { key: 'dr-banco', x: 860, y: 382, w: 92, shadow: 0.8 },
     { key: 'dr-banco', x: 1215, y: 382, w: 92, shadow: 0.8 },
-    { key: 'dr-poste', x: 790, y: 428, w: 70, shadow: 0.4 },
-    { key: 'dr-poste', x: 1100, y: 428, w: 70, shadow: 0.4 },
-    { key: 'dr-poste', x: 1490, y: 428, w: 70, shadow: 0.4, flip: true },
+    { key: 'dr-postebola', x: 790, y: 428, w: 32, shadow: 0.4 },
+    { key: 'dr-postebola', x: 1100, y: 428, w: 32, shadow: 0.4 },
+    { key: 'dr-postebola', x: 1432, y: 428, w: 32, shadow: 0.4 },
+    // como no original: árvores grandes atrás do condomínio e ao lado do teatro
+    { key: 'dr-arvoregrande', x: 100, y: 376, w: 250, fade: true, shadow: 0.5 },
+    { key: 'dr-arvoregrande', x: 1487, y: 366, w: 230, fade: true, shadow: 0.5, flip: true },
+    // cerca viva florida no pé do muro do condomínio e arbusto ao lado da guarita
+    { key: 'dr-cercaviva', x: 70, y: 386, w: 135, shadow: false },
+    { key: 'dr-cercaviva', x: 222, y: 386, w: 130, shadow: false, flip: true },
+    { key: 'dr-arbustoflor', x: 588, y: 386, w: 80, shadow: false },
+    // postes duplos nas esquinas da calçada do Multidão
+    { key: 'dr-postedupla', x: 45, y: 706, w: 140, shadow: 0.4 },
+    { key: 'dr-postedupla', x: 1492, y: 708, w: 140, shadow: 0.4, flip: true },
+    // arbustos atrás da platibanda do telhado do Multidão
+    { key: 'dr-arbusto', x: 228, y: 690, w: 125, shadow: false, fade: true },
+    { key: 'dr-arbusto', x: 1330, y: 690, w: 135, shadow: false, fade: true, flip: true },
     { key: 'dr-lixeira', x: 1131, y: 385, w: 28, shadow: 0.8 },
     { key: 'dr-lixeira', x: 1130, y: 950, w: 38, shadow: 0.8 },
     { key: 'dr-vaso', x: 580, y: 882, w: 55, shadow: 0.7 },
