@@ -25,10 +25,18 @@ const ROW = '.'.repeat(32);
 const P = {
   porta: { x: 15.5, y: 17.4 },
   torre: { x: 17.2, y: 6.2 }, // Meli saindo da casinha do arranhador
-  potinho: { x: 2.3, y: 17.3 }, // Meli comendo nos potinhos da cozinha
+  potinho: { x: 3.75, y: 17.4 }, // Meli ao lado dos potinhos da cozinha (não em cima deles)
   brinca: { x: 5.3, y: 17.0 }, // onde ela fica depois de brincar com o novelo (chão da cozinha)
   caminha: { x: 6.44, y: 7.55 }, // caminha no quarto do Weng (dormindo dentro dela)
 };
+
+/** Onde a Meli está de acordo com o andamento (usado ao montar o mapa e ao recarregar). */
+function meliSpot(): { x: number; y: number } {
+  if (questDone() || objDone('carinho')) return P.caminha;
+  if (objDone('brincar')) return P.brinca;
+  if (objDone('potinho')) return P.potinho;
+  return P.torre;
+}
 
 /** Recoloca a Meli conforme o andamento (ao carregar o jogo). */
 function restoreMeli(ctx: ScriptContext): void {
@@ -213,8 +221,10 @@ const scripts: Record<string, Script> = {
       await ctx.choose('bella', '(O clima pesou)', ['"Esquece. Não quero mais falar disso."', '"Você tá me comparando com uma desconhecida?"']);
       await ctx.say('weng', '...Vou ficar um pouco no quarto.');
       // ele sai pela passagem do quarto (sem atravessar parede): anda até o corredor e some no quarto
-      await ctx.move('weng', 16.8, 12.2, 50);
-      await ctx.move('weng', 10.4, 12.2, 50);
+      // contorna o sofá pela frente, sobe pelo corredor da esquerda (acima da TV) e entra no quarto
+      await ctx.move('weng', 16.8, 15.2, 50);
+      await ctx.move('weng', 9.6, 15.2, 50);
+      await ctx.move('weng', 9.6, 8.8, 50);
       await ctx.fadeOut(300);
       ctx.place('weng', 13.6, 6.6, 'up');
       await ctx.fadeIn(300);
@@ -267,8 +277,10 @@ const scripts: Record<string, Script> = {
       const corrida = (async () => {
         await ctx.move('meli', 17.2, 7.4, 120);
         await ctx.move('meli', 8.9, 7.4, 120);
-        await ctx.move('meli', 8.9, 17.3, 120);
-        await ctx.move('meli', P.potinho.x, P.potinho.y, 100);
+        // desce pelo corredor, passa ACIMA da TV e entra na cozinha pela passagem
+        await ctx.move('meli', 8.9, 15.2, 120);
+        await ctx.move('meli', 4.2, 15.2, 110);
+        await ctx.move('meli', P.potinho.x, P.potinho.y, 90);
         ctx.face('meli', 'down');
       })();
       // a câmera volta pra cozinha, enquadrada acima da caixa de diálogo
@@ -634,8 +646,13 @@ export const aptoMap: MapDef = {
     {
       id: 'meli',
       sprite: 'meli',
-      tx: 17.2,
-      ty: 6.2,
+      // já nasce onde deve estar (caminha, cozinha ou arranhador): nada de aparecer num lugar e pular pra outro
+      get tx() {
+        return meliSpot().x;
+      },
+      get ty() {
+        return meliSpot().y;
+      },
       facing: 'down',
       interact: 'meli',
       visibleIf: () => GameState.is('dq-meli-vista') || questDone(),

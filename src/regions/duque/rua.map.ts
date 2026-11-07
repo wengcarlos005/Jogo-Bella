@@ -45,10 +45,10 @@ const scripts: Record<string, Script> = {
     await ctx.teleport('duque-acai', 'porta');
   },
   async banco1(ctx) {
-    await ctx.sit(1008, 352, [['weng', 'Daqui dá pra ver o teatro inteirinho.'], ['bella', 'E as luzes acendendo. Que lindo.']]);
+    await ctx.sit(860, 352, [['weng', 'Daqui dá pra ver o teatro inteirinho.'], ['bella', 'E as luzes acendendo. Que lindo.']]);
   },
   async banco2(ctx) {
-    await ctx.sit(1341, 352, [['bella', 'Esse banco tem a melhor vista da rampa.'], ['weng', 'E eu tenho a melhor vista do banco.']]);
+    await ctx.sit(1215, 352, [['bella', 'Esse banco tem a melhor vista da rampa.'], ['weng', 'E eu tenho a melhor vista do banco.']]);
   },
   async onibus(ctx) {
     await ctx.say('bella', 'Ponto de ônibus. Daqui eu volto pra Piabetá... mas hoje não.');
@@ -85,10 +85,8 @@ export const duqueRuaMap: MapDef = {
     R(1210, 315, 1291, 373),
     R(1325, 345, 1505, 385),
     // objetos soltos: só a base
-    R(770, 300, 826, 323), R(965, 362, 1051, 385), R(1295, 362, 1387, 385), R(1119, 368, 1143, 385),
-    R(787, 384, 812, 400), R(851, 402, 874, 418), R(1070, 382, 1094, 398), R(1418, 402, 1441, 418),
-    R(30, 540, 55, 555), R(1478, 540, 1503, 555),
-    R(1325, 755, 1375, 780), // tronco da árvore do Multidão
+    R(820, 362, 900, 382), R(1172, 362, 1258, 382), R(1119, 368, 1143, 385), // bancos e lixeira da praça
+    R(778, 410, 802, 428), R(1088, 410, 1112, 428), R(1478, 410, 1502, 428), // postes na beira da praça
     // Embaixo: Shopping da Multidão (a porta fica em x 610–900)
     R(115, 560, 1420, 868),
     R(555, 850, 605, 882), // vasos da porta
@@ -101,19 +99,15 @@ export const duqueRuaMap: MapDef = {
   ],
 
   objects: [
-    { key: 'dr-ipe', x: 740, y: 318, w: 250, fade: true, shadow: false },
-    { key: 'dr-arvore', x: 1005, y: 372, w: 230, fade: true, shadow: false },
-    { key: 'dr-arvore', x: 1415, y: 372, w: 210, fade: true, shadow: false, flip: true },
-    { key: 'dr-arvore', x: 1350, y: 780, w: 220, fade: true, shadow: 0.5 },
-    { key: 'dr-poste', x: 821, y: 400, w: 77, shadow: 0.4 },
-    { key: 'dr-poste', x: 885, y: 418, w: 77, shadow: 0.4 },
-    { key: 'dr-poste', x: 1104, y: 398, w: 77, shadow: 0.4 },
-    { key: 'dr-poste', x: 1408, y: 418, w: 77, shadow: 0.4, flip: true },
-    { key: 'dr-poste', x: 61, y: 555, w: 63, shadow: 0.4 },
-    { key: 'dr-poste', x: 1473, y: 555, w: 63, shadow: 0.4, flip: true },
-    { key: 'dr-banco', x: 798, y: 323, w: 80, shadow: 0.8 },
-    { key: 'dr-banco', x: 1008, y: 385, w: 92, shadow: 0.8 },
-    { key: 'dr-banco', x: 1341, y: 385, w: 96, shadow: 0.8 },
+    // praça do teatro: uma árvore em cada canteiro, bancos na calçada entre eles e postes na beira da rua
+    { key: 'dr-ipe', x: 740, y: 318, w: 220, fade: true, shadow: false },
+    { key: 'dr-arvore', x: 1005, y: 372, w: 200, fade: true, shadow: false },
+    { key: 'dr-arvore', x: 1415, y: 372, w: 190, fade: true, shadow: false, flip: true },
+    { key: 'dr-banco', x: 860, y: 382, w: 92, shadow: 0.8 },
+    { key: 'dr-banco', x: 1215, y: 382, w: 92, shadow: 0.8 },
+    { key: 'dr-poste', x: 790, y: 428, w: 70, shadow: 0.4 },
+    { key: 'dr-poste', x: 1100, y: 428, w: 70, shadow: 0.4 },
+    { key: 'dr-poste', x: 1490, y: 428, w: 70, shadow: 0.4, flip: true },
     { key: 'dr-lixeira', x: 1131, y: 385, w: 28, shadow: 0.8 },
     { key: 'dr-lixeira', x: 1130, y: 950, w: 38, shadow: 0.8 },
     { key: 'dr-vaso', x: 580, y: 882, w: 55, shadow: 0.7 },
@@ -139,8 +133,8 @@ export const duqueRuaMap: MapDef = {
 
   hotspots: [
     { rect: R(1040, 180, 1300, 300), interact: 'teatro', label: 'Teatro' },
-    { rect: R(964, 300, 1053, 387), interact: 'banco1', label: 'Sentar' },
-    { rect: R(1291, 300, 1391, 387), interact: 'banco2', label: 'Sentar' },
+    { rect: R(812, 320, 908, 392), interact: 'banco1', label: 'Sentar' },
+    { rect: R(1167, 320, 1263, 392), interact: 'banco2', label: 'Sentar' },
     { rect: R(1150, 790, 1410, 965), interact: 'onibus', label: 'Ponto' },
     { rect: R(955, 700, 1150, 882), interact: 'vitrine', label: 'Vitrine' },
   ],
@@ -148,7 +142,7 @@ export const duqueRuaMap: MapDef = {
   spawns: {
     portaria: { tx: 7.4, ty: 7.8, facing: 'down' },
     'from-acai': { tx: 30.3, ty: 16.3, facing: 'left' },
-    'from-multidao': { tx: 15.2, ty: 16.3, facing: 'up' },
+    'from-multidao': { tx: 15.2, ty: 18.1, facing: 'down' }, // na calçada, abaixo da porta (fora do gatilho de entrar)
   },
   triggers: [
     { id: 'portaria', rect: R(332, 368, 428, 392), script: 'portaria' },
