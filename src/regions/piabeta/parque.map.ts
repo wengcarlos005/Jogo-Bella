@@ -375,7 +375,7 @@ export const parqueMap: MapDef = {
       rect: R(1440, 390, 1536, 480),
       interact: 'placaMex',
       label: 'Restaurante →',
-      marker: { x: 0.5, y: -0.3, dir: 'right' },
+      marker: { x: 1, y: 0.5, dir: 'right' },
       markerIf: () => QuestSystem.isActive('dq-e2') && QuestSystem.isObjectiveDone('dq-e2', 'passeio') && !QuestSystem.isObjectiveDone('dq-e2', 'mexicano'),
     },
     { rect: R(500, 30, 842, 430), interact: 'coreto', label: 'Coreto', markerIf: () => objActive('abrigo') && objDone('passear') },

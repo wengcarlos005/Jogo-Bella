@@ -53,7 +53,7 @@ export class GameScene extends Phaser.Scene {
   umbrellas = new Map<string, { img: Phaser.GameObjects.Image; shaft: Phaser.GameObjects.Image; mode: 'up' | 'hide' }>();
   weather!: WeatherSystem;
   interactions!: InteractionSystem;
-  private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2; side?: 'left' | 'right' }[] = [];
+  private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2; side?: 'left' | 'right'; caption?: Phaser.GameObjects.Text }[] = [];
   private scriptRunning = false;
   private transitioning = false;
   /** Cada entrada num mapa ganha um número: o que sobrou do mapa anterior não mexe no novo. */
@@ -751,7 +751,10 @@ export class GameScene extends Phaser.Scene {
       if (h.markerIf) {
         const m = h.marker;
         const at = m ? { x: r.x + (m.x ?? 0.5) * r.width, y: r.y + (m.y ?? 0) * r.height - 4 } : { x: r.centerX, y: r.y - 4 };
-        this.addMarker(h.markerIf, () => at, () => true, m?.dir === 'down' ? undefined : m?.dir);
+        const side = m?.dir === 'down' ? undefined : m?.dir;
+        // seta de lado: sempre um pouco pra dentro do mapa (senão o balanço corta na borda), com o nome do lugar
+        if (side) at.x = Math.max(14, Math.min(this.built.widthPx - 14, at.x));
+        this.addMarker(h.markerIf, () => at, () => true, side, side ? (h.label ?? '').replace(/[←→]/g, '').trim() : undefined);
       }
     });
   }
@@ -772,11 +775,21 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  private addMarker(cond: () => boolean, anchor: () => Vec2, visible: () => boolean, side?: 'left' | 'right'): void {
-    const sprite = this.add.image(0, 0, 'fx-marker').setDepth(150_000).setVisible(false);
-    // seta deitada apontando pro lado (ex.: "o restaurante é pra lá")
-    if (side) sprite.setRotation(side === 'right' ? -Math.PI / 2 : Math.PI / 2);
-    this.markers.push({ sprite, cond: () => visible() && cond(), anchor, side });
+  private addMarker(cond: () => boolean, anchor: () => Vec2, visible: () => boolean, side?: 'left' | 'right', label?: string): void {
+    const sprite = this.add.image(0, 0, 'fx-marker').setDepth(170_500).setVisible(false);
+    // seta deitada apontando pro lado (ex.: "o restaurante é pra lá"), maior e com o nome do lugar
+    let caption: Phaser.GameObjects.Text | undefined;
+    if (side) {
+      sprite.setRotation(side === 'right' ? -Math.PI / 2 : Math.PI / 2);
+      if (label)
+        caption = this.add
+          .text(0, 0, label, { fontFamily: 'Pixelify Sans', fontSize: '18px', color: '#ffe9b0', stroke: '#3a2a2e', strokeThickness: 5 })
+          .setOrigin(side === 'right' ? 1 : 0, 1)
+          .setScale(0.5)
+          .setDepth(170_500)
+          .setVisible(false);
+    }
+    this.markers.push({ sprite, cond: () => visible() && cond(), anchor, side, caption });
   }
 
   /** Reavalia visibleIf de props e NPCs (chamado quando flags mudam). */
@@ -997,12 +1010,20 @@ export class GameScene extends Phaser.Scene {
     for (const m of this.markers) {
       const on = !this.busy && m.cond();
       m.sprite.setVisible(on);
+      if (!on) m.caption?.setVisible(false);
       if (on) {
         const a = m.anchor();
         const bob = Math.abs(Math.sin(time / 260)) * 5;
-        if (m.side) m.sprite.setPosition(Math.round(a.x + (m.side === 'right' ? bob : -bob)), Math.round(a.y));
-        else m.sprite.setPosition(Math.round(a.x), Math.round(a.y - 2 - bob));
-        m.sprite.setScale(1 + Math.max(0, Math.sin(time / 260)) * 0.12);
+        if (m.side) {
+          // balança só pra dentro do mapa (nunca some na borda)
+          const dir = m.side === 'right' ? 1 : -1;
+          m.sprite.setPosition(Math.round(a.x - dir * (6 - bob)), Math.round(a.y));
+          m.sprite.setScale(1.35 + Math.max(0, Math.sin(time / 260)) * 0.12);
+          m.caption?.setPosition(Math.round(a.x + dir * 2), Math.round(a.y - 9)).setVisible(true);
+        } else {
+          m.sprite.setPosition(Math.round(a.x), Math.round(a.y - 2 - bob));
+          m.sprite.setScale(1 + Math.max(0, Math.sin(time / 260)) * 0.12);
+        }
       }
     }
 
