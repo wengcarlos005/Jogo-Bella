@@ -96,7 +96,7 @@ const scripts: Record<string, Script> = {
     ]);
     await ctx.chapterCard('Terceiro encontro', 'Caxias Shopping', 'Cinema, uma ligação inesperada e uma surpresa.', 'Continuar');
     ctx.startQuest('dq-e3');
-    await ctx.teleport('duque-cinema', 'sala');
+    await ctx.teleport('duque-cinema', 'shopping');
   },
 
   async garcom(ctx) {

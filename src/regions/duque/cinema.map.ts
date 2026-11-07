@@ -12,10 +12,12 @@ const scripts: Record<string, Script> = {
     ctx.follow('weng', true);
     if (ctx.flag('dq-cine-1')) return;
     ctx.setFlag('dq-cine-1');
-    // chegam pelo corredor do shopping, lá embaixo
+    // chegam pelo corredor do shopping, lá embaixo (já nascem ali: nada de pular na tela)
+    // e entram uns passos, pra ficar acima da caixa de diálogo
     ctx.follow('weng', false);
-    ctx.place('player', 14.6, 18.6, 'up');
-    ctx.place('weng', 16.4, 18.6, 'up');
+    ctx.place('player', 14.6, 18.4, 'up');
+    ctx.place('weng', 16.4, 18.4, 'up');
+    await Promise.all([ctx.move('player', 14.6, 15.2, 45), ctx.move('weng', 16.4, 15.2, 45)]);
     await ctx.narrate('Caxias Shopping. Sábado à noite.');
     await ctx.say('bella', 'Cheiro de pipoca. Esse é o melhor cheiro do mundo.');
     ctx.face('weng', 'bella');
@@ -186,6 +188,8 @@ export const cinemaMap: MapDef = {
 
   spawns: {
     sala: { tx: 15.4, ty: 8.6, facing: 'down' },
+    // chegada pelo corredor do shopping (entre os dois sensores antifurto)
+    shopping: { tx: 14.6, ty: 18.4, facing: 'up' },
   },
   triggers: [{ id: 'saida', rect: R(575, 965, 965, 1024), script: 'saida' }],
   scripts,

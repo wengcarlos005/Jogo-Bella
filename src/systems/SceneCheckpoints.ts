@@ -44,7 +44,7 @@ const PRESETS: Preset[] = [
   { quest: 'pia-m2', mapId: 'piabeta-rua', spawn: 'from-casa', active: true, flags: { 'weng-segue': true, 'weng-entrou': true, 'look-escolhido': 'casual' }, outfits: { piabeta: 'casual' } },
   { quest: 'pia-m3', mapId: 'piabeta-rota66-fora', spawn: 'from-rota66', active: true, flags: { 'weng-segue': true, 'weng-entrou': true, 'rota66-saudacao': true }, outfits: { piabeta: 'casual' } },
   { quest: 'dq-e2', mapId: 'piabeta-quintal', spawn: 'porta', outfits: { piabeta: 'casual' } },
-  { quest: 'dq-e3', mapId: 'duque-cinema', spawn: 'sala', active: true, flags: { 'weng-segue': true }, outfits: { piabeta: 'casual' } },
+  { quest: 'dq-e3', mapId: 'duque-cinema', spawn: 'shopping', active: true, flags: { 'weng-segue': true }, outfits: { piabeta: 'casual' } },
   { quest: 'dq-m1', mapId: 'duque-apto', spawn: 'porta', outfits: { piabeta: 'casual' } },
   { quest: 'dq-m2', mapId: 'duque-apto', spawn: 'porta', active: true, flags: { 'dq-chegou': true, 'weng-segue': true }, outfits: { piabeta: 'casual' } },
   { quest: 'dq-m3', mapId: 'duque-apto', spawn: 'porta', active: true, flags: { 'dq-chegou': true, 'weng-segue': true }, outfits: { piabeta: 'casual' } },
