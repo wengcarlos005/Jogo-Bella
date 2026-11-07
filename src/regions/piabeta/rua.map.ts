@@ -147,8 +147,14 @@ const scripts: Record<string, Script> = {
   },
 
   async uber(ctx) {
-    // os dois esperam juntos na beira da calçada, depois do carro vermelho estacionado
+    // os dois esperam juntos na beira da calçada, depois do carro vermelho estacionado.
+    // a tia Jaque e a vizinha encostam no muro pra abrir caminho (ninguém atravessa ninguém)
     ctx.follow('weng', false);
+    const abreCaminho = async (who: string, x: number) => {
+      await ctx.move(who, x, 7.6, 70);
+      ctx.face(who, 'down');
+    };
+    await Promise.all([abreCaminho('tia-jaque', 8.0), abreCaminho('vizinha', 17.0)]);
     const px = 12.5;
     await Promise.all([ctx.move('player', px, 9.12, 45), ctx.move('weng', px + 1.5, 9.12, 45)]);
     ctx.face('player', 'right');

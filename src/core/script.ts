@@ -111,6 +111,8 @@ export interface ScriptContext {
   /** Weng (ou outro NPC) passa a seguir a Bella. */
   follow(who: string, on: boolean): void;
   /** Mostra/esconde NPCs conforme as condições do mapa. */
+  /** Quem o jogador controla: 'bella' (normal) ou 'weng' (a Bella passa a acompanhar). */
+  lead(who: 'bella' | 'weng'): void;
   refresh(): void;
   teleport(mapId: string, spawn: string): Promise<void>;
   /** id do mapa atual */

@@ -56,7 +56,7 @@ export const mexicanoForaMap: MapDef = {
     R(865, 0, 1080, 548), // porta (dá pra chegar no capacho)
     R(1080, 0, 1555, 592), // fachada (dir.)
     R(1550, 0, 1672, 602), // prédio vizinho
-    R(0, 772, 1672, 941), // meio-fio e rua
+    R(0, 925, 1672, 941), // fim da rua (dá pra andar na rua)
     R(439, 632, 601, 705),
     R(1239, 632, 1401, 705),
     R(759, 584, 811, 610),

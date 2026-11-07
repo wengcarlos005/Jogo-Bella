@@ -104,7 +104,9 @@ export class GameScene extends Phaser.Scene {
       pos = tileToFeet(sp.tx, sp.ty);
       facing = sp.facing;
     }
-    this.player = new Player(this, pos.x, pos.y, this.bellaTexture());
+    // o Weng só lidera no quintal (churrasco); em qualquer outro lugar a Bella volta a liderar
+    if (this.wengLeads && def.id !== 'piabeta-quintal') GameState.setFlag('lider-weng', false);
+    this.player = new Player(this, pos.x, pos.y, this.leadTexture());
     this.player.face(facing);
     (this.player.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
     this.physics.world.setBounds(0, 0, this.built.widthPx, this.built.heightPx);
@@ -152,10 +154,14 @@ export class GameScene extends Phaser.Scene {
 
     // retrato da caixa de falas = roupa que a Bella/Weng está usando agora
     setPortraitOverride((who) => {
-      if (who === 'bella') return `portrait-${this.player.texture.key}`;
+      const comp = this.npcs.get('weng')?.npc;
+      if (who === 'bella') {
+        if (this.wengLeads) return comp ? `portrait-${comp.texture.key}` : `portrait-${this.bellaTexture()}`;
+        return `portrait-${this.player.texture.key}`;
+      }
       if (who === 'weng') {
-        const w = this.npcs.get('weng')?.npc;
-        return w ? `portrait-${w.texture.key}` : `portrait-${this.spriteFor('weng')}`;
+        if (this.wengLeads) return `portrait-${this.player.texture.key}`;
+        return comp ? `portrait-${comp.texture.key}` : `portrait-${this.spriteFor('weng')}`;
       }
       return null;
     });
@@ -221,6 +227,39 @@ export class GameScene extends Phaser.Scene {
     return this.spriteFor('bella');
   }
 
+  /** Em alguns trechos (o churrasco do Alexandre) quem o jogador controla é o Weng, e a Bella acompanha. */
+  get wengLeads(): boolean {
+    return GameState.is('lider-weng');
+  }
+  leadTexture(): string {
+    return this.wengLeads ? this.spriteFor('weng') : this.bellaTexture();
+  }
+  companionTexture(): string {
+    return this.wengLeads ? this.bellaTexture() : this.spriteFor('weng');
+  }
+  /** Troca quem lidera: cada personagem continua no mesmo lugar, só muda quem o jogador controla. */
+  setLead(weng: boolean): void {
+    if (weng === this.wengLeads) return;
+    GameState.setFlag('lider-weng', weng);
+    const pl = this.player;
+    const comp = this.npcs.get('weng')?.npc;
+    const pf = pl.facing;
+    const px = pl.x;
+    const py = pl.y;
+    pl.applySheet(this.leadTexture());
+    if (comp) {
+      const cf = comp.facing;
+      comp.applySheet(this.companionTexture());
+      pl.setPosition(comp.x, comp.y);
+      (pl.body as Phaser.Physics.Arcade.Body).reset(comp.x, comp.y);
+      comp.setPosition(px, py);
+      (comp.body as Phaser.Physics.Arcade.Body).reset(px, py);
+      pl.face(cf);
+      comp.face(pf);
+      pl.trail.length = 0;
+    } else pl.face(pf);
+  }
+
   /**
    * Textura de um personagem na região atual. Bella e Weng trocam de roupa
    * conforme a cidade; demais NPCs usam a própria chave. Sem arte real,
@@ -240,7 +279,7 @@ export class GameScene extends Phaser.Scene {
   /** Reaplica a roupa (após troca no guarda-roupa). */
   dressPlayer(): void {
     const facing = this.player.facing;
-    this.player.applySheet(this.bellaTexture());
+    this.player.applySheet(this.leadTexture());
     this.player.face(facing);
   }
 
@@ -325,7 +364,7 @@ export class GameScene extends Phaser.Scene {
       (entry.npc.body as Phaser.Physics.Arcade.Body).reset(entry.npc.x, entry.npc.y);
     }
     if (!entry) {
-      const npc = new NPC(this, this.player.x + back[0], this.player.y + back[1], this.spriteFor('weng'), 'weng');
+      const npc = new NPC(this, this.player.x + back[0], this.player.y + back[1], this.companionTexture(), 'weng');
       npc.interactScript = 'weng';
       this.addNpcColliders(npc);
       entry = { npc, def: { id: 'weng', sprite: 'weng', tx: 0, ty: 0, interact: 'weng' } };
@@ -1080,6 +1119,10 @@ export class GameScene extends Phaser.Scene {
   // ------------------------------------------------------------ util p/ scripts
 
   findActor(who: string): NPC | Player | null {
+    if (this.wengLeads) {
+      if (who === 'player' || who === 'weng') return this.player;
+      if (who === 'bella') return this.npcs.get('weng')?.npc ?? null;
+    }
     if (who === 'player' || who === 'bella') return this.player;
     return this.npcs.get(who)?.npc ?? null;
   }

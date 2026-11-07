@@ -51,55 +51,75 @@ const scripts: Record<string, Script> = {
     ctx.follow('weng', true);
     await ctx.say('mae-bella', 'Chegou o Weng! Entra, querido, fica à vontade. O Alexandre já acendeu a churrasqueira.');
     await ctx.say('mae-bella', 'Ai, trouxe sobremesa! Alexandre, ele mesmo FEZ uma banoffee!');
-    await ctx.say('pai-bella', '...Sabe virar carne?');
+    await ctx.say('pai-bella', '(sem tirar o olho da carne) Banoffee. Hm. Eu faço uma melhor. Mas tudo bem.');
+    await ctx.say('bella', '(E começou.)');
+    await ctx.say('pai-bella', 'Weng, né? Já mexeu com churrasco de verdade? Não tô falando de grill elétrico de apartamento, não.');
     await ctx.emote('weng', 'sweat');
-    await ctx.say('weng', 'Sei! Quer dizer... sei aprender rápido.');
-    await ctx.say('bella', '(Isso é um teste. O Alexandre tá testando ele.)');
-    ctx.toast(`Leve o Weng até a churrasqueira do ${ALE}`);
+    await ctx.say('weng', 'Já ajudei umas vezes...');
+    await ctx.say('pai-bella', '"Ajudou". Sei. Vem cá, então. Vamos ver se você aprende alguma coisa hoje.');
+    await ctx.say('bella', '(baixinho) Desculpa. Ele é assim. Se acha o dono do fogo.');
+    await ctx.say('weng', '(baixinho) Relaxa. Sorrir, concordar e não encostar no pegador. Decorei.');
+    await ctx.say('bella', '(baixinho) Ele vai te MANDAR encostar no pegador. É uma armadilha.');
+    await ctx.say('weng', '(baixinho) Então hoje eu ganho esse homem. Fica olhando.');
+    // daqui em diante quem age é o Weng; a Bella acompanha, torcendo
+    ctx.lead('weng');
+    ctx.follow('bella', true);
+    ctx.toast(`Agora é com o Weng! Vá até a churrasqueira do ${ALE}`);
   },
 
   async churrasqueira(ctx) {
     if (objActive('churrasco')) {
-      await ctx.say('pai-bella', 'Weng. Vem cá. Toma o pegador.');
-      await ctx.emote('weng', 'exclaim');
-      await ctx.say('weng', 'Eu? Agora? Tá. Tá bom. Eu consigo.');
-      // o Weng assume a churrasqueira (na frente, ao lado do Alexandre); a Bella vai pra trás, torcendo
-      ctx.follow('weng', false);
+      await ctx.say('pai-bella', 'Chegou. Toma o pegador. Cuidado, que esse pegador tem mais tempo de casa que você.');
+      await ctx.say('weng', 'Pode deixar, seu Alexandre.');
+      await ctx.say('pai-bella', '"Seu" não. Alexandre. Não sou velho. Sou experiente.');
+      await ctx.say('bella', '(revirando os olhos) E chato.');
+      await ctx.say('pai-bella', 'Ouvi isso, mocinha.');
+      // o Weng assume a churrasqueira (na frente, ao lado do Alexandre); a Bella fica atrás, torcendo
+      ctx.follow('bella', false);
       await ctx.fadeOut(250);
       ctx.place('weng', 6.9, 12.5, 'left');
       ctx.place('pai-bella', 8.4, 12.3, 'left');
-      ctx.place('player', 7.6, 15.5, 'up');
+      ctx.place('bella', 7.6, 15.5, 'up');
       await ctx.frame(7.6, 13.4, 0);
       await ctx.fadeIn(300);
       ctx.face('pai-bella', 'weng');
-      ctx.face('player', 'weng');
-      await ctx.say('bella', '(Vai, Weng! Você consegue! ...Eu acho.)');
+      ctx.face('bella', 'weng');
+      await ctx.say('pai-bella', 'Regra número um: carne se vira UMA vez. Regra número dois: quem manda na churrasqueira sou eu. Regra três: ver regra dois.');
+      await ctx.say('weng', 'Entendido. Uma vez. O senhor manda.');
+      await ctx.say('pai-bella', 'E não me chama de senhor.');
+      await ctx.say('bella', '(Vai, Weng! Mostra pra ele!)');
       const r = await ctx.grill({ title: 'O Weng na churrasqueira', helper: 'Alexandre' });
       ctx.setFlag('dq-churrasco-estrelas', r.stars);
       if (r.stars === 3) {
-        await ctx.emote('pai-bella', 'heart');
-        await ctx.say('pai-bella', '...Bom rapaz.');
-        await ctx.say('bella', 'Ele disse "bom rapaz" DE NOVO. Weng, você tá muito bem.');
+        await ctx.say('pai-bella', '...');
+        await ctx.say('pai-bella', 'Hm. Até que não queimou. Sorte de principiante.');
+        await ctx.say('weng', '(Sorte de principiante. Vou aceitar como elogio.)');
+        await ctx.emote('bella', 'heart');
+        await ctx.say('bella', 'Ele QUASE sorriu. Eu vi. Isso nunca aconteceu nessa casa.');
+      } else if (r.stars === 2) {
+        await ctx.say('pai-bella', 'Passou um pouquinho do ponto. Mas pra primeira vez com um mestre do lado, aceitável.');
+        await ctx.say('bella', '(baixinho) "Mestre". Ele mesmo se chamou de mestre.');
       } else {
-        await ctx.say('pai-bella', 'Hm. Com treino melhora.');
-        await ctx.say('weng', '(Pelo menos ele não me expulsou.)');
+        await ctx.say('pai-bella', 'Tá vendo? Por isso que quem manda aqui sou eu. Me dá esse pegador.');
+        await ctx.say('bella', '(baixinho) Ignora. Tava ótimo. Ele queima a linguiça TODO domingo.');
       }
       await ctx.unfocus(300);
-      ctx.follow('weng', true);
+      ctx.follow('bella', true);
       ctx.objective(Q, 'churrasco');
       await ctx.say('mae-bella', 'Tá pronto? Então vem todo mundo pra mesa!');
-      ctx.toast('Sente-se à mesa com a família');
+      ctx.toast('Leve a Bella até a mesa');
       return;
     }
-    await ctx.say('bella', 'A churrasqueira de tijolinho do Alexandre. Ninguém mexe nela sem autorização.');
+    await ctx.say('weng', 'A churrasqueira do Alexandre. Território sagrado. Melhor não encostar.');
   },
 
   async mesa(ctx) {
     if (objActive('mesa') && objDone('churrasco')) {
       await ctx.fadeOut(250);
       ctx.follow('weng', false);
-      ctx.place('player', 12.6, 16.0, 'up');
-      ctx.place('weng', 15.0, 16.0, 'up');
+      // na frente da mesa (abaixo da cadeira da ponta), nunca dentro dela
+      ctx.place('bella', 12.4, 16.9, 'up');
+      ctx.place('weng', 14.6, 16.9, 'up');
       ctx.place('mae-bella', 10.6, 9.4, 'right');
       ctx.place('pai-bella', 17.6, 9.6, 'left');
       await ctx.frame(14, 13.6, 0);
@@ -112,21 +132,25 @@ const scripts: Record<string, Script> = {
       if (c === 0) {
         await ctx.say('mae-bella', 'Ai, que fofo. Bella, segura esse.');
       } else if (c === 1) {
-        await ctx.say('pai-bella', '...Gosta de churrasco. Hm. Ponto pra ele.');
+        await ctx.say('pai-bella', 'Todo mundo gosta de churrasco. O difícil é saber FAZER.');
+        await ctx.say('bella', 'Ele fez, Alexandre. Você viu.');
       } else {
         await ctx.emote('bella', 'heart');
         await ctx.say('mae-bella', 'AAAH. Alexandre, você ouviu isso?');
-        await ctx.say('pai-bella', 'Ouvi. Passa a farofa.');
+        await ctx.say('pai-bella', 'Ouvi. Gostar é fácil. Quero ver aguentar ela de manhã.');
+        await ctx.say('bella', 'ALEXANDRE!');
       }
       await ctx.say('pai-bella', 'E a Lala? Já deixou você fazer carinho nela?');
       await ctx.say('weng', 'Ainda não. Ela me ignora.');
-      await ctx.say('pai-bella', 'Comigo ela fez isso por dois anos. Boa sorte.');
+      await ctx.say('pai-bella', 'Normal. Gato tem bom gosto. Comigo ela demorou... bom, comigo ela ainda não deixa.');
+      await ctx.say('bella', '(Porque nem a Lala aguenta ele.)');
       await ctx.say('mae-bella', 'Agora a sobremesa! A banoffee que o Weng fez!');
       await ctx.say('avo-bella', 'Deixa eu provar essa banoffee... Hm. Doce de leite no ponto. Banana fresquinha.');
       await ctx.say('pai-bella', '...');
-      await ctx.say('pai-bella', '...A banoffee também é boa.');
+      await ctx.say('pai-bella', 'Tá boa. O doce de leite eu compraria de outra marca. Mas tá boa.');
+      await ctx.say('bella', '(Pronto. Ele não consegue elogiar sem colocar um defeito.)');
       await ctx.emote('weng', 'heart');
-      await ctx.say('bella', '(Dois elogios do Alexandre num dia só. Isso é histórico.)');
+      await ctx.say('bella', '(Mas "tá boa", vindo do Alexandre, é praticamente um abraço.)');
       const c2 = await ctx.choose('weng', '(A mãe da Bella está olhando, esperando...)', ['"Foi a minha avó que me ensinou a receita."', '"Fiz duas. A primeira desmontou."', '"Doce é o caminho pro coração de qualquer família."']);
       if (c2 === 0) await ctx.say('mae-bella', 'Então manda um beijo pra ela! Ela criou você muito bem.');
       else if (c2 === 1) await ctx.say('mae-bella', 'Fez DUAS? Bella, esse é pra casar.');
@@ -142,10 +166,14 @@ const scripts: Record<string, Script> = {
       // a mãe fica no caminho de pedra, do outro lado da mesa
       ctx.place('mae-bella', 21.4, 14.4, 'left');
       ctx.place('pai-bella', 7.7, 13.0, 'right');
+      ctx.place('bella', 12.4, 16.9, 'up');
+      ctx.place('weng', 14.6, 16.9, 'up');
+      // a Bella pega na mão dele e volta a puxar o caminho
+      ctx.lead('bella');
       ctx.follow('weng', true);
       if (mesaArt) await ctx.fadeIn(400);
       ctx.objective(Q, 'mesa');
-      await ctx.say('bella', 'Weng, vem! Vamos entrar. Quero te apresentar a Lala direito. E depois: filme!');
+      await ctx.say('bella', 'Weng, vem! Vamos entrar antes que o Alexandre invente outra prova. Quero te apresentar a Lala direito. E depois: filme!');
       ctx.toast('Entre pela porta da cozinha');
       return;
     }
@@ -208,10 +236,14 @@ const scripts: Record<string, Script> = {
   },
   async pai(ctx) {
     if (objActive('churrasco')) {
-      await ctx.say('pai-bella', 'A churrasqueira tá esperando.');
+      await ctx.say('pai-bella', 'A churrasqueira tá esperando. A carne não vira sozinha. Quer dizer, vira, mas aí é carvão.');
       return;
     }
-    await ctx.say('pai-bella', '...Hm. A carne tá boa.');
+    await ctx.say('pai-bella', 'A carne tá boa. Mas foi o tempero, né. O tempero é meu.');
+  },
+  async weng(ctx) {
+    // quando o Weng lidera, o acompanhante (NPC 'weng') é a Bella
+    await ctx.say('bella', objActive('churrasco') ? 'Vai lá. Lembra: sorrir e concordar.' : 'Tô morrendo de fome. Bora pra mesa?');
   },
 };
 

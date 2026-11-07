@@ -587,17 +587,20 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     },
 
     follow(who, on) {
-      if (who === 'weng' && on) {
+      // o acompanhante é sempre o NPC 'weng' (quando o Weng lidera, ele tem a cara da Bella)
+      const companion = who === 'weng' || (who === 'bella' && scene.wengLeads);
+      if (companion && on) {
         scene.attachFollower();
         return;
       }
-      const a = actor(who);
+      const a = companion ? scene.npcs.get('weng')?.npc : actor(who);
       if (a instanceof NPC) {
         if (on) a.follow(scene.player);
         else a.stopFollowing();
       }
     },
 
+    lead: (who) => scene.setLead(who === 'weng'),
     refresh: () => scene.refreshVisibility(),
     teleport: (mapId, spawn) => scene.goTo(mapId, spawn),
   };

@@ -23,7 +23,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Foi ali. Debaixo da chuva.');
       await ctx.emote('bella', 'heart');
       await ctx.say('bella', 'Eu lembro de cada segundo.');
-      await ctx.say('weng', 'Tem um restaurante mexicano aqui do lado, seguindo a calçada pra esquerda. Bora conhecer?');
+      await ctx.say('weng', 'Tem um restaurante mexicano aqui do lado, passando a pontezinha do lago. Bora conhecer?');
       ctx.toast('Siga pela calçada para a esquerda');
       return;
     }
@@ -140,32 +140,52 @@ const scripts: Record<string, Script> = {
       { from: 'them', text: 'vai dormir, encharcada' },
       { from: 'me', text: 'boa noite, encharcado 💕' },
       { from: 'info', text: 'Alguns dias depois' },
-      { from: 'me', text: 'oiii' },
-      { from: 'me', text: 'tá fazendo o que domingo?' },
-      { from: 'them', text: 'nada ainda, por quê?' },
-      { from: 'me', text: 'vai ter churrasco aqui em casa' },
+      { from: 'me', text: 'oiiii' },
+      { from: 'me', text: 'pergunta séria' },
+      { from: 'them', text: 'pode mandar' },
+      { from: 'them', text: '(tô com medo)' },
+      { from: 'me', text: 'você gosta de picanha?' },
+      { from: 'them', text: 'isso é uma pergunta séria???' },
+      { from: 'them', text: 'eu AMO picanha' },
+      { from: 'me', text: 'então domingo tem churrasco aqui em casa 🥩' },
       { from: 'me', text: 'minha mãe quer te conhecer direito' },
-      { from: 'me', text: 'e o Alexandre também 😇' },
-      { from: 'them', text: 'o Alexandre do "bom rapaz"?' },
-      { from: 'me', text: 'esse mesmo' },
-      { from: 'me', text: 'ele já tá até afiando a faca kkkkkk' },
-      { from: 'them', text: '...' },
-      { from: 'them', text: 'isso é piada né' },
-      { from: 'me', text: 'é sim kkkkk relaxa' },
-      { from: 'me', text: 'ele vai te amar. eu acho.' },
-      { from: 'them', text: 'que horas eu chego?' },
-      { from: 'me', text: 'uma da tarde. traz fome!' },
-      { from: 'them', text: 'levo fome. e coragem.' },
-      { from: 'them', text: 'e alguma coisa pra sua mãe, né? o que ela gosta?' },
-      { from: 'me', text: 'qualquer doce! todo mundo aqui é formiga' },
+      { from: 'me', text: 'e a minha vó vai descer só pra te ver' },
+      { from: 'them', text: 'a vó também?? 😳' },
+      { from: 'me', text: 'ela já perguntou se você é magrinho' },
+      { from: 'me', text: 'falei que sim. ela tá preparando farofa pra 10' },
+      { from: 'them', text: 'kkkkkkkk eu vou sair rolando' },
+      { from: 'me', text: 'ah... e o Alexandre vai estar lá 🙄' },
+      { from: 'them', text: 'o do "bom rapaz"?' },
+      { from: 'me', text: 'esse' },
+      { from: 'me', text: 'já aviso: ele se acha o rei da churrasqueira' },
+      { from: 'me', text: 'ninguém encosta no pegador dele. NINGUÉM' },
+      { from: 'me', text: 'ele vai querer te dar aula de como virar carne' },
+      { from: 'them', text: 'e eu faço o quê?' },
+      { from: 'me', text: 'sorri e concorda' },
+      { from: 'me', text: 'é o que eu faço há anos kkkkk' },
+      { from: 'them', text: 'kkkkkk anotado' },
+      { from: 'them', text: 'sorrir, concordar, não encostar no pegador' },
+      { from: 'me', text: 'isso. e comer muito pra minha vó ficar feliz' },
+      { from: 'them', text: 'posso levar alguma coisa?' },
+      { from: 'me', text: 'só você 🥺' },
+      { from: 'them', text: 'que fofa' },
+      { from: 'them', text: 'mas eu vou levar um doce mesmo assim' },
+      { from: 'me', text: 'todo mundo aqui é formiga, vai fazer sucesso' },
       { from: 'them', text: 'deixa comigo então 📝🍌' },
+      { from: 'me', text: 'banana??' },
+      { from: 'them', text: 'surpresa 🤫' },
+      { from: 'me', text: 'agora eu vou ficar curiosa até domingo 😤' },
+      { from: 'them', text: 'esse é o plano 😌' },
+      { from: 'me', text: 'te odeio' },
+      { from: 'me', text: '(mentira, te adoro)' },
+      { from: 'them', text: 'eu sei 💕' },
     ]);
     ctx.startQuest('dq-e2');
     await ctx.teleport('piabeta-quintal', 'porta');
   },
 
   async placaMex(ctx) {
-    await ctx.say('weng', 'O mexicano é logo ali, seguindo a calçada pra esquerda. Bora?');
+    await ctx.say('weng', 'O mexicano é logo ali, depois da pontezinha, saindo pela direita. Bora?');
   },
 
   async coreto(ctx) {
@@ -352,10 +372,10 @@ export const parqueMap: MapDef = {
 
   hotspots: [
     {
-      rect: R(0, 940, 70, 1000),
+      rect: R(1440, 390, 1536, 480),
       interact: 'placaMex',
-      label: '← Restaurante',
-      marker: { x: 0.6, y: -0.2, dir: 'left' },
+      label: 'Restaurante →',
+      marker: { x: 0.5, y: -0.3, dir: 'right' },
       markerIf: () => QuestSystem.isActive('dq-e2') && QuestSystem.isObjectiveDone('dq-e2', 'passeio') && !QuestSystem.isObjectiveDone('dq-e2', 'mexicano'),
     },
     { rect: R(500, 30, 842, 430), interact: 'coreto', label: 'Coreto', markerIf: () => objActive('abrigo') && objDone('passear') },
@@ -367,15 +387,16 @@ export const parqueMap: MapDef = {
     { rect: R(255, 220, 405, 300), interact: 'banco4', label: 'Sentar' },
   ],
 
-  // quem vem de Fragoso chega pela calçada da DIREITA; o restaurante mexicano fica pra ESQUERDA
+  // quem vem de Fragoso chega pela calçada da DIREITA; o restaurante mexicano fica depois da ponte
+  // (sai pela direita, perto do lago, e chega no portão do lado ESQUERDO do restaurante)
   spawns: {
     'from-rota66': { tx: 30.4, ty: 19.4, facing: 'left' },
-    'from-mexicano': { tx: 1.6, ty: 19.4, facing: 'right' },
+    'from-mexicano': { tx: 30.4, ty: 8.6, facing: 'left' },
   },
   exits: [
     { rect: R(1515, 945, 1536, 1000), toMap: 'piabeta-fragoso', toSpawn: 'from-parque' },
     {
-      rect: R(0, 945, 22, 1000),
+      rect: R(1500, 380, 1536, 490),
       toMap: 'piabeta-mexicano-fora',
       toSpawn: 'from-parque',
       blockedIf: () => (QuestSystem.isDone('pia-m3') ? false : 'Hoje o caminho é outro.'),
