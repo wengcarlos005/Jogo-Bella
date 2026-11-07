@@ -8,14 +8,16 @@ import { textureURL } from '../textures';
  * Segure (espaço / E / botão) pra beijar; cada beijo precisa de ~1,7 s sem soltar.
  * A mãe aparece na porta da cozinha de vez em quando: se ela pegar no flagra, perde um coração.
  * Antes dela aparecer vêm os passos (cada vez mais curtos). Às vezes é só a Lala passando... e
- * às vezes a mãe aparece sem aviso. 5 beijos pra passar; sem corações, recomeça.
+ * às vezes a mãe aparece sem aviso. 7 beijos pra passar (os 2 últimos bem mais difíceis); sem corações, recomeça.
  */
 export interface KissResult {
   tries: number;
 }
 
-const NEED = 5;
+const NEED = 7;
 const HOLD = 2.0;
+/** Nos 2 últimos beijos a mãe fica desconfiada: aparece mais, avisa menos e o beijo demora mais. */
+const HARD_HOLD = 2.6;
 const LIVES = 3;
 
 // recorte da sala no cenário original (px): é o "palco" do minigame
@@ -51,24 +53,33 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     });
     const sofa = h('img', { class: 'kg-obj', src: url('casa-sofa'), style: `${at(730, 748)};width:${(360 / CW) * 100}%` });
     const sheet = (key: string, frame: number, cols: number) => `background-image:url(${url(key)});background-size:${cols * 100}% auto;background-position:${(frame % cols) * (100 / (cols - 1))}% ${Math.floor(frame / cols) * (100 / 3)}%`;
-    const bellaSit = h('div', { class: 'kg-char', style: `${at(688, 735)};${sheet('bella-sit', 0, 2)}` });
-    const wengSit = h('div', { class: 'kg-char', style: `${at(772, 735)};${sheet('weng-sit', 0, 2)}` });
-    const bellaKiss = h('div', { class: 'kg-char kiss', style: `${at(712, 735)};background-image:url(${url('bella-kiss')});background-size:100% 100%` });
-    const wengKiss = h('div', { class: 'kg-char kiss', style: `${at(752, 735)};background-image:url(${url('weng-kiss')});background-size:100% 100%` });
+    // o casal no sofá (art-source/minigames/beijo-sofa.webp): inocente, beijando e no susto
+    const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+    const COUPLE: Record<'inocente' | 'beijo' | 'susto', number> = { inocente: 200, beijo: 224, susto: 196 };
+    for (const k of Object.keys(COUPLE)) new Image().src = mg(`casal-${k}`);
+    const couple = h('img', { class: 'kg-couple', src: mg('casal-inocente'), alt: '', style: at(728, 768) }) as HTMLImageElement;
+    let coupleNow = '';
+    const coupleSet = (k: keyof typeof COUPLE) => {
+      if (coupleNow === k) return;
+      coupleNow = k;
+      couple.src = mg(`casal-${k}`);
+      couple.style.height = `${(COUPLE[k] * 0.31).toFixed(1)}%`;
+    };
+    coupleSet('inocente');
     // mãe na porta da cozinha: sprites próprios (desconfiada → sobrancelha levantada → brava no flagra)
     const momSrc = (k: string) => new URL(`assets/minigames/mae-${k}.png`, document.baseURI).href;
-    for (const k of ['desconfia', 'sobrancelha', 'brava']) new Image().src = momSrc(k);
+    for (const k of ['espia', 'desconfia', 'sobrancelha', 'brava']) new Image().src = momSrc(k);
     const momEl = h('img', { class: 'kg-mom2', src: momSrc('desconfia'), alt: '', style: `${at(968, 668)}` }) as HTMLImageElement;
-    const momFace = (k: 'desconfia' | 'sobrancelha' | 'brava') => {
+    const momFace = (k: 'espia' | 'desconfia' | 'sobrancelha' | 'brava') => {
       momEl.src = momSrc(k);
     };
     const lala = h('div', { class: 'kg-char kg-cat', style: `${at(900, 650)};${sheet('lala', 8, 4)}` });
-    const shadow = h('div', { class: 'kg-shadow', style: `${at(970, 640)}` });
+    const shadow = h('img', { class: 'kg-shadow2', src: mg('sombra-mae'), alt: '', style: at(930, 690) });
     const steps = h('div', { class: 'kg-steps', style: at(968, 560) }, '👣');
-    const ring = h('div', { class: 'kg-ring', style: at(732, 548) }, h('i'));
+    const ring = h('div', { class: 'kg-ring', style: at(732, 472) }, h('i'));
     const tv = h('div', { class: 'kg-tv' });
     const flash = h('div', { class: 'kg-flash' });
-    stage.append(tv, shadow, lala, momEl, sofa, bellaSit, wengSit, bellaKiss, wengKiss, ring, steps, flash);
+    stage.append(tv, shadow, lala, momEl, sofa, couple, ring, steps, flash);
 
     const livesEl = h('div', { class: 'kg-lives' });
     const kissesEl = h('div', { class: 'kg-kisses' });
@@ -106,16 +117,15 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     const MOM_CAUGHT = ['Mãe: "HMMMM. Tão vendo o filme mesmo, é?"', 'Mãe: "Eu vi, hein!"', 'Mãe: "Alexandre, vem ver o filme também!"'];
     const EXCUSES = ['Bella: "A gente tava... é... comentando a cena!"', 'Weng: "Cena muito boa essa, tia."', 'Bella: "Tinha um cílio no olho dele!"'];
 
+    const hard = () => kisses >= NEED - 2;
+    let warnedHard = false;
     const nextMom = () => {
       mom = 'away';
-      momT = Math.max(1.4, 2.2 + Math.random() * 3.2 - kisses * 0.35);
+      momT = hard() ? 0.9 + Math.random() * 1.7 : Math.max(1.4, 2.2 + Math.random() * 3.2 - kisses * 0.3);
     };
 
     const setKiss = (on: boolean) => {
-      bellaSit.classList.toggle('hide', on);
-      wengSit.classList.toggle('hide', on);
-      bellaKiss.classList.toggle('show', on);
-      wengKiss.classList.toggle('show', on);
+      coupleSet(performance.now() < caughtLock ? 'susto' : on ? 'beijo' : 'inocente');
       stage.classList.toggle('kissing', on);
     };
 
@@ -128,7 +138,7 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
         const kissing = holding && performance.now() > caughtLock;
         setKiss(kissing);
         if (kissing) {
-          progress += dt / HOLD;
+          progress += dt / (hard() ? HARD_HOLD : HOLD);
           if (Math.random() < 0.15) heart();
           if (progress >= 1) {
             kisses++;
@@ -139,6 +149,10 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
             say(kisses >= NEED ? 'Bella: "...Shhh. O filme acabou."' : pick(['Weng: "Mais um..."', 'Bella: "Ela não viu. Ela não viu!"', '(coração disparado)', 'Weng: "A gente é muito bom nisso."']));
             holding = false;
             if (kisses >= NEED) return win();
+            if (hard() && !warnedHard) {
+              warnedHard = true;
+              setTimeout(() => say('Faltam só dois... e a mãe tá MUITO desconfiada. Agora ela vem sem avisar!'), 900);
+            }
           }
         } else progress = Math.max(0, progress - dt * 1.6);
         ring.style.setProperty('--p', String(progress));
@@ -147,10 +161,10 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
         // mãe
         momT -= dt;
         if (mom === 'away' && momT <= 0) {
-          fake = kisses >= 1 && Math.random() < 0.28;
-          const noWarn = !fake && kisses >= 3 && Math.random() < 0.14;
+          fake = kisses >= 1 && Math.random() < (hard() ? 0.35 : 0.28);
+          const noWarn = !fake && kisses >= 3 && Math.random() < (hard() ? 0.32 : 0.14);
           mom = 'steps';
-          momT = noWarn ? 0.25 : Math.max(0.45, 1.1 - kisses * 0.14);
+          momT = noWarn ? 0.22 : hard() ? 0.42 : Math.max(0.5, 1.1 - kisses * 0.1);
           if (!noWarn) {
             steps.classList.add('on');
             shadow.classList.add('on');
@@ -167,11 +181,11 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
             lala.classList.add('walk');
             say(pick(['(...era só a Lala.)', 'Lala: "Miau." (passou e foi embora)']));
           } else {
-            momFace('desconfia');
+            momFace('espia');
             momEl.classList.add('show');
           }
         } else if (mom === 'look') {
-          if (!fake && momT < 0.9 && performance.now() > caughtLock) momFace('sobrancelha');
+          if (!fake && momT < 1.0 && performance.now() > caughtLock) momFace(hard() ? 'sobrancelha' : 'desconfia');
           if (!fake && kissing) caught();
           if (momT <= 0) {
             if (!fake && performance.now() > caughtLock) say(pick(MOM_OK));

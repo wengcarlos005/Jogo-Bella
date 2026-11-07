@@ -173,6 +173,29 @@ const PHASES: Phase[] = [
 ];
 const W = 200;
 const H = 112;
+/** O canvas desenha em 4x (as sprites ficam nítidas); a lógica continua em 200x112. */
+const SC = 4;
+const fxImg = (f: string) => {
+  const im = new Image();
+  im.src = new URL(`assets/minigames/churr-${f}.png`, document.baseURI).href;
+  return im;
+};
+/** Sprites da churrasqueira (art-source/minigames/churrasco-grelha.webp). */
+const FX = {
+  get grelha() {
+    return (FX_CACHE.grelha ??= fxImg('grelha'));
+  },
+  get fogo() {
+    return (FX_CACHE.fogo ??= [fxImg('fogo1'), fxImg('fogo2'), fxImg('fogo3')]);
+  },
+  get fumaca() {
+    return (FX_CACHE.fumaca ??= [fxImg('fumaca1'), fxImg('fumaca2')]);
+  },
+  get estrela() {
+    return (FX_CACHE.estrela ??= fxImg('estrela'));
+  },
+};
+const FX_CACHE: { grelha?: HTMLImageElement; fogo?: HTMLImageElement[]; fumaca?: HTMLImageElement[]; estrela?: HTMLImageElement } = {};
 
 export function playGrillGame(parent: HTMLElement, opts: { title?: string; helper?: string } = {}): Promise<GrillResult> {
   return new Promise((resolve) => {
@@ -196,7 +219,7 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
     let dropT = 1;
     const grades: number[] = [];
 
-    const canvas = h('canvas', { class: 'gp-canvas', width: String(W), height: String(H) }) as HTMLCanvasElement;
+    const canvas = h('canvas', { class: 'gp-canvas', width: String(W * SC), height: String(H * SC) }) as HTMLCanvasElement;
     const c = canvas.getContext('2d')!;
     const fx = h('div', { class: 'gp-fx' });
     const bg = textureURL('map-piabeta-quintal-bg');
@@ -256,6 +279,7 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
     const P = () => PHASES[Math.min(phase, PHASES.length - 1)];
     const meatDef = () => MEATS.find((m) => m.id === P().meat)!;
     for (const mm of MEATS) meatImgs(mm.id);
+    void [FX.grelha, FX.fogo, FX.fumaca, FX.estrela];
     const layoutZone = () => {
       zone.style.left = `${(okC - okW / 2) * 100}%`;
       zone.style.width = `${okW * 100}%`;
@@ -319,9 +343,75 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
     };
 
     const draw = () => {
+      c.setTransform(SC, 0, 0, SC, 0, 0);
       c.clearRect(0, 0, W, H);
       c.save();
       if (shake > 0) c.translate(Math.round((Math.random() - 0.5) * 4), 0);
+      const art = FX.grelha.complete && FX.grelha.naturalWidth > 0;
+      // a churrasqueira de tijolinho (sprite); a grelha fica entre y≈43 e y≈85 do canvas
+      const gw = 196;
+      const gh = art ? (gw * FX.grelha.naturalHeight) / FX.grelha.naturalWidth : 0;
+      const gy = H - gh - 1;
+      if (art) {
+        c.fillStyle = '#2a140e';
+        c.fillRect(0, 0, W, H);
+        c.imageSmoothingEnabled = true;
+        c.drawImage(FX.grelha, (W - gw) / 2, gy, gw, gh);
+        // brasa respirando por cima do carvão
+        const glow = c.createRadialGradient(W / 2, gy + gh * 0.62, 6, W / 2, gy + gh * 0.62, 80);
+        glow.addColorStop(0, `rgba(255,150,40,${0.22 + Math.sin(time * 5) * 0.08 + Math.sin(time * 13) * 0.04})`);
+        glow.addColorStop(1, 'rgba(255,90,20,0)');
+        c.fillStyle = glow;
+        c.fillRect(0, gy, W, gh);
+      } else {
+        drawOldGrill();
+      }
+      // a carne no meio, grande; cor = ponto atual
+      const m = meatDef();
+      const rest = art ? gy + gh * 0.5 : 58;
+      let y = rest;
+      let sq = 1;
+      if (dropT < 1) {
+        y = rest - (1 - dropT) * (1 - dropT) * 70;
+      }
+      if (flipT < 1) {
+        y -= Math.sin(flipT * Math.PI) * 22;
+        sq = Math.max(0.12, Math.abs(Math.cos(flipT * Math.PI)));
+      }
+      const fire = P().twist === 'fogo' && Math.sin(time * 3) > 0.55;
+      if (fire) {
+        if (art && FX.fogo.every((f) => f.complete && f.naturalWidth > 0)) {
+          for (let k = 0; k < 4; k++) {
+            const f = FX.fogo[(Math.floor(time * 12) + k) % 3];
+            const fh = 34 + (k % 2) * 8;
+            const fw = (fh * f.naturalWidth) / f.naturalHeight;
+            c.drawImage(f, W / 2 - 54 + k * 36 - fw / 2, rest + 18 - fh, fw, fh);
+          }
+        } else drawFlames(W / 2, 80, 70);
+      }
+      if (!drawMeatSprite(c, m.id, Math.min(1.25, pos * 1.25), W / 2, y, sq, 96)) drawMeat(c, m, Math.min(1.25, pos * 1.25), W / 2, y, marked, sq, 2.2);
+      // fumaça subindo (sprite), mais forte conforme a carne passa do ponto
+      const smokeOk = FX.fumaca.every((f) => f.complete && f.naturalWidth > 0);
+      for (let k = 0; k < 4; k++) {
+        const t = (time * 0.5 + k / 4) % 1;
+        const sx = W / 2 - 34 + k * 22 + Math.sin(time + k) * 4;
+        const sy = rest - 6 - t * 50;
+        c.globalAlpha = (0.25 + pos * 0.5) * (1 - t);
+        if (smokeOk) {
+          const f = FX.fumaca[k % 2];
+          const sh = 14 + t * 18;
+          c.drawImage(f, sx - (sh * f.naturalWidth) / f.naturalHeight / 2, sy - sh, (sh * f.naturalWidth) / f.naturalHeight, sh);
+        } else {
+          c.fillStyle = 'rgb(235,230,225)';
+          c.beginPath();
+          c.arc(sx, sy, 3 + t * 6, 0, Math.PI * 2);
+          c.fill();
+        }
+      }
+      c.globalAlpha = 1;
+      c.restore();
+    };
+    function drawOldGrill(): void {
       for (let y = 0; y < H; y += 6)
         for (let x = -(y % 12 === 0 ? 0 : 6); x < W; x += 12) {
           c.fillStyle = (x * 3 + y * 7) % 5 === 0 ? '#b5502f' : '#a3452a';
@@ -332,45 +422,13 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
       const bx = 10, by = 10, bw = W - 20, bh = 92;
       c.fillStyle = '#1b0f0b';
       c.fillRect(bx, by, bw, bh);
-      for (let y = by + 50; y < by + bh; y += 2)
-        for (let x = bx + 2; x < bx + bw - 2; x += 2) {
-          const lump = Math.sin(x * 0.55) * Math.sin(y * 0.9 + x * 0.21);
-          const n = Math.sin(x * 0.7 + time * 2.1) + Math.sin(y * 1.3 - time * 1.6) + Math.sin((x + y) * 0.3 + time * 1.1);
-          const heat = Math.max(0, Math.min(1, (n + 1.5) / 3.4 + (y - by - 50) / 70 + lump * 0.25));
-          c.fillStyle = heat > 0.92 ? '#ffd36a' : heat > 0.78 ? '#ff8d2e' : heat > 0.6 ? '#d8441f' : heat > 0.42 ? '#6e2414' : '#24120d';
-          c.fillRect(x, y, 2, 2);
-        }
       for (let y = by + 8; y < by + bh - 8; y += 7) {
         c.fillStyle = '#2a2424';
         c.fillRect(bx + 2, y, bw - 4, 2);
         c.fillStyle = '#8b8080';
         c.fillRect(bx + 2, y, bw - 4, 1);
       }
-      // a carne no meio, grande; cor = ponto atual
-      const m = meatDef();
-      let y = 58;
-      let sq = 1;
-      if (dropT < 1) {
-        y = 58 - (1 - dropT) * (1 - dropT) * 70;
-      }
-      if (flipT < 1) {
-        y -= Math.sin(flipT * Math.PI) * 22;
-        sq = Math.max(0.12, Math.abs(Math.cos(flipT * Math.PI)));
-      }
-      c.fillStyle = 'rgba(0,0,0,0.35)';
-      c.fillRect(W / 2 - 40, 74, 80, 4);
-      if (P().twist === 'fogo' && Math.sin(time * 3) > 0.55) drawFlames(W / 2, 80, 70);
-      if (!drawMeatSprite(c, m.id, Math.min(1.25, pos * 1.25), W / 2, y, sq, 104)) drawMeat(c, m, Math.min(1.25, pos * 1.25), W / 2, y, marked, sq, 2.2);
-      // fumaça
-      c.fillStyle = `rgba(235,230,225,${0.15 + pos * 0.25})`;
-      for (let k = 0; k < 4; k++) {
-        const t = (time * 0.6 + k / 4) % 1;
-        c.beginPath();
-        c.arc(W / 2 - 30 + k * 20 + Math.sin(time + k) * 4, 50 - t * 45, 3 + t * 6, 0, Math.PI * 2);
-        c.fill();
-      }
-      c.restore();
-    };
+    }
     function drawFlames(cx: number, by2: number, w: number): void {
       for (let k = 0; k < 9; k++) {
         const fx2 = cx - w / 2 + (k + 0.5) * (w / 9);

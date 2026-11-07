@@ -170,6 +170,7 @@ export const ASSETS: AssetEntry[] = [
   char('PET-003', 'pombo', 'pets/pombo-walk.png', 64),
   { id: 'PET-003P', key: 'pombo-poses', file: 'assets/pets/pombo-poses.png', kind: 'spritesheet', frameWidth: 96, frameHeight: 64 },
   { id: 'CIN-011', key: 'cena-pedido', file: 'assets/cinematics/pedido.png', kind: 'image' },
+  { id: 'CIN-017', key: 'cena-pt-ceu', file: 'assets/cinematics/pt-ceu-colina.png', kind: 'image' },
   { id: 'CIN-016', key: 'cena-churrasco-mesa', file: 'assets/cinematics/churrasco-mesa.png', kind: 'image' },
   { id: 'CIN-014', key: 'cena-pazes', file: 'assets/cinematics/pazes.png', kind: 'image' },
   { id: 'CIN-013', key: 'cena-primeira-noite', file: 'assets/cinematics/primeira-noite.png', kind: 'image' },

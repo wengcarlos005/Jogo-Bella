@@ -2157,7 +2157,7 @@ html.hud-kit #rightbar .sb-btn.sb-kit .sb-label { font-size: clamp(11px, 0.95vw,
 .kg-char.kiss { opacity: 0; } .kg-char.kiss.show { opacity: 1; }
 .kg-mom { z-index: 1; opacity: 0; transform: translate(-50%, -92%); transition: opacity .15s, transform .25s; }
 .kg-mom.show { opacity: 1; transform: translate(-50%, -100%); }
-.kg-mom2 { position: absolute; width: 11%; height: auto; z-index: 1; opacity: 0; transform: translate(-50%, -92%); transition: opacity .15s, transform .25s; pointer-events: none; }
+.kg-mom2 { position: absolute; height: 44%; width: auto; z-index: 1; opacity: 0; transform: translate(-50%, -92%); transition: opacity .15s, transform .25s; pointer-events: none; }
 .kg-mom2.show { opacity: 1; transform: translate(-50%, -100%); }
 .kg-cat { z-index: 1; width: 12%; opacity: 0; }
 .kg-cat.walk { animation: kg-cat 1.2s linear; }
@@ -2225,3 +2225,8 @@ html.hud-kit .tb-quest, .tb-quest { display: flex !important; flex: 0 1 auto; mi
 html.hud-kit #rightbar { align-items: stretch !important; justify-content: space-between !important; padding: 4px 6px !important; gap: 2px !important; }
 html.hud-kit #rightbar .sb-btn.sb-kit { flex: 1 1 0 !important; width: 100% !important; max-height: none !important; align-items: center !important; justify-content: center !important; }
 html.hud-kit #rightbar .sb-btn.sb-kit img { width: min(100%, 118px) !important; height: auto !important; max-height: calc(100% - 18px) !important; object-fit: contain; margin: 0 auto; }
+
+/* beijo escondido: casal grande no sofá e a sombra da mãe chegando */
+.kg-couple { position: absolute; width: auto; transform: translate(-50%, -100%); z-index: 4; pointer-events: none; image-rendering: auto; filter: drop-shadow(0 3px 0 rgba(30, 10, 20, .25)); }
+.kg-shadow2 { position: absolute; height: 40%; width: auto; transform: translate(-50%, -100%); opacity: 0; transition: opacity .35s; z-index: 1; pointer-events: none; }
+.kg-shadow2.on { opacity: .75; }

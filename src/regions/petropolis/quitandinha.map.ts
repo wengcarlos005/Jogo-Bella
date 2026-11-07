@@ -116,12 +116,23 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'O bolinho é de treino. O de verdade é amanhã.');
     await ctx.emote('bella', 'heart');
     await ctx.narrate('Deitados na toalha, olhando pro céu.');
+    const ceu = ctx.hasArt('cena-pt-ceu');
+    if (ceu) {
+      await ctx.fadeOut(400);
+      await ctx.backdrop('cena-pt-ceu');
+      await ctx.fadeIn(500);
+    }
     await ctx.say('bella', 'Aquela nuvem parece o quê?');
     const n1 = await ctx.choose('weng', '(Uma nuvem enorme passando...)', ['"Um gato gordo. A Meli, com certeza."', '"Um hambúrguer. Da Rota 66."', '"Um coração. Meio torto, mas é."']);
     await ctx.say('bella', n1 === 0 ? 'É a Meli! Olha o rabinho!' : n1 === 1 ? 'Você só pensa em comida.' : 'Torto igual o nosso primeiro beijo na chuva.');
     await ctx.say('weng', 'E aquela?');
     const n2 = await ctx.choose('bella', '(Outra nuvem...)', ['"Um cisne. O nosso pedalinho!"', '"Um dragão gigante."', '"Um bolo de aniversário."']);
     await ctx.say('weng', n2 === 2 ? 'Tá vendo? Até o céu sabe que é seu aniversário amanhã.' : 'Faz sentido. Hoje tudo parece mágico.');
+    if (ceu) {
+      await ctx.fadeOut(400);
+      await ctx.backdrop(null);
+      await ctx.fadeIn(400);
+    }
     const c = await ctx.choose('bella', '(O sol começando a baixar atrás da serra)', ['"Obrigada por esse dia."', '"Eu queria parar o tempo aqui."', 'Dar um beijo nele']);
     if (c === 2) {
       await ctx.emote('weng', 'heart');
