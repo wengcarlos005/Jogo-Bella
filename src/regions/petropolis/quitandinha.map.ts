@@ -22,6 +22,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Weng... isso é um CASTELO. A gente tá na frente de um castelo!');
     await ctx.say('weng', 'É um palácio. Mas pode chamar de castelo. Hoje você é a princesa.');
     await ctx.say('bella', 'E o lago... ele tem o formato do Brasil!');
+    await ctx.say('weng', 'E esse vestido... Você parece um girassol. Um girassol na frente de um palácio.');
+    await ctx.say('bella', 'E você de camisa branca nova! Tá chique, hein. Combinamos sem combinar.');
+    await ctx.say('weng', 'Combinamos combinando. Eu perguntei pra sua mãe a cor do vestido.');
+    await ctx.say('bella', 'TRAIDORES. Os dois.');
     await ctx.say('weng', 'Trouxe toalha, cesta e tudo. Mas antes: bora passear?');
     ctx.toast('Passeie pelo Quitandinha: foto no palácio, pedalinho e o carrinho de doces');
   },

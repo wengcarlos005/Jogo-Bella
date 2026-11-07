@@ -29,7 +29,7 @@ export const OUTFITS: Record<'bella' | 'weng', Wardrobe> = {
     ['basica', 'Camiseta branca'],
     ['social', 'Colete e gravata'],
     ['xadrez', 'Camisa xadrez preta'],
-    ['reveillon', 'Camisa branca xadrez'],
+    ['reveillon', 'Camisa branca'],
   ]),
 };
 
@@ -44,7 +44,7 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
   bella: {
     piabeta: 'casual',
     'duque-de-caxias': 'casual',
-    petropolis: 'inverno', // serra, friozinho
+    petropolis: 'floral', // aniversário na serra: o vestido amarelo
     araruama: 'linho', // ano-novo de branco
     'rio-das-ostras': 'floral', // férias de verão
     niteroi: 'floral',
@@ -57,7 +57,7 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
   weng: {
     piabeta: 'casual',
     'duque-de-caxias': 'casual',
-    petropolis: 'xadrez',
+    petropolis: 'reveillon', // camisa branca nova
     araruama: 'reveillon',
     'rio-das-ostras': 'basica',
     niteroi: 'basica',

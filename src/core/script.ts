@@ -16,7 +16,7 @@ export interface ScriptContext {
   flag(key: string): boolean;
   setFlag(key: string, value?: boolean | number | string): void;
   /** Abre o guarda-roupa da Bella com as roupas indicadas; veste a escolhida e devolve o id. */
-  wardrobe(outfitIds: string[]): Promise<string>;
+  wardrobe(outfitIds: string[], region?: import('./types').RegionId): Promise<string>;
   /** Mostra um objeto em destaque no centro da tela (sem dar o item). */
   showItem(icon: string, kicker: string, name: string, description: string): Promise<void>;
   /** Dá um item. Mostra a janela de item no centro (a jogadora fecha). Use com await. */

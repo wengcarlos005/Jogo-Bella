@@ -57,7 +57,7 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
     const COUPLE: Record<'inocente' | 'beijo' | 'susto', number> = { inocente: 200, beijo: 224, susto: 196 };
     for (const k of Object.keys(COUPLE)) new Image().src = mg(`casal-${k}`);
-    const couple = h('img', { class: 'kg-couple', src: mg('casal-inocente'), alt: '', style: at(728, 768) }) as HTMLImageElement;
+    const couple = h('img', { class: 'kg-couple', src: mg('casal-inocente'), alt: '', style: at(728, 742) }) as HTMLImageElement;
     let coupleNow = '';
     const coupleSet = (k: keyof typeof COUPLE) => {
       if (coupleNow === k) return;

@@ -715,6 +715,34 @@ export const aptoMap: MapDef = {
           ],
         });
         await ctx.chapterCard('Capítulo 3', 'Petrópolis', 'O aniversário dela.', 'Começar');
+        // a véspera: a Bella escolhendo a roupa da viagem (visual novo a partir daqui)
+        await ctx.narrate('Na noite antes da viagem. Mala aberta em cima da cama, roupa espalhada pelo quarto inteiro.');
+        await ctx.say('bella', 'Ok. Petrópolis. Palácio, piquenique, hotel, almoço chique... o que se veste pra TUDO isso?');
+        await ctx.say('bella', 'A jaqueta preta? Quentinha... mas é foto num PALÁCIO, Bella. Palácio!');
+        await ctx.say('bella', 'O clássico, camiseta preta? Eu amo. Mas é o meu aniversário. Merece algo especial.');
+        await ctx.say('bella', '...O vestido amarelo de florzinha. Ele é praticamente um girassol. Combina com palácio, com piquenique e com aniversário.');
+        await ctx.wardrobe(['floral'], 'petropolis');
+        ctx.sfx('pickup');
+        await ctx.say('bella', 'Decidido! E um casaquinho na mala, que eu não sou boba. Lá faz frio de verdade.');
+        await ctx.phone({ contact: 'Weng ♥', avatar: 'portrait-weng', clock: '23:12', caption: 'Mais tarde...' }, [
+          { from: 'me', text: 'já escolhi a roupa de amanhã 😌' },
+          { from: 'them', text: 'qual?' },
+          { from: 'me', text: 'surpresa 🤫' },
+          { from: 'them', text: 'vingança pela banoffee, né' },
+          { from: 'me', text: 'exatamente' },
+          { from: 'them', text: 'então eu também vou de surpresa' },
+          { from: 'me', text: 'você vai de camiseta preta' },
+          { from: 'them', text: '...' },
+          { from: 'them', text: 'não vou não' },
+          { from: 'them', text: 'comprei uma camisa nova' },
+          { from: 'me', text: 'WENG 😭' },
+          { from: 'them', text: 'branca. pra combinar com o seu sorriso' },
+          { from: 'me', text: 'que brega' },
+          { from: 'me', text: 'amei' },
+          { from: 'them', text: 'dorme, aniversariante 💛' },
+          { from: 'me', text: 'ainda nem é meu aniversário' },
+          { from: 'them', text: 'pra mim já é' },
+        ]);
         await ctx.teleport('pt-quitandinha', 'entrada');
         return;
       }
