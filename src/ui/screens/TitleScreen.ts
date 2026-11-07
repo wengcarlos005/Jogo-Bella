@@ -11,6 +11,7 @@ export interface TitleActions {
   newGame(): void;
   load(data: SaveData): void;
   openSettings(): void;
+  openScenes(): void;
 }
 
 const ALL_SLOTS = [AUTOSAVE_SLOT, ...Array.from({ length: SAVE_SLOTS }, (_, i) => `slot${i + 1}`)];
@@ -45,6 +46,7 @@ export class TitleScreen {
     );
     list.append(btn('Carregar', () => void this.openLoad()));
     list.append(btn('Opções', () => this.actions.openSettings()));
+    list.append(btn('🎬 Cenas', () => this.actions.openScenes()));
 
     this.el = h(
       'div',
@@ -121,6 +123,7 @@ export class TitleScreen {
       h('img', { class: 'tf-art', src: art, alt: GAME_TITLE }),
       h('div', { class: 'tf-glow' }),
       ...buttons,
+      h('button', { class: 'tf-cenas', title: 'Cenas liberadas', onclick: choose(() => this.actions.openScenes()) }, '🎬 Cenas'),
       h('div', { class: 'version' }, `v${VERSION}`),
     );
     this.parent.append(this.el);

@@ -118,7 +118,7 @@ class UIManagerImpl {
     // Mapa e Salvar ficam pra depois da cena (viajar/salvar no meio dela quebraria a história).
     const ctxNow = InputSystem.context;
     if (ctxNow !== 'script' && ctxNow !== 'dialogue' && ctxNow !== 'choice') return;
-    const only: PauseTab[] = ['missoes', 'inventario', 'album', 'config'];
+    const only: PauseTab[] = ['missoes', 'inventario', 'album', 'config', 'cenas', 'sair'];
     if (!only.includes(tab)) {
       this.toasts.show('Dá pra abrir isso depois da cena!');
       return;

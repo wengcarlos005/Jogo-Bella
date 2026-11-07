@@ -1,3 +1,4 @@
+import { SceneCheckpoints } from '@/systems/SceneCheckpoints';
 import Phaser from 'phaser';
 import { AUTOSAVE_INTERVAL_MS, CAMERA, PROP_SCALE, GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE, TILE } from '@/config/gameConfig';
 import { EventBus } from '@/core/EventBus';
@@ -128,6 +129,7 @@ export class GameScene extends Phaser.Scene {
     this.addBlackout();
 
     GameState.data.mapId = def.id;
+    SceneCheckpoints.enter(def.id, { x: Math.round(pos.x), y: Math.round(pos.y) }, facing);
     this.visitRegion(def.region);
 
     this.listen('memory:unlocked', (id) => this.pendingMemories.push(id as string));
@@ -138,6 +140,7 @@ export class GameScene extends Phaser.Scene {
       void SaveSystem.autosave();
     });
     this.listen('quest:started', (id) => {
+      SceneCheckpoints.questStarted(id as string);
       const q = QuestSystem.def(id as string);
       UI.toasts.show(`${q.kind === 'principal' ? 'Nova missão' : 'Missão secundária'}: ${q.title}`);
     });
@@ -784,6 +787,7 @@ export class GameScene extends Phaser.Scene {
         InputSystem.pop('script');
         this.scriptRunning = false;
         this.syncPosition();
+        SceneCheckpoints.settle();
       }
     }
     await this.flushMemories();

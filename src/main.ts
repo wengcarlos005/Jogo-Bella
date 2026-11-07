@@ -55,6 +55,14 @@ UI.init(
       game.scene.stop('Game');
       game.scene.start('Menu');
     },
+    playScene: (c) => {
+      AudioSystem.setRain(false);
+      AudioSystem.setMuffledRain(false);
+      GameState.load(c.data);
+      const data: GameSceneData = { mapId: c.mapId, position: c.position, facing: c.facing };
+      if (game.scene.isActive('Game')) gameScene().scene.restart(data);
+      else startGame(data);
+    },
     settingsChanged: () => UI.touch.refresh(),
     toast: (t) => UI.toasts.show(t),
   },
@@ -69,6 +77,9 @@ UI.init(
     },
     openSettings: () => {
       UI.pause.open('config', undefined, ['config']);
+    },
+    openScenes: () => {
+      UI.pause.open('cenas', undefined, ['cenas']);
     },
   },
 );

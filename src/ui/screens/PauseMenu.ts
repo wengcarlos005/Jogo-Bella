@@ -14,11 +14,13 @@ import { SAVE_SLOTS } from '@/config/gameConfig';
 import type { RegionId } from '@/core/types';
 import { textureURL } from '../textures';
 import { MAPS } from '@/regions';
+import { SceneCheckpoints, type Cena } from '@/systems/SceneCheckpoints';
 
 export interface PauseActions {
   travel(region: RegionId): void;
   canTravel(): boolean;
   quitToTitle(): void;
+  playScene(c: Cena): void;
   settingsChanged(): void;
   toast(text: string): void;
 }
@@ -30,6 +32,8 @@ const TABS = [
   ['mapa', 'Mapa', 'mapa'],
   ['salvar', 'Salvar', 'salvar'],
   ['config', 'Opções', 'opcoes'],
+  ['cenas', 'Cenas', 'cenas'],
+  ['sair', 'Sair', 'sair'],
 ] as const;
 
 export type PauseTab = (typeof TABS)[number][0];
@@ -100,6 +104,8 @@ export class PauseMenu {
       mapa: () => this.renderMap(),
       salvar: () => void this.renderSave(),
       config: () => this.renderSettings(),
+      cenas: () => this.renderScenes(),
+      sair: () => this.renderQuit(),
     })[tab]();
   }
 
@@ -334,6 +340,60 @@ export class PauseMenu {
       list.append(card);
     });
     this.body.append(list, h('div', { class: 'pm-foot' }, h('button', { class: 'btn small', onclick: () => { this.close(); this.actions.quitToTitle(); } }, '⟵ Voltar ao título')));
+  }
+
+  /** Cenas já liberadas: joga de novo a partir do começo de qualquer missão principal. */
+  private renderScenes(): void {
+    const cenas = SceneCheckpoints.list();
+    this.body.append(this.header('Cenas', 'Pule direto pra qualquer parte da história que já foi liberada', [`${cenas.length} liberada${cenas.length === 1 ? '' : 's'}`]));
+    if (!cenas.length) {
+      this.body.append(h('div', { class: 'pm-empty' }, '🎬 Nenhuma cena liberada ainda. Cada missão que começa vira uma cena aqui!'));
+      return;
+    }
+    const list = h('div', { class: 'pm-cenas' });
+    let lastChapter = '';
+    for (const c of cenas) {
+      if (c.chapter !== lastChapter) {
+        lastChapter = c.chapter;
+        list.append(h('div', { class: 'pm-cena-cap' }, c.chapter));
+      }
+      const btn = h('button', { class: 'btn small primary' }, 'Jogar ▶') as HTMLButtonElement;
+      let armed = false;
+      btn.onclick = () => {
+        if (!armed) {
+          armed = true;
+          btn.textContent = 'Confirmar ▶';
+          btn.classList.add('armed');
+          setTimeout(() => {
+            armed = false;
+            btn.textContent = 'Jogar ▶';
+            btn.classList.remove('armed');
+          }, 3000);
+          return;
+        }
+        this.close();
+        this.actions.playScene(c);
+      };
+      list.append(h('div', { class: 'pm-cena' }, h('div', { class: 'pm-cena-t' }, c.title), btn));
+    }
+    this.body.append(list, h('div', { class: 'pm-sub pm-cena-aviso' }, 'Ao pular de cena, o jogo continua dali. O que não foi salvo de agora se perde (os seus saves continuam guardados).'));
+  }
+
+  private renderQuit(): void {
+    this.body.append(
+      this.header('Sair', 'Voltar pro menu inicial'),
+      h(
+        'div',
+        { class: 'pm-quit' },
+        h('div', { class: 'pm-sub' }, 'O progresso é salvo automaticamente antes de sair.'),
+        h(
+          'div',
+          { class: 'bg-actions' },
+          h('button', { class: 'btn primary', onclick: () => { this.close(); this.actions.quitToTitle(); } }, '⟵ Voltar ao menu'),
+          h('button', { class: 'btn', onclick: () => this.close() }, 'Continuar jogando'),
+        ),
+      ),
+    );
   }
 
   private renderSettings(): void {

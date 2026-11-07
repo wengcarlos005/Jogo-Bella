@@ -15,6 +15,8 @@ const BUTTONS: [tab: string, label: string, icon: string][] = [
   ['mapa', 'Mapa', 'mapa'],
   ['salvar', 'Salvar', 'salvar'],
   ['config', 'Opções', 'opcoes'],
+  ['cenas', 'Cenas', 'cenas'],
+  ['sair', 'Sair', 'sair'],
 ];
 
 /**

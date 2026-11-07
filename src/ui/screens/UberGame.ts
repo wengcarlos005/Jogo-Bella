@@ -15,7 +15,8 @@ export interface UberResult {
 }
 
 type Kind = 'cone' | 'poca' | 'buraco' | 'carro' | 'caixa' | 'barreira' | 'veiculo';
-const VEIC: [string, number][] = [['moto', 42], ['onibus', 90], ['gas', 71], ['fusca', 58], ['pipoca', 50], ['bike', 33]];
+// [nome, largura (u), proporção do desenho largura/altura]
+const VEIC: [string, number, number][] = [['moto', 42, 127 / 118], ['onibus', 90, 270 / 97], ['gas', 71, 214 / 108], ['fusca', 58, 176 / 80], ['pipoca', 50, 151 / 105], ['bike', 33, 99 / 94]];
 interface Obstacle {
   el: HTMLElement;
   lane: number;
@@ -47,6 +48,8 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
     const asset = (f: string) => new URL(`assets/minigames/${f}`, document.baseURI).href;
     const roadImg = asset('uber-road.png');
     const traffic = asset('uber-traffic.png');
+    // pré-carrega tudo: nada pode aparecer "invisível" na primeira vez
+    for (const f of [...VEIC.map(([vn]) => `uber-v-${vn}.png`), 'uber-cone.png', 'uber-poca.png', 'uber-buraco.png', 'uber-caixa.png', 'uber-barreira.png', 'uber-traffic.png']) new Image().src = asset(f);
     // centro de cada faixa (% da altura da pista desenhada: 3 faixas de asfalto)
     const LANE_Y = [45.4, 63.0, 80.9];
     let lane = 1;
@@ -123,10 +126,12 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
       const l = free[Math.floor(Math.random() * free.length)];
       const el = h('div', { class: `ub-ob ${kind === 'carro' ? 'carro2' : 'sprite'}` });
       if (kind === 'veiculo') {
-        const [vn, vw] = VEIC[Math.floor(Math.random() * VEIC.length)];
+        const [vn, vw, ar] = VEIC[Math.floor(Math.random() * VEIC.length)];
         el.className = 'ub-ob sprite veic';
         el.style.backgroundImage = `url("${asset(`uber-v-${vn}.png`)}")`;
         el.style.width = `calc(var(--u) * ${vw})`;
+        // altura explícita: sem ela o veículo ficava com 0 px (invisível) mas ainda batia
+        el.style.setProperty('height', `calc(var(--u) * ${(vw / ar).toFixed(2)})`, 'important');
       } else if (kind === 'carro') {
         el.style.backgroundImage = `url("${traffic}")`;
         el.style.backgroundPositionX = `${(Math.floor(Math.random() * 7) / 6) * 100}%`;
@@ -152,7 +157,7 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
       const overlapX = Math.min(ax1, bx1) - Math.max(ax0, bx0);
       // mesma faixa DE VERDADE na tela (durante a troca de faixa o carro ainda está no meio do caminho)
       const sameRow = Math.abs(a.bottom - b.bottom) < a.height * 0.22;
-      return overlapX > 6 && sameRow;
+      return b.height > 2 && overlapX > 6 && sameRow;
     };
 
     const tick = (t: number) => {
