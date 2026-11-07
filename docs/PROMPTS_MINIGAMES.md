@@ -299,16 +299,58 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. In a cozy apartment living room at night: the attached girl (long curly brown hair, pink glasses) and the attached boy (short black hair) sit on the floor facing each other with playing cards spread between them. She raises her arms in victory, laughing, with a big pile of won cards; he covers his face with one hand in fake despair. An orange cat sits next to them looking at the cards. Warm lamp light, a blue couch behind them. No text, no UI, no watermark.
 ```
 
-## 10. Folha opcional do minigame de tacos (se quiser trocar os emojis)
+## 10. Taco Roleta (minigame novo do mexicano)
 
-Anexe o cenário do restaurante mexicano.
+Jogo: o Weng esconde uma pimenta dentro de um dos 3 tacos e o garçom embaralha os pratos cada vez mais rápido.
+A Bella (que odeia pimenta) tem que seguir com o olho e escolher um taco SEM pimenta. 5 rodadas. Errou: cara vermelha e fumaça.
+
+### Folha A — tacos e objetos
+
+Anexe o cenário do restaurante mexicano (`art-source/maps/piabeta-mexicano-base.webp`).
 
 ```
-Pixel art sprite sheet of Mexican food ingredients for a catching minigame, same art style as the attached image (crisp pixel art, clean dark outlines, bright warm colors). Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere, no shadows.
-STRICT GRID of 3 rows and 4 columns (each cell 384x341 px), each item centered in its own cell, about 150x150 px, nothing touching:
-Row 1: 1. an open soft corn tortilla (flat, slightly curved, about 260x130 px), 2. grilled beef pieces, 3. shredded yellow cheese, 4. a bowl of guacamole.
-Row 2: 5. diced tomatoes, 6. chopped onion, 7. shredded lettuce, 8. sweet corn kernels.
-Row 3: 9. a red chili pepper, 10. a lime wedge, 11. a small green cactus in a pot, 12. a colorful tropical drink with a little umbrella.
+Pixel art sprite sheet of props for a Mexican restaurant minigame, same art style as the attached image (cozy pixel art, clean dark outlines, warm saturated colors), slightly top-down 3/4 view.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 3 rows and 4 columns (each cell 384x341 px), every sprite centered in its own cell, nothing touching another sprite or the cell edge:
+Row 1:
+1. A colorful round Mexican talavera clay plate, empty, seen from slightly above (about 260x120 px).
+2. A closed crunchy corn taco lying on its side, filling hidden (about 200x120 px). The SAME taco shape must be used in 3 and 4.
+3. The same taco tilted open showing a normal filling: beef, yellow cheese, guacamole, tomato (about 200x140 px).
+4. The same taco tilted open showing ONE big shiny red chili pepper hidden inside the filling, with a tiny glint (about 200x140 px).
+Row 2:
+5. A glass of water with ice (about 80x120 px).
+6. A big red-orange puff of spicy fire/steam, cartoon style (about 160x160 px).
+7. A colorful Mexican sombrero hat (about 220x120 px).
+8. A white question mark speech bubble (about 80x90 px).
+Row 3:
+9. A golden sparkle star (about 90x90 px).
+10. A red "X" mark made of two chili peppers crossed (about 110x110 px).
+11. A small bowl of lime wedges (about 120x80 px).
+12. A bottle of red hot sauce (about 60x130 px).
+
 No text, no labels, no numbers, no watermark.
 ```
-Nomes ao recortar: taco-tortilha, taco-carne, taco-queijo, taco-guaca, taco-tomate, taco-cebola, taco-alface, taco-milho, taco-pimenta, taco-limao, taco-cacto, taco-bebida.
+
+### Folha B — reações da Bella e do Weng (bustos)
+
+Anexe o sprite da Bella (casual, camiseta preta, óculos rosa) e o do Weng (casual).
+
+```
+Pixel art sprite sheet of character bust reactions, using EXACTLY the same characters, art style, outline and colors as the attached character sprites, drawn bigger as chest-up busts facing the viewer, cute chibi proportions.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no shadows on the background.
+
+STRICT GRID of 2 rows and 3 columns (each cell 512x512 px), each bust centered in its own cell, about 340x400 px, nothing touching:
+Row 1 — the girl (long curly brown hair, pink glasses, black t-shirt), wearing a colorful Mexican sombrero:
+1. Concentrated, squinting, following something with her eyes.
+2. Happy, eating a taco, eyes closed, little hearts around.
+3. Burning from spicy food: face bright red, tears, steam coming out of her ears, tongue out.
+Row 2 — the boy (short black hair, black t-shirt), wearing a colorful Mexican sombrero:
+4. Mischievous grin, hiding a red chili pepper behind his back.
+5. Laughing out loud, holding his belly.
+6. Proud and sweating, eating a taco with three chili peppers sticking out, one tear rolling down.
+
+No text, no labels, no numbers, no watermark.
+```
