@@ -43,9 +43,9 @@ const scripts: Record<string, Script> = {
       await ctx.phone({ contact: 'Mãe', avatar: 'portrait-mae-bella', clock: '08:02', caption: 'No celular da Bella' }, [
         { from: 'them', text: 'PARABÉNS MINHA FILHA!!!!!! 🎉🎂🎈' },
         { from: 'them', text: 'Que Deus te abençoe muito, te amo demais' },
-        { from: 'me', text: 'Obrigada mãe!!! Te amo 💕' },
+        { from: 'me', text: 'Obrigada mãe!!! Te amo 🐥💕' },
         { from: 'them', text: 'Fui a primeira a dar parabéns né??' },
-        { from: 'me', text: 'kkkkkk segunda. o Weng me acordou à meia-noite com bolo' },
+        { from: 'me', text: 'kkkkkk segunda. o Weng me acordou à meia-noite com bolo 🐥' },
         { from: 'them', text: 'ESSE MENINO 😭 tá aprovado de novo' },
         { from: 'them', text: 'Tá frio aí? Tá usando o casaco?' },
         { from: 'me', text: 'Tô de casaco, de meia (dele), de manta e de Weng kkkkk' },

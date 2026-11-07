@@ -77,10 +77,10 @@ const scripts: Record<string, Script> = {
     await ctx.phone({ contact: 'Bella ♥', avatar: 'portrait-bella', clock: '21:40', caption: 'Logo depois...' }, [
       { from: 'me', text: 'ei' },
       { from: 'me', text: 'sábado tá livre?' },
-      { from: 'them', text: 'pra você? sempre' },
+      { from: 'them', text: 'pra você? sempre 🐥' },
       { from: 'them', text: 'por quêêê' },
       { from: 'me', text: 'cinema no Caxias Shopping?' },
-      { from: 'them', text: 'SIMMM' },
+      { from: 'them', text: 'SIMMM 🐥🐥' },
       { from: 'them', text: 'que filme?' },
       { from: 'me', text: "Five Nights at Freddy's" },
       { from: 'me', text: 'se você tiver coragem' },
@@ -92,7 +92,7 @@ const scripts: Record<string, Script> = {
       { from: 'them', text: 'que carinha é essa' },
       { from: 'me', text: 'carinha normal' },
       { from: 'them', text: 'hmmmm' },
-      { from: 'them', text: 'tá bom, combinado ❤' },
+      { from: 'them', text: 'tá bom, combinado 🐥❤' },
     ]);
     await ctx.chapterCard('Terceiro encontro', 'Caxias Shopping', 'Cinema, uma ligação inesperada e uma surpresa.', 'Continuar');
     ctx.startQuest('dq-e3');

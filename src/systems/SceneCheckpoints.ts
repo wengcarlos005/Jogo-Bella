@@ -28,6 +28,9 @@ export interface Cena {
  */
 interface Preset {
   quest: string;
+  /** cena no meio de uma missão (ex.: o filme no sofá): id e título próprios, sempre pelo ponto pronto */
+  sub?: string;
+  title?: string;
   mapId: string;
   spawn: string;
   /** a missão já começa ativa (quando ela começa no meio de uma cena de outro mapa) */
@@ -37,13 +40,15 @@ interface Preset {
   flags?: Record<string, boolean | string>;
   outfits?: Partial<Record<RegionId, string>>;
 }
-const ORDER_FN = (id: string) => (STORY.indexOf(id) >= 0 ? STORY.indexOf(id) : 100 + Object.keys(QUESTS).indexOf(id));
 const STORY = ['pia-m1', 'pia-m2', 'pia-m3', 'dq-e2', 'dq-e3', 'dq-m1', 'dq-m2', 'dq-m3', 'dq-m4', 'dq-m5', 'pt-q1', 'pt-m1'];
 const PRESETS: Preset[] = [
   { quest: 'pia-m1', mapId: 'piabeta-casa-bella', spawn: 'start' },
   { quest: 'pia-m2', mapId: 'piabeta-rua', spawn: 'from-casa', active: true, flags: { 'weng-segue': true, 'weng-entrou': true, 'look-escolhido': 'casual' }, outfits: { piabeta: 'casual' } },
   { quest: 'pia-m3', mapId: 'piabeta-rota66-fora', spawn: 'from-rota66', active: true, flags: { 'weng-segue': true, 'weng-entrou': true, 'rota66-saudacao': true }, outfits: { piabeta: 'casual' } },
-  { quest: 'dq-e2', mapId: 'piabeta-quintal', spawn: 'porta', outfits: { piabeta: 'casual' } },
+  { quest: 'pia-m3', sub: 'beijo', title: 'O primeiro beijo no coreto', mapId: 'piabeta-parque', spawn: 'from-rota66', active: true, doneObjs: ['gatos', 'fragoso'], flags: { 'weng-segue': true, 'weng-entrou': true, 'fragoso-intro': true }, outfits: { piabeta: 'casual' } },
+  { quest: 'dq-e2', title: 'O segundo encontro · Churrasco', mapId: 'piabeta-quintal', spawn: 'porta', outfits: { piabeta: 'casual' } },
+  { quest: 'dq-e2', sub: 'filme', title: 'Filme no sofá (beijo escondido)', mapId: 'piabeta-casa-bella', spawn: 'from-quintal', active: true, doneObjs: ['churrasco', 'mesa', 'lala'], flags: { 'weng-segue': true, 'dq-e2-intro': true }, outfits: { piabeta: 'casual' } },
+  { quest: 'dq-e2', sub: 'mexicano', title: 'O passeio e o restaurante mexicano', mapId: 'piabeta-mexicano-fora', spawn: 'from-parque', active: true, doneObjs: ['churrasco', 'mesa', 'lala', 'filme', 'passeio'], flags: { 'weng-segue': true, 'dq-e2-intro': true }, outfits: { piabeta: 'casual' } },
   { quest: 'dq-e3', mapId: 'duque-cinema', spawn: 'shopping', active: true, flags: { 'weng-segue': true }, outfits: { piabeta: 'casual' } },
   { quest: 'dq-m1', mapId: 'duque-apto', spawn: 'porta', outfits: { piabeta: 'casual' } },
   { quest: 'dq-m2', mapId: 'duque-apto', spawn: 'porta', active: true, flags: { 'dq-chegou': true, 'weng-segue': true }, outfits: { piabeta: 'casual' } },
@@ -51,7 +56,9 @@ const PRESETS: Preset[] = [
   { quest: 'dq-m4', mapId: 'duque-apto', spawn: 'porta', active: true, flags: { 'dq-chegou': true, 'weng-segue': true }, outfits: { piabeta: 'casual' } },
   { quest: 'dq-m5', mapId: 'duque-apto', spawn: 'porta', active: true, flags: { 'dq-chegou': true, 'weng-segue': true }, outfits: { piabeta: 'casual' } },
   { quest: 'pt-q1', mapId: 'pt-quitandinha', spawn: 'entrada', flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral' } },
-  { quest: 'pt-m1', mapId: 'pt-hotel-fora', spawn: 'portao', active: true, doneObjs: ['quitandinha'], flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral' } },
+  { quest: 'pt-m1', title: 'O hotel no alto do morro', mapId: 'pt-hotel-fora', spawn: 'portao', active: true, doneObjs: ['quitandinha'], flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral' } },
+  { quest: 'pt-m1', sub: 'quarto', title: 'A noite no quarto 12 (meia-noite)', mapId: 'pt-quarto', spawn: 'porta', active: true, doneObjs: ['quitandinha', 'mirante', 'fotos', 'checkin'], flags: { 'weng-segue': true, 'pt-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral' } },
+  { quest: 'pt-m1', sub: 'almoco', title: 'Almoço de aniversário', mapId: 'pt-restaurante', spawn: 'porta', active: true, doneObjs: ['quitandinha', 'mirante', 'fotos', 'checkin', 'noite', 'cafe'], flags: { 'weng-segue': true, 'pt-chegou': true, 'pt-manha': true, 'pt-manha-1': true }, outfits: { piabeta: 'casual', petropolis: 'floral' } },
 ];
 
 function presetData(pr: Preset): SaveData {
@@ -72,6 +79,7 @@ function presetData(pr: Preset): SaveData {
   if (idx >= STORY.indexOf('dq-e2')) reg.push('duque-de-caxias');
   if (idx >= STORY.indexOf('pt-q1')) reg.push('petropolis');
   d.regionsUnlocked = reg;
+  d.regionsVisited = [...reg]; // sem o cartão de abertura da região ao pular pra cena
   d.mapId = pr.mapId;
   return d;
 }
@@ -136,9 +144,12 @@ export const SceneCheckpoints = {
     const played = load();
     const all: Cena[] = PRESETS.map((pr) => {
       const q = QUESTS[pr.quest];
-      return played[pr.quest] ?? { quest: pr.quest, title: q.title, chapter: q.chapter, mapId: pr.mapId, spawn: pr.spawn, facing: 'down', data: presetData(pr), at: 0 };
+      const base: Cena = { quest: pr.sub ? `${pr.quest}:${pr.sub}` : pr.quest, title: pr.title ?? q.title, chapter: q.chapter, mapId: pr.mapId, spawn: pr.spawn, facing: 'down', data: presetData(pr), at: 0 };
+      // a missão já jogada volta pro momento exato em que começou; as cenas do meio usam sempre o ponto pronto
+      const p = !pr.sub ? played[pr.quest] : undefined;
+      return p ? { ...p, title: base.title } : base;
     });
     for (const c of Object.values(played)) if (!all.some((x) => x.quest === c.quest)) all.push(c);
-    return all.sort((a, b) => ORDER_FN(a.quest) - ORDER_FN(b.quest));
+    return all;
   },
 };

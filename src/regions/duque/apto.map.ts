@@ -742,7 +742,7 @@ export const aptoMap: MapDef = {
         ctx.sfx('pickup');
         await ctx.say('bella', 'Decidido! E um casaquinho na mala, que eu não sou boba. Lá faz frio de verdade.');
         await ctx.phone({ contact: 'Weng ♥', avatar: 'portrait-weng', clock: '23:12', caption: 'Mais tarde...' }, [
-          { from: 'me', text: 'já escolhi a roupa de amanhã 😌' },
+          { from: 'me', text: 'já escolhi a roupa de amanhã 🐥' },
           { from: 'them', text: 'qual?' },
           { from: 'me', text: 'surpresa 🤫' },
           { from: 'them', text: 'vingança pela banoffee, né' },
@@ -755,7 +755,7 @@ export const aptoMap: MapDef = {
           { from: 'me', text: 'WENG 😭' },
           { from: 'them', text: 'branca. pra combinar com o seu sorriso' },
           { from: 'me', text: 'que brega' },
-          { from: 'me', text: 'amei' },
+          { from: 'me', text: 'amei 🐥' },
           { from: 'them', text: 'dorme, aniversariante 💛' },
           { from: 'me', text: 'ainda nem é meu aniversário' },
           { from: 'them', text: 'pra mim já é' },
