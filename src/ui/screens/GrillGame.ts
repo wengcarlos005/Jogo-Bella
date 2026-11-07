@@ -368,7 +368,7 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
       }
       // a carne no meio, grande; cor = ponto atual
       const m = meatDef();
-      const rest = art ? gy + gh * 0.5 : 58;
+      const rest = art ? gy + gh * 0.36 : 58; // a carne fica deitada em cima da grelha
       let y = rest;
       let sq = 1;
       if (dropT < 1) {
