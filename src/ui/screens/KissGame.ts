@@ -70,7 +70,6 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     const momSrc = (k: string) => new URL(`assets/minigames/mae-${k}.png`, document.baseURI).href;
     for (const k of ['espia', 'desconfia', 'sobrancelha', 'brava']) new Image().src = momSrc(k);
     const momEl = h('img', { class: 'kg-mom2', src: momSrc('desconfia'), alt: '', style: `${at(968, 668)}` }) as HTMLImageElement;
-    // espiando: só a cabeça e o ombro aparecem atrás do batente esquerdo da porta da cozinha
     const momFace = (k: 'espia' | 'desconfia' | 'sobrancelha' | 'brava') => {
       momEl.src = momSrc(k);
       momEl.classList.toggle('espia', k === 'espia');
@@ -190,7 +189,8 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
             lala.classList.add('walk');
             say(pick(['(...era só a Lala.)', 'Lala: "Miau." (passou e foi embora)']));
           } else {
-            momFace('espia');
+            // ela chega pelo corredor da cozinha (de corpo inteiro, desconfiada)
+            momFace('desconfia');
             momEl.classList.add('show');
           }
         } else if (mom === 'look') {
