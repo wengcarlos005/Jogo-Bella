@@ -3,77 +3,67 @@ import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 
 /**
- * Minigame — No escurinho do cinema (Five Nights at Freddy's, que a gente mal viu).
+ * Minigame — Susto na Sala 3 (o filme de terror do 3º encontro).
  *
- * Segure (espaço / E / botão) pra se pegar no escurinho: o "Filme perdido" vai enchendo.
- * O lanterninha passa com a lanterna pelas fileiras: se a luz pegar os dois no flagra, "Shhh!"
- * e perde um pedaço. E de vez em quando o filme dá um susto: a tela clareia a sala inteira
- * (a tela fica vermelha antes, como aviso). Encha a barra antes do filme acabar.
+ * Na tela do cinema o corredor do filme apaga, aparecem dois olhos no escuro... e vem o susto.
+ * Aperte NA HORA do susto pra segurar a pipoca e a mão da Bella:
+ *  - cedo demais (ou num alarme falso: gatinho, luz piscando) = ela ri de você;
+ *  - tarde demais = pipoca voando pra todo lado.
+ * 8 cenas (5 sustos de verdade + 3 alarmes falsos), cada vez mais rápidas.
+ *
+ * Sprites: assets/minigames/cine-*.png (art-source/minigames/cinema-tela.webp e cinema-casal.webp).
  */
 export interface CinemaResult {
   stars: number;
+  /** quantas vezes errou (cedo, tarde ou alarme falso) */
   shh: number;
+  late: number;
 }
 
-const DURATION = 50; // s de filme
-const RATE = 0.075; // por segundo beijando
+type Beat = { real: boolean; falso?: 'gato' | 'pisca' };
+const pick = <T,>(a: T[]) => a[Math.floor(Math.random() * a.length)];
 
 export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
   return new Promise((resolve) => {
-    const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
-    for (const k of ['inocente', 'beijo', 'susto']) new Image().src = mg(`casal-${k}`);
-    let fill = 0;
-    let shh = 0;
-    let time = 0;
-    let holding = false;
-    let running = false;
-    let done = false;
-    let last = 0;
-    let raf = 0;
-    let lockUntil = 0;
-    // lanterna: posição 0..100 (a fileira deles fica no meio), indo e voltando
-    let beam = -30;
-    let beamDir = 1;
-    let beamSpeed = 22;
-    let beamPause = 0;
-    // susto do filme
-    let scareIn = 9;
-    let scareState: 'none' | 'warn' | 'flash' = 'none';
-    let scareT = 0;
+    const mg = (f: string) => new URL(`assets/minigames/cine-${f}.png`, document.baseURI).href;
+    for (const f of ['corredor', 'escuro', 'olhos', 'susto', 'gato', 'pisca', 'calmo', 'pegou', 'pipoca', 'ri', 'abraco', 'balde']) new Image().src = mg(f);
+    // 5 sustos + 3 alarmes falsos, embaralhados (o primeiro é sempre de verdade, pra aprender)
+    const rest = ([{ real: true }, { real: true }, { real: true }, { real: true }, { real: false, falso: 'gato' }, { real: false, falso: 'pisca' }, { real: false, falso: 'gato' }] as Beat[]).sort(() => Math.random() - 0.5);
+    const beats: Beat[] = [{ real: true }, ...rest];
+    let idx = 0;
+    let phase: 'idle' | 'tension' | 'scare' | 'falso' | 'between' | 'done' = 'idle';
+    let scareAt = 0;
+    let windowMs = 700;
+    let perfect = 0;
+    let mistakes = 0;
+    let late = 0;
+    let popcorn = 5;
+    let pressedThis = false;
+    const timers: number[] = [];
+    const later = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
 
-    const couple = h('img', { class: 'cg-couple', src: mg('casal-inocente'), alt: '' }) as HTMLImageElement;
-    let coupleNow = '';
-    const setCouple = (k: 'inocente' | 'beijo' | 'susto') => {
-      if (coupleNow === k) return;
-      coupleNow = k;
-      couple.src = mg(`casal-${k}`);
-    };
-    const screenEl = h('div', { class: 'cg-screen' }, h('span', {}, "FIVE NIGHTS AT FREDDY'S"));
-    const rows = h('div', { class: 'cg-rows' }, ...[0, 1, 2].map((r) => h('div', { class: `cg-row r${r}` }, ...Array.from({ length: 9 }, () => h('i')))));
-    const beamEl = h('div', { class: 'cg-beam' });
-    const usher = h('div', { class: 'cg-usher' }, '🔦');
-    const flash = h('div', { class: 'cg-flash' });
-    const hearts = h('div', { class: 'cg-hearts' });
-    const stage = h('div', { class: 'cg-stage' }, screenEl, rows, couple, hearts, beamEl, usher, flash);
-    const bar = h('i');
-    const meter = h('div', { class: 'cg-meter' }, h('span', {}, 'Filme perdido 💋'), h('div', { class: 'cg-bar' }, bar));
-    const timeBar = h('i');
-    const clock = h('div', { class: 'cg-meter cg-time' }, h('span', {}, 'Filme 🎬'), h('div', { class: 'cg-bar' }, timeBar));
-    const shhEl = h('div', { class: 'cg-shh' });
-    const msg = h('div', { class: 'gp-bubble cg-msg' });
-    const btn = h('button', { class: 'kg-btn' }, '💋 Segura pra se pegar');
-    const startBtn = h('button', { class: 'btn primary gp-start' }, '🍿 Apagar as luzes');
+    const screenImg = h('img', { class: 'cs-screen', src: mg('corredor'), alt: '' }) as HTMLImageElement;
+    const couple = h('img', { class: 'cs-couple', src: mg('calmo'), alt: '' }) as HTMLImageElement;
+    const glow = h('div', { class: 'cs-glow' });
+    const hearts = h('div', { class: 'cs-hearts' });
+    const label = h('div', { class: 'cs-label' });
+    const stage = h('div', { class: 'cs-stage' }, h('div', { class: 'cs-frame' }, screenImg), glow, h('div', { class: 'cs-seats' }), couple, hearts, label);
+    const dots = h('div', { class: 'tr-dots cs-dots' }, ...beats.map(() => h('i')));
+    const balde = h('div', { class: 'cs-balde' }, h('img', { src: mg('balde'), alt: '' }), h('b'));
+    const msg = h('div', { class: 'gp-bubble cs-msg' });
+    const btn = h('button', { class: 'kg-btn cs-btn' }, '😱 Segurar!');
+    const startBtn = h('button', { class: 'btn primary gp-start' }, '🍿 Começar o filme');
     const actions = h('div', { class: 'bg-actions' }, startBtn);
     const panel = h(
       'div',
-      { class: 'bg-panel panel gp-panel cg-panel' },
-      h('div', { class: 'bg-title cg-title' }, '🍿 Sala 3 · No escurinho 🍿'),
-      h('div', { class: 'cg-top' }, meter, clock, shhEl),
+      { class: 'bg-panel panel gp-panel cs-panel' },
+      h('div', { class: 'bg-title cs-title' }, '🍿 Susto na Sala 3 🍿'),
+      h('div', { class: 'cs-top' }, dots, balde),
       stage,
       msg,
       actions,
     );
-    const screen = h('div', { class: 'screen bg-screen cg-screen-wrap' }, panel);
+    const screen = h('div', { class: 'screen bg-screen cs-wrap' }, panel);
     parent.append(screen);
     InputSystem.push('minigame');
     InputSystem.releaseAll();
@@ -84,105 +74,148 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
       void msg.offsetWidth;
       msg.classList.add('pop');
     };
+    const show = (f: string, cls = '') => {
+      screenImg.src = mg(f);
+      stage.dataset.scr = cls || f;
+    };
+    const setCouple = (f: string) => {
+      couple.src = mg(f);
+      couple.classList.remove('pop');
+      void couple.offsetWidth;
+      couple.classList.add('pop');
+    };
+    const flashLabel = (t: string, good: boolean) => {
+      label.textContent = t;
+      label.className = `cs-label on ${good ? 'good' : 'bad'}`;
+      later(900, () => (label.className = 'cs-label'));
+    };
     const hud = () => {
-      bar.style.width = `${fill * 100}%`;
-      timeBar.style.width = `${Math.min(1, time / DURATION) * 100}%`;
-      shhEl.textContent = shh ? `Shhh! ×${shh}` : '';
+      (balde.querySelector('b') as HTMLElement).textContent = '🍿'.repeat(Math.max(0, popcorn)) || '...vazio';
     };
     const heart = () => {
-      const e = h('i', {}, '♥');
-      e.style.left = `${46 + Math.random() * 8}%`;
-      e.style.setProperty('--dx', `${(Math.random() - 0.5) * 50}px`);
-      hearts.append(e);
-      setTimeout(() => e.remove(), 1100);
-    };
-    const caught = (why: 'luz' | 'susto') => {
-      shh++;
-      fill = Math.max(0, fill - 0.12);
-      lockUntil = performance.now() + 1300;
-      holding = false;
-      AudioSystem.play('cancel');
-      stage.classList.remove('bg-shake');
-      void stage.offsetWidth;
-      stage.classList.add('bg-shake');
-      say(why === 'luz' ? pick(['Lanterninha: "SHHHH! Isso aqui é cinema, não motel!"', 'Lanterninha: "Ei, vocês dois! O filme é ali na frente!"', 'Lanterninha: "Shhh... (de novo vocês?)"']) : pick(['(O susto clareou a sala inteira... a fileira de trás viu TUDO)', 'Moça de trás: "Gente, que isso..."']));
-      hud();
-    };
-    const pick = (a: string[]) => a[Math.floor(Math.random() * a.length)];
-
-    const tick = (t: number) => {
-      const dt = last ? Math.min(0.05, (t - last) / 1000) : 0;
-      last = t;
-      if (running) {
-        time += dt;
-        const locked = performance.now() < lockUntil;
-        const kissing = holding && !locked;
-        setCouple(locked ? 'susto' : kissing ? 'beijo' : 'inocente');
-        if (kissing) {
-          fill = Math.min(1, fill + dt * RATE * (1 + fill * 0.3));
-          if (Math.random() < 0.12) heart();
-        }
-        // lanterna do lanterninha
-        if (beamPause > 0) beamPause -= dt;
-        else {
-          beam += beamDir * beamSpeed * dt;
-          if (beam > 130 || beam < -30) {
-            beamDir *= -1;
-            beamPause = 1.2 + Math.random() * 2.4;
-            beamSpeed = 18 + Math.random() * 14 + time * 0.25;
-          }
-        }
-        beamEl.style.left = `${beam}%`;
-        usher.style.left = `${beam}%`;
-        const lit = Math.abs(beam - 50) < 11;
-        stage.classList.toggle('lit', lit);
-        if (lit && kissing) caught('luz');
-        // susto do filme: tela vermelha (aviso) → clarão
-        scareIn -= dt;
-        if (scareState === 'none' && scareIn <= 0) {
-          scareState = 'warn';
-          scareT = 1.1 - Math.min(0.5, time / 100);
-          screenEl.classList.add('warn');
-          AudioSystem.play('door');
-        } else if (scareState === 'warn') {
-          scareT -= dt;
-          if (scareT <= 0) {
-            scareState = 'flash';
-            scareT = 0.7;
-            screenEl.classList.remove('warn');
-            flash.classList.add('on');
-            AudioSystem.play('cancel');
-          }
-        } else if (scareState === 'flash') {
-          scareT -= dt;
-          if (kissing) caught('susto');
-          if (scareT <= 0) {
-            scareState = 'none';
-            flash.classList.remove('on');
-            scareIn = 5 + Math.random() * 6;
-          }
-        }
-        hud();
-        if (fill >= 1) return end(true);
-        if (time >= DURATION) return end(false);
+      for (let k = 0; k < 6; k++) {
+        const e = h('i', {}, '♥');
+        e.style.left = `${44 + Math.random() * 12}%`;
+        e.style.setProperty('--dx', `${(Math.random() - 0.5) * 70}px`);
+        hearts.append(e);
+        setTimeout(() => e.remove(), 1100);
       }
-      raf = requestAnimationFrame(tick);
+    };
+    const mark = (ok: boolean) => dots.querySelectorAll('i')[idx]?.classList.add(ok ? 'ok' : 'bad');
+
+    const nextBeat = () => {
+      if (idx >= beats.length) return finish();
+      const b = beats[idx];
+      const speed = idx / (beats.length - 1); // 0 → 1
+      windowMs = Math.round(700 - speed * 300);
+      pressedThis = false;
+      phase = 'tension';
+      dots.querySelectorAll('i').forEach((d, k) => d.classList.toggle('now', k === idx));
+      setCouple('calmo');
+      show('corredor');
+      say(pick(['(Música baixinha... muito baixinha...)', '(O corredor. De novo o corredor.)', '(A Bella pegou uma pipoca. Devagar.)', '(Silêncio total na sala.)']));
+      const t1 = 1100 + Math.random() * 900 - speed * 400;
+      later(t1, () => {
+        if (phase !== 'tension') return;
+        show('escuro');
+        AudioSystem.play('blip');
+        const t2 = 700 + Math.random() * 1100 - speed * 300;
+        later(t2, () => {
+          if (phase !== 'tension') return;
+          if (b.real) {
+            show('olhos');
+            const t3 = 500 + Math.random() * 1300 - speed * 300;
+            later(t3, () => {
+              if (phase !== 'tension') return;
+              phase = 'scare';
+              scareAt = performance.now();
+              show('susto', 'susto');
+              AudioSystem.play('cancel');
+              stage.classList.remove('bg-shake');
+              void stage.offsetWidth;
+              stage.classList.add('bg-shake');
+              later(windowMs, () => {
+                if (phase !== 'scare') return;
+                // não apertou a tempo
+                phase = 'between';
+                mistakes++;
+                late++;
+                popcorn = Math.max(0, popcorn - 1);
+                hud();
+                mark(false);
+                setCouple('pipoca');
+                flashLabel('Tarde demais!', false);
+                say(pick(['PIPOCA PRA TODO LADO! O cara da frente ganhou um chapéu de pipoca.', 'A Bella pulou, o balde voou e o Weng ficou cheio de pipoca no cabelo.', 'Moço de trás: "...obrigado pela pipoca."']));
+                later(1700, advance);
+              });
+            });
+          } else {
+            phase = 'falso';
+            show(b.falso!, b.falso);
+            AudioSystem.play(b.falso === 'gato' ? 'pickup' : 'blip');
+            later(1100, () => {
+              if (phase !== 'falso') return;
+              phase = 'between';
+              mark(true);
+              perfect++;
+              flashLabel('Nem piscou!', true);
+              say(b.falso === 'gato' ? 'Era só um gatinho. A Bella: "Own." O Weng: "...eu sabia."' : 'A luz piscou e... nada. O filme tá brincando com a gente.');
+              later(1300, advance);
+            });
+          }
+        });
+      });
+    };
+    const advance = () => {
+      idx++;
+      nextBeat();
     };
 
-    const end = (won: boolean) => {
-      running = false;
-      done = true;
-      holding = false;
-      cancelAnimationFrame(raf);
-      setCouple(won ? 'beijo' : 'inocente');
-      const stars = won ? (shh <= 1 ? 3 : shh <= 3 ? 2 : 1) : 1;
-      AudioSystem.play(won ? 'quest' : 'confirm');
-      say(won ? 'As luzes acenderam. "...Alguém sabe como o filme acaba?" "Não faço ideia."' : 'Os créditos subiram. A gente viu... uns dez minutos de filme. No máximo.');
+    const press = () => {
+      if (phase === 'idle') return begin();
+      if (pressedThis || phase === 'between' || phase === 'done') return;
+      pressedThis = true;
+      if (phase === 'scare') {
+        const dt = performance.now() - scareAt;
+        phase = 'between';
+        perfect++;
+        mark(true);
+        setCouple('pegou');
+        AudioSystem.play('quest');
+        flashLabel(dt < windowMs * 0.45 ? 'PERFEITO!' : 'Segurou!', true);
+        say(pick(['Pipoca salva! E a mão dela segurando a sua com força.', 'Ela pulou no seu braço. Você segurou o balde. Time perfeito.', 'O susto veio... e vocês nem derrubaram uma pipoca.']));
+        later(700, () => {
+          setCouple('abraco');
+          heart();
+        });
+        later(1900, advance);
+        return;
+      }
+      // cedo demais / alarme falso
+      phase = 'between';
+      mistakes++;
+      mark(false);
+      setCouple('ri');
+      AudioSystem.play('cancel');
+      flashLabel('Cedo demais!', false);
+      say(pick(['Bella: "HAHAHA você pulou do nada!"', 'Bella: "Era um GATINHO, Weng. Um gatinho."', 'Bella: "Medrosinho... vem cá, eu te protejo."']));
+      later(1700, advance);
+    };
+
+    const finish = () => {
+      phase = 'done';
+      dots.querySelectorAll('i').forEach((d) => d.classList.remove('now'));
+      show('corredor');
+      setCouple(mistakes <= 2 ? 'abraco' : 'ri');
+      const stars = mistakes <= 1 ? 3 : mistakes <= 3 ? 2 : 1;
+      AudioSystem.play('quest');
+      say(stars === 3 ? 'As luzes acenderam. Pipoca quase inteira e os dois agarradinhos.' : late >= 3 ? 'Os créditos subiram. A sala inteira tava coberta de pipoca. A nossa.' : 'As luzes acenderam. A Bella ainda tá rindo do Weng.');
+      btn.remove();
       actions.replaceChildren(
         h('div', { class: 'bg-stars' }, ...[0, 1, 2].map((k) => h('span', { class: k < stars ? 'on' : '', style: `animation-delay:${k * 0.25}s` }, '★'))),
         h('button', { class: 'btn primary', onclick: close }, 'Sair da sala ♥'),
       );
-      const result = { stars, shh };
+      const result = { stars, shh: mistakes, late };
       function close() {
         InputSystem.off('minigame:interact', close);
         cleanup();
@@ -191,35 +224,31 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
       InputSystem.once('minigame:interact', close);
     };
 
-    const start = () => {
-      if (running || done) return;
+    const begin = () => {
+      if (phase !== 'idle') return;
       startBtn.remove();
       actions.append(btn);
-      running = true;
-      last = 0;
-      say('Segura pra se pegar no escurinho. Cuidado com a lanterna do lanterninha... e com os sustos do filme!');
+      say('Fica de olho na tela. Quando o bicho pular... SEGURA!');
+      later(1200, nextBeat);
+      phase = 'between';
     };
-    startBtn.addEventListener('click', start);
-    btn.addEventListener('pointerdown', () => (holding = true));
-    for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) btn.addEventListener(ev, () => (holding = false));
+    startBtn.addEventListener('click', begin);
+    btn.addEventListener('pointerdown', press);
+    stage.addEventListener('pointerdown', press);
     const onKey = (e: KeyboardEvent) => {
-      if (InputSystem.context !== 'minigame') return;
-      if (e.code !== 'Space' && e.code !== 'KeyE' && e.code !== 'Enter') return;
-      if (e.type === 'keydown') {
-        if (!running && !done) start();
-        else holding = true;
-      } else holding = false;
+      if (InputSystem.context !== 'minigame' || phase === 'done') return;
+      if (e.code === 'Space' || e.code === 'KeyE' || e.code === 'Enter') {
+        e.preventDefault();
+        if (!e.repeat) press();
+      }
     };
     window.addEventListener('keydown', onKey);
-    window.addEventListener('keyup', onKey);
-    say('Sala 3, última fileira. A pipoca tá no colo... e o filme é o que menos importa.');
     hud();
-    raf = requestAnimationFrame(tick);
+    say("Sala 3. Five Nights at Freddy's. A gente não tava com medo... mas os sustos, ah, os sustos.");
 
     function cleanup() {
-      cancelAnimationFrame(raf);
+      timers.forEach((t) => clearTimeout(t));
       window.removeEventListener('keydown', onKey);
-      window.removeEventListener('keyup', onKey);
       InputSystem.pop('minigame');
       screen.remove();
     }
