@@ -2572,3 +2572,17 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 #ui .vignette.show { opacity: 1; }
 #ui .vignette .vg-main { height: 58%; image-rendering: pixelated; filter: drop-shadow(0 8px 0 rgba(0,0,0,.25)); animation: gp-bump .4s; }
 #ui .vignette .vg-side { height: 24%; align-self: center; image-rendering: pixelated; margin-left: -2%; animation: polIn .5s; }
+
+/* A lista da Vó (mercadinho) */
+.mk-title { background: linear-gradient(90deg, #2fb36b, #3ec1d3) !important; }
+.mk-stage { background: linear-gradient(#f4f8fb, #dfe8ee); display: flex; }
+.mk-shelves { position: relative; flex: 1; display: flex; flex-direction: column; }
+.mk-row { position: relative; flex: 1; border-bottom: 10px solid #c8a070; box-shadow: inset 0 -6px 0 rgba(0,0,0,.08); background: linear-gradient(#ffffff00 60%, #e8eef2); overflow: hidden; }
+.mk-item { position: absolute; bottom: 4px; height: 78%; transform: translateX(-50%); image-rendering: pixelated; cursor: pointer; filter: drop-shadow(0 3px 0 rgba(0,0,0,.18)); }
+.mk-item:hover { filter: drop-shadow(0 0 6px #ffd23f); }
+.mk-item.gone { opacity: 0; transform: translate(-50%, -40%) scale(.6); transition: .25s; pointer-events: none; }
+.mk-list { flex: 0 0 25%; background: #fffdf5; border-left: 3px dashed #2fb36b; padding: 8px; display: flex; flex-direction: column; gap: 3px; font-weight: 800; color: #3a4a3a; font-size: clamp(9px, calc(var(--u) * 4.4), 14px); }
+.mk-list b { font-family: var(--font-pixel); color: #2fb36b; }
+.mk-list div { display: flex; align-items: center; gap: 6px; }
+.mk-list img { height: 1.6em; image-rendering: pixelated; }
+.mk-list .ok { color: #2a8a3a; text-decoration: line-through; opacity: .7; }

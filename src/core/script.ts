@@ -59,6 +59,7 @@ export interface ScriptContext {
   /** Conversa no celular (transições entre cenas). */
   phone(opts: import('@/ui/screens/PhoneChat').PhoneOptions, msgs: import('@/ui/screens/PhoneChat').PhoneMsg[]): Promise<void>;
   cards(opts?: { title?: string; rounds?: number }): Promise<import('@/ui/screens/CardGame').CardResult>;
+  market(): Promise<import('@/ui/screens/PetroGames').MiniResult & { pacoca: boolean }>;
   clouds(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
   boatRace(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
   breakfast(): Promise<import('@/ui/screens/PetroGames').MiniResult>;

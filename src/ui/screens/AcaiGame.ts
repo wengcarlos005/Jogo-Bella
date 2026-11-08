@@ -116,30 +116,31 @@ export function playAcaiGame(parent: HTMLElement, opts: AcaiOptions): Promise<Ac
     const renderToppings = () => {
       const kinds = [...new Set(toppings.filter((t) => !SAUCE.includes(t)))];
       const n = kinds.length;
-      const step = n > 1 ? Math.min(15, 60 / (n - 1)) : 0;
       const seen: Record<string, number> = {};
       toppingLayer.replaceChildren(
         ...toppings.map((id, i) => {
           const rep = (seen[id] = (seen[id] ?? 0) + 1) - 1;
           let x: number;
           let y: number;
-          let w = 19;
+          let w = 24;
           if (SAUCE.includes(id)) {
-            x = 50 + (rep % 2 ? 7 : -5);
-            y = 4 + rep * 5;
-            w = 30;
+            // calda escorrendo no topo do açaí
+            x = 50 + (rep % 2 ? 6 : -4);
+            y = -6 + rep * 5;
+            w = 36;
           } else {
+            // cada complemento num cantinho do arco da frente do açaí (como numa tigela de verdade)
             const k = kinds.indexOf(id);
-            const off = (k - (n - 1) / 2) * step;
-            x = 50 + off + (rep % 2 ? 4 : -3) * Math.min(rep, 1);
-            y = 30 - Math.abs(off) * 0.35 - rep * 6;
+            const t = Math.PI * (n > 1 ? 0.12 + (0.76 * k) / (n - 1) : 0.5);
+            x = 50 - 33 * Math.cos(t) + (rep % 2 ? 4 : -3) * Math.min(rep, 1);
+            y = 16 + 16 * Math.sin(t) - rep * 7;
           }
           const url = textureURL(`acai-${id}`);
           const el = url ? h('img', { src: url, alt: nameOf(id), class: 'ac-top' }) : h('span', { class: 'ac-top' }, nameOf(id));
           el.style.left = `${x}%`;
           el.style.top = `${y}%`;
           el.style.width = `${w}%`;
-          el.style.zIndex = String(SAUCE.includes(id) ? 30 + i : 10 + Math.round(y));
+          el.style.zIndex = String(SAUCE.includes(id) ? 8 + i : 40 + Math.round(y) + i);
           el.style.setProperty('--rot', `${((i * 37) % 24) - 12}deg`);
           return el;
         }),

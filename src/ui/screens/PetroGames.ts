@@ -18,7 +18,7 @@ const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI)
 const pick = <T,>(a: T[]) => a[Math.floor(Math.random() * a.length)];
 
 /** Moldura comum: título, área de jogo, fala com retrato e botões. */
-function shell(parent: HTMLElement, cls: string, title: string) {
+export function shell(parent: HTMLElement, cls: string, title: string) {
   const stage = h('div', { class: `pg-stage ${cls}-stage` });
   const hud = h('div', { class: 'pg-hud' });
   const face = h('img', { class: 'pg-face', alt: '' }) as HTMLImageElement;

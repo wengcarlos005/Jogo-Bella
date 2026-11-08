@@ -57,20 +57,19 @@ const scripts: Record<string, Script> = {
       await ctx.move('player', 1.4, 16.3, 60);
       return;
     }
+    const entra = await ctx.choose('bella', 'O mercadinho da esquina. Fazer as compras da Vó agora?', ['Entrar no mercado', 'Depois']);
+    if (entra === 1) {
+      await ctx.move('player', 1.6, 16.3, 60);
+      return;
+    }
     // o mercadinho da esquina: a lista da Vó (e umas coisinhas a mais)
     await ctx.fadeOut(400);
     await ctx.narrate('O mercadinho da esquina. Ar-condicionado gelado, carrinho de roda torta e a lista da Vó no celular do Weng.');
-    await ctx.say('weng', '"Farinha, ovos, leite condensado e... chocolate em pó." A Vó vai fazer bolinho pra você.');
+    await ctx.say('weng', 'A lista da Vó: ovos, leite condensado, creme de leite, queijo, banana e chocolate. Ela vai fazer bolinho pra você.');
     await ctx.say('bella', 'Pra MIM? Eu amo a sua Vó.');
-    const c = await ctx.choose('bella', '(No corredor dos doces...)', ['Colocar uma paçoca escondida no carrinho', 'Pegar só o que tá na lista', 'Pegar um chocolate pra Vó também']);
-    if (c === 0) {
-      await ctx.say('weng', 'Eu vi essa paçoca entrando no carrinho.');
-      await ctx.say('bella', 'Que paçoca? Não tem paçoca nenhuma. Olha pro outro lado.');
-    } else if (c === 1) {
-      await ctx.say('weng', 'Só a lista? Quem é você e o que fez com a Bella?');
-    } else {
-      await ctx.say('weng', 'A Vó vai te adotar. Já era. Você é neta agora.');
-    }
+    const mk = await ctx.market();
+    ctx.setFlag('dq-mercado-estrelas', mk.stars);
+    if (mk.pacoca) await ctx.say('weng', 'E a paçoca "invisível" passou no caixa. Eu vi.');
     await ctx.say('bella', 'A moça do caixa perguntou se a gente é casado.');
     await ctx.say('weng', 'E você falou o quê?');
     await ctx.say('bella', '"Ainda não." (sorriso)');
