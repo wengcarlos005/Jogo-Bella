@@ -26,7 +26,7 @@ export function showMemoryPopup(parent: HTMLElement, id: string): Promise<void> 
         { class: 'memory-pop panel-dark' },
         h('div', { class: 'kicker' }, '♥ Nova lembrança no álbum ♥'),
         h('div', { class: 't' }, def.title),
-        h('div', { class: 'img' }, url ? h('img', { src: url, alt: '' }) : '📷'),
+        h('div', { class: 'img' }, url ? h('img', { src: url, alt: '' }) : h('span', { class: 'mp-soon' }, 'foto em breve')),
         h('p', {}, def.text),
         h('p', { class: 'muted', style: 'opacity:.7;font-size:.85em' }, `${def.year} · ${dateOrPlaceholder(def.date ?? '')}`),
         h('button', { class: 'btn primary', onclick: close }, 'Guardar no álbum'),

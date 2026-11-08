@@ -155,12 +155,12 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
     const helperPic = textureURL('portrait-pai-bella');
     const msg = h('div', { class: 'gp-bubble' }, '10 rodadas. Aperta "Virar!" (ou espaço) quando o marcador estiver no verde.');
     const flipBtn = h('button', { class: 'gt-flip' }, '↻ Virar!');
-    const startBtn = h('button', { class: 'btn primary gp-start' }, '🔥 Acender a brasa!');
+    const startBtn = h('button', { class: 'btn primary gp-start' }, 'Acender a brasa!');
     const actions = h('div', { class: 'bg-actions' }, startBtn);
     const panel = h(
       'div',
       { class: 'bg-panel panel gp-panel gt-panel' },
-      h('div', { class: 'gp-title' }, h('span', {}, '🔥'), opts.title ?? 'Na churrasqueira', h('span', {}, '🔥')),
+      h('div', { class: 'gp-title' }, opts.title ?? 'Na churrasqueira'),
       h('div', { class: 'gt-top' }, phaseEl, dots),
       stage,
       h('div', { class: 'gt-under' }, meatName, bar, labels),

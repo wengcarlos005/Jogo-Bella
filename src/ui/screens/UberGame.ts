@@ -71,7 +71,7 @@ export function playUberGame(parent: HTMLElement, opts: { title?: string; destin
     const player = h('div', { class: 'ub-car', style: car ? `background-image:url("${car}")` : '' });
     const track = h('div', { class: 'ub-track2' }, road, player, h('div', { class: 'ub-night' }));
     const bar = h('div', { class: 'ub-fill' });
-    const pin = h('div', { class: 'ub-pin' }, '🍔');
+    const pin = h('div', { class: 'ub-pin' }, '♥');
     const hitsEl = h('div', { class: 'ub-hits' }, 'Batidas: 0');
     const msg = h('div', { class: 'ub-msg' }, '↑ ↓ para trocar de faixa. Desvie de tudo!');
     const startBtn = h('button', { class: 'btn primary' }, 'Partiu!');

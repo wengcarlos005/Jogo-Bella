@@ -123,7 +123,7 @@ export class PauseMenu {
     const active = QuestSystem.active();
     const done = QuestSystem.completed();
     this.body.append(this.header('Missões', 'O que vem por aí na nossa história', [`${active.length} em andamento`, `${done.length} concluída${done.length === 1 ? '' : 's'}`]));
-    if (!active.length) this.body.append(h('div', { class: 'pm-empty' }, '✨ Nenhuma missão agora. Explore e converse com todo mundo!'));
+    if (!active.length) this.body.append(h('div', { class: 'pm-empty' }, 'Nenhuma missão agora. Explore e converse com todo mundo!'));
     for (const q of active) {
       const p = GameState.data.quests[q.id];
       const cur = QuestSystem.currentObjective(q.id);
@@ -163,7 +163,7 @@ export class PauseMenu {
               h('div', { class: 'pm-qdesc' }, q.description),
             ),
             tracked
-              ? h('span', { class: 'pm-badge' }, '📍 Seguindo')
+              ? h('span', { class: 'pm-badge' }, 'Seguindo')
               : h('button', { class: 'btn small', onclick: () => { GameState.data.trackedQuest = q.id; AudioSystem.play('confirm'); this.select('missoes'); } }, 'Seguir'),
           ),
           list,
@@ -189,7 +189,7 @@ export class PauseMenu {
       const e = all[i];
       grid.querySelectorAll('.pm-slot').forEach((el, k) => el.classList.toggle('sel', k === i));
       if (!e) {
-        detail.replaceChildren(h('div', { class: 'pm-detail-empty' }, '🎒', h('div', {}, 'Escolha um item pra ver de pertinho.')));
+        detail.replaceChildren(h('div', { class: 'pm-detail-empty' }, h('div', {}, 'Escolha um item pra ver de pertinho.')));
         return;
       }
       this.invSel = e.def.id;
@@ -242,7 +242,7 @@ export class PauseMenu {
           'button',
           { class: `pm-pola ${unlocked ? '' : 'locked'}`, style: `--r:${rot}deg;animation-delay:${i * 50}ms` },
           h('span', { class: 'tape' }),
-          h('div', { class: 'ph' }, url ? h('img', { src: url, alt: '' }) : h('span', {}, unlocked ? '📷' : '🔒')),
+          h('div', { class: 'ph' }, url ? h('img', { src: url, alt: '' }) : h('span', {}, unlocked ? 'foto em breve' : '?')),
           h('div', { class: 'cap' }, unlocked ? def.title : '???'),
         );
         if (unlocked) card.addEventListener('click', () => this.openMemory(def.title, def.text, url, dateOrPlaceholder(def.date ?? '')));
@@ -284,7 +284,7 @@ export class PauseMenu {
         h(
           'div',
           { class: `pm-stop ${isUnlocked ? 'open' : 'lock'} ${visited ? 'visited' : ''}`, style: `animation-delay:${i * 60}ms` },
-          h('div', { class: 'dot' }, isUnlocked ? String(i + 1) : '🔒'),
+          h('div', { class: 'dot' }, isUnlocked ? String(i + 1) : '?'),
           h(
             'div',
             { class: 'info' },
@@ -292,7 +292,7 @@ export class PauseMenu {
             h('div', { class: 'sub' }, isUnlocked ? `${r.chapter} · ${r.subtitle}` : 'Ainda não desbloqueado'),
           ),
           available
-            ? h('button', { class: 'btn small', disabled: !can, onclick: () => { this.close(); this.actions.travel(r.id); } }, visited ? 'Viajar ✈' : 'Ir ✈')
+            ? h('button', { class: 'btn small', disabled: !can, onclick: () => { this.close(); this.actions.travel(r.id); } }, visited ? 'Viajar' : 'Ir')
             : h('span', { class: 'pm-soon' }, isUnlocked ? 'Em breve' : ''),
         ),
       );
@@ -305,7 +305,7 @@ export class PauseMenu {
     const slots = Array.from({ length: SAVE_SLOTS }, (_, i) => `slot${i + 1}`);
     const sums = await SaveSystem.summaries(slots);
     if (this.tab !== 'salvar') return;
-    this.body.append(this.header('Salvar', 'O jogo também salva sozinho de tempos em tempos', [`⏱ ${formatPlaytime(GameState.data.playtimeMs)}`]));
+    this.body.append(this.header('Salvar', 'O jogo também salva sozinho de tempos em tempos', [`${formatPlaytime(GameState.data.playtimeMs)}`]));
     const icon = textureURL('ui-icon-salvar');
     const list = h('div', { class: 'pm-saves' });
     slots.forEach((slot, i) => {
@@ -324,7 +324,7 @@ export class PauseMenu {
           'div',
           { class: 'info' },
           h('div', { class: 'name' }, s ? place || `Espaço ${i + 1}` : `Espaço ${i + 1} · vazio`),
-          h('div', { class: 'sub' }, s ? `${formatDate(s.savedAt)} · ⏱ ${formatPlaytime(s.playtimeMs)} · ♥ ${s.memories}` : 'Um cantinho pra guardar a nossa história'),
+          h('div', { class: 'sub' }, s ? `${formatDate(s.savedAt)} · ${formatPlaytime(s.playtimeMs)} · ♥ ${s.memories}` : 'Um cantinho pra guardar a nossa história'),
         ),
         h('button', {
           class: 'btn small primary',
@@ -347,7 +347,7 @@ export class PauseMenu {
     const cenas = SceneCheckpoints.list();
     this.body.append(this.header('Cenas', 'Pule direto pra qualquer parte da história', [`${cenas.length} cenas`]));
     if (!cenas.length) {
-      this.body.append(h('div', { class: 'pm-empty' }, '🎬 Nenhuma cena liberada ainda. Cada missão que começa vira uma cena aqui!'));
+      this.body.append(h('div', { class: 'pm-empty' }, 'Nenhuma cena liberada ainda. Cada missão que começa vira uma cena aqui!'));
       return;
     }
     const list = h('div', { class: 'pm-cenas' });
@@ -440,10 +440,10 @@ export class PauseMenu {
       h(
         'div',
         { class: 'pm-opts' },
-        range('Música', '🎵', 'musicVolume'),
-        range('Efeitos', '🔔', 'sfxVolume'),
-        seg('Velocidade do texto', '💬', 'textSpeed', [['lenta', 'Lenta'], ['normal', 'Normal'], ['rapida', 'Rápida']]),
-        seg('Controles de toque', '📱', 'touchControls', [['auto', 'Auto'], ['sempre', 'Sempre'], ['nunca', 'Nunca']]),
+        range('Música', '', 'musicVolume'),
+        range('Efeitos', '', 'sfxVolume'),
+        seg('Velocidade do texto', '', 'textSpeed', [['lenta', 'Lenta'], ['normal', 'Normal'], ['rapida', 'Rápida']]),
+        seg('Controles de toque', '', 'touchControls', [['auto', 'Auto'], ['sempre', 'Sempre'], ['nunca', 'Nunca']]),
       ),
       h('div', { class: 'pm-section' }, 'Controles'),
       h('div', { class: 'pm-keys' }, key('WASD / setas', 'Andar'), key('Shift', 'Correr'), key('E / Espaço', 'Interagir'), key('Esc / M', 'Menu')),

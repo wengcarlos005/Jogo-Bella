@@ -2411,3 +2411,50 @@ img.tc-ico { height: auto; }
 .cs-seats { height: 12%; }
 .cs-couple { height: 56%; bottom: 3%; }
 .cs-label { top: 8% !important; }
+/* Taco Roleta v2: cabe na tela, vidas e efeitos acima do taco */
+.tr-panel { max-height: 98% !important; overflow: hidden !important; padding: calc(var(--u) * 3) calc(var(--u) * 5) !important; gap: calc(var(--u) * 2) !important; }
+.tr-stage { aspect-ratio: auto !important; height: min(40vh, calc(var(--u) * 150)); }
+.tr-hud { display: flex; align-items: center; justify-content: space-between; }
+.tr-lives { display: flex; gap: 4px; }
+.tr-lives i { font-style: normal; font-size: clamp(16px, calc(var(--u) * 9), 28px); color: #d8c4a8; text-shadow: 0 2px 0 rgba(0,0,0,.15); transition: .2s; }
+.tr-lives i.on { color: #e8343f; text-shadow: 0 2px 0 #7a1a10; }
+.tr-lives.hit { animation: shake 300ms; }
+.tr-slot { outline: none; -webkit-tap-highlight-color: transparent; }
+.tr-fx { bottom: 62%; width: 46%; }
+.tr-fx.fogo { width: 62%; bottom: 66%; }
+.tr-face.bust { width: calc(var(--u) * 36) !important; height: calc(var(--u) * 36) !important; margin: calc(var(--u) * -4) 0 0 !important; }
+.tr-talk { min-height: 0 !important; }
+.tr-actions { min-height: calc(var(--u) * 16); }
+
+.mg-replay { font-size: clamp(11px, calc(var(--u) * 5.5), 16px); }
+.bg-stars.mg-end { display: none; }
+
+/* Susto na Sala 3 v2: cabe na tela, casal parado no lugar, regras claras, vidas */
+.cs-panel { max-height: 98% !important; overflow: hidden !important; }
+.cs-stage { aspect-ratio: auto !important; height: min(44vh, calc(var(--u) * 170)); }
+.cs-frame { aspect-ratio: auto !important; height: 70%; left: 50% !important; right: auto !important; width: auto; transform: translateX(-50%); }
+.cs-screen { height: 100%; width: auto; }
+.cs-couple-box { position: absolute; left: 50%; bottom: 3%; height: 56%; aspect-ratio: 287 / 272; transform: translateX(-50%); z-index: 2; display: flex; align-items: flex-end; justify-content: center; }
+.cs-couple { position: static !important; transform: none !important; left: auto !important; bottom: auto !important; width: auto; animation: none !important; }
+.cs-rules { position: absolute; inset: 6% 10%; z-index: 8; background: rgba(20, 12, 30, .9); border: 2px solid #ffd23f; border-radius: 12px; padding: 10px 14px; display: flex; flex-direction: column; justify-content: center; gap: 8px; color: #fff3e0; font-weight: 800; font-size: clamp(10px, calc(var(--u) * 5.2), 16px); transition: opacity .3s; }
+.cs-rules.off { opacity: 0; pointer-events: none; }
+.cs-rules b { font-family: var(--font-pixel); color: #ffd23f; text-align: center; font-size: 1.2em; }
+.cs-rules div { display: flex; align-items: center; gap: 10px; }
+.cs-rules img { width: 22%; border-radius: 4px; border: 2px solid #4a2a5a; image-rendering: pixelated; flex: none; }
+.cs-rules kbd { background: #ff6a9a; color: #fff; border-radius: 6px; padding: 0 6px; font-family: var(--font-pixel); }
+.cs-rules u { color: #ff8a8a; }
+.cs-btn { min-width: 40%; font-size: clamp(14px, calc(var(--u) * 8), 24px) !important; }
+.cs-lives { margin-left: auto; }
+
+.tb-enc-cat { display: inline-block; width: 2.6em; height: 1.75em; background-size: 400% 100%; background-repeat: no-repeat; image-rendering: pixelated; }
+.mp-soon { font-family: var(--font-pixel); color: #b89ac8; font-size: .9em; }
+
+/* encantômetro no estilo do HUD (placa, corações do kit e a Meli em pixel) */
+html.hud-kit .tb-encanto { background: var(--hud-plaque) center / 100% 100% no-repeat !important; border: none !important; box-shadow: none !important; border-radius: 0; padding: 4px 22px 4px 12px !important; gap: 8px; color: #b83a6a !important; font-weight: 900; animation: none; }
+html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, .8)); }
+.tb-enc-cat { width: 2.4em; height: 1.6em; }
+.tb-enc-hearts { display: inline-flex; gap: 1px; }
+.tb-enc-hearts span { display: inline-block; width: 1.15em; height: 1.05em; background: var(--hud-heart-empty) center / contain no-repeat; }
+.tb-enc-hearts span.on { background-image: var(--hud-heart-full); }
+.tb-enc-hearts span.half { background-image: var(--hud-heart-half); }
+.tb-enc-bar { display: none !important; }

@@ -145,31 +145,63 @@ class UIManagerImpl {
     return this.sidebar.pick(prompt);
   }
 
+  /**
+   * Roda um minigame com a opção "Jogar de novo": quando a tela final aparece (as estrelas), entra
+   * um botão ao lado do de continuar; se clicar, o mesmo minigame recomeça do zero.
+   */
+  private async replayable<T>(run: () => Promise<T>): Promise<T> {
+    for (;;) {
+      let again = false;
+      const obs = new MutationObserver(() => {
+        const stars = this.root.querySelector('.screen .bg-stars');
+        const box = stars?.parentElement;
+        if (!box || box.querySelector('.mg-replay')) return;
+        const go = box.querySelector('.btn.primary') as HTMLButtonElement | null;
+        if (!go) return;
+        const btn = document.createElement('button');
+        btn.className = 'btn mg-replay';
+        btn.textContent = 'Jogar de novo';
+        btn.addEventListener('click', () => {
+          again = true;
+          go.click();
+        });
+        box.insertBefore(btn, go);
+      });
+      obs.observe(this.root, { childList: true, subtree: true });
+      try {
+        const r = await run();
+        if (!again) return r;
+      } finally {
+        obs.disconnect();
+      }
+    }
+  }
+
   burger(opts: BurgerOptions): Promise<BurgerResult> {
-    return playBurgerGame(this.root, opts);
+    return this.replayable(() => playBurgerGame(this.root, opts));
   }
 
   cinema(): Promise<CinemaResult> {
     this.dialogue.close();
-    return playCinemaGame(this.root);
+    return this.replayable(() => playCinemaGame(this.root));
   }
 
   tacos(opts: { title?: string } = {}): Promise<TacoResult> {
     this.dialogue.close();
-    return playTacoGame(this.root, opts);
+    return this.replayable(() => playTacoGame(this.root, opts));
   }
 
   acai(opts: AcaiOptions): Promise<AcaiResult> {
-    return playAcaiGame(this.root, opts);
+    return this.replayable(() => playAcaiGame(this.root, opts));
   }
 
   uberRide(opts: { title?: string; destino?: string } = {}): Promise<UberResult> {
-    return playUberGame(this.root, opts);
+    return this.replayable(() => playUberGame(this.root, opts));
   }
 
   kissGame(): Promise<KissResult> {
     this.dialogue.close();
-    return playKissGame(this.root);
+    return this.replayable(() => playKissGame(this.root));
   }
 
   phone(opts: PhoneOptions, msgs: PhoneMsg[]): Promise<void> {
@@ -178,11 +210,11 @@ class UIManagerImpl {
   }
 
   grill(opts: { title?: string; helper?: string } = {}): Promise<GrillResult> {
-    return playGrillGame(this.root, opts);
+    return this.replayable(() => playGrillGame(this.root, opts));
   }
 
   cards(opts: { title?: string; rounds?: number } = {}): Promise<CardResult> {
-    return playCardGame(this.root, opts);
+    return this.replayable(() => playCardGame(this.root, opts));
   }
 
   private bars: HTMLElement[] = [];
@@ -198,7 +230,7 @@ class UIManagerImpl {
   }
 
   /** Cartão de viagem (ex.: trajeto de Uber, avião). */
-  async travel(label: string, icon = '🚗', ms = 2600): Promise<void> {
+  async travel(label: string, icon = '', ms = 2600): Promise<void> {
     this.dialogue.close();
     const car = textureURL('uber-car');
     const bg = textureURL('map-piabeta-fragoso-bg') ?? textureURL('map-piabeta-rua-bg');
@@ -410,7 +442,7 @@ class UIManagerImpl {
   }
 
   private setupRotateHint(): void {
-    const hint = h('div', { class: 'rotate-hint panel-dark hidden' }, '📱 Vire o celular de lado para jogar melhor');
+    const hint = h('div', { class: 'rotate-hint panel-dark hidden' }, 'Vire o celular de lado para jogar melhor');
     hint.addEventListener('click', () => hint.remove());
     document.body.append(hint);
     const check = () => {

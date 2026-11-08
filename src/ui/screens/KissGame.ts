@@ -92,13 +92,13 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     const livesEl = h('div', { class: 'kg-lives' });
     const kissesEl = h('div', { class: 'kg-kisses' });
     const msg = h('div', { class: 'gp-bubble kg-msg' }, 'Segura o botão (ou espaço) pra beijar. Mas fica de ouvido nos passos da mãe!');
-    const btn = h('button', { class: 'kg-btn' }, '💋 Segura pra beijar');
-    const startBtn = h('button', { class: 'btn primary gp-start' }, '🎬 Dar play no filme');
+    const btn = h('button', { class: 'kg-btn' }, 'Segura pra beijar');
+    const startBtn = h('button', { class: 'btn primary gp-start' }, 'Dar play no filme');
     const actions = h('div', { class: 'bg-actions' }, startBtn);
     const panel = h(
       'div',
       { class: 'bg-panel panel gp-panel kg-panel' },
-      h('div', { class: 'gp-title kg-title' }, h('span', {}, '💋'), 'Beijo escondido', h('span', {}, '🍿')),
+      h('div', { class: 'gp-title kg-title' }, 'Beijo escondido'),
       h('div', { class: 'kg-hud' }, livesEl, kissesEl),
       stage,
       msg,
@@ -117,7 +117,7 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     };
     const hud = () => {
       livesEl.replaceChildren(...Array.from({ length: LIVES }, (_, i) => h('span', { class: i < lives ? 'on' : '' }, '♥')));
-      kissesEl.replaceChildren(...Array.from({ length: NEED }, (_, i) => h('span', { class: i < kisses ? 'on' : '' }, '💋')));
+      kissesEl.replaceChildren(...Array.from({ length: NEED }, (_, i) => h('span', { class: i < kisses ? 'on' : '' }, '♥')));
     };
     hud();
     const pick = (a: string[]) => a[Math.floor(Math.random() * a.length)];

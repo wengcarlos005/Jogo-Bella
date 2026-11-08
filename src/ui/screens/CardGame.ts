@@ -41,7 +41,7 @@ export function playCardGame(parent: HTMLElement, opts: { title?: string; rounds
     const word = h('div', { class: 'cg-word' }, 'Pronta?');
     const who = h('div', { class: 'cg-who' });
     const pileImg = h('img', { class: 'cg-card', alt: '', src: textureURL('carta-verso') ?? '' });
-    const pile = h('button', { class: 'cg-pile', 'aria-label': 'Bater no monte' }, pileImg, h('div', { class: 'cg-hand' }, '✋'));
+    const pile = h('button', { class: 'cg-pile', 'aria-label': 'Bater no monte' }, pileImg, h('div', { class: 'cg-hand' }, 'BATE!'));
     const msg = h('div', { class: 'cg-msg' }, 'Quando a carta for igual à palavra, BATE no monte!');
     const sb = h('b', {}, '0');
     const sw = h('b', {}, '0');
@@ -62,7 +62,7 @@ export function playCardGame(parent: HTMLElement, opts: { title?: string; rounds
         h('div', { class: 'cg-player' }, pW ? h('img', { src: pW, alt: '' }) : null, h('span', {}, 'Weng'), sw),
       ),
       msg,
-      h('div', { class: 'cg-rules' }, 'Sequência: Meli → Pombo → Lala → Açaí → Coração  ·  🧶 novelo: bate sempre  ·  bater errado: −1'),
+      h('div', { class: 'cg-rules' }, 'Sequência: Meli → Pombo → Lala → Açaí → Coração  ·  novelo: bate sempre  ·  bater errado: −1'),
       actions,
     );
     const screen = h('div', { class: 'screen bg-screen cg-screen' }, panel);
@@ -183,7 +183,7 @@ export function playCardGame(parent: HTMLElement, opts: { title?: string; rounds
         cleanup();
         resolve({ bella, weng, won });
       };
-      actions.replaceChildren(h('button', { class: 'btn primary', onclick: close }, 'Guardar as cartas'));
+      actions.replaceChildren(h('span', { class: 'bg-stars mg-end' }), h('button', { class: 'btn primary', onclick: close }, 'Guardar as cartas'));
       setTimeout(() => InputSystem.once('minigame:interact', close), 400);
     };
 

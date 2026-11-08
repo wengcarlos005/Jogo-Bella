@@ -37,7 +37,8 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
     let perfect = 0;
     let mistakes = 0;
     let late = 0;
-    let popcorn = 5;
+    const LIVES = 3;
+    let lives = LIVES;
     let pressedThis = false;
     const timers: number[] = [];
     const later = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
@@ -47,17 +48,27 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
     const glow = h('div', { class: 'cs-glow' });
     const hearts = h('div', { class: 'cs-hearts' });
     const label = h('div', { class: 'cs-label' });
-    const stage = h('div', { class: 'cs-stage' }, h('div', { class: 'cs-frame' }, screenImg), glow, h('div', { class: 'cs-seats' }), couple, hearts, label);
+    // regras na tela antes de começar (o jogo fica claro de cara)
+    const rules = h(
+      'div',
+      { class: 'cs-rules' },
+      h('b', {}, 'Como jogar'),
+      h('div', {}, h('img', { src: mg('susto'), alt: '' }), h('span', {}, 'Quando o MONSTRO aparecer na tela: aperte ', h('kbd', {}, 'PULAR!'), ' (ou espaço) na hora. Vocês pulam juntos e salvam a pipoca.')),
+      h('div', {}, h('img', { src: mg('gato'), alt: '' }), h('span', {}, 'Gatinho ou luz piscando é alarme falso: ', h('u', {}, 'NÃO pule'), '.')),
+      h('div', {}, h('img', { src: mg('olhos'), alt: '' }), h('span', {}, 'Os olhos no escuro avisam que ele vem... mas espere ele PULAR. Pulou cedo, tarde ou no alarme falso: perde 1 ♥ (são 3).')),
+    );
+    const coupleBox = h('div', { class: 'cs-couple-box' }, couple);
+    const stage = h('div', { class: 'cs-stage' }, h('div', { class: 'cs-frame' }, screenImg), glow, h('div', { class: 'cs-seats' }), coupleBox, hearts, label, rules);
     const dots = h('div', { class: 'tr-dots cs-dots' }, ...beats.map(() => h('i')));
-    const balde = h('div', { class: 'cs-balde' }, h('img', { src: mg('balde'), alt: '' }), h('b'));
+    const balde = h('div', { class: 'tr-lives cs-lives', title: 'Vidas' });
     const msg = h('div', { class: 'gp-bubble cs-msg' });
-    const btn = h('button', { class: 'kg-btn cs-btn' }, '😱 Segurar!');
-    const startBtn = h('button', { class: 'btn primary gp-start' }, '🍿 Começar o filme');
+    const btn = h('button', { class: 'btn primary cs-btn' }, 'PULAR!');
+    const startBtn = h('button', { class: 'btn primary' }, 'Começar o filme');
     const actions = h('div', { class: 'bg-actions' }, startBtn);
     const panel = h(
       'div',
       { class: 'bg-panel panel gp-panel cs-panel' },
-      h('div', { class: 'bg-title cs-title' }, '🍿 Susto na Sala 3 🍿'),
+      h('div', { class: 'bg-title cs-title' }, 'Susto na Sala 3'),
       h('div', { class: 'cs-top' }, dots, balde),
       stage,
       msg,
@@ -78,11 +89,11 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
       screenImg.src = mg(f);
       stage.dataset.scr = cls || f;
     };
+    // altura de cada desenho do casal (px do recorte): todos ficam do mesmo tamanho e no mesmo lugar
+    const COUPLE_H: Record<string, number> = { calmo: 251, pegou: 266, pipoca: 272, ri: 266, abraco: 258 };
     const setCouple = (f: string) => {
       couple.src = mg(f);
-      couple.classList.remove('pop');
-      void couple.offsetWidth;
-      couple.classList.add('pop');
+      couple.style.height = `${((COUPLE_H[f] ?? 260) / 272) * 100}%`;
     };
     const flashLabel = (t: string, good: boolean) => {
       label.textContent = t;
@@ -90,7 +101,7 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
       later(900, () => (label.className = 'cs-label'));
     };
     const hud = () => {
-      (balde.querySelector('b') as HTMLElement).textContent = '🍿'.repeat(Math.max(0, popcorn)) || '...vazio';
+      balde.replaceChildren(...Array.from({ length: LIVES }, (_, k) => h('i', { class: k < lives ? 'on' : '' }, '♥')));
     };
     const heart = () => {
       for (let k = 0; k < 6; k++) {
@@ -113,7 +124,7 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
       dots.querySelectorAll('i').forEach((d, k) => d.classList.toggle('now', k === idx));
       setCouple('calmo');
       show('corredor');
-      say(pick(['(Música baixinha... muito baixinha...)', '(O corredor. De novo o corredor.)', '(A Bella pegou uma pipoca. Devagar.)', '(Silêncio total na sala.)']));
+      say('Olho na tela... espera o MONSTRO aparecer pra apertar PULAR!');
       const t1 = 1100 + Math.random() * 900 - speed * 400;
       later(t1, () => {
         if (phase !== 'tension') return;
@@ -124,6 +135,7 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
           if (phase !== 'tension') return;
           if (b.real) {
             show('olhos');
+            say('Os olhos! Ele vai pular... prepara o dedo!');
             const t3 = 500 + Math.random() * 1300 - speed * 300;
             later(t3, () => {
               if (phase !== 'tension') return;
@@ -140,7 +152,7 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
                 phase = 'between';
                 mistakes++;
                 late++;
-                popcorn = Math.max(0, popcorn - 1);
+                lives--;
                 hud();
                 mark(false);
                 setCouple('pipoca');
@@ -167,8 +179,39 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
       });
     };
     const advance = () => {
+      if (lives <= 0) return lose();
       idx++;
       nextBeat();
+    };
+    const lose = () => {
+      phase = 'done';
+      show('susto', 'susto');
+      setCouple('pipoca');
+      AudioSystem.play('cancel');
+      say('Sem vidas! A pipoca acabou no chão e a Bella não para de rir. Assistir de novo?');
+      btn.remove();
+      actions.replaceChildren(
+        h(
+          'button',
+          {
+            class: 'btn primary',
+            onclick: () => {
+              idx = 0;
+              lives = LIVES;
+              mistakes = 0;
+              late = 0;
+              perfect = 0;
+              hud();
+              dots.querySelectorAll('i').forEach((d) => d.classList.remove('ok', 'bad'));
+              actions.replaceChildren(btn);
+              phase = 'between';
+              say('De novo! Olho na tela...');
+              later(900, nextBeat);
+            },
+          },
+          'Assistir de novo',
+        ),
+      );
     };
 
     const press = () => {
@@ -194,6 +237,8 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
       // cedo demais / alarme falso
       phase = 'between';
       mistakes++;
+      lives--;
+      hud();
       mark(false);
       setCouple('ri');
       AudioSystem.play('cancel');
@@ -207,7 +252,7 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
       dots.querySelectorAll('i').forEach((d) => d.classList.remove('now'));
       show('corredor');
       setCouple(mistakes <= 2 ? 'abraco' : 'ri');
-      const stars = mistakes <= 1 ? 3 : mistakes <= 3 ? 2 : 1;
+      const stars = Math.max(1, lives);
       AudioSystem.play('quest');
       say(stars === 3 ? 'As luzes acenderam. Pipoca quase inteira e os dois agarradinhos.' : late >= 3 ? 'Os créditos subiram. A sala inteira tava coberta de pipoca. A nossa.' : 'As luzes acenderam. A Bella ainda tá rindo do Weng.');
       btn.remove();
@@ -227,8 +272,9 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
     const begin = () => {
       if (phase !== 'idle') return;
       startBtn.remove();
+      rules.classList.add('off');
       actions.append(btn);
-      say('Fica de olho na tela. Quando o bicho pular... SEGURA!');
+      say('Olho na tela... espera o MONSTRO aparecer pra apertar PULAR!');
       later(1200, nextBeat);
       phase = 'between';
     };

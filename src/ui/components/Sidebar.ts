@@ -152,8 +152,9 @@ export class Sidebar {
       ? h(
           'div',
           { class: `tb-encanto ${enc >= 100 ? 'full' : ''}`, title: 'Encantômetro da Meli' },
-          h('span', { class: 'tb-enc-cat' }, enc >= 100 ? '😻' : enc >= 55 ? '😺' : enc >= 30 ? '🐱' : '😾'),
-          h('span', { class: 'tb-enc-bar' }, h('i', { style: `width:${Math.max(4, enc)}%` })),
+          h('span', { class: 'tb-enc-cat', style: `background-image:url(${textureURL('meli-poses') ?? ''});background-position:${(enc >= 100 ? 3 : enc >= 30 ? 0 : 2) * (100 / 3)}% 0` }),
+          // corações do kit (igual ao medidor de nervosismo): 5 corações, meio coração a cada 10%
+          h('span', { class: 'tb-enc-hearts' }, ...Array.from({ length: 5 }, (_, i) => h('span', { class: enc >= (i + 1) * 20 ? 'on' : enc >= i * 20 + 10 ? 'half' : '' }))),
           h('span', { class: 'tb-enc-txt' }, enc >= 100 ? 'Apaixonada ♥' : enc >= 55 ? 'Brincalhona' : enc >= 30 ? 'Curiosa' : enc > 0 ? 'Desconfiada' : 'Escondida'),
         )
       : '';
