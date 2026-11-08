@@ -190,6 +190,8 @@ export const ASSETS: AssetEntry[] = [
   { id: 'MAP-030', key: 'map-pt-hotel-fora-bg', file: 'assets/maps/pt-hotel-fora-bg.png', kind: 'image' },
   { id: 'MAP-012', key: 'map-duque-acai-bg', file: 'assets/maps/duque-acai-bg.png', kind: 'image' },
   { id: 'MEM-003', key: 'memory-pia-03', file: 'assets/cinematics/memory-pia-03.png', kind: 'image' },
+  { id: 'MEM-006', key: 'memory-dq-02', file: 'assets/cinematics/memory-dq-02.png', kind: 'image' },
+  { id: 'MEM-007', key: 'memory-dq-03', file: 'assets/cinematics/memory-dq-03.png', kind: 'image' },
 
   // UI
   { id: 'UI-001', key: 'ui-title-art', file: 'assets/ui/title-art.png', kind: 'image' },

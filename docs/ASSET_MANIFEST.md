@@ -109,6 +109,8 @@ Só a roupa casual da Bella tem os óculos rosados.
 | MEM-001 | `cinematics/memory-pia-01.png` | Memória "O encontro marcado" (provisória: casa) | integrado (trocar por ilustração) |
 | MEM-002 | `cinematics/memory-pia-02.png` | Memória "A Rota 66" (provisória: fachada) | integrado (trocar por ilustração) |
 | MEM-003 | `cinematics/memory-pia-03.png` | Primeiro beijo no coreto, na chuva | **integrado** |
+| MEM-006 | `cinematics/memory-dq-02.png` | Açaí cheio de complemento | **integrado** |
+| MEM-007 | `cinematics/memory-dq-03.png` | O imbatível perdeu (cartas com a Meli) | **integrado** |
 | UI-001 | `ui/title-art.png` | Capa: casal olhando a lua | **integrado** |
 | UI-003 | `ui/logo.png` | Logo "A Lua está Bella" | **integrado** |
 | UI-004 | `ui/panel.png` | Moldura 9-slice de painéis/botões/diálogo | **integrado** |

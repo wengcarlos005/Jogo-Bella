@@ -13,8 +13,8 @@ Regras de sempre:
 
 | Arquivo que eu espero | Lembrança | Onde aparece |
 |---|---|---|
-| `memory-dq-02.png` | Açaí cheio de complemento | depois do açaí |
-| `memory-dq-03.png` | O imbatível perdeu | cartas no apê |
+| `memory-dq-02.png` | Açaí cheio de complemento | depois do açaí (**pronta**) |
+| `memory-dq-03.png` | O imbatível perdeu | cartas no apê (**pronta**) |
 | `memory-dq-09.png` | Achadinhos da Multidão | **nova**: saindo do Multidão |
 | `memory-dq-10.png` | A lista da Vó | **nova**: saindo do mercadinho |
 | `memory-pt-01.png` | Cisnes e nuvens | **nova**: fim do piquenique |
