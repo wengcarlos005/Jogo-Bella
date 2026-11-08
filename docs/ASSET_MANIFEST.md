@@ -206,6 +206,7 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | MG-CH | Churrasco: carnes (4 tipos x 4 pontos) | minigames/churrasco-carnes.webp → churr-*.png | ✅ no minijogo da churrasqueira |
 | MG-MAE | Mãe no minijogo do beijo (desconfiada, sobrancelha, brava) | minigames/mae-flagra.webp → mae-*.png | ✅ no beijo escondido |
 | MG-CH2 | Churrasqueira, fogo (3), fumaça, pegador, tábua, abanador, faísca, estrela | minigames/churrasco-grelha.webp → churr-*.png | ✅ grelha, fogo e fumaça no minijogo |
+| MG-TR | Taco Roleta: prato, taco fechado/aberto/com pimenta, água, fogo, sombreiro, ?, brilho, X, limão, molho | minigames/taco-roleta.webp → taco-*.png | ✅ no minijogo do mexicano |
 | MG-BJ | Casal no sofá (inocente, beijo, susto), mãe espiando, sombra | minigames/beijo-sofa.webp → casal-*, mae-espia, sombra-mae | ✅ no beijo escondido |
 | CIN-017 | Céu e serra de Petrópolis (olhar as nuvens no piquenique) | maps/pt-colina.webp → cinematics/pt-ceu-colina.png | ✅ no piquenique |
 | MAP-027 | Cinema vazio | maps/duque-cinema-base.webp | ✅ no jogo |

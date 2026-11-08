@@ -4,254 +4,211 @@ import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
 
 /**
- * Minigame — Noite do Taco (restaurante mexicano, 2º encontro).
+ * Minigame — Taco Roleta (restaurante mexicano, 2º encontro).
  *
- * Os ingredientes caem do teto (com papel picado e tudo); mova a tortilha (← →, A D, mouse ou toque)
- * pra pegar só o que o pedido pede. Ingrediente errado ou cacto = erro. A bebida da casa apaga um erro.
- * 3 rodadas: o taco da Bella (montado pelo Weng), o taco do Weng (pimenta demais) e um pra dividir.
- * Estrelas: até 2 erros = 3, até 5 = 2, senão 1.
+ * O Weng esconde uma pimenta dentro de um dos 3 tacos e o garçom embaralha os pratos.
+ * Siga com o olho e escolha um taco SEM pimenta pra Bella (que odeia pimenta).
+ * 5 rodadas, cada vez mais rápidas; na última é a vingança: achar o taco COM pimenta pro Weng.
+ * Estrelas: 5 acertos = 3, 3–4 = 2, senão 1.
  *
- * Sprites opcionais: taco-<id> (art-source/minigames/tacos.webp); sem eles, usa emoji.
+ * Controles: clique/toque no taco, ou ← → pra escolher e espaço/E pra confirmar (ou 1, 2, 3).
+ * Sprites: assets/minigames/taco-*.png (art-source/minigames/taco-roleta.webp).
+ * Reações: retratos da Bella e do Weng (trocar pelos bustos de sombreiro quando chegarem).
  */
-type Ing = 'carne' | 'queijo' | 'guaca' | 'tomate' | 'cebola' | 'alface' | 'milho' | 'pimenta' | 'limao' | 'cacto' | 'bebida';
-
-const INFO: Record<Ing, { name: string; emoji: string }> = {
-  carne: { name: 'Carne', emoji: '🥩' },
-  queijo: { name: 'Queijo', emoji: '🧀' },
-  guaca: { name: 'Guacamole', emoji: '🥑' },
-  tomate: { name: 'Tomate', emoji: '🍅' },
-  cebola: { name: 'Cebola', emoji: '🧅' },
-  alface: { name: 'Alface', emoji: '🥬' },
-  milho: { name: 'Milho', emoji: '🌽' },
-  pimenta: { name: 'Pimenta', emoji: '🌶️' },
-  limao: { name: 'Limão', emoji: '🍋' },
-  cacto: { name: 'Cacto', emoji: '🌵' },
-  bebida: { name: 'Bebida da casa', emoji: '🍹' },
-};
-const FOODS: Ing[] = ['carne', 'queijo', 'guaca', 'tomate', 'cebola', 'alface', 'milho', 'pimenta', 'limao'];
-
-interface Round {
-  title: string;
-  by: string;
-  need: Partial<Record<Ing, number>>;
-  speed: number;
-  intro: string;
-  done: string;
-}
-const ROUNDS: Round[] = [
-  {
-    title: 'O taco da Bella',
-    by: 'O Weng monta pra ela',
-    need: { carne: 2, queijo: 2, guaca: 1 },
-    speed: 1,
-    intro: 'Weng: "Muito queijo, guacamole... e NADA de pimenta. Eu presto atenção, viu?"',
-    done: 'Bella: "Você decorou meu taco?! Esse homem presta atenção."',
-  },
-  {
-    title: 'O taco do Weng',
-    by: 'A Bella monta pra ele',
-    need: { carne: 2, pimenta: 3, cebola: 1 },
-    speed: 1.25,
-    intro: 'Bella: "Ele quer TRÊS pimentas. Esse menino vai pegar fogo."',
-    done: 'Weng: "(chorando de pimenta) Perfeito. Tá perfeito. Me dá a bebida."',
-  },
-  {
-    title: 'O taco pra dividir',
-    by: 'Os dois juntos',
-    need: { carne: 1, queijo: 1, guaca: 1, tomate: 1, milho: 1, limao: 1 },
-    speed: 1.5,
-    intro: 'Garçom: "Y el último... um de cada! Pra dividir, como os enamorados."',
-    done: 'Os dois: "...Metade é minha." "Metade é MINHA."',
-  },
-];
-
 export interface TacoResult {
   stars: number;
   mistakes: number;
 }
 
-interface Falling {
-  el: HTMLElement;
-  id: Ing;
-  x: number;
-  y: number;
-  v: number;
-  spin: number;
-}
+const ROUNDS = [
+  { swaps: 3, ms: 620, show: 1700, intro: 'Weng: "Uma dessas tem pimenta. Só uma. Boa sorte, amor."' },
+  { swaps: 5, ms: 520, show: 1400, intro: 'Garçom: "¡Otra vez! Agora eu embaralho mais rápido, señorita."' },
+  { swaps: 7, ms: 430, show: 1200, intro: 'Weng: "Essa pimenta é das brabas. Presta atenção..."' },
+  { swaps: 9, ms: 340, show: 1000, intro: 'Garçom: "¡Rápido, rápido, rápido!"' },
+  { swaps: 10, ms: 300, show: 1000, revenge: true, intro: 'Bella: "Agora é a MINHA vez. Garçom, esconde a pimenta pra ele!"' },
+];
+const X = [20, 50, 80];
 
 export function playTacoGame(parent: HTMLElement, opts: { title?: string } = {}): Promise<TacoResult> {
   return new Promise((resolve) => {
+    const mg = (f: string) => new URL(`assets/minigames/taco-${f}.png`, document.baseURI).href;
+    for (const f of ['prato', 'fechado', 'aberto', 'pimenta', 'fogo', 'brilho', 'agua', 'sombreiro', 'duvida']) new Image().src = mg(f);
     let round = 0;
-    let mistakes = 0;
-    let got: Partial<Record<Ing, number>> = {};
-    let tx = 50;
-    let target = 50;
-    let left = false;
-    let right = false;
-    let running = false;
+    let hits = 0;
+    let pepper = 0; // índice do taco (0..2) que tem a pimenta
+    let pos = [0, 1, 2]; // pos[taco] = coluna
+    let picking = false;
+    let cursor = 1;
     let finished = false;
-    let spawnIn = 0.6;
-    let timeLeft = 30;
-    let last = 0;
-    let raf = 0;
-    const items: Falling[] = [];
 
-    const icon = (id: Ing, cls = '') => {
-      const url = textureURL(`taco-${id}`);
-      return url ? h('img', { class: `tc-ico ${cls}`, src: url, alt: INFO[id].name }) : h('span', { class: `tc-ico tc-emo ${cls}` }, INFO[id].emoji);
-    };
-
+    const tacos = [0, 1, 2].map((i) => {
+      const img = h('img', { class: 'tr-taco', src: mg('aberto'), alt: '' }) as HTMLImageElement;
+      const slot = h('button', { class: 'tr-slot', 'aria-label': `Taco ${i + 1}` }, h('img', { class: 'tr-plate', src: mg('prato'), alt: '' }), img, h('img', { class: 'tr-fx', alt: '' }));
+      slot.addEventListener('click', () => choose(i));
+      return { slot, img, fx: slot.querySelector('.tr-fx') as HTMLImageElement };
+    });
     const bg = textureURL('map-piabeta-mexicano-bg');
-    const pile = h('div', { class: 'tc-pile' });
-    const tortillaUrl = textureURL('taco-tortilha');
-    const tortilla = h('div', { class: 'tc-tortilla' }, tortillaUrl ? h('img', { class: 'tc-tort-img', src: tortillaUrl, alt: '' }) : h('div', { class: 'tc-tort-css' }), pile);
-    const banner = h('div', { class: 'tc-banner' });
-    const clock = h('div', { class: 'tc-clock' });
-    const bunting = h('div', { class: 'tc-bunting' }, ...Array.from({ length: 14 }, (_, i) => h('i', { style: `--c:${['#ff5a7a', '#ffd23f', '#3ec1d3', '#7bd36b', '#ff8c3a', '#b36bff'][i % 6]}` })));
-    const stage = h('div', { class: 'tc-stage' }, bg ? h('div', { class: 'tc-bg', style: `background-image:url(${bg})` }) : null, bunting, tortilla, banner, clock);
-    const orderEl = h('div', { class: 'tc-order' });
-    const roundEl = h('div', { class: 'tc-round' });
-    const errEl = h('div', { class: 'tc-err' });
-    const msg = h('div', { class: 'gp-bubble tc-msg' });
-    const btnL = h('button', { class: 'tc-arrow', 'aria-label': 'Esquerda' }, '◀');
-    const btnR = h('button', { class: 'tc-arrow', 'aria-label': 'Direita' }, '▶');
-    const startBtn = h('button', { class: 'btn primary gp-start' }, '🌮 Bora montar!');
-    const actions = h('div', { class: 'bg-actions' }, btnL, startBtn, btnR);
+    const banner = h('div', { class: 'tr-banner' });
+    const stage = h(
+      'div',
+      { class: 'tr-stage' },
+      bg ? h('div', { class: 'tr-bg', style: `background-image:url(${bg})` }) : null,
+      h('div', { class: 'tr-table' }),
+      h('img', { class: 'tr-deco l', src: mg('molho'), alt: '' }),
+      h('img', { class: 'tr-deco r', src: mg('limao'), alt: '' }),
+      ...tacos.map((t) => t.slot),
+      banner,
+    );
+    const face = h('img', { class: 'tr-face', alt: '' }) as HTMLImageElement;
+    const msg = h('div', { class: 'gp-bubble tr-msg' });
+    const dots = h('div', { class: 'tr-dots' }, ...ROUNDS.map(() => h('i')));
+    const startBtn = h('button', { class: 'btn primary gp-start' }, '🌮 Começar');
+    const actions = h('div', { class: 'bg-actions' }, startBtn);
     const panel = h(
       'div',
-      { class: 'bg-panel panel gp-panel tc-panel' },
-      h('div', { class: 'bg-title tc-title' }, opts.title ?? '🌮 Noite do Taco 🌵'),
-      h('div', { class: 'tc-main' }, stage, h('div', { class: 'tc-side' }, roundEl, orderEl, errEl)),
-      msg,
+      { class: 'bg-panel panel gp-panel tr-panel' },
+      h('div', { class: 'bg-title tr-title' }, h('img', { src: mg('sombreiro'), alt: '' }), opts.title ?? 'Taco Roleta', h('img', { src: mg('sombreiro'), alt: '' })),
+      dots,
+      stage,
+      h('div', { class: 'tr-talk' }, face, msg),
       actions,
     );
-    const screen = h('div', { class: 'screen bg-screen tc-screen' }, panel);
+    const screen = h('div', { class: 'screen bg-screen tr-screen' }, panel);
     parent.append(screen);
     InputSystem.push('minigame');
     InputSystem.releaseAll();
 
-    const say = (t: string) => {
+    const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+    const say = (who: 'bella' | 'weng' | 'garcom', t: string) => {
+      const url = textureURL(`portrait-${who === 'garcom' ? 'garcom-mex' : who}`) ?? textureURL(`portrait-${who}`);
+      if (url) face.src = url;
       msg.textContent = t;
       msg.classList.remove('pop');
       void msg.offsetWidth;
       msg.classList.add('pop');
     };
+    const sayLine = (line: string) => {
+      const m = line.match(/^(Weng|Bella|Garçom): (.*)$/);
+      say(m ? (m[1] === 'Weng' ? 'weng' : m[1] === 'Bella' ? 'bella' : 'garcom') : 'garcom', m ? m[2] : line);
+    };
+    const place = () => tacos.forEach((t, i) => (t.slot.style.left = `${X[pos[i]]}%`));
+    const setCursor = (c: number) => {
+      cursor = (c + 3) % 3;
+      tacos.forEach((t, i) => t.slot.classList.toggle('sel', picking && pos[i] === cursor));
+    };
+    const fx = (i: number, key: string | null) => {
+      const el = tacos[i].fx;
+      el.classList.remove('on');
+      if (!key) return;
+      el.src = mg(key);
+      void el.offsetWidth;
+      el.classList.add('on');
+    };
+    const hop = (i: number) => tacos[i].img.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-22%)' }, { transform: 'translateY(0)' }], { duration: 260, easing: 'ease-out' });
     const R = () => ROUNDS[round];
-    const missing = () => (Object.keys(R().need) as Ing[]).filter((k) => (got[k] ?? 0) < (R().need[k] ?? 0));
-    const renderOrder = () => {
-      roundEl.replaceChildren(h('b', {}, `${round + 1}/3 · ${R().title}`), h('small', {}, R().by));
-      orderEl.replaceChildren(
-        ...(Object.keys(R().need) as Ing[]).map((k) => {
-          const n = R().need[k]!;
-          const g = Math.min(n, got[k] ?? 0);
-          return h('div', { class: `tc-line ${g >= n ? 'ok' : ''}` }, icon(k), h('span', {}, INFO[k].name), h('b', {}, `${g}/${n}`));
-        }),
-      );
-      errEl.textContent = `Erros: ${mistakes}`;
-    };
-    const place = () => {
-      tortilla.style.left = `${tx}%`;
+
+    const swap = async (ms: number) => {
+      const a = Math.floor(Math.random() * 3);
+      const b = (a + 1 + Math.floor(Math.random() * 2)) % 3;
+      const ta = pos.indexOf(a);
+      const tb = pos.indexOf(b);
+      tacos[ta].slot.style.transitionDuration = `${ms}ms`;
+      tacos[tb].slot.style.transitionDuration = `${ms}ms`;
+      tacos[ta].img.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-26%)' }, { transform: 'translateY(0)' }], { duration: ms, easing: 'ease-in-out' });
+      tacos[tb].img.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(14%)' }, { transform: 'translateY(0)' }], { duration: ms, easing: 'ease-in-out' });
+      pos[ta] = b;
+      pos[tb] = a;
+      place();
+      AudioSystem.play('blip');
+      await wait(ms + 30);
     };
 
-    const startRound = () => {
-      got = {};
-      pile.replaceChildren();
-      tortilla.classList.remove('fold');
-      for (const it of items) it.el.remove();
-      items.length = 0;
-      timeLeft = 30;
-      renderOrder();
-      banner.textContent = `${R().title}!`;
+    const playRound = async () => {
+      const r = R();
+      dots.querySelectorAll('i').forEach((d, k) => d.classList.toggle('now', k === round));
+      pos = [0, 1, 2];
+      place();
+      [0, 1, 2].forEach((i) => fx(i, null));
+      pepper = Math.floor(Math.random() * 3);
+      banner.textContent = r.revenge ? 'Vingança! Ache o taco COM pimenta' : `Rodada ${round + 1}`;
       banner.classList.add('on');
-      say(R().intro);
-      running = false;
-      setTimeout(() => {
-        banner.classList.remove('on');
-        running = true;
-        last = 0;
-      }, 1500);
+      // mostra onde está a pimenta
+      tacos.forEach((t, i) => (t.img.src = mg(i === pepper ? 'pimenta' : 'aberto')));
+      sayLine(r.intro);
+      fx(pepper, 'duvida');
+      await wait(r.show);
+      banner.classList.remove('on');
+      fx(pepper, null);
+      // fecha os tacos
+      tacos.forEach((t, i) => {
+        t.img.src = mg('fechado');
+        hop(i);
+      });
+      AudioSystem.play('pickup');
+      await wait(450);
+      say('garcom', '¡Mezclando!');
+      for (let k = 0; k < r.swaps; k++) await swap(r.ms);
+      say('bella', r.revenge ? 'Cadê a pimenta... cadê... (sorriso maligno)' : 'Hmm... qual é o seguro?');
+      picking = true;
+      setCursor(1);
     };
 
-    const spawn = () => {
-      const miss = missing();
-      let id: Ing;
-      const r = Math.random();
-      if (r < 0.07) id = 'bebida';
-      else if (r < 0.17) id = 'cacto';
-      else if (r < 0.62 && miss.length) id = miss[Math.floor(Math.random() * miss.length)];
-      else id = FOODS[Math.floor(Math.random() * FOODS.length)];
-      const el = h('div', { class: 'tc-fall' }, icon(id));
-      const x = 8 + Math.random() * 84;
-      el.style.left = `${x}%`;
-      el.style.top = '-10%';
-      stage.append(el);
-      items.push({ el, id, x, y: -10, v: (30 + Math.random() * 12) * R().speed, spin: (Math.random() - 0.5) * 200 });
-    };
-
-    const pop = (x: number, y: number, text: string, good: boolean) => {
-      const e = h('div', { class: `tc-pop ${good ? 'good' : 'bad'}`, style: `left:${x}%;top:${y}%` }, text);
-      stage.append(e);
-      setTimeout(() => e.remove(), 800);
-    };
-
-    const catchIt = (it: Falling) => {
-      if (it.id === 'bebida') {
-        mistakes = Math.max(0, mistakes - 1);
+    const choose = async (i: number) => {
+      if (!picking) return;
+      picking = false;
+      setCursor(cursor);
+      const r = R();
+      const hasPepper = i === pepper;
+      const ok = r.revenge ? hasPepper : !hasPepper;
+      tacos[i].img.src = mg(hasPepper ? 'pimenta' : 'aberto');
+      hop(i);
+      if (ok) {
+        hits++;
+        fx(i, 'brilho');
         AudioSystem.play('quest');
-        pop(it.x, 70, '🍹 -1 erro', true);
-        say('Garçom: "¡Bebida de la casa! Cortesia pro casal."');
-      } else if (it.id === 'cacto') {
-        mistakes++;
-        AudioSystem.play('cancel');
-        pop(it.x, 70, 'AI! 🌵', false);
-        tortilla.classList.remove('bg-shake');
-        void tortilla.offsetWidth;
-        tortilla.classList.add('bg-shake');
-        say('Bella: "CACTO NÃO! Quem jogou um cacto?!"');
-      } else if ((got[it.id] ?? 0) < (R().need[it.id] ?? 0)) {
-        got[it.id] = (got[it.id] ?? 0) + 1;
-        AudioSystem.play('pickup');
-        pop(it.x, 70, '+1', true);
-        const p = icon(it.id, 'tc-in');
-        p.style.setProperty('--dx', `${((pile.childElementCount * 37) % 60) - 30}%`);
-        p.style.setProperty('--r', `${((pile.childElementCount * 53) % 60) - 30}deg`);
-        pile.append(p);
+        if (r.revenge) say('weng', '(com a boca pegando fogo) ...É. Eu mereci essa.');
+        else say('bella', ['Ufa! Esse tá seguro. Hmm, que delícia.', 'Achei! Sem pimenta. Toma, Weng.', 'Eu sou boa nisso. Muito boa.', 'Ha! Nem tremi.'][round % 4]);
       } else {
-        mistakes++;
+        fx(i, r.revenge ? 'x' : 'fogo');
         AudioSystem.play('cancel');
-        pop(it.x, 70, '✗', false);
-        say(it.id === 'pimenta' && round === 0 ? 'Bella: "PIMENTA NO MEU?! Weng!"' : `${INFO[it.id].name} não tava no pedido...`);
+        stage.classList.remove('bg-shake');
+        void stage.offsetWidth;
+        stage.classList.add('bg-shake');
+        if (r.revenge) say('weng', 'Hahaha! Sem pimenta! Que delícia de taco normal!');
+        else {
+          say('bella', ['AAAAAI! ÁGUA! ÁGUA!', 'TÁ PEGANDO FOGO, WENG!', 'Eu vou chorar. Tô chorando.', 'Por que você faz isso comigo?!'][round % 4]);
+          await wait(900);
+          say('weng', '(rindo tanto que nem consegue falar) ...toma a água, toma.');
+        }
       }
-      renderOrder();
-      if (!missing().length) endRound(true);
-    };
-
-    const endRound = (complete: boolean) => {
-      running = false;
-      if (!complete) mistakes += missing().reduce((s, k) => s + (R().need[k]! - (got[k] ?? 0)), 0);
-      for (const it of items) it.el.remove();
-      items.length = 0;
-      tortilla.classList.add('fold');
-      AudioSystem.play(complete ? 'confirm' : 'cancel');
-      say(complete ? R().done : 'Garçom: "Ay, o tempo acabou! Vai assim mesmo, meio vazio."');
-      renderOrder();
-      setTimeout(() => {
-        round++;
-        if (round < ROUNDS.length) startRound();
-        else finish();
-      }, 1900);
+      dots.querySelectorAll('i')[round].classList.add(ok ? 'ok' : 'bad');
+      await wait(900);
+      // mostra os outros
+      tacos.forEach((t, k) => {
+        if (k !== i) t.img.src = mg(k === pepper ? 'pimenta' : 'aberto');
+      });
+      if (!ok && !r.revenge) fx(i, 'agua');
+      await wait(1300);
+      round++;
+      if (round < ROUNDS.length) void playRound();
+      else finish();
     };
 
     const finish = () => {
       finished = true;
-      const stars = mistakes <= 2 ? 3 : mistakes <= 5 ? 2 : 1;
-      say(stars === 3 ? 'Garçom: "¡Magnífico! Vocês montam taco melhor que meu chef."' : stars === 2 ? 'Bella: "Ficou meio torto... mas foi a gente que fez."' : 'Weng: "Tem cacto no meu taco. Eu tô feliz mesmo assim."');
+      const stars = hits >= 5 ? 3 : hits >= 3 ? 2 : 1;
+      [0, 1, 2].forEach((i) => fx(i, null));
+      banner.textContent = `${hits}/5`;
+      banner.classList.add('on');
+      if (stars === 3) say('garcom', '¡Increíble! Nenhuma pimenta. Essa señorita tem olho de águia.');
+      else if (stars === 2) say('bella', 'Comi umas pimentas... mas o Weng comeu mais. Isso que importa.');
+      else say('weng', 'Você comeu TODAS as pimentas. Eu nunca ri tanto num encontro.');
       AudioSystem.play('quest');
       actions.replaceChildren(
         h('div', { class: 'bg-stars' }, ...[0, 1, 2].map((k) => h('span', { class: k < stars ? 'on' : '', style: `animation-delay:${k * 0.25}s` }, '★'))),
         h('button', { class: 'btn primary', onclick: close }, 'Comer ♥'),
       );
-      const result = { stars, mistakes };
+      const result = { stars, mistakes: 5 - hits };
       function close() {
         InputSystem.off('minigame:interact', close);
         cleanup();
@@ -260,84 +217,29 @@ export function playTacoGame(parent: HTMLElement, opts: { title?: string } = {})
       InputSystem.once('minigame:interact', close);
     };
 
-    const tick = (t: number) => {
-      const dt = last ? Math.min(0.05, (t - last) / 1000) : 0;
-      last = t;
-      if (left) target -= 95 * dt;
-      if (right) target += 95 * dt;
-      target = Math.max(9, Math.min(91, target));
-      tx += (target - tx) * Math.min(1, dt * 14);
-      place();
-      if (running) {
-        timeLeft -= dt;
-        clock.textContent = `⏱ ${Math.max(0, Math.ceil(timeLeft))}`;
-        clock.classList.toggle('hurry', timeLeft < 8);
-        spawnIn -= dt;
-        if (spawnIn <= 0) {
-          spawn();
-          spawnIn = (0.62 + Math.random() * 0.35) / R().speed;
-        }
-        for (let i = items.length - 1; i >= 0; i--) {
-          const it = items[i];
-          it.y += it.v * dt;
-          it.el.style.top = `${it.y}%`;
-          it.el.style.transform = `translate(-50%, -50%) rotate(${(it.y * it.spin) / 60}deg)`;
-          if (it.y > 74 && it.y < 88 && Math.abs(it.x - tx) < 10) {
-            it.el.remove();
-            items.splice(i, 1);
-            catchIt(it);
-            if (!running) break;
-          } else if (it.y > 110) {
-            it.el.remove();
-            items.splice(i, 1);
-          }
-        }
-        if (running && timeLeft <= 0) endRound(false);
-      }
-      raf = requestAnimationFrame(tick);
-    };
-
-    // controles
     const onKey = (e: KeyboardEvent) => {
-      if (InputSystem.context !== 'minigame') return;
-      const down = e.type === 'keydown';
-      if (e.code === 'ArrowLeft' || e.code === 'KeyA') left = down;
-      if (e.code === 'ArrowRight' || e.code === 'KeyD') right = down;
+      if (InputSystem.context !== 'minigame' || finished) return;
+      if (!picking) {
+        if (startBtn.isConnected && (e.code === 'Space' || e.code === 'Enter' || e.code === 'KeyE')) begin();
+        return;
+      }
+      if (e.code === 'ArrowLeft' || e.code === 'KeyA') setCursor(cursor - 1);
+      else if (e.code === 'ArrowRight' || e.code === 'KeyD') setCursor(cursor + 1);
+      else if (e.code === 'Space' || e.code === 'Enter' || e.code === 'KeyE') void choose(pos.indexOf(cursor));
+      else if (/^Digit[123]$/.test(e.code)) void choose(pos.indexOf(Number(e.code.slice(5)) - 1));
     };
     window.addEventListener('keydown', onKey);
-    window.addEventListener('keyup', onKey);
-    stage.addEventListener('pointermove', (e) => {
-      const r = stage.getBoundingClientRect();
-      target = ((e.clientX - r.left) / r.width) * 100;
-    });
-    stage.addEventListener('pointerdown', (e) => {
-      const r = stage.getBoundingClientRect();
-      target = ((e.clientX - r.left) / r.width) * 100;
-    });
-    const hold = (b: HTMLElement, set: (v: boolean) => void) => {
-      b.addEventListener('pointerdown', () => set(true));
-      for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) b.addEventListener(ev, () => set(false));
-    };
-    hold(btnL, (v) => (left = v));
-    hold(btnR, (v) => (right = v));
-
     const begin = () => {
-      if (finished || startBtn.isConnected === false) return;
-      InputSystem.off('minigame:interact', begin);
+      if (!startBtn.isConnected) return;
       startBtn.remove();
-      startRound();
+      void playRound();
     };
     startBtn.addEventListener('click', begin);
-    InputSystem.once('minigame:interact', begin);
-    renderOrder();
-    say('Pegue só o que o pedido pede! Fuja dos cactos 🌵. A bebida da casa 🍹 apaga um erro.');
     place();
-    raf = requestAnimationFrame(tick);
+    say('weng', 'Vou esconder uma pimenta num desses tacos. Se você pegar o certo... boa. Se não... ÁGUA.');
 
     function cleanup() {
-      cancelAnimationFrame(raf);
       window.removeEventListener('keydown', onKey);
-      window.removeEventListener('keyup', onKey);
       InputSystem.pop('minigame');
       screen.remove();
     }

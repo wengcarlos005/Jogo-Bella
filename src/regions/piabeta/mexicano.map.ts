@@ -41,20 +41,20 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Hmm... que bebida gostosa! O que tem nisso?');
     await ctx.say('garcom', 'Segredo da casa, señorita.');
     await ctx.say('weng', 'A gente vai ter que voltar até descobrir.');
-    await ctx.say('garcom', 'E hoje é quinta del taco! Cada um monta o taco do outro. ¿Aceitam o desafio?');
-    await ctx.say('bella', 'Aceito! Weng, se colocar pimenta no meu, a gente termina.');
-    await ctx.say('weng', 'Anotado: zero pimenta pra você. Três pra mim.');
+    await ctx.say('garcom', 'E hoje é noite da Taco Roleta! Três tacos, uma pimenta escondida. ¿Quién se atreve?');
+    await ctx.say('bella', 'Eu odeio pimenta. Weng, se eu comer pimenta hoje, a gente termina.');
+    await ctx.say('weng', '(já escondendo uma pimenta) Claro, amor. Jamais.');
     await ctx.backdrop(null);
     const tc = await ctx.tacos();
     ctx.setFlag('dq-tacos-estrelas', tc.stars);
     await ctx.backdrop('memory-dq-04');
     if (tc.stars === 3) {
       await ctx.say('garcom', 'Ganharam mais uma rodada da bebida da casa. ¡Felicidades!');
-      await ctx.say('bella', 'Melhor taco da minha vida. E nem é pelo taco.');
+      await ctx.say('bella', 'Nenhuma pimenta! E ainda fiz você comer uma. Melhor noite.');
     } else {
-      await ctx.say('bella', 'O meu ficou com gosto de cacto. Mas foi você que montou, então tá ótimo.');
+      await ctx.say('bella', 'Minha boca tá pegando fogo até agora. Você me paga, Weng.');
     }
-    await ctx.say('weng', '(com a boca pegando fogo) ...Valeu cada pimenta.');
+    await ctx.say('weng', '(bebendo a jarra inteira) ...Valeu cada pimenta.');
     await ctx.backdrop(null);
     ctx.objective(Q, 'mexicano');
     await ctx.memory('mem-dq-04');

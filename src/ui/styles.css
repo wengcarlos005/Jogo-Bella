@@ -2343,3 +2343,31 @@ img.tc-ico { height: auto; }
 .cg-stage { aspect-ratio: 16 / 7; }
 .cg-meter { color: #6a2a6a; }
 .cg-shh { color: #c8304a; }
+
+/* ---------------------------------------------------------------- Taco Roleta */
+.tr-panel { width: min(94%, calc(var(--u) * 400)) !important; background: linear-gradient(#fff4e3, #ffe2bd); }
+.tr-panel > * { flex: none; }
+.tr-title { display: flex !important; align-items: center; gap: 10px; background: linear-gradient(90deg, #e8343f, #ff9a2e, #2fb36b) !important; text-shadow: 0 2px 0 #7a1a10; }
+.tr-title img { height: 1.3em; image-rendering: pixelated; }
+.tr-dots { display: flex; justify-content: center; gap: 8px; }
+.tr-dots i { width: 14px; height: 14px; border-radius: 50%; background: #e8d4b8; border: 2px solid #b8581e; }
+.tr-dots i.now { box-shadow: 0 0 0 3px #ffd23f; }
+.tr-dots i.ok { background: #5ac46a; }
+.tr-dots i.bad { background: #e8343f; }
+.tr-stage { position: relative; aspect-ratio: 16 / 7; overflow: hidden; border-radius: calc(var(--u) * 3); border: calc(var(--u) * 1.2) solid #7a2a10; background: #6a2a12; }
+.tr-bg { position: absolute; inset: -6%; background: center / cover; filter: blur(3px) brightness(.55) saturate(1.2); }
+.tr-table { position: absolute; left: 0; right: 0; bottom: 0; height: 46%; background: repeating-linear-gradient(90deg, #e8343f 0 8%, #ffd23f 8% 16%, #2fb36b 16% 24%, #3ec1d3 24% 32%, #ff8c3a 32% 40%); box-shadow: inset 0 6px 0 rgba(255,255,255,.35), inset 0 -10px 0 rgba(0,0,0,.2); }
+.tr-deco { position: absolute; bottom: 6%; height: 34%; image-rendering: pixelated; z-index: 1; filter: drop-shadow(0 3px 0 rgba(0,0,0,.3)); }
+.tr-deco.l { left: 2%; } .tr-deco.r { right: 2%; height: 26%; }
+.tr-slot { position: absolute; bottom: 10%; width: 25%; height: 62%; transform: translateX(-50%); background: none; border: 0; padding: 0; cursor: pointer; transition-property: left; transition-timing-function: ease-in-out; z-index: 2; }
+.tr-plate { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; image-rendering: pixelated; filter: drop-shadow(0 4px 0 rgba(0,0,0,.3)); }
+.tr-taco { position: absolute; left: 12%; width: 76%; bottom: 24%; image-rendering: pixelated; }
+.tr-fx { position: absolute; left: 50%; bottom: 52%; width: 56%; transform: translateX(-50%) scale(.4); opacity: 0; image-rendering: pixelated; pointer-events: none; }
+.tr-fx.on { opacity: 1; transform: translateX(-50%) scale(1); transition: .3s cubic-bezier(.2, 1.7, .4, 1); }
+.tr-slot.sel .tr-plate { filter: drop-shadow(0 0 6px #ffd23f) drop-shadow(0 0 2px #fff); }
+.tr-slot.sel::after { content: '▼'; position: absolute; left: 50%; top: -6%; transform: translateX(-50%); color: #ffd23f; text-shadow: 0 2px 0 #7a1a10; font-size: clamp(14px, calc(var(--u) * 8), 26px); animation: kg-steps .5s infinite alternate; }
+.tr-banner { position: absolute; inset: 8% 0 auto 0; text-align: center; font-family: var(--font-pixel); font-size: clamp(14px, calc(var(--u) * 9), 30px); color: #fff; text-shadow: 0 3px 0 #b8401e, 0 0 12px #ff9a2e; opacity: 0; transform: scale(.6); transition: .3s cubic-bezier(.2, 1.6, .4, 1); z-index: 5; pointer-events: none; }
+.tr-banner.on { opacity: 1; transform: none; }
+.tr-talk { display: flex; align-items: center; gap: calc(var(--u) * 2); }
+.tr-face { width: calc(var(--u) * 22); height: calc(var(--u) * 22); border-radius: calc(var(--u) * 2); background: #ffe2b8; border: 2px solid #e3c39a; image-rendering: pixelated; flex: none; }
+.tr-msg { flex: 1; min-height: 2.4em; }
