@@ -75,7 +75,7 @@ export const ASSETS: AssetEntry[] = [
 
   // Casal sentado no banco (4 quadros 200x150: normal, piscando, expressão, normal)
   // Mexicano v2 (dentro e fachada) e quintal: objetos recortados das folhas
-  ...['mx-mesa', 'mx-banqueta', 'mx-cacto', 'mx-cactoflor', 'mx-planta', 'mx-cabideiro', 'mxf-mesa', 'mxf-guardasol', 'mxf-cacto', 'mxf-flores', 'mxf-lousa', 'mxf-poste', 'mxf-banco', 'qt-mesa', 'qt-isopor', 'qt-varal', 'qt-abacateiro', 'qt-vaso', 'qt-floreira', 'qt-moita', 'ap-sofa', 'ap-mesinha', 'ap-mesa', 'ap-tv', 'ap-abajur', 'ap-arranhador', 'ap-cesto', 'ap-planta', 'ap-vasinho', 'cn-cordao', 'cn-poste', 'cn-antifurto', 'cn-sofa', 'cn-poltrona', 'cn-mesinha', 'cn-floreira', 'cn-planta', 'rb-poste', 'rb-carro', 'rb-arvore', 'rb-banco', 'rb-lixeira', 'rb-hortensia', 'rb-flores', 'dr-poste', 'dr-arvore', 'dr-arvore-solta', 'dr-ipe-solta', 'dr-arvoregrande', 'dr-arvorefina', 'dr-postedupla', 'dr-postebola', 'dr-cercaviva', 'dr-arbusto', 'dr-arbustoflor', 'dr-arbustomuro', 'dr-ipe', 'dr-banco', 'dr-lixeira', 'dr-floreira', 'dr-ponto', 'dr-vaso', 'ac-mesa', 'ac-banqueta', 'ac-planta', 'ac-floreira', 'ac-antifurto', 'ac-lixeira', 'hf-poste', 'hf-banco', 'hf-lixeira', 'hf-placa', 'hf-araucaria', 'hf-pinheiro', 'hf-hortazul', 'hf-hortrosa', 'hq-cama', 'hq-criado', 'hq-poltrona', 'hq-mesinha', 'hq-guardaroupa', 'hq-malas', 'hq-planta', 'hq-bolo', 'rs-mesa2', 'rs-mesa4', 'rs-piano', 'rs-palmeira', 'rs-carrinho', 'rs-pedestal', 'qd-araucaria', 'qd-arvore', 'qd-poste', 'qd-cisne', 'qd-banco', 'qd-vaso', 'qd-lixeira', 'qd-carrinho', 'pq-toalha', 'pq-cesta', 'pq-prato', 'pq-arvore', 'pq-araucaria', 'pq-pedra', 'pq-arbusto', 'pq-baloes', 'mt-rack', 'mt-estante', 'mt-balas', 'mt-cestas', 'mt-caixa', 'mt-planta', 'mt-banco'].map(
+  ...['mx-mesa', 'mx-banqueta', 'mx-cacto', 'mx-cactoflor', 'mx-planta', 'mx-cabideiro', 'mxf-mesa', 'mxf-guardasol', 'mxf-cacto', 'mxf-flores', 'mxf-lousa', 'mxf-poste', 'mxf-banco', 'qt-mesa', 'qt-isopor', 'qt-varal', 'qt-abacateiro', 'qt-vaso', 'qt-floreira', 'qt-moita', 'ap-sofa', 'ap-mesinha', 'ap-mesa', 'ap-tv', 'ap-abajur', 'ap-arranhador', 'ap-cesto', 'ap-planta', 'ap-vasinho', 'cn-cordao', 'cn-poste', 'cn-antifurto', 'cn-sofa', 'cn-poltrona', 'cn-mesinha', 'cn-floreira', 'cn-planta', 'rb-poste', 'rb-carro', 'rb-arvore', 'rb-banco', 'rb-lixeira', 'rb-hortensia', 'rb-flores', 'dr-poste', 'dr-arvore', 'dr-arvore-solta', 'dr-ipe-solta', 'dr-arvoregrande', 'dr-arvorefina', 'dr-postedupla', 'dr-postebola', 'dr-cercaviva', 'dr-arbusto', 'dr-arbustoflor', 'dr-arbustomuro', 'dr-ipe', 'dr-banco', 'dr-lixeira', 'dr-floreira', 'dr-ponto', 'dr-vaso', 'ac-mesa', 'ac-banqueta', 'ac-planta', 'ac-floreira', 'ac-antifurto', 'ac-lixeira', 'hf-poste', 'hf-banco', 'hf-lixeira', 'hf-placa', 'hf-araucaria', 'hf-pinheiro', 'hf-hortazul', 'hf-hortrosa', 'hq-cama', 'hq-criado', 'hq-poltrona', 'hq-mesinha', 'hq-guardaroupa', 'hq-malas', 'hq-planta', 'hq-bolo', 'rs-mesa2', 'rs-mesa4', 'rs-piano', 'rs-palmeira', 'rs-carrinho', 'rs-pedestal', 'qd-araucaria', 'qd-arvore', 'qd-poste', 'qd-cisne', 'qd-banco', 'qd-vaso', 'qd-lixeira', 'qd-carrinho', 'pq-toalha', 'pq-cesta', 'pq-prato', 'pq-arvore', 'pq-araucaria', 'pq-pedra', 'pq-arbusto', 'pq-baloes', 'mt-rack', 'mt-estante', 'mt-balas', 'mt-cestas', 'mt-caixa', 'mt-planta', 'mt-banco', 'cb-mesa', 'cb-cadeira', 'cb-sofa', 'cb-mesinha', 'cb-cooler', 'cb-planta', 'cb-ventilador', 'cb-brinquedos'].map(
     (n, i): AssetEntry => ({ id: `OBJ-MXQ-${i}`, key: n, file: `assets/objects/${n}.png`, kind: 'image' }),
   ),
   // Casa da Bella v2: objetos recortados da folha
@@ -184,6 +184,7 @@ export const ASSETS: AssetEntry[] = [
   ),
   { id: 'MAP-011', key: 'map-duque-rua-bg', file: 'assets/maps/duque-rua-bg.png', kind: 'image' },
   { id: 'MAP-036', key: 'map-pt-quarto-bg', file: 'assets/maps/pt-quarto-bg.png', kind: 'image' },
+  { id: 'MAP-040', key: 'map-ar-cobertura-bg', file: 'assets/maps/ar-cobertura-bg.png', kind: 'image' },
   { id: 'MAP-035', key: 'map-dq-multidao-bg', file: 'assets/maps/dq-multidao-bg.png', kind: 'image' },
   { id: 'MAP-034', key: 'map-pt-quitandinha-bg', file: 'assets/maps/pt-quitandinha-bg.png', kind: 'image' },
   { id: 'MAP-033', key: 'map-pt-restaurante-bg', file: 'assets/maps/pt-restaurante-bg.png', kind: 'image' },
@@ -196,6 +197,7 @@ export const ASSETS: AssetEntry[] = [
   { id: 'MEM-009', key: 'memory-dq-10', file: 'assets/cinematics/memory-dq-10.png', kind: 'image' },
   { id: 'MEM-010', key: 'memory-pt-01', file: 'assets/cinematics/memory-pt-01.png', kind: 'image' },
   { id: 'MEM-011', key: 'memory-pt-02', file: 'assets/cinematics/memory-pt-02.png', kind: 'image' },
+  { id: 'MEM-012', key: 'memory-pt-03', file: 'assets/cinematics/memory-pt-03.png', kind: 'image' },
 
   // UI
   { id: 'UI-001', key: 'ui-title-art', file: 'assets/ui/title-art.png', kind: 'image' },

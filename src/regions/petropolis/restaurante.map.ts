@@ -2,6 +2,7 @@ import { T } from '@/world/tiles';
 import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
 import { QuestSystem } from '@/systems/QuestSystem';
+import { GameState } from '@/core/GameState';
 
 const Q = 'pt-m1';
 const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
@@ -99,6 +100,29 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Ei, a gente nem almoçou ainda! A mesa tá ali.');
       const t = ctx.playerTile();
       await ctx.move('player', t.x, t.y - 1.2, 60);
+      return;
+    }
+    if (objDone('almoco') && !ctx.flag('pt-fim')) {
+      ctx.setFlag('pt-fim');
+      await ctx.say('bella', 'Melhor aniversário da minha vida. Sério.');
+      await ctx.say('weng', 'O próximo vai ter que se esforçar muito, então.');
+      ctx.unlockRegion('araruama');
+      await ctx.fadeOut(600);
+      await ctx.chapterCard('Fim do Capítulo 3', 'Petrópolis', 'O aniversário dela.', 'Continuar', {
+        title: 'O aniversário dela',
+        photos: ['memory-pt-01', 'memory-pt-02', 'memory-pt-03'],
+        lines: [
+          'Corrida de pedalinho contra um cisne rosa, foto no palácio e formas nas nuvens no piquenique.',
+          'Um hotel no alto do morro, lareira, chocolate quente e meias de lã.',
+          'Meia-noite em ponto: ele ficou acordado só pra ser o primeiro a dar parabéns.',
+          'Café da manhã na varanda e um almoço chique com petit gâteau e velinha.',
+        ],
+      });
+      await ctx.chapterCard('Capítulo 4', 'Araruama', 'Ano-novo em família.', 'Começar');
+      // o cartão do capítulo já apareceu: sem o banner de região repetido na chegada
+      if (!GameState.data.regionsVisited.includes('araruama')) GameState.data.regionsVisited.push('araruama');
+      if (!ctx.questActive('ar-m1') && !QuestSystem.isDone('ar-m1')) ctx.startQuest('ar-m1');
+      await ctx.teleport('ar-cobertura', 'porta');
       return;
     }
     await ctx.teleport('pt-hotel-fora', 'portao');

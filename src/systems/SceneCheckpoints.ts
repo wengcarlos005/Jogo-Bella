@@ -40,7 +40,7 @@ interface Preset {
   flags?: Record<string, boolean | string>;
   outfits?: Partial<Record<RegionId, string>>;
 }
-const STORY = ['pia-m1', 'pia-m2', 'pia-m3', 'dq-e2', 'dq-e3', 'dq-m1', 'dq-m2', 'dq-m3', 'dq-m4', 'dq-m5', 'pt-q1', 'pt-m1'];
+const STORY = ['pia-m1', 'pia-m2', 'pia-m3', 'dq-e2', 'dq-e3', 'dq-m1', 'dq-m2', 'dq-m3', 'dq-m4', 'dq-m5', 'pt-q1', 'pt-m1', 'ar-m1'];
 const PRESETS: Preset[] = [
   { quest: 'pia-m1', mapId: 'piabeta-casa-bella', spawn: 'start' },
   { quest: 'pia-m2', mapId: 'piabeta-rua', spawn: 'from-casa', active: true, flags: { 'weng-segue': true, 'weng-entrou': true, 'look-escolhido': 'casual' }, outfits: { piabeta: 'casual' } },
@@ -59,6 +59,7 @@ const PRESETS: Preset[] = [
   { quest: 'pt-m1', title: 'O hotel no alto do morro', mapId: 'pt-hotel-fora', spawn: 'portao', active: true, doneObjs: ['quitandinha'], flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral' } },
   { quest: 'pt-m1', sub: 'quarto', title: 'A noite no quarto 12 (meia-noite)', mapId: 'pt-quarto', spawn: 'porta', active: true, doneObjs: ['quitandinha', 'mirante', 'fotos', 'checkin'], flags: { 'weng-segue': true, 'pt-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral' } },
   { quest: 'pt-m1', sub: 'almoco', title: 'Almoço de aniversário', mapId: 'pt-restaurante', spawn: 'porta', active: true, doneObjs: ['quitandinha', 'mirante', 'fotos', 'checkin', 'noite', 'cafe'], flags: { 'weng-segue': true, 'pt-chegou': true, 'pt-manha': true, 'pt-manha-1': true }, outfits: { piabeta: 'casual', petropolis: 'floral' } },
+  { quest: 'ar-m1', mapId: 'ar-cobertura', spawn: 'porta', active: true, flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual' } },
 ];
 
 function presetData(pr: Preset): SaveData {
@@ -78,6 +79,7 @@ function presetData(pr: Preset): SaveData {
   const reg: RegionId[] = ['piabeta'];
   if (idx >= STORY.indexOf('dq-e2')) reg.push('duque-de-caxias');
   if (idx >= STORY.indexOf('pt-q1')) reg.push('petropolis');
+  if (idx >= STORY.indexOf('ar-m1')) reg.push('araruama');
   d.regionsUnlocked = reg;
   d.regionsVisited = [...reg]; // sem o cartão de abertura da região ao pular pra cena
   d.mapId = pr.mapId;

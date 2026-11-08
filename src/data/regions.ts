@@ -18,7 +18,7 @@ export const REGIONS: RegionMeta[] = [
   { id: 'piabeta', name: 'Piabetá', chapter: 'Prólogo', year: 'O começo', subtitle: 'Onde tudo começou', entryMap: 'piabeta-rua', entrySpawn: 'from-casa', worldPos: { x: 0.36, y: 0.30 } },
   { id: 'duque-de-caxias', name: 'Duque de Caxias', chapter: 'Capítulo 2', year: 'Ano 1', subtitle: 'Nosso cantinho', entryMap: 'duque-apto', entrySpawn: 'porta', worldPos: { x: 0.30, y: 0.45 } },
   { id: 'petropolis', name: 'Petrópolis', chapter: 'Capítulo 3', year: 'Ano 1', subtitle: 'O aniversário dela', entryMap: 'pt-quitandinha', entrySpawn: 'entrada', worldPos: { x: 0.40, y: 0.14 } },
-  { id: 'araruama', name: 'Araruama', chapter: 'Capítulo 4', year: 'Ano 1', subtitle: 'Ano-novo em família', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.74, y: 0.52 } },
+  { id: 'araruama', name: 'Araruama', chapter: 'Capítulo 4', year: 'Ano 1', subtitle: 'Ano-novo em família', entryMap: 'ar-cobertura', entrySpawn: 'porta', worldPos: { x: 0.74, y: 0.52 } },
   { id: 'rio-das-ostras', name: 'Rio das Ostras', chapter: 'Capítulo 5', year: 'Ano 1', subtitle: 'Férias de verão', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.90, y: 0.34 } },
   { id: 'niteroi', name: 'Niterói', chapter: 'Capítulo 6', year: 'Ano 1', subtitle: 'Do outro lado da baía', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.52, y: 0.64 } },
   { id: 'lapa', name: 'Lapa', chapter: 'Capítulo 7', year: 'Ano 1', subtitle: 'Um aniversário inesquecível', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.40, y: 0.70 } },

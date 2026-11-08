@@ -19,7 +19,7 @@ Regras de sempre:
 | `memory-dq-10.png` | A lista da Vó | **nova**: saindo do mercadinho (**pronta**) |
 | `memory-pt-01.png` | Cisnes e nuvens | **nova**: fim do piquenique (**pronta**) |
 | `memory-pt-02.png` | Meia-noite em ponto | **nova**: parabéns à meia-noite (**pronta**) |
-| `memory-pt-03.png` | Almoço de aniversário | **nova**: fim do almoço |
+| `memory-pt-03.png` | Almoço de aniversário | **nova**: fim do almoço (**pronta**) |
 
 Os prompts de `memory-dq-02` e `memory-dq-03` estão em `PROMPTS_MINIGAMES.md`, seção 9.
 
@@ -79,7 +79,7 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 
 Todos os minigames usam só direcional + 1 botão (prontos pra controle de videogame).
 
-### 2A. Cobertura por dentro (cenário vazio)
+### 2A. Cobertura por dentro (cenário vazio) — **pronto** (cenário e objetos já no jogo)
 
 Anexe como referência de estilo um mapa interno atual (ex.: o apê do Weng).
 

@@ -115,6 +115,8 @@ Só a roupa casual da Bella tem os óculos rosados.
 | MEM-009 | `cinematics/memory-dq-10.png` | A lista da Vó (paçoca no carrinho) | **integrado** |
 | MEM-010 | `cinematics/memory-pt-01.png` | Cisnes e nuvens (piquenique no Quitandinha) | **integrado** |
 | MEM-011 | `cinematics/memory-pt-02.png` | Meia-noite em ponto | **integrado** |
+| MEM-012 | `cinematics/memory-pt-03.png` | Almoço de aniversário | **integrado** |
+| MAP-040 | `maps/ar-cobertura-bg.png` (fonte: `art-source/maps/ar-cobertura.webp`) | Araruama: cobertura dos tios (vazia) + objetos `objects/cb-*` | **integrado** |
 | UI-001 | `ui/title-art.png` | Capa: casal olhando a lua | **integrado** |
 | UI-003 | `ui/logo.png` | Logo "A Lua está Bella" | **integrado** |
 | UI-004 | `ui/panel.png` | Moldura 9-slice de painéis/botões/diálogo | **integrado** |

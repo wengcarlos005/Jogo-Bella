@@ -25,7 +25,8 @@ export interface QuestDef {
 import { PIABETA_QUESTS } from './piabeta';
 import { DUQUE_QUESTS } from './duque';
 import { PETROPOLIS_QUESTS } from './petropolis';
+import { ARARUAMA_QUESTS } from './araruama';
 
 export const QUESTS: Record<string, QuestDef> = Object.fromEntries(
-  [...PIABETA_QUESTS, ...DUQUE_QUESTS, ...PETROPOLIS_QUESTS].map((q) => [q.id, q]),
+  [...PIABETA_QUESTS, ...DUQUE_QUESTS, ...PETROPOLIS_QUESTS, ...ARARUAMA_QUESTS].map((q) => [q.id, q]),
 );

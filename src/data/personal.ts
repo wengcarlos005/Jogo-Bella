@@ -21,6 +21,11 @@ export const PERSONAL = {
 
   /** Avós do Weng: às vezes ficam no apartamento dele em Duque de Caxias; quando o casal se conheceu, estavam na China. */
   wengGrandparents: { avo: 'Vó', avoh: 'Vô' },
+  /**
+   * Família do Weng em Araruama (ano-novo de 2024, na cobertura dos tios em frente à lagoa):
+   * 4 tios (a principal é a tia Tim), os primos e a Anne, irmã do Weng.
+   */
+  wengFamily: { tia: 'Tim', irma: 'Anne', primos: ['Lilian', 'Vivian', 'Diego', 'Julinha', 'Mingau', 'Laylinha'] },
   /** Gatos: Meli (do Weng, laranja); Pombo (preto) e Lala (branca com manchas marrons) da Bella. */
   pets: { weng: ['Meli'], bella: ['Pombo', 'Lala'] },
   /**
