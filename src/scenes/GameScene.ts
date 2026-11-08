@@ -986,7 +986,8 @@ export class GameScene extends Phaser.Scene {
         const behind = [this.player, this.npcs.get('weng')?.npc].some(
           (a) => a && a.visible && a.x + 16 > o.rect.x && a.x - 16 < o.rect.right && a.y > o.rect.y - 4 && a.headY < o.rect.bottom,
         );
-        const target = behind ? 0.45 : 1;
+        // porta da frente: some de vez enquanto alguém está atrás dela
+        const target = behind ? 0 : 1;
         o.img.alpha += (target - o.img.alpha) * 0.2;
         continue;
       }

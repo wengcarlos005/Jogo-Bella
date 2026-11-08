@@ -144,6 +144,9 @@ const scripts: Record<string, Script> = {
     }
     await ctx.say('bella', 'Mesinhas com guarda-sol e velinha. Café da manhã aqui amanhã, combinado?');
   },
+  async varandaEntrada(ctx) {
+    await ctx.say('bella', 'A varanda é aqui do lado. Vem, pelas mesinhas.');
+  },
   async placa(ctx) {
     await ctx.say('bella', '"Mirante →" e "Recepção ↑". Até a placa é fofa.');
   },
@@ -175,6 +178,8 @@ export const hotelForaMap: MapDef = {
   background: '#2a2440',
   art: 'native',
   ambient: 'fireflies',
+  // lá em cima, na porta da recepção, eles têm a altura da porta; no portão, tamanho normal
+  perspective: { y0: 360, s0: 0.62, y1: 1000, s1: 0.95 },
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
@@ -183,8 +188,11 @@ export const hotelForaMap: MapDef = {
     R(572, 250, 668, 352), // telhadinho e porta da recepção (a porta é só pra interagir)
     R(965, 425, 1045, 500), // beira do barranco ao lado do mirante
     R(1365, 425, 1405, 505), // grade da direita do mirante
-    R(140, 250, 572, 452), // casa e varanda (terraço elevado)
-    R(140, 452, 500, 500), // pé do muro de pedra da varanda (ninguém encosta a cara no muro)
+    // varanda (terraço elevado): só se entra pela lateral, vindo do patamar da escada da recepção.
+    // Corredor livre entre as mesas e o guarda-corpo (y 375..412).
+    R(140, 250, 572, 375), // casa e mesinhas da varanda
+    R(140, 375, 205, 412), // fim da varanda (esquerda)
+    R(140, 412, 578, 500), // guarda-corpo + muro de pedra (de baixo não sobe)
     R(668, 250, 965, 392), // casa (direita)
     R(500, 395, 578, 470), // muro à esquerda da escada
     R(714, 388, 760, 472), // muro à direita da escada
@@ -237,6 +245,8 @@ export const hotelForaMap: MapDef = {
   ],
 
   overlays: [
+    // guarda-corpo da varanda passa NA FRENTE de quem anda no corredor
+    { x0: 150, y0: 378, x1: 562, y1: 445, base: 445 },
     { x0: 670, y0: 730, x1: 745, y1: 945, base: 945 },
     { x0: 990, y0: 730, x1: 1060, y1: 945, base: 945 },
     { x0: 0, y0: 100, x1: 160, y1: 650, base: 650, cut: 'foliage', fade: true, tall: true },
@@ -260,7 +270,11 @@ export const hotelForaMap: MapDef = {
     { rect: R(1290, 425, 1370, 500), interact: 'foto3', label: 'Foto da serra', markerIf: () => objActive('fotos') && objDone('mirante') && !GameState.is('pt-foto-3') },
     { rect: R(1265, 395, 1310, 480), interact: 'luneta', label: 'Luneta', markerIf: () => objActive('mirante') },
     { rect: R(595, 300, 672, 400), interact: 'porta', label: 'Recepção', markerIf: () => objActive('checkin') && objDone('fotos') },
-    { rect: R(160, 380, 560, 460), interact: 'varanda', label: 'Varanda', markerIf: () => GameState.is('pt-manha') && objActive('cafe') },
+    { rect: R(210, 360, 470, 412), interact: 'varanda', label: 'Varanda', markerIf: () => GameState.is('pt-manha') && objActive('cafe') },
+    // seta no patamar da escada: é por aqui que se entra na varanda
+    { rect: R(560, 352, 620, 395), interact: 'varandaEntrada', label: 'Varanda', markerIf: () => GameState.is('pt-manha') && objActive('cafe'), marker: { dir: 'left' } },
+    // depois do café: o portão leva pro restaurante
+    { rect: R(745, 890, 940, 955), interact: 'saida', label: 'Restaurante', markerIf: () => GameState.is('pt-manha') && objDone('cafe') },
     { rect: R(855, 500, 910, 595), interact: 'placa', label: 'Placa' },
   ],
 
