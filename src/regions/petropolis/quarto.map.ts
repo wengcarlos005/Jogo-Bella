@@ -16,8 +16,8 @@ const scripts: Record<string, Script> = {
     if (ctx.flag('pq-chegou')) return;
     ctx.setFlag('pq-chegou');
     ctx.follow('weng', false);
-    ctx.place('player', 15.2, 16.4, 'up');
-    ctx.place('weng', 16.4, 16.6, 'up');
+    ctx.place('player', 14.7, 16.5, 'up');
+    ctx.place('weng', 16.9, 16.5, 'up');
     await Promise.all([ctx.move('player', 15.2, 14.6, 50), ctx.move('weng', 17.0, 14.8, 50)]);
     await ctx.narrate('Quarto 12. Cheiro de madeira, lenha estalando e a serra inteira na janela.');
     await ctx.emote('bella', 'exclaim');
@@ -68,10 +68,10 @@ const scripts: Record<string, Script> = {
     ctx.setFlag('pq-lareira');
     await ctx.fadeOut(500);
     ctx.follow('weng', false);
-    // sentadinhos no chão em frente à lareira (longe da poltrona e da mesinha)
-    ctx.place('bella', 26.4, 14.0, 'right');
-    ctx.place('weng', 28.0, 14.2, 'left');
-    await ctx.frame(26.6, 13.4, 0);
+    // de frente pra lareira, um de frente pro outro (afastados o bastante pra cabelo não "fundir")
+    ctx.place('bella', 26.0, 15.0, 'right');
+    ctx.place('weng', 28.4, 15.0, 'left');
+    await ctx.frame(27.4, 13.4, 0);
     await ctx.fadeIn(500);
     await ctx.narrate('Chocolate quente, uma manta xadrez e o fogo estalando.');
     await ctx.say('bella', 'Minhas mãos tão congelando. Esquenta aqui.');
@@ -119,9 +119,10 @@ const scripts: Record<string, Script> = {
     await ctx.narrate('Ela dormiu primeiro. Ele ficou acordado. De propósito.');
     await ctx.narrate('23:59.');
     ctx.follow('weng', false);
-    ctx.place('player', 9.3, 15.6, 'right');
-    ctx.place('weng', 10.9, 15.6, 'left');
-    await ctx.frame(10.1, 14.6, 0);
+    // ao lado da cama (fora da base dela), um de frente pro outro e com espaço entre os dois
+    ctx.place('player', 13.6, 15.4, 'right');
+    ctx.place('weng', 16.1, 15.4, 'left');
+    await ctx.frame(13.0, 14.4, 0);
     ctx.letterbox(true);
     await ctx.fadeIn(900);
     await ctx.say('weng', '(cochichando) Bella... Bella. Acorda. Só um minutinho.');

@@ -183,6 +183,11 @@ export interface MapDef {
   indoor?: boolean;
   /** Tamanho dos personagens neste mapa (cenários desenhados mais de perto). Padrão 1. */
   charScale?: number;
+  /**
+   * Perspectiva: os personagens diminuem conforme vão pro fundo. y em pixels da arte original
+   * (1536x1024); s = multiplicador do tamanho. Entre y0 e y1 interpola, fora disso trava.
+   */
+  perspective?: { y0: number; s0: number; y1: number; s1: number };
   /** Cor de fundo fora do mapa. */
   background?: string;
 }

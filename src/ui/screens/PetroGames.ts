@@ -6,7 +6,7 @@ import { textureURL } from '../textures';
 /**
  * Minigames de Petrópolis (sprites em assets/minigames):
  *  - Formas nas Nuvens (piquenique no Quitandinha): ache a nuvem pedida entre as que passam no céu.
- *  - Corrida de Pedalinho (lago do Quitandinha): pedale (espaço / botão) e desvie com ← →.
+ *  - Corrida de Pedalinho (lago do Quitandinha): pedale no ritmo (espaço / botão A) e desvie com ← →.
  *  - Café da manhã (varanda do hotel): o Weng monta a bandeja de memória.
  */
 export interface MiniResult {
@@ -74,54 +74,94 @@ export function playCloudGame(parent: HTMLElement): Promise<MiniResult> {
     const ui = shell(parent, 'nv', 'Formas nas Nuvens');
     const sky = textureURL('cena-pt-ceu');
     const layer = h('div', { class: 'nv-sky' });
-    ui.stage.append(sky ? h('img', { class: 'nv-bg', src: sky, alt: '' }) : h('div'), layer, h('img', { class: 'nv-couple', src: mg('nv-deitados'), alt: '' }));
+    const badge = h('div', { class: 'nv-target off' });
+    const rules = h(
+      'div',
+      { class: 'cs-rules nv-rules' },
+      h('b', {}, 'Como jogar'),
+      h('div', {}, h('img', { src: mg('nv-dragao'), alt: '' }), h('span', {}, 'Lá em cima aparece qual forma procurar: ', h('kbd', {}, 'Procure: DRAGÃO'), '. As nuvens vão passando devagar pelo céu.')),
+      h('div', {}, h('img', { src: mg('nv-gato'), alt: '' }), h('span', {}, 'Clique na nuvem certa. Ou escolha com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), ' e confirme com ', h('kbd', {}, 'Espaço'), '.')),
+      h('div', {}, h('img', { src: mg('nv-coracao'), alt: '' }), h('span', {}, 'Nuvem errada ou deixar a certa ', h('u', {}, 'passar e sumir'), ' custa 1 ♥. São 3 corações e 6 nuvens.')),
+    );
+    ui.stage.append(sky ? h('img', { class: 'nv-bg', src: sky, alt: '' }) : h('div'), layer, h('img', { class: 'nv-couple', src: mg('nv-deitados'), alt: '' }), h('div', { class: 'nv-grass' }), rules);
     const order = [...CLOUDS].sort(() => Math.random() - 0.5);
+    const ROUNDS = 6;
     let round = 0;
     let mistakes = 0;
+    let lives = 3;
     let raf = 0;
     let last = 0;
     let target = '';
-    let lock = false;
+    let lock = true;
+    let sel = -1;
+    let over = false;
     const live: { el: HTMLElement; id: string; x: number; v: number }[] = [];
-    const ROUNDS = 6;
 
-    const hud = () => ui.hud.replaceChildren(h('span', {}, `Nuvem ${Math.min(round + 1, ROUNDS)}/${ROUNDS}`), h('span', { class: 'pg-err' }, mistakes ? `Erros: ${mistakes}` : ''));
+    const hud = () =>
+      ui.hud.replaceChildren(
+        h('span', {}, `Nuvem ${Math.min(round + 1, ROUNDS)}/${ROUNDS}`),
+        badge,
+        h('span', { class: 'nv-lives' }, ...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥'))),
+      );
+    const visible = () => live.filter((c) => c.x > -8 && c.x < 102).sort((p, q) => p.x - q.x);
+    const paintSel = () => live.forEach((c, i) => c.el.classList.toggle('sel', i === sel));
     const spawnSet = () => {
       layer.replaceChildren();
       live.length = 0;
-      // a nuvem certa + 3 outras, espalhadas em alturas diferentes, passando devagar
+      sel = -1;
+      // a nuvem certa + 3 outras, em alturas diferentes, entrando uma de cada vez pela esquerda
       const others = CLOUDS.filter((c) => c.id !== target).sort(() => Math.random() - 0.5).slice(0, 3);
       const set = [CLOUDS.find((c) => c.id === target)!, ...others].sort(() => Math.random() - 0.5);
+      const v = 8 + round * 1.3;
       set.forEach((c, i) => {
-        const el = h('img', { class: 'nv-cloud', src: mg(`nv-${c.id}`), alt: c.name, style: `top:${4 + i * 13}%` }) as HTMLImageElement;
-        const x = -20 - i * 22;
-        el.addEventListener('pointerdown', () => tap(c.id, el));
+        const el = h('img', { class: 'nv-cloud', src: mg(`nv-${c.id}`), alt: c.name, style: `top:${3 + i * 12}%;left:-30%` }) as HTMLImageElement;
+        el.addEventListener('pointerdown', () => tap(live.findIndex((o) => o.el === el)));
         layer.append(el);
-        live.push({ el, id: c.id, x, v: 7 + round * 1.6 + Math.random() * 3 });
+        live.push({ el, id: c.id, x: -14 - i * 19, v: v + Math.random() * 2 });
       });
     };
     const next = () => {
+      if (over) return;
       if (round >= ROUNDS) return finish();
       target = order[round % order.length].id;
+      const name = CLOUDS.find((c) => c.id === target)!.name;
       lock = false;
       hud();
-      ui.say(round % 2 ? 'weng' : 'bella', `${round % 2 ? 'E aquela ali...' : 'Olha!'} Acha a nuvem de ${CLOUDS.find((c) => c.id === target)!.name}!`);
+      badge.replaceChildren('Procure: ', h('b', {}, name.toUpperCase()));
+      badge.classList.remove('off', 'pop');
+      void badge.offsetWidth;
+      badge.classList.add('pop');
+      ui.say(round % 2 ? 'weng' : 'bella', `${round % 2 ? 'E aquela ali...' : 'Olha!'} Acha a nuvem de ${name}!`);
       spawnSet();
     };
-    const tap = (id: string, el: HTMLElement) => {
-      if (lock) return;
-      if (id !== target) {
-        mistakes++;
-        AudioSystem.play('cancel');
-        ui.shake();
-        ui.say('weng', pick(['Isso aí é uma batata. Uma batata nuvem.', 'Hmm... não. Olha de novo.', 'Você tá vendo coisa, hein?']));
-        hud();
+    const loseLife = (line: string) => {
+      lives--;
+      mistakes++;
+      AudioSystem.play('cancel');
+      ui.shake();
+      ui.say('weng', line);
+      hud();
+      if (lives <= 0) {
+        over = true;
+        lock = true;
+        setTimeout(() => finish(), 900);
+        return true;
+      }
+      return false;
+    };
+    const tap = (i: number) => {
+      if (lock || i < 0) return;
+      const c = live[i];
+      if (c.id !== target) {
+        c.el.classList.add('wrong');
+        setTimeout(() => c.el.classList.remove('wrong'), 400);
+        loseLife(pick(['Isso aí é uma batata. Uma batata nuvem.', 'Hmm... não. Olha de novo.', 'Você tá vendo coisa, hein?']));
         return;
       }
       lock = true;
       AudioSystem.play('pickup');
-      el.classList.add('found');
-      ui.say('bella', CLOUDS.find((c) => c.id === id)!.line);
+      c.el.classList.add('found');
+      ui.say('bella', CLOUDS.find((x) => x.id === c.id)!.line);
       round++;
       setTimeout(next, 1700);
     };
@@ -130,37 +170,99 @@ export function playCloudGame(parent: HTMLElement): Promise<MiniResult> {
       last = t;
       for (const c of live) {
         c.x += c.v * dt;
-        if (c.x > 110) c.x = -30;
         c.el.style.left = `${c.x}%`;
+      }
+      if (!lock) {
+        // a certa passou e sumiu
+        const tg = live.find((c) => c.id === target);
+        if (tg && tg.x > 108) {
+          lock = true;
+          round++;
+          if (!loseLife('Ih, ela passou! Foi embora com o vento...')) setTimeout(next, 1400);
+        }
+        // seleção pelo teclado/controle: já começa marcando a primeira nuvem que aparece (E confirma);
+        // se a nuvem escolhida saiu, pula pra próxima visível
+        if (sel < 0 && visible().length) {
+          sel = live.indexOf(visible()[0]);
+          paintSel();
+        } else if (sel >= 0 && live[sel].x > 102) {
+          const vs = visible();
+          sel = vs.length ? live.indexOf(vs[vs.length - 1]) : -1;
+          paintSel();
+        }
       }
       raf = requestAnimationFrame(tick);
     };
+    const onKey = (e: KeyboardEvent) => {
+      if (InputSystem.context !== 'minigame' || e.repeat || lock) return;
+      const vs = visible();
+      if (e.code === 'ArrowLeft' || e.code === 'ArrowRight' || e.code === 'KeyA' || e.code === 'KeyD') {
+        if (!vs.length) return;
+        const d = e.code === 'ArrowLeft' || e.code === 'KeyA' ? -1 : 1;
+        const cur = sel >= 0 ? vs.indexOf(live[sel]) : -1;
+        const ni = cur < 0 ? (d > 0 ? 0 : vs.length - 1) : Math.max(0, Math.min(vs.length - 1, cur + d));
+        sel = live.indexOf(vs[ni]);
+        paintSel();
+        AudioSystem.play('blip');
+      } else if ((e.code === 'Space' || e.code === 'KeyE' || e.code === 'Enter') && sel >= 0) tap(sel);
+      else return;
+      e.preventDefault();
+    };
     const finish = () => {
       cancelAnimationFrame(raf);
+      window.removeEventListener('keydown', onKey);
       layer.replaceChildren();
-      (ui.stage.querySelector('.nv-couple') as HTMLImageElement).src = mg('nv-sentados');
-      ui.say('bella', 'Eu queria parar o tempo aqui. Nessa toalha, com você.');
-      ui.end(mistakes <= 1 ? 3 : mistakes <= 3 ? 2 : 1, 'Ficar mais um pouquinho', () => resolve({ stars: mistakes <= 1 ? 3 : mistakes <= 3 ? 2 : 1, mistakes }));
+      badge.classList.add('off');
+      const won = lives > 0;
+      const stars = !won ? 1 : lives === 3 ? 3 : lives === 2 ? 2 : 1;
+      const cp = ui.stage.querySelector('.nv-couple') as HTMLImageElement;
+      cp.src = mg('nv-sentados');
+      cp.classList.add('sit');
+      ui.say('bella', won ? 'Eu queria parar o tempo aqui. Nessa toalha, com você.' : 'O vento ganhou de nós hoje... mas essa toalha, com você, já é o melhor céu.');
+      ui.end(stars, 'Ficar mais um pouquinho', () => resolve({ stars, mistakes }));
     };
+    const startBtn = h('button', { class: 'btn primary' }, 'Olhar pro céu');
+    const start = () => {
+      if (!lock || over || round) return;
+      startBtn.remove();
+      rules.classList.add('off');
+      next();
+    };
+    startBtn.addEventListener('click', start);
+    ui.actions.append(startBtn);
+    InputSystem.once('minigame:interact', start);
+    window.addEventListener('keydown', onKey);
+    hud();
     raf = requestAnimationFrame(tick);
     ui.say('bella', 'Deitados na toalha, olhando pro céu... Bora brincar de achar formas nas nuvens?');
-    setTimeout(next, 1600);
   });
 }
 
 // ====================================================================== Corrida de Pedalinho
+/**
+ * Controles pensados pra controle de videogame: direcional + 1 botão.
+ *  - Desviar: ← → (ou A / D). No controle: direcional / analógico.
+ *  - Pedalar: Espaço / E / ↑ (ou o botão PEDALAR). No controle: botão A.
+ * Pedalar é no RITMO: depois de cada pedalada o ponteiro corre na barra; apertar com ele no verde
+ * dá impulso forte e soma combo; no amarelo, impulso fraco; cedo demais (vermelho) trava o pedal.
+ * Apertar sem parar não funciona. O cisne rosa acelera no meio da prova e no sprint final.
+ */
 export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
   return new Promise((resolve) => {
     const ui = shell(parent, 'pd', 'Corrida de Pedalinho');
     const LANES = [22, 50, 78];
     const GOAL = 100;
+    const CYCLE = 0.62; // segundos de uma volta do ponteiro
     let lane = 1;
     let speed = 0;
     let dist = 0;
     let rival = 0;
     let hits = 0;
     let buoys = 0;
-    let lastPedal: 'L' | 'R' | '' = '';
+    let combo = 0;
+    let best = 0;
+    let since = 9; // tempo desde a última pedalada
+    let jam = 0; // pedal travado
     let running = false;
     let done = false;
     let last = 0;
@@ -172,13 +274,23 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
     const boat = h('img', { class: 'pd-boat', src: mg('pd-barco'), alt: '' }) as HTMLImageElement;
     const rivalEl = h('img', { class: 'pd-rival', src: mg('pd-rosa'), alt: '' });
     const pier = h('img', { class: 'pd-pier', src: mg('pd-pier'), alt: '' });
-    ui.stage.append(water, pier, rivalEl, boat);
+    const rules = h(
+      'div',
+      { class: 'cs-rules pd-rules' },
+      h('b', {}, 'Como jogar'),
+      h('div', {}, h('img', { src: mg('pd-barco2'), alt: '' }), h('span', {}, 'Pedale com ', h('kbd', {}, 'Espaço'), ' ou ', h('kbd', {}, 'E'), ' NO RITMO: aperte quando o ponteiro da barra estiver no ', h('u', { class: 'g' }, 'verde'), '. Apertar sem parar trava o pedal.')),
+      h('div', {}, h('img', { src: mg('pd-vitoria'), alt: '' }), h('span', {}, 'Desvie das vitórias-régias e dos patinhos com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), '. Boia dá impulso.')),
+      h('div', {}, h('img', { src: mg('pd-rosa'), alt: '' }), h('span', {}, 'Chegue no píer antes do cisne rosa. Ele não está pra brincadeira.')),
+    );
+    ui.stage.append(water, pier, rivalEl, boat, rules);
     const bar = h('i');
     const rbar = h('i', { class: 'rv' });
-    const pedL = h('button', { class: 'btn pd-ped' }, 'Pé esquerdo (A)');
-    const pedR = h('button', { class: 'btn pd-ped' }, 'Pé direito (D)');
-    const left = h('button', { class: 'btn pd-steer' }, '◀');
-    const right = h('button', { class: 'btn pd-steer' }, '▶');
+    const needle = h('i', { class: 'pd-needle' });
+    const meter = h('div', { class: 'pd-meter' }, h('i', { class: 'z early' }), h('i', { class: 'z ok' }), h('i', { class: 'z good' }), h('i', { class: 'z ok2' }), needle);
+    const comboEl = h('span', { class: 'pd-combo' });
+    const pedBtn = h('button', { class: 'btn primary pd-ped' }, 'PEDALAR');
+    const left = h('button', { class: 'btn pd-steer', 'aria-label': 'Esquerda' }, '◀');
+    const right = h('button', { class: 'btn pd-steer', 'aria-label': 'Direita' }, '▶');
     const startBtn = h('button', { class: 'btn primary' }, 'Largada!');
     ui.actions.append(startBtn);
     const hud = () =>
@@ -186,12 +298,44 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
     hud();
     const place = () => (boat.style.left = `${LANES[lane]}%`);
     place();
-    const pedal = (f: 'L' | 'R') => {
-      if (!running) return;
-      // alternar os pés: mesmo pé duas vezes quase não anda
-      speed = Math.min(34, speed + (f !== lastPedal ? 5.5 : 1));
-      lastPedal = f;
-      boat.src = mg('pd-barco2');
+    // zonas do ponteiro (fração do ciclo); ficam mais apertadas depois da metade
+    const zones = () => (dist > 55 ? { early: 0.42, good0: 0.66, good1: 0.82 } : { early: 0.38, good0: 0.6, good1: 0.84 });
+    const paintMeter = () => {
+      const z = zones();
+      const [e, o, g, o2] = Array.from(meter.querySelectorAll('.z')) as HTMLElement[];
+      e.style.cssText = `left:0;width:${z.early * 100}%`;
+      o.style.cssText = `left:${z.early * 100}%;width:${(z.good0 - z.early) * 100}%`;
+      g.style.cssText = `left:${z.good0 * 100}%;width:${(z.good1 - z.good0) * 100}%`;
+      o2.style.cssText = `left:${z.good1 * 100}%;width:${(1 - z.good1) * 100}%`;
+    };
+    const setCombo = () => (comboEl.textContent = combo >= 2 ? `Ritmo x${combo}` : '');
+    const pedal = () => {
+      if (!running || jam > 0) return;
+      const ph = since / CYCLE;
+      const z = zones();
+      let imp: number;
+      if (ph < z.early) {
+        // cedo demais: perde o ritmo e trava o pedal um instante
+        imp = 0;
+        combo = 0;
+        jam = 0.35;
+        speed *= 0.8;
+        meter.classList.add('bad');
+        setTimeout(() => meter.classList.remove('bad'), 300);
+      } else if (ph >= z.good0 && ph <= z.good1) {
+        combo++;
+        best = Math.max(best, combo);
+        imp = 8.5 * (1 + Math.min(combo, 6) * 0.06);
+        meter.classList.add('hit');
+        setTimeout(() => meter.classList.remove('hit'), 160);
+      } else {
+        combo = 0;
+        imp = 4.2;
+      }
+      setCombo();
+      speed = Math.min(40, speed + imp);
+      since = 0;
+      if (imp) boat.src = mg('pd-barco2');
     };
     const steer = (d: number) => {
       if (!running) return;
@@ -202,12 +346,18 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       const dt = last ? Math.min(0.05, (t - last) / 1000) : 0;
       last = t;
       if (running) {
-        speed = Math.max(0, speed - dt * 16);
+        since += dt;
+        if (jam > 0) jam -= dt;
+        needle.style.left = `${Math.min(1, since / CYCLE) * 100}%`;
+        speed = Math.max(0, speed - speed * 1.15 * dt);
         if (speed < 6) boat.src = mg('pd-barco');
         if (bump > 0) bump -= dt;
         const v = bump > 0 ? speed * 0.3 : speed;
-        dist += (v * dt) / 9;
-        rival += dt * 2.15;
+        dist += (v * dt) / 5;
+        // cisne rosa: constante no começo, arranca no meio e faz sprint no final; se ficar muito pra trás, recupera
+        const gap = dist - rival;
+        const rate = (rival < 35 ? 2.35 : rival < 70 ? 2.65 : 2.95) + (gap > 8 ? 0.5 : 0);
+        rival += dt * rate;
         water.style.backgroundPositionY = `${dist * 40}px`;
         bar.style.width = `${Math.min(100, dist)}%`;
         rbar.style.left = `${Math.min(100, rival)}%`;
@@ -215,22 +365,29 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
         pier.style.top = `${-30 + Math.max(0, dist - 88) * 3}%`;
         spawnIn -= dt;
         if (spawnIn <= 0 && dist < 90) {
-          spawnIn = 0.9 + Math.random() * 0.9;
-          const kind = pick(['pd-vitoria', 'pd-patos', 'pd-boia', 'pd-vitoria', 'pd-boia']);
+          spawnIn = (dist > 50 ? 0.65 : 0.85) + Math.random() * 0.7;
+          const kind = pick(['pd-vitoria', 'pd-patos', 'pd-boia', 'pd-vitoria', 'pd-patos']);
           const l = Math.floor(Math.random() * 3);
           const el = h('img', { class: `pd-obj ${kind}`, src: mg(kind), alt: '', style: `left:${LANES[l]}%;top:-15%` });
           ui.stage.insertBefore(el, rivalEl);
           objs.push({ el, kind, lane: l, y: -15, hit: false });
+          // de vez em quando vem uma fileira de duas, deixando só uma passagem
+          if (dist > 30 && kind !== 'pd-boia' && Math.random() < 0.35) {
+            const l2 = (l + 1 + Math.floor(Math.random() * 2)) % 3;
+            const el2 = h('img', { class: 'pd-obj pd-vitoria', src: mg('pd-vitoria'), alt: '', style: `left:${LANES[l2]}%;top:-15%` });
+            ui.stage.insertBefore(el2, rivalEl);
+            objs.push({ el: el2, kind: 'pd-vitoria', lane: l2, y: -15, hit: false });
+          }
         }
         for (let i = objs.length - 1; i >= 0; i--) {
           const o = objs[i];
-          o.y += (v * dt * 2.6) + dt * 4;
+          o.y += v * dt * 2.6 + dt * 5;
           o.el.style.top = `${o.y}%`;
           if (!o.hit && o.lane === lane && o.y > 62 && o.y < 82) {
             o.hit = true;
             if (o.kind === 'pd-boia') {
               buoys++;
-              speed = Math.min(40, speed + 10);
+              speed = Math.min(42, speed + 9);
               AudioSystem.play('pickup');
               o.el.remove();
               objs.splice(i, 1);
@@ -238,7 +395,9 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
               continue;
             }
             hits++;
-            bump = 0.9;
+            bump = 1;
+            combo = 0;
+            setCombo();
             AudioSystem.play('cancel');
             ui.shake();
             ui.say(o.kind === 'pd-patos' ? 'bella' : 'weng', o.kind === 'pd-patos' ? 'DESVIA DOS PATINHOS! Desculpa, família pato!' : 'Enroscou na vitória-régia! Pedala, pedala!');
@@ -248,6 +407,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
             objs.splice(i, 1);
           }
         }
+        if (Math.floor(rival) === 36 && rate > 2.7) ui.say('bella', 'O cisne rosa acelerou! Mantém o ritmo!');
         if (dist >= GOAL || rival >= GOAL) finish(dist >= GOAL);
       }
       raf = requestAnimationFrame(tick);
@@ -258,31 +418,39 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       cancelAnimationFrame(raf);
       window.removeEventListener('keydown', onKey);
       ui.actions.replaceChildren();
-      ui.say(won ? 'bella' : 'weng', won ? 'GANHAMOS! O cisne rosa ficou pra trás! Minhas pernas...' : 'O cisne rosa chegou primeiro... mas a gente chegou juntinho. Isso vale mais.');
-      const stars = won ? (hits <= 1 ? 3 : 2) : 1;
+      const margin = dist - rival;
+      ui.say(won ? 'bella' : 'weng', won ? (margin > 8 ? 'GANHAMOS com folga! O cisne rosa nem viu a gente passar!' : 'GANHAMOS! Por um bico de cisne! Minhas pernas...') : 'O cisne rosa chegou primeiro... mas a gente chegou juntinho. Isso vale mais.');
+      const stars = won ? (hits <= 1 && margin > 4 ? 3 : 2) : 1;
       ui.end(stars, 'Descer no píer', () => resolve({ stars, mistakes: hits }));
     };
     const onKey = (e: KeyboardEvent) => {
       if (InputSystem.context !== 'minigame' || done || e.repeat) return;
-      if (!running && (e.code === 'Space' || e.code === 'Enter')) return start();
-      if (e.code === 'KeyA' || e.code === 'KeyZ') pedal('L');
-      else if (e.code === 'KeyD' || e.code === 'KeyX') pedal('R');
-      else if (e.code === 'ArrowLeft') steer(-1);
-      else if (e.code === 'ArrowRight') steer(1);
+      const act = e.code === 'Space' || e.code === 'KeyE' || e.code === 'Enter' || e.code === 'ArrowUp' || e.code === 'KeyW';
+      if (!running) {
+        if (act) start();
+        return;
+      }
+      if (act) pedal();
+      else if (e.code === 'ArrowLeft' || e.code === 'KeyA') steer(-1);
+      else if (e.code === 'ArrowRight' || e.code === 'KeyD') steer(1);
+      else return;
+      e.preventDefault();
     };
     const start = () => {
       if (running || done) return;
       running = true;
-      ui.actions.replaceChildren(left, pedL, pedR, right);
-      ui.say('weng', 'Alterna os pés: A, D, A, D! E desvia com as setas. O cisne rosa tá vindo!');
+      rules.classList.add('off');
+      paintMeter();
+      ui.actions.replaceChildren(left, h('div', { class: 'pd-pedal' }, meter, pedBtn, comboEl), right);
+      ui.say('weng', 'Espera o ponteiro chegar no verde e pedala! Um, dois... um, dois...');
+      setInterval(() => running && paintMeter(), 1000);
     };
     startBtn.addEventListener('click', start);
-    pedL.addEventListener('pointerdown', () => pedal('L'));
-    pedR.addEventListener('pointerdown', () => pedal('R'));
+    pedBtn.addEventListener('pointerdown', pedal);
     left.addEventListener('pointerdown', () => steer(-1));
     right.addEventListener('pointerdown', () => steer(1));
     window.addEventListener('keydown', onKey);
-    ui.say('bella', 'Corrida até o píer contra aquele cisne rosa! Pedala alternando A e D, desvia com as setas. Boia dá impulso!');
+    ui.say('bella', 'Corrida até o píer contra aquele cisne rosa! Pedala no ritmo e desvia de tudo. Bora?');
     raf = requestAnimationFrame(tick);
   });
 }

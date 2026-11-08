@@ -2536,8 +2536,22 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .nv-sky { position: absolute; inset: 0 0 30% 0; }
 .nv-cloud { position: absolute; height: 34%; transform: translateX(-50%); cursor: pointer; image-rendering: pixelated; filter: drop-shadow(0 4px 0 rgba(60, 90, 160, .25)); transition: filter .2s; }
 .nv-cloud:hover { filter: drop-shadow(0 0 8px #fff) brightness(1.05); }
+.nv-cloud.sel { filter: drop-shadow(2px 0 0 #ffb020) drop-shadow(-2px 0 0 #ffb020) drop-shadow(0 2px 0 #ffb020) drop-shadow(0 -2px 0 #ffb020) drop-shadow(0 0 8px #ffd23f); transform: translateX(-50%) scale(1.08); }
+.nv-cloud.wrong { animation: shake .35s; filter: drop-shadow(0 0 8px #ff6a6a); }
+.nv-target { background: #fff8ec; border: 3px solid #6a4aa8; border-radius: 10px; padding: 4px 14px; font-weight: 800; color: #5a3a7a; font-size: clamp(11px, calc(var(--u) * 5), 17px); box-shadow: 0 3px 0 rgba(60, 30, 90, .35); white-space: nowrap; }
+.nv-target b { font-family: var(--font-pixel); color: #d0457a; }
+.nv-target.off { visibility: hidden; }
+.nv-target.pop { animation: nv-pop .45s; }
+@keyframes nv-pop { 40% { transform: scale(1.18); } }
+.nv-lives i { color: #d8c6d8; font-style: normal; font-size: 1.2em; margin-left: 2px; }
+.nv-lives i.on { color: #e94a7a; }
+.nv-rules { z-index: 6; }
+.nv-rules img { width: 16%; background: #8ac4f0; padding: 4px; }
 .nv-cloud.found { filter: drop-shadow(0 0 14px #ffe9a0) brightness(1.1); animation: gp-bump .5s; }
-.nv-couple { position: absolute; left: 50%; bottom: -4%; height: 42%; transform: translateX(-50%); image-rendering: pixelated; }
+.nv-couple { position: absolute; left: 50%; bottom: -16%; height: 62%; transform: translateX(-50%) perspective(520px) rotateX(34deg); transform-origin: 50% 100%; image-rendering: pixelated; filter: drop-shadow(0 -2px 0 rgba(40, 70, 20, .35)) drop-shadow(0 10px 8px rgba(30, 50, 10, .45)); }
+.nv-couple.sit { bottom: -6%; height: 52%; transform: translateX(-50%); }
+/* tufos de grama na frente da toalha: ela fica "no chão", não flutuando */
+.nv-grass { position: absolute; left: 0; right: 0; bottom: 0; height: 9%; z-index: 2; pointer-events: none; background: repeating-linear-gradient(90deg, transparent 0 6px, #6fae3a 6px 9px, transparent 9px 13px, #5c9a2c 13px 15px, transparent 15px 22px); -webkit-mask: linear-gradient(transparent, #000 60%); mask: linear-gradient(transparent, #000 60%); }
 .pd-title { background: linear-gradient(90deg, #3ec1d3, #2f8ad3) !important; }
 .pd-water { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, #3a8ad8 0 18px, #4a9ae4 18px 22px, #3a8ad8 22px 40px), #3a8ad8; }
 .pd-boat, .pd-rival { position: absolute; height: 36%; transform: translateX(-50%); image-rendering: pixelated; z-index: 3; transition: left .15s; }
@@ -2549,8 +2563,20 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .pd-race { position: relative; flex: 1; height: 12px; border-radius: 99px; background: #d8ecfa; border: 2px solid #2f8ad3; overflow: hidden; }
 .pd-race i { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #ffd23f, #ff8c3a); }
 .pd-race i.rv { width: 10px; left: 0; background: #ff8ab8; border-radius: 99px; }
-.pd-ped { min-width: 22%; }
-.pd-steer { min-width: 10%; }
+.pd-ped { min-width: 100%; }
+.pd-steer { min-width: 10%; align-self: stretch; font-size: 1.4em; }
+.pd-pedal { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 38%; position: relative; }
+.pd-meter { position: relative; width: 100%; height: 14px; border-radius: 99px; overflow: hidden; border: 2px solid #4a2a5a; background: #f6e3c4; }
+.pd-meter .z { position: absolute; top: 0; bottom: 0; }
+.pd-meter .z.early { background: #e98585; }
+.pd-meter .z.ok, .pd-meter .z.ok2 { background: #f4cf63; }
+.pd-meter .z.good { background: #5fcf7a; }
+.pd-meter.hit { box-shadow: 0 0 0 3px #5fcf7a; }
+.pd-meter.bad { box-shadow: 0 0 0 3px #e05555; }
+.pd-needle { position: absolute; top: -2px; bottom: -2px; width: 4px; margin-left: -2px; background: #2a1638; border-radius: 2px; }
+.pd-combo { position: absolute; top: -18px; right: 0; font-family: var(--font-pixel); font-size: 11px; color: #2f8ad3; }
+.pd-rules img { width: 14%; background: #3a8ad8; padding: 4px; }
+.cs-rules u.g { color: #7fe39a; }
 .cf-title { background: linear-gradient(90deg, #e8943a, #e8c03a) !important; }
 .cf-stage { background: linear-gradient(#fff6e0, #f3dcb0); display: flex; align-items: center; gap: 3%; padding: 0 3%; }
 .cf-note { position: absolute; inset: 6% 25%; z-index: 4; background: #fffdf5; border: 3px dashed #e8943a; border-radius: 12px; padding: 10px 16px; display: flex; flex-direction: column; gap: 4px; font-weight: 900; color: #5a2f1a; font-size: clamp(10px, calc(var(--u) * 5), 16px); transition: opacity .3s; transform: rotate(-1.5deg); }

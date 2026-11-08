@@ -73,6 +73,7 @@ export class GameScene extends Phaser.Scene {
   init(data: GameSceneData): void {
     this.def = getMap(data.mapId);
     this.data.set('charScale', this.def.charScale ?? 1);
+    this.data.set('perspective', this.def.perspective ?? null);
     this.npcs = new Map();
     this.tempProps = new Map();
     this.umbrellas = new Map();
@@ -800,6 +801,9 @@ export class GameScene extends Phaser.Scene {
     this.markers.push({ sprite, cond: () => visible() && cond(), anchor, side, caption });
   }
 
+  /** Atores escondidos por cena (ctx.visible false): flags mudando no meio da cena não podem reexibi-los. */
+  scriptHidden = new Set<Phaser.GameObjects.GameObject>();
+
   /** Reavalia visibleIf de props e NPCs (chamado quando flags mudam). */
   refreshVisibility(): void {
     this.refreshRainWindows();
@@ -810,6 +814,7 @@ export class GameScene extends Phaser.Scene {
       if (bp.block) (bp.block.body as Phaser.Physics.Arcade.StaticBody).enable = vis;
     }
     for (const { npc, def } of this.npcs.values()) {
+      if (this.scriptHidden.has(npc)) continue;
       const vis = def.visibleIf ? def.visibleIf() : true;
       npc.setVisible(vis);
       (npc.body as Phaser.Physics.Arcade.Body).enable = vis;

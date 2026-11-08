@@ -157,6 +157,8 @@ export const quitandinhaMap: MapDef = {
   background: '#3f6a2e',
   ambient: 'petals',
   art: 'native',
+  // no pé da escadaria do palácio eles têm a altura da porta; perto da câmera, bem maiores
+  perspective: { y0: 400, s0: 0.5, y1: 1010, s1: 1.25 },
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 

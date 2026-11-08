@@ -607,7 +607,11 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     playerTile: () => ({ x: (scene.player.x - 8) / 16, y: (scene.player.y + 1) / 16 - 1 }),
 
     visible(who, on) {
-      actor(who)?.setVisible(on);
+      const a = actor(who);
+      if (!a) return;
+      a.setVisible(on);
+      if (on) scene.scriptHidden.delete(a);
+      else scene.scriptHidden.add(a);
     },
 
     outfit(id) {

@@ -101,6 +101,7 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     this.headRatio = measureHeadRatio(this.scene, key);
     this.setScale(s);
     this.baseScale = s;
+    this.perspK = 1;
     const b = PLAYER.body;
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.setSize(b.width / s, b.height / s);
@@ -235,9 +236,25 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     this.anims.timeScale = speedScale;
   }
 
+  /** Fator de perspectiva aplicado agora (multiplica a escala que o resto do jogo define). */
+  perspK = 1;
+
+  /** Multiplicador de tamanho pela profundidade no mapa (1 se o mapa não tem perspectiva). */
+  perspectiveAt(y: number): number {
+    const pv = this.scene.data?.get('perspective') as { y0: number; s0: number; y1: number; s1: number } | null | undefined;
+    if (!pv) return 1;
+    const t = Phaser.Math.Clamp((y * 3 - pv.y0) / (pv.y1 - pv.y0), 0, 1);
+    return pv.s0 + (pv.s1 - pv.s0) * t;
+  }
+
   preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta);
     if (this.sitting) return;
     this.setDepth(this.y);
+    const k = this.perspectiveAt(this.y);
+    if (Math.abs(k - this.perspK) > 0.002) {
+      this.setScale((this.scaleX / this.perspK) * k);
+      this.perspK = k;
+    }
   }
 }
