@@ -212,6 +212,10 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
           'Assistir de novo',
         ),
       );
+      // E / espaço / Enter também apertam o botão
+      const viaKey = () => (actions.querySelector('.btn.primary') as HTMLButtonElement | null)?.click();
+      setTimeout(() => InputSystem.once('minigame:interact', viaKey), 300);
+      actions.addEventListener('click', () => InputSystem.off('minigame:interact', viaKey), { once: true });
     };
 
     const press = () => {
