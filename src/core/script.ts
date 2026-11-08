@@ -59,6 +59,11 @@ export interface ScriptContext {
   /** Conversa no celular (transições entre cenas). */
   phone(opts: import('@/ui/screens/PhoneChat').PhoneOptions, msgs: import('@/ui/screens/PhoneChat').PhoneMsg[]): Promise<void>;
   cards(opts?: { title?: string; rounds?: number }): Promise<import('@/ui/screens/CardGame').CardResult>;
+  clouds(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
+  boatRace(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
+  breakfast(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
+  /** Desenho grande da cena por cima do mapa (null tira). */
+  vignette(main: string | null, side?: string): void;
   cook(): Promise<import('@/ui/screens/CookGame').CookResult>;
   cinema(): Promise<import('@/ui/screens/CinemaGame').CinemaResult>;
   tacos(opts?: { title?: string }): Promise<import('@/ui/screens/TacoGame').TacoResult>;

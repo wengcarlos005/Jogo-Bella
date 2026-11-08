@@ -2520,3 +2520,55 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .ck-pan { height: 100%; width: auto !important; }
 .ck-final img { width: auto !important; height: 56%; }
 .ck-final { height: 100%; justify-content: center; }
+
+/* ---------------------------------------------------------------- Minigames de Petrópolis */
+.pg-panel { width: min(94%, calc(var(--u) * 400)) !important; max-height: 98% !important; overflow: hidden !important; }
+.pg-panel > * { flex: none; }
+.pg-hud { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-family: var(--font-pixel); color: #6a3a8a; font-size: clamp(11px, calc(var(--u) * 5.5), 17px); }
+.pg-err { color: #d8343f; }
+.pg-stage { position: relative; height: min(42vh, calc(var(--u) * 160)); border-radius: calc(var(--u) * 3); border: calc(var(--u) * 1.2) solid #5a4a7a; overflow: hidden; }
+.pg-talk { display: flex; align-items: center; gap: 8px; }
+.pg-face { width: calc(var(--u) * 20); height: calc(var(--u) * 20); border-radius: 8px; background: #ffe2b8; border: 2px solid #e3c39a; image-rendering: pixelated; }
+.pg-msg { flex: 1; }
+.nv-title { background: linear-gradient(90deg, #6aa8e8, #b88ae8) !important; }
+.nv-stage { background: linear-gradient(#8ac4f0, #d8ecfa); }
+.nv-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+.nv-sky { position: absolute; inset: 0 0 30% 0; }
+.nv-cloud { position: absolute; height: 34%; transform: translateX(-50%); cursor: pointer; image-rendering: pixelated; filter: drop-shadow(0 4px 0 rgba(60, 90, 160, .25)); transition: filter .2s; }
+.nv-cloud:hover { filter: drop-shadow(0 0 8px #fff) brightness(1.05); }
+.nv-cloud.found { filter: drop-shadow(0 0 14px #ffe9a0) brightness(1.1); animation: gp-bump .5s; }
+.nv-couple { position: absolute; left: 50%; bottom: -4%; height: 42%; transform: translateX(-50%); image-rendering: pixelated; }
+.pd-title { background: linear-gradient(90deg, #3ec1d3, #2f8ad3) !important; }
+.pd-water { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, #3a8ad8 0 18px, #4a9ae4 18px 22px, #3a8ad8 22px 40px), #3a8ad8; }
+.pd-boat, .pd-rival { position: absolute; height: 36%; transform: translateX(-50%); image-rendering: pixelated; z-index: 3; transition: left .15s; }
+.pd-boat { top: 58%; }
+.pd-rival { left: 88%; top: 46%; height: 30%; opacity: .95; z-index: 2; }
+.pd-pier { position: absolute; left: 50%; top: -30%; height: 30%; transform: translateX(-50%); image-rendering: pixelated; z-index: 1; }
+.pd-obj { position: absolute; transform: translate(-50%, -50%); height: 18%; image-rendering: pixelated; z-index: 2; }
+.pd-obj.pd-boia { height: 14%; }
+.pd-race { position: relative; flex: 1; height: 12px; border-radius: 99px; background: #d8ecfa; border: 2px solid #2f8ad3; overflow: hidden; }
+.pd-race i { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #ffd23f, #ff8c3a); }
+.pd-race i.rv { width: 10px; left: 0; background: #ff8ab8; border-radius: 99px; }
+.pd-ped { min-width: 22%; }
+.pd-steer { min-width: 10%; }
+.cf-title { background: linear-gradient(90deg, #e8943a, #e8c03a) !important; }
+.cf-stage { background: linear-gradient(#fff6e0, #f3dcb0); display: flex; align-items: center; gap: 3%; padding: 0 3%; }
+.cf-note { position: absolute; inset: 6% 25%; z-index: 4; background: #fffdf5; border: 3px dashed #e8943a; border-radius: 12px; padding: 10px 16px; display: flex; flex-direction: column; gap: 4px; font-weight: 900; color: #5a2f1a; font-size: clamp(10px, calc(var(--u) * 5), 16px); transition: opacity .3s; transform: rotate(-1.5deg); }
+.cf-note.hide { opacity: 0; pointer-events: none; }
+.cf-note b { font-family: var(--font-pixel); color: #e8943a; }
+.cf-note div { display: flex; align-items: center; gap: 8px; }
+.cf-note img { height: 1.8em; image-rendering: pixelated; }
+.cf-shelf { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; opacity: .25; pointer-events: none; transition: opacity .3s; }
+.cf-shelf.on { opacity: 1; pointer-events: auto; }
+.cf-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px; border-radius: 10px; border: 2px solid #e3c39a; background: #fffaf0; cursor: pointer; font-weight: 800; color: #5a2f1a; font-size: clamp(8px, calc(var(--u) * 3.8), 12px); }
+.cf-item img { height: calc(var(--u) * 18); image-rendering: pixelated; }
+.cf-item.taken { opacity: .3; pointer-events: none; }
+.cf-tray { position: relative; flex: 0 0 34%; aspect-ratio: 168 / 93; }
+.cf-tray-bg { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+.cf-tray-items { position: absolute; inset: 14% 10%; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; }
+.cf-tray-items img { height: 42%; margin: -2%; image-rendering: pixelated; animation: drop .2s ease-out; }
+/* vinheta: desenho grande da cena sobre o fundo do mapa (ex.: o casal sentado à mesa) */
+#ui .vignette { position: absolute; inset: 0; z-index: 6; display: flex; align-items: flex-start; justify-content: center; padding-top: 4%; background: radial-gradient(ellipse at 50% 40%, rgba(40, 20, 30, .35), rgba(20, 10, 20, .75)); opacity: 0; transition: opacity .4s; pointer-events: none; }
+#ui .vignette.show { opacity: 1; }
+#ui .vignette .vg-main { height: 58%; image-rendering: pixelated; filter: drop-shadow(0 8px 0 rgba(0,0,0,.25)); animation: gp-bump .4s; }
+#ui .vignette .vg-side { height: 24%; align-self: center; image-rendering: pixelated; margin-left: -2%; animation: polIn .5s; }

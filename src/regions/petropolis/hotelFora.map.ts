@@ -127,11 +127,11 @@ const scripts: Record<string, Script> = {
   },
   async varanda(ctx) {
     if (ctx.flag('pt-manha') && objActive('cafe')) {
-      await ctx.fadeOut(400);
-      await ctx.narrate('Café da manhã na varanda: pão de queijo, bolo de fubá, café e geleia de morango da serra.');
-      await ctx.fadeIn(400);
-      const c = await ctx.choose('bella', '(O que pegar primeiro?)', ['Pão de queijo quentinho', 'Bolo de fubá com café', 'Tudo. Ao mesmo tempo.']);
-      await ctx.say('weng', c === 2 ? 'Aniversariante pode tudo. Hoje é lei.' : 'Boa escolha. Eu vou de tudo também.');
+      await ctx.narrate('Antes de ela acordar, o Weng desceu escondido pra montar uma bandeja.');
+      const cf = await ctx.breakfast();
+      ctx.setFlag('pt-cafe-estrelas', cf.stars);
+      await ctx.narrate('Café na varanda, com a serra inteira de vista.');
+      await ctx.say('bella', cf.stars >= 2 ? 'Tudo que eu amo. Você decorou mesmo.' : 'Teve mamão na bandeja... mas eu perdoo. Hoje eu perdoo tudo.');
       await ctx.say('garcom', 'Bom dia! Ficamos sabendo que tem aniversariante...');
       await ctx.say('garcom', '(trazendo um bolinho com uma velinha) Parabéns, senhorita!');
       await ctx.emote('bella', 'heart');

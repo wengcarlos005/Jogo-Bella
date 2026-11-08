@@ -339,7 +339,9 @@ export const ruaMap: MapDef = {
   // Medido elemento por elemento sobre art-source/maps/piabeta-rua-v2.webp (1619x971)
   blocks: [
     // fundo: árvores, casas e muros/cercas (portão da Bella aberto em x 288–360)
-    R(0, 0, 1619, 290),
+    // a trilha de cima (x 905–1005) fica aberta: no passeio do 2º encontro ela leva a Fragoso
+    R(0, 0, 905, 290),
+    R(1005, 0, 1619, 290),
     R(0, 290, 288, 372),
     R(360, 290, 900, 372),
     R(1010, 290, 1619, 372),

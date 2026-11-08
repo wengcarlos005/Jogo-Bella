@@ -210,6 +210,10 @@ Ordem: gerar primeiro a base (anexando a Rota 66 atual como referência de estil
 | MG-TRB | Taco Roleta: bustos de sombreiro (Bella pensando/feliz/fogo, Weng malandro/rindo/orgulhoso) | minigames/taco-bustos.webp → taco-b-*, taco-w-* | ✅ nas reações do minijogo |
 | MG-CS | Susto na Sala 3: tela do filme (corredor, escuro, olhos, susto, gato, pisca) e o casal na poltrona (calmo, pegou, pipoca, ri, abraço, balde) | minigames/cinema-tela.webp + cinema-casal.webp → cine-*.png | ✅ no minijogo do cinema |
 | MG-CZ | Jantar a dois: 12 ingredientes, tábua, faca, colher, panela (vazia, massa, strogonoff, queimada), prato | minigames/cozinha.webp → cz-*.png | ✅ no minijogo da primeira noite |
+| MG-NV | Nuvens com forma (gato, hambúrguer, coração, cisne, dragão, bolo) e o casal deitado/sentado na toalha | minigames/nuvens.webp → nv-*.png | ✅ Formas nas Nuvens (piquenique) |
+| MG-RS | Casal sentado à mesa (conversa, brinde, surpresa) e pratos (petit gâteau, truta, fondue) | minigames/restaurante-casal.webp → rs-*.png | ✅ almoço de aniversário |
+| MG-PD | Pedalinho visto de cima (normal, rápido, rival rosa), boia, vitória-régia, píer, patos, onda | minigames/pedalinho.webp → pd-*.png | ✅ Corrida de Pedalinho |
+| MG-CF | Café da manhã: bandeja e 11 itens | minigames/cafe.webp → cf-*.png | ✅ Café da manhã de aniversário |
 | MG-BJ | Casal no sofá (inocente, beijo, susto), mãe espiando, sombra | minigames/beijo-sofa.webp → casal-*, mae-espia, sombra-mae | ✅ no beijo escondido |
 | CIN-017 | Céu e serra de Petrópolis (olhar as nuvens no piquenique) | maps/pt-colina.webp → cinematics/pt-ceu-colina.png | ✅ no piquenique |
 | MAP-027 | Cinema vazio | maps/duque-cinema-base.webp | ✅ no jogo |

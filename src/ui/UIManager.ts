@@ -6,6 +6,7 @@ import { playPhoneChat, type PhoneMsg, type PhoneOptions } from './screens/Phone
 import { playAcaiGame, type AcaiOptions, type AcaiResult } from './screens/AcaiGame';
 import { playTacoGame, type TacoResult } from './screens/TacoGame';
 import { playCookGame, type CookResult } from './screens/CookGame';
+import { playCloudGame, playBoatGame, playBreakfastGame, type MiniResult } from './screens/PetroGames';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -185,6 +186,39 @@ class UIManagerImpl {
   cinema(): Promise<CinemaResult> {
     this.dialogue.close();
     return this.replayable(() => playCinemaGame(this.root));
+  }
+
+  clouds(): Promise<MiniResult> {
+    this.dialogue.close();
+    return this.replayable(() => playCloudGame(this.root));
+  }
+  boatRace(): Promise<MiniResult> {
+    this.dialogue.close();
+    return this.replayable(() => playBoatGame(this.root));
+  }
+  breakfast(): Promise<MiniResult> {
+    this.dialogue.close();
+    return this.replayable(() => playBreakfastGame(this.root));
+  }
+
+  private vignetteEl: HTMLElement | null = null;
+  /** Desenho grande da cena (assets/minigames/<nome>.png) por cima do mapa, com as falas embaixo. null tira. */
+  vignette(main: string | null, side?: string): void {
+    const url = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+    if (!main) {
+      const el = this.vignetteEl;
+      this.vignetteEl = null;
+      el?.classList.remove('show');
+      setTimeout(() => el?.remove(), 400);
+      return;
+    }
+    const el = this.vignetteEl ?? h('div', { class: 'vignette' });
+    el.replaceChildren(h('img', { class: 'vg-main', src: url(main), alt: '' }), side ? h('img', { class: 'vg-side', src: url(side), alt: '' }) : '');
+    if (!this.vignetteEl) {
+      this.vignetteEl = el;
+      this.root.append(el);
+      requestAnimationFrame(() => el.classList.add('show'));
+    }
   }
 
   cook(): Promise<CookResult> {

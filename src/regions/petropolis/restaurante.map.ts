@@ -45,21 +45,27 @@ const scripts: Record<string, Script> = {
     ctx.place('garcom', 15.9, 13.4, 'up');
     await ctx.frame(16, 10.6, 0);
     await ctx.fadeIn(500);
+    ctx.vignette('rs-conversa');
     await ctx.narrate('Alguém começa a tocar piano. Bem baixinho.');
     await ctx.say('garcom', 'O cardápio de hoje. O chef recomenda a truta da serra.');
-    const c = await ctx.choose('bella', '(Tudo com nome difícil...)', ['"A truta da serra, por favor!"', '"O risoto de cogumelos!"', '"O que for mais quentinho. Tô congelando."']);
+    const c = await ctx.choose('bella', '(Tudo com nome difícil...)', ['"A truta da serra, por favor!"', '"O fondue de queijo!"', '"O que for mais quentinho. Tô congelando."']);
     if (c === 0) await ctx.say('garcom', 'Excelente escolha. A truta vem da cachoeira aqui de perto.');
-    else if (c === 1) await ctx.say('garcom', 'Risoto de cogumelos frescos da serra. Ótima pedida.');
     else await ctx.say('garcom', 'Então o fondue de queijo! Quentinho e borbulhando.');
     await ctx.say('weng', 'Pra mim o mesmo. E... uma sobremesa surpresa no final, tá?');
     await ctx.say('garcom', '(piscando) Já está tudo combinado, senhor.');
-    await ctx.emote('bella', 'question');
     await ctx.say('bella', 'Que sobremesa surpresa é essa?');
     await ctx.say('weng', 'Surpresa é surpresa.');
-    await ctx.fadeOut(600);
-    await ctx.narrate('A comida chegou. Depois, a sobremesa: um petit gâteau com uma velinha acesa.');
-    await ctx.fadeIn(600);
+    ctx.vignette('rs-conversa', c === 0 ? 'rs-truta' : 'rs-fondue');
+    await ctx.narrate(c === 0 ? 'A truta chegou douradinha, com batatas e limão.' : 'O fondue chegou borbulhando, com cubinhos de pão.');
+    await ctx.say('bella', 'Weng... isso aqui tá bom demais. Prova!');
+    await ctx.say('weng', 'Um brinde?');
+    ctx.vignette('rs-brinde');
+    ctx.sfx('confirm');
+    const b = await ctx.choose('bella', '(Os dois levantam a taça)', ['"Ao meu aniversário!"', '"A nós dois."', '"Às próximas viagens!"']);
+    await ctx.say('weng', b === 0 ? 'Ao seu aniversário. E a todos os próximos.' : b === 1 ? 'A nós dois. Sempre.' : 'Às próximas. A gente já tem uma lista.');
+    ctx.vignette('rs-surpresa', 'rs-petit');
     ctx.sfx('memory');
+    await ctx.narrate('E então, a sobremesa: um petit gâteau com uma velinha acesa.');
     await ctx.say('garcom', 'Parabéns pra você... (o salão inteiro bateu palma)');
     await ctx.emote('bella', 'heart');
     const c2 = await ctx.choose('bella', '(Fazer um pedido antes de soprar a vela)', ['Pedir mais mil aniversários assim', 'Pedir pra viajar o mundo com ele', 'Fechar os olhos e não contar pra ninguém']);
@@ -68,10 +74,10 @@ const scripts: Record<string, Script> = {
     else await ctx.say('bella', '...Não conto. Mas você tá nele.');
     ctx.hearts('player', 10);
     await ctx.say('weng', 'Feliz aniversário, Bella. Obrigado por existir.');
+    ctx.vignette(null);
     await ctx.unfocus(400);
     ctx.follow('weng', true);
     ctx.objective(Q, 'almoco');
-    await ctx.narrate('O Quitandinha e o piquenique na serra... essa parte da viagem chega em breve!');
   },
 
   async piano(ctx) {

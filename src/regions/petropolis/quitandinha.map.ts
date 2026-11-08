@@ -58,10 +58,13 @@ const scripts: Record<string, Script> = {
     ctx.visible('weng', false);
     ctx.prop('barco', 'qd-cisne', 26.0, 12.6, 0, 0.19);
     await ctx.fadeIn(400);
-    await ctx.moveProp('barco', 19.0, 13.4, 2600);
-    await ctx.say('bella', 'Pedala mais rápido! Aquele outro cisne tá passando a gente!');
-    await ctx.say('weng', 'Eu tô pedalando por dois aqui! Você tá só olhando a paisagem!');
-    await ctx.moveProp('barco', 13.0, 14.2, 2600);
+    await ctx.moveProp('barco', 21.0, 13.2, 1600);
+    await ctx.say('bella', 'Weng... aquele cisne rosa tá olhando pra gente. Ele quer apostar corrida.');
+    await ctx.say('weng', 'Ele não sabe com quem tá mexendo.');
+    const corrida = await ctx.boatRace();
+    ctx.setFlag('pt-pedalinho-estrelas', corrida.stars);
+    ctx.place('player', 24.6, 11.6, 'down');
+    await ctx.moveProp('barco', 13.0, 14.2, 1800);
     const c = await ctx.choose('bella', '(No meio do lago, os dois pararam de pedalar)', ['"A gente tá no meio do Brasil."', '"Se esse cisne afundar, você me salva?"', 'Encostar a cabeça no ombro dele']);
     if (c === 0) await ctx.say('weng', 'Mais ou menos em Goiás, eu acho. O lugar mais bonito do país.');
     else if (c === 1) await ctx.say('weng', 'Salvo. E depois salvo o cisne. Nessa ordem.');
@@ -116,28 +119,15 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'O bolinho é de treino. O de verdade é amanhã.');
     await ctx.emote('bella', 'heart');
     await ctx.narrate('Deitados na toalha, olhando pro céu.');
-    const ceu = ctx.hasArt('cena-pt-ceu');
-    if (ceu) {
-      await ctx.fadeOut(400);
-      await ctx.backdrop('cena-pt-ceu');
-      await ctx.fadeIn(500);
-    }
-    await ctx.say('bella', 'Aquela nuvem parece o quê?');
-    const n1 = await ctx.choose('weng', '(Uma nuvem enorme passando...)', ['"Um gato gordo. A Meli, com certeza."', '"Um hambúrguer. Da Rota 66."', '"Um coração. Meio torto, mas é."']);
-    await ctx.say('bella', n1 === 0 ? 'É a Meli! Olha o rabinho!' : n1 === 1 ? 'Você só pensa em comida.' : 'Torto igual o nosso primeiro beijo na chuva.');
-    await ctx.say('weng', 'E aquela?');
-    const n2 = await ctx.choose('bella', '(Outra nuvem...)', ['"Um cisne. O nosso pedalinho!"', '"Um dragão gigante."', '"Um bolo de aniversário."']);
-    await ctx.say('weng', n2 === 2 ? 'Tá vendo? Até o céu sabe que é seu aniversário amanhã.' : 'Faz sentido. Hoje tudo parece mágico.');
-    if (ceu) {
-      await ctx.fadeOut(400);
-      await ctx.backdrop(null);
-      await ctx.fadeIn(400);
-    }
+    const nv = await ctx.clouds();
+    ctx.setFlag('pt-nuvens-estrelas', nv.stars);
+    ctx.vignette('nv-sentados');
     const c = await ctx.choose('bella', '(O sol começando a baixar atrás da serra)', ['"Obrigada por esse dia."', '"Eu queria parar o tempo aqui."', 'Dar um beijo nele']);
     if (c === 2) {
       await ctx.emote('weng', 'heart');
       await ctx.say('weng', '...Melhor piquenique da vida.');
     } else await ctx.say('weng', c === 0 ? 'E ainda nem acabou. Tem hotel lá no alto do morro esperando a gente.' : 'Dá pra voltar sempre. O palácio não sai daqui.');
+    ctx.vignette(null);
     ctx.hearts('player', 10);
     ctx.objective(Q, 'piquenique');
     await ctx.fadeOut(800);
