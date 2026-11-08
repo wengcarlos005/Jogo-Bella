@@ -3,6 +3,7 @@ import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script, ScriptContext } from '@/core/script';
 import { GameState } from '@/core/GameState';
 import { QuestSystem } from '@/systems/QuestSystem';
+import { passeioDuque } from './apto.map';
 
 const Q = 'dq-s1';
 const ORCAMENTO = 50;
@@ -113,6 +114,14 @@ const scripts: Record<string, Script> = {
 
   async caixa(ctx) {
     if (objDone('pagar')) {
+      if (QuestSystem.isActive('dq-m5') && !QuestSystem.isObjectiveDone('dq-m5', 'compras')) {
+        await ctx.say('vendedora', 'Vocês de novo! O que vai ser hoje?');
+        await ctx.say('bella', 'Só uma piranha nova. Juro. Só uma.');
+        await ctx.say('weng', '(já pagando) Ela disse isso da última vez.');
+        ctx.sfx('confirm');
+        await passeioDuque(ctx, 'compras');
+        return;
+      }
       await ctx.say('vendedora', 'Volte sempre! Aqui é o Multidão: sempre tem coisa nova.');
       return;
     }
@@ -159,6 +168,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', 'Eu aprendo rápido. E o troco é pra paçoca da próxima vez.');
     }
     ctx.hearts('player', 8);
+    await passeioDuque(ctx, 'compras');
   },
 
   async weng(ctx) {

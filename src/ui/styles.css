@@ -2458,3 +2458,16 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .tb-enc-hearts span.on { background-image: var(--hud-heart-full); }
 .tb-enc-hearts span.half { background-image: var(--hud-heart-half); }
 .tb-enc-bar { display: none !important; }
+
+/* foto (polaroid) */
+.photo-screen { z-index: 60; background: rgba(15, 10, 25, .55); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; animation: phIn .2s ease-out; }
+.photo-screen.out { opacity: 0; transition: opacity .25s; }
+@keyframes phIn { from { opacity: 0; } }
+.ph-flash { position: absolute; inset: 0; background: #fff; animation: phFlash .6s ease-out forwards; pointer-events: none; }
+@keyframes phFlash { from { opacity: 1; } to { opacity: 0; } }
+.polaroid { background: #fffdf7; padding: 12px 12px 0; box-shadow: 0 10px 0 rgba(0,0,0,.25), 0 0 0 2px #e8dcc4; transform: rotate(-3deg); animation: polIn .5s cubic-bezier(.2, 1.5, .4, 1); width: min(62%, 560px); }
+@keyframes polIn { from { transform: translateY(40px) rotate(6deg) scale(.8); opacity: 0; } }
+.pol-img { aspect-ratio: 4 / 3; overflow: hidden; background: #222; }
+.pol-img img { width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; filter: saturate(1.1) contrast(1.05) sepia(.08); }
+.pol-cap { font-family: var(--font-pixel); color: #4a2a20; text-align: center; padding: 10px 6px 14px; font-size: clamp(12px, 1.3vw, 18px); }
+.pol-hint { color: #f3e6ff; font-weight: 800; font-size: 13px; opacity: .8; }

@@ -59,7 +59,14 @@ async function petCat(ctx: ScriptContext, id: string, pose: string, lines: strin
 
 const scripts: Record<string, Script> = {
   async entrar(ctx) {
-    if (ctx.questActive('dq-e2')) ctx.weather('sunset');
+    if (ctx.questActive('dq-e2')) {
+      ctx.weather('sunset');
+      if (!ctx.flag('dq-frg-chegou')) {
+        ctx.setFlag('dq-frg-chegou');
+        await ctx.narrate('Pela trilha, de mãos dadas, até Fragoso. O sol se pondo atrás das casas.');
+        ctx.toast('Siga pela rua até a praça (saída de baixo, à esquerda)');
+      }
+    }
     if (ctx.flag('fragoso-intro') || !ctx.questActive(Q)) return;
     ctx.setFlag('fragoso-intro');
     if (nerves() === 0) ctx.nerves(70);

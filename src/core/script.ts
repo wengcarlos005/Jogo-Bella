@@ -89,6 +89,8 @@ export interface ScriptContext {
   backdrop(key: string | null, rainy?: boolean): Promise<void>;
   /** Ilustração em tela cheia com legendas (avança com interagir). */
   illustration(key: string, lines: string[]): Promise<void>;
+  /** Foto de verdade da cena (polaroid com legenda). */
+  photo(caption: string): Promise<void>;
   /**
    * Nervosismo da Bella (0 a 100), mostrado no HUD enquanto > 0.
    * Use para o medidor do primeiro encontro.

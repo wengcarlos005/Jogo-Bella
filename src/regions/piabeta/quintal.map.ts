@@ -206,9 +206,7 @@ const scripts: Record<string, Script> = {
   async portao(ctx) {
     if (objActive('passeio') && objDone('filme')) {
       await ctx.say('mae-bella', 'Juízo, hein! E me manda mensagem!');
-      await ctx.fadeOut(500);
-      await ctx.narrate('Vinte e cinco minutos de caminhada. Passando por Fragoso, de mãos dadas.');
-      await ctx.teleport('piabeta-fragoso', 'from-rota66');
+      await ctx.teleport('piabeta-rua', 'from-casa');
       return;
     }
     if (QuestSystem.isActive(Q)) {

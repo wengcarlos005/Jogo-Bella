@@ -1,8 +1,8 @@
 import { T } from '@/world/tiles';
 import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
-import { GameState } from '@/core/GameState';
 import { QuestSystem } from '@/systems/QuestSystem';
+import { passeioDuque } from './apto.map';
 
 /**
  * Retângulo medido no cenário ORIGINAL (art-source/maps/duque-rua-base.webp, 1536x1024).
@@ -17,8 +17,8 @@ const ROW = '.'.repeat(32);
 const scripts: Record<string, Script> = {
   async weng(ctx) {
     if (QuestSystem.isActive('dq-m5')) {
-      await ctx.say('weng', 'Quando a gente voltar pro apê, eu tenho uma coisa pra te contar. Uma coisa boa.');
-      await ctx.say('bella', 'Fala agora! ...Não? Tá bom. Mas eu vou ficar curiosa.');
+      await ctx.say('weng', 'Hoje é dia de passeio: açaí, Multidão e o mercado da Vó. (E depois eu tenho uma coisa pra te contar.)');
+      await ctx.say('bella', 'Que coisa? ...Não vai falar? Tá bom. Mas eu vou ficar curiosa.');
       return;
     }
     await ctx.say('weng', 'Tô aqui. Do seu lado. Pra onde a gente vai?');
@@ -52,8 +52,34 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Ela brilha pra você toda vez que a gente passa aqui.');
   },
   async mercado(ctx) {
-    await ctx.say('weng', 'O mercado fica pra lá. Fica pra outro dia.');
-    await ctx.move('player', 1.4, 16.3, 60);
+    if (!QuestSystem.isActive('dq-m5') || QuestSystem.isObjectiveDone('dq-m5', 'mercado')) {
+      await ctx.say('weng', 'O mercado fica pra lá. Fica pra outro dia.');
+      await ctx.move('player', 1.4, 16.3, 60);
+      return;
+    }
+    // o mercadinho da esquina: a lista da Vó (e umas coisinhas a mais)
+    await ctx.fadeOut(400);
+    await ctx.narrate('O mercadinho da esquina. Ar-condicionado gelado, carrinho de roda torta e a lista da Vó no celular do Weng.');
+    await ctx.say('weng', '"Farinha, ovos, leite condensado e... chocolate em pó." A Vó vai fazer bolinho pra você.');
+    await ctx.say('bella', 'Pra MIM? Eu amo a sua Vó.');
+    const c = await ctx.choose('bella', '(No corredor dos doces...)', ['Colocar uma paçoca escondida no carrinho', 'Pegar só o que tá na lista', 'Pegar um chocolate pra Vó também']);
+    if (c === 0) {
+      await ctx.say('weng', 'Eu vi essa paçoca entrando no carrinho.');
+      await ctx.say('bella', 'Que paçoca? Não tem paçoca nenhuma. Olha pro outro lado.');
+    } else if (c === 1) {
+      await ctx.say('weng', 'Só a lista? Quem é você e o que fez com a Bella?');
+    } else {
+      await ctx.say('weng', 'A Vó vai te adotar. Já era. Você é neta agora.');
+    }
+    await ctx.say('bella', 'A moça do caixa perguntou se a gente é casado.');
+    await ctx.say('weng', 'E você falou o quê?');
+    await ctx.say('bella', '"Ainda não." (sorriso)');
+    await ctx.emote('weng', 'heart');
+    ctx.sfx('pickup');
+    ctx.place('player', 1.8, 16.3, 'right');
+    ctx.place('weng', 3.2, 16.3, 'left');
+    await ctx.fadeIn(400);
+    await passeioDuque(ctx, 'mercado');
   },
   async acai(ctx) {
     await ctx.teleport('duque-acai', 'porta');
@@ -158,13 +184,14 @@ export const duqueRuaMap: MapDef = {
   },
 
   hotspots: [
+    { rect: R(0, 760, 46, 960), interact: 'mercado', label: '← Mercado', marker: { x: 0.5, y: 0.5, dir: 'left' }, markerIf: () => QuestSystem.isActive('dq-m5') && !QuestSystem.isObjectiveDone('dq-m5', 'mercado') },
     // portaria do prédio do Weng: seta quando o próximo passo é voltar pro apê
-    { rect: R(332, 300, 428, 392), interact: 'portaria', label: 'Apê do Weng', markerIf: () => QuestSystem.isActive('dq-m5') && GameState.is('acai-1') },
+    { rect: R(332, 300, 428, 392), interact: 'portaria', label: 'Apê do Weng', markerIf: () => false },
     { rect: R(1440, 880, 1500, 978), interact: 'placa', label: 'Placa' },
     // saída pra açaiteria: seta enquanto ela ainda não foi
-    { rect: R(1490, 770, 1536, 960), interact: 'placa', label: 'Açaiteria →', marker: { x: 0.5, y: 0.5, dir: 'right' }, markerIf: () => QuestSystem.isDone('dq-m1') && !GameState.is('acai-1') },
+    { rect: R(1490, 770, 1536, 960), interact: 'placa', label: 'Açaiteria →', marker: { x: 0.5, y: 0.5, dir: 'right' }, markerIf: () => QuestSystem.isActive('dq-m5') && !QuestSystem.isObjectiveDone('dq-m5', 'acai') },
     // porta do Multidão: marcador até a Bella entrar pela primeira vez
-    { rect: R(615, 820, 895, 880), interact: 'multidao', label: 'Entrar no Multidão', markerIf: () => !GameState.is('mt-chegou') && QuestSystem.isDone('dq-m1') },
+    { rect: R(615, 820, 895, 880), interact: 'multidao', label: 'Entrar no Multidão', markerIf: () => QuestSystem.isActive('dq-m5') && !QuestSystem.isObjectiveDone('dq-m5', 'compras') },
     { rect: R(1040, 180, 1300, 300), interact: 'teatro', label: 'Teatro' },
     { rect: R(1150, 790, 1410, 965), interact: 'onibus', label: 'Ponto' },
     { rect: R(955, 700, 1150, 882), interact: 'vitrine', label: 'Vitrine' },

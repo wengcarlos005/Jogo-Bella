@@ -2,6 +2,7 @@ import { T } from '@/world/tiles';
 import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
 import { QuestSystem } from '@/systems/QuestSystem';
+import { passeioDuque } from './apto.map';
 import { GameState } from '@/core/GameState';
 
 /**
@@ -16,8 +17,8 @@ const ROW = '.'.repeat(32);
 const scripts: Record<string, Script> = {
   async weng(ctx) {
     if (QuestSystem.isActive('dq-m5')) {
-      await ctx.say('weng', 'Quando a gente voltar pro apê, eu tenho uma coisa pra te contar. Uma coisa boa.');
-      await ctx.say('bella', 'Fala agora! ...Não? Tá bom. Mas eu vou ficar curiosa.');
+      await ctx.say('weng', 'Hoje é dia de passeio: açaí, Multidão e o mercado da Vó. (E depois eu tenho uma coisa pra te contar.)');
+      await ctx.say('bella', 'Que coisa? ...Não vai falar? Tá bom. Mas eu vou ficar curiosa.');
       return;
     }
     await ctx.say('weng', 'Tô aqui. Do seu lado. Pra onde a gente vai?');
@@ -73,7 +74,7 @@ const scripts: Record<string, Script> = {
       ctx.setFlag('acai-1');
       await ctx.memory('mem-dq-02');
     }
-    if (QuestSystem.isActive('dq-m5')) ctx.toast('Agora é voltar pro apê: o Weng tem uma coisa pra contar');
+    await passeioDuque(ctx, 'acai');
   },
 
   async cardapio(ctx) {

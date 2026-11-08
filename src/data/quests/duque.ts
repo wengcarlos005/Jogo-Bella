@@ -105,6 +105,11 @@ export const DUQUE_QUESTS: QuestDef[] = [
     title: 'Um presente de aniversário',
     kind: 'principal',
     description: 'O aniversário da Bella está chegando. O Weng tem um plano.',
-    objectives: [{ id: 'convite', text: 'Ouvir o que o Weng tem pra contar (no apê)', hint: 'Volte pro apê e fale com o Weng. Antes, se quiser: açaí e Multidão aqui na rua.' }],
+    objectives: [
+      { id: 'acai', text: 'Tomar açaí com o Weng', hint: 'A açaiteria fica à direita, pela calçada do Multidão.' },
+      { id: 'compras', text: 'Fazer compras no Shopping da Multidão', hint: 'A porta do Multidão fica na calçada de baixo da rua.' },
+      { id: 'mercado', text: 'Passar no mercado pra Vó', hint: 'O mercado fica à esquerda, no fim da rua.' },
+      { id: 'convite', text: 'Ouvir o que o Weng tem pra contar', hint: 'Ele conta sozinho quando os passeios acabarem.' },
+    ],
   },
 ];

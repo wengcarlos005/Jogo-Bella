@@ -12,6 +12,8 @@ const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0
 
 const fotosTiradas = () => ['pt-foto-1', 'pt-foto-2', 'pt-foto-3'].filter((f) => GameState.is(f)).length;
 
+const legenda: Record<string, string> = { 'pt-foto-1': 'O hotel no alto do morro', 'pt-foto-2': 'As hortênsias azuis', 'pt-foto-3': 'A neblina descendo a serra' };
+
 async function tirarFoto(ctx: ScriptContext, flag: string, texto: string, fala: [string, string]): Promise<void> {
   if (ctx.flag(flag)) {
     await ctx.say('bella', 'Essa já tá no rolo da câmera. Ficou linda.');
@@ -19,9 +21,7 @@ async function tirarFoto(ctx: ScriptContext, flag: string, texto: string, fala: 
   }
   await ctx.say('bella', texto);
   await ctx.say(fala[0], fala[1]);
-  ctx.sfx('confirm');
-  await ctx.fadeOut(90, '#ffffff');
-  await ctx.fadeIn(260);
+  await ctx.photo(legenda[flag] ?? 'Petrópolis');
   ctx.setFlag(flag);
   ctx.refresh();
   const n = fotosTiradas();
@@ -45,7 +45,7 @@ const scripts: Record<string, Script> = {
         { from: 'them', text: 'Que Deus te abençoe muito, te amo demais' },
         { from: 'me', text: 'Obrigada mãe!!! Te amo 🐥💕' },
         { from: 'them', text: 'Fui a primeira a dar parabéns né??' },
-        { from: 'me', text: 'kkkkkk segunda. o Weng me acordou à meia-noite com bolo 🐥' },
+        { from: 'me', text: 'kkkkkk segunda. o Weng me acordou à meia-noite pra dar parabéns 🐥' },
         { from: 'them', text: 'ESSE MENINO 😭 tá aprovado de novo' },
         { from: 'them', text: 'Tá frio aí? Tá usando o casaco?' },
         { from: 'me', text: 'Tô de casaco, de meia (dele), de manta e de Weng kkkkk' },
@@ -97,9 +97,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('recepcionista', 'Boa noite! Quarto 12, com lareira. E chocolate quente de boas-vindas pros dois.');
       await ctx.say('bella', 'LAREIRA?! Weng, você pensou em tudo.');
       await ctx.say('weng', 'Pensei. Inclusive no chocolate.');
-      await ctx.say('recepcionista', '(baixinho, pro Weng) E aquela encomenda do senhor já está guardada, tá?');
-      await ctx.say('bella', 'Que encomenda?');
-      await ctx.say('weng', 'Nada! Toalha extra. Bora subir?');
+      await ctx.say('weng', 'Bora subir? Eu tô congelando.');
       await ctx.teleport('pt-quarto', 'porta');
       return;
     }
@@ -182,7 +180,11 @@ export const hotelForaMap: MapDef = {
 
   blocks: [
     R(0, 0, 1536, 250), // céu, telhados e árvores do fundo
+    R(572, 250, 668, 352), // telhadinho e porta da recepção (a porta é só pra interagir)
+    R(965, 425, 1045, 500), // beira do barranco ao lado do mirante
+    R(1365, 425, 1405, 505), // grade da direita do mirante
     R(140, 250, 572, 452), // casa e varanda (terraço elevado)
+    R(140, 452, 500, 500), // pé do muro de pedra da varanda (ninguém encosta a cara no muro)
     R(668, 250, 965, 392), // casa (direita)
     R(500, 395, 578, 470), // muro à esquerda da escada
     R(714, 388, 760, 472), // muro à direita da escada
@@ -253,15 +255,13 @@ export const hotelForaMap: MapDef = {
   },
 
   hotspots: [
-    { rect: R(780, 120, 900, 300), interact: 'foto1', label: 'Tirar foto', markerIf: () => objActive('fotos') && objDone('mirante') && !GameState.is('pt-foto-1') },
-    { rect: R(715, 590, 850, 655), interact: 'foto2', label: 'Tirar foto', markerIf: () => objActive('fotos') && objDone('mirante') && !GameState.is('pt-foto-2') },
-    { rect: R(1405, 430, 1500, 560), interact: 'foto3', label: 'Tirar foto', markerIf: () => objActive('fotos') && objDone('mirante') && !GameState.is('pt-foto-3') },
+    { rect: R(560, 560, 700, 640), interact: 'foto1', label: 'Foto do hotel', markerIf: () => objActive('fotos') && objDone('mirante') && !GameState.is('pt-foto-1') },
+    { rect: R(715, 590, 850, 670), interact: 'foto2', label: 'Foto das hortênsias', markerIf: () => objActive('fotos') && objDone('mirante') && !GameState.is('pt-foto-2') },
+    { rect: R(1290, 425, 1370, 500), interact: 'foto3', label: 'Foto da serra', markerIf: () => objActive('fotos') && objDone('mirante') && !GameState.is('pt-foto-3') },
     { rect: R(1265, 395, 1310, 480), interact: 'luneta', label: 'Luneta', markerIf: () => objActive('mirante') },
     { rect: R(595, 300, 672, 400), interact: 'porta', label: 'Recepção', markerIf: () => objActive('checkin') && objDone('fotos') },
     { rect: R(160, 380, 560, 460), interact: 'varanda', label: 'Varanda', markerIf: () => GameState.is('pt-manha') && objActive('cafe') },
     { rect: R(855, 500, 910, 595), interact: 'placa', label: 'Placa' },
-    { rect: R(285, 520, 395, 618), interact: 'banco1', label: 'Sentar' },
-    { rect: R(918, 600, 1030, 696), interact: 'banco2', label: 'Sentar' },
   ],
 
   spawns: {

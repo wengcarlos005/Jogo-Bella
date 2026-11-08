@@ -15,6 +15,8 @@ const ROTA = PERSONAL.places.hamburgueria;
 const esperandoNaEsquina = () =>
   QuestSystem.isActive('pia-m1') && QuestSystem.isObjectiveDone('pia-m1', 'guarda-chuva') && !QuestSystem.isObjectiveDone('pia-m1', 'esquina');
 /** Chove do começo do encontro até o Uber chegar. */
+const passeioAtivo = () =>
+  QuestSystem.isActive('dq-e2') && QuestSystem.isObjectiveDone('dq-e2', 'filme') && !QuestSystem.isObjectiveDone('dq-e2', 'passeio');
 const chovendo = () =>
   (QuestSystem.isActive('pia-m1') && QuestSystem.isObjectiveDone('pia-m1', 'guarda-chuva')) ||
   (QuestSystem.isActive('pia-m2') && !QuestSystem.isObjectiveDone('pia-m2', 'uber'));
@@ -83,6 +85,19 @@ const scripts: Record<string, Script> = {
       ctx.nerves(60, 'A Bella está nervosa!');
       await ctx.say('bella', '(Calma, Bella. É só ir até a esquina. Só isso. Normal. Super normal.)');
       ctx.toast('Siga pela calçada para a direita, até a esquina');
+      return;
+    }
+    // 2º encontro: depois do filme, os dois saem de mãos dadas pela rua até a trilha de cima (→ Fragoso)
+    if (passeioAtivo()) {
+      ctx.weather('sunset');
+      if (!ctx.flag('dq-rua-passeio')) {
+        ctx.setFlag('dq-rua-passeio');
+        await ctx.wait(300);
+        await ctx.say('weng', 'Pra praça a gente vai a pé? Vinte e cinco minutos...');
+        await ctx.say('bella', 'Pela trilha lá de cima. Sai direto em Fragoso. E é mais bonito.');
+        await ctx.say('weng', 'Trilha, pôr do sol e você. Fechado.');
+        ctx.toast('Suba pela trilha no alto da rua: ela leva a Fragoso');
+      }
       return;
     }
     if (ctx.questActive('pia-m1') && ctx.objectiveDone('pia-m1', 'pai') && !ctx.objectiveDone('pia-m1', 'sair')) {
@@ -290,7 +305,11 @@ const scripts: Record<string, Script> = {
   },
 
   async 'placa-parque'(ctx) {
-    await ctx.narrate('"Parque — siga a trilha." O parque (e a chuva) chegam na Fase 3.');
+    if (passeioAtivo()) {
+      await ctx.say('bella', '"Fragoso e Praça — siga a trilha." É por aqui, Weng!');
+      return;
+    }
+    await ctx.narrate('"Fragoso e Praça — siga a trilha."');
   },
   async caixa(ctx) {
     await ctx.say('bella', 'Só conta. Um dia vai ter carta boa aqui, eu sinto.');
@@ -370,6 +389,8 @@ export const ruaMap: MapDef = {
     { rect: R(372, 285, 414, 382), interact: 'caixa', label: 'Caixa de correio' },
     { rect: R(700, 300, 760, 372), interact: 'portao-vizinha', label: 'Casa da Dona Cida' },
     { rect: R(1005, 200, 1085, 340), interact: 'placa-parque', label: 'Ler' },
+    // seta na trilha de cima durante o passeio do 2º encontro
+    { rect: R(905, 40, 1005, 120), interact: 'placa-parque', label: 'Trilha → Fragoso', markerIf: () => passeioAtivo() },
     { rect: R(262, 364, 500, 489), interact: 'carro', label: 'Carro' },
     { rect: R(483, 650, 627, 776), interact: 'banco', label: 'Sentar' },
     { rect: R(990, 650, 1137, 776), interact: 'banco2', label: 'Sentar' },
@@ -396,10 +417,11 @@ export const ruaMap: MapDef = {
   exits: [
     { rect: R(292, 340, 356, 374), toMap: 'piabeta-casa-bella', toSpawn: 'from-rua', sfx: 'door' },
     {
+      // trilha no alto da rua: no passeio do 2º encontro leva a Fragoso
       rect: R(905, 40, 1005, 70),
-      toMap: 'piabeta-rua',
-      toSpawn: 'from-casa',
-      blockedIf: () => 'Uma trilha para o mato. Hoje o plano é outro!',
+      toMap: 'piabeta-fragoso',
+      toSpawn: 'from-rota66',
+      blockedIf: () => (passeioAtivo() ? false : 'Uma trilha para o mato. Hoje o plano é outro!'),
     },
   ],
   triggers: [

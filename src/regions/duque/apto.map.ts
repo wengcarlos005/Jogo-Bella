@@ -66,6 +66,87 @@ function restoreMeli(ctx: ScriptContext): void {
   }
 }
 
+/** Os 3 passeios por Caxias antes do convite pra Petrópolis. */
+export const PASSEIOS = [
+  { id: 'acai', nome: 'açaí' },
+  { id: 'compras', nome: 'Multidão' },
+  { id: 'mercado', nome: 'mercado da Vó' },
+] as const;
+const passeiosFeitos = () => PASSEIOS.every((o) => QuestSystem.isObjectiveDone('dq-m5', o.id));
+
+/** Marca um passeio; quando os 3 acabam, o Weng começa a falar de Petrópolis sozinho. */
+export async function passeioDuque(ctx: ScriptContext, id: (typeof PASSEIOS)[number]['id']): Promise<void> {
+  if (!QuestSystem.isActive('dq-m5') || QuestSystem.isObjectiveDone('dq-m5', id)) return;
+  ctx.objective('dq-m5', id);
+  if (!passeiosFeitos()) {
+    const falta = PASSEIOS.filter((o) => !QuestSystem.isObjectiveDone('dq-m5', o.id)).map((o) => o.nome);
+    ctx.toast(`Ainda falta: ${falta.join(' e ')}`);
+    return;
+  }
+  await ctx.wait(500);
+  await ctx.emote('weng', 'exclaim');
+  await ctx.say('weng', 'Bella... espera. Eu não aguento mais guardar isso.');
+  await conviteSerra(ctx);
+}
+
+/** O convite pra Petrópolis, o fim do Capítulo 2 e a véspera da viagem. */
+export async function conviteSerra(ctx: ScriptContext): Promise<void> {
+    await ctx.say('weng', 'Bella, pega um casaco. Dos grossos.');
+    await ctx.say('bella', 'Casaco? Em Duque de Caxias? Tá tudo bem com você?');
+    await ctx.say('weng', 'É que no seu aniversário a gente vai pra... Petrópolis!');
+    await ctx.emote('bella', 'heart');
+    await ctx.say('bella', 'PETRÓPOLIS?! Sério?! Weng!!!');
+    await ctx.say('weng', 'Hotel lá no alto do morro, frio de verdade. Almoço chique, Quitandinha e piquenique. Tudo nosso.');
+    await ctx.say('bella', 'Você é o melhor namorado do mundo. Já disse isso hoje?');
+    await ctx.say('weng', 'Hoje não. Pode repetir.');
+    ctx.objective('dq-m5', 'convite');
+    ctx.unlockRegion('petropolis');
+    // troca de capítulo: tela preta por trás (o mapa não aparece entre os cartões)
+    await ctx.fadeOut(600);
+    await ctx.chapterCard('Fim do Capítulo 2', 'Duque de Caxias', 'Nosso cantinho.', 'Continuar', {
+      title: 'Nosso cantinho',
+      photos: ['cena-pascoa', 'cena-primeira-noite', 'cena-pazes'],
+      lines: [
+        'Ela conheceu o apê do Weng, e a Meli aprovou a visita (depois de um sachê e um novelo).',
+        'Teve Páscoa com chocolate demais, jantar a dois e a primeira noite juntos.',
+        'Teve a primeira briga boba, por causa de casais perfeitos da internet...',
+        '...e as primeiras pazes: a gente não é régua de ninguém. A gente é a gente.',
+        'E aí veio o convite: o aniversário dela seria na serra.',
+      ],
+    });
+    await ctx.chapterCard('Capítulo 3', 'Petrópolis', 'O aniversário dela.', 'Começar');
+    // a véspera: a Bella escolhendo a roupa da viagem (visual novo a partir daqui)
+    await ctx.narrate('Na noite antes da viagem. Mala aberta em cima da cama, roupa espalhada pelo quarto inteiro.');
+    await ctx.say('bella', 'Ok. Petrópolis. Palácio, piquenique, hotel, almoço chique... o que se veste pra TUDO isso?');
+    await ctx.say('bella', 'A jaqueta preta? Quentinha... mas é foto num PALÁCIO, Bella. Palácio!');
+    await ctx.say('bella', 'O clássico, camiseta preta? Eu amo. Mas é o meu aniversário. Merece algo especial.');
+    await ctx.say('bella', '...O vestido amarelo de florzinha. Ele é praticamente um girassol. Combina com palácio, com piquenique e com aniversário.');
+    await ctx.wardrobe(['floral'], 'petropolis');
+    ctx.sfx('pickup');
+    await ctx.say('bella', 'Decidido! E um casaquinho na mala, que eu não sou boba. Lá faz frio de verdade.');
+    await ctx.phone({ contact: 'Weng ♥', avatar: 'portrait-weng', clock: '23:12', caption: 'Mais tarde...' }, [
+      { from: 'me', text: 'já escolhi a roupa de amanhã 🐥' },
+      { from: 'them', text: 'qual?' },
+      { from: 'me', text: 'surpresa 🤫' },
+      { from: 'them', text: 'vingança pela banoffee, né' },
+      { from: 'me', text: 'exatamente' },
+      { from: 'them', text: 'então eu também vou de surpresa' },
+      { from: 'me', text: 'você vai de camiseta preta' },
+      { from: 'them', text: '...' },
+      { from: 'them', text: 'não vou não' },
+      { from: 'them', text: 'comprei uma camisa nova' },
+      { from: 'me', text: 'WENG 😭' },
+      { from: 'them', text: 'branca. pra combinar com o seu sorriso' },
+      { from: 'me', text: 'que brega' },
+      { from: 'me', text: 'amei 🐥' },
+      { from: 'them', text: 'dorme, aniversariante 💛' },
+      { from: 'me', text: 'ainda nem é meu aniversário' },
+      { from: 'them', text: 'pra mim já é' },
+    ]);
+    await ctx.teleport('pt-quitandinha', 'entrada');
+  await ctx.teleport('pt-quitandinha', 'entrada');
+}
+
 const scripts: Record<string, Script> = {
   async chegada(ctx) {
     ctx.follow('weng', true);
@@ -158,15 +239,20 @@ const scripts: Record<string, Script> = {
       ctx.removeProp('novelo');
       // cansou de tanto brincar: vai sozinha pra caminha, no quarto do Weng
       ctx.pose('meli', null);
-      void (async () => {
-        await ctx.move('meli', 8.2, P.brinca.y, 70);
-        await ctx.move('meli', 8.2, 10.6, 70);
-        await ctx.move('meli', 9.6, 10.6, 70);
-        await ctx.move('meli', 9.6, 8.3, 70);
-        await ctx.move('meli', P.caminha.x, P.caminha.y, 60);
-        ctx.face('meli', 'down');
+      void Promise.race([
+        (async () => {
+          await ctx.move('meli', 8.2, P.brinca.y, 70);
+          await ctx.move('meli', 8.2, 10.6, 70);
+          await ctx.move('meli', 9.6, 10.6, 70);
+          await ctx.move('meli', 9.6, 8.3, 70);
+          await ctx.move('meli', P.caminha.x, P.caminha.y, 60);
+        })(),
+        ctx.wait(9000),
+      ]).then(() => {
+        // garante que ela termina deitada na caminha (mesmo se o caminho travar)
+        ctx.place('meli', P.caminha.x, P.caminha.y, 'down');
         ctx.pose('meli', 'meli-poses', 1);
-      })();
+      });
       await ctx.say('weng', 'Olha ela indo pra caminha. Cansou de ser feliz.');
       await ctx.unfocus(500);
       ctx.follow('weng', true);
@@ -207,6 +293,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'O arranhador da Meli, com casinha e bolinha pendurada. Ela tem mais coisa que eu.');
   },
   async caminha(ctx) {
+    if (questDone() || objDone('carinho')) restoreMeli(ctx);
     if (objActive('achar-meli')) {
       await ctx.say('bella', 'A caminha dela tá vazia... e quentinha. Ela tava aqui agorinha!');
       return;
@@ -218,6 +305,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'A caminha da Meli. Tem até patinha desenhada.');
   },
   async camaWeng(ctx) {
+    if (questDone() || objDone('carinho')) restoreMeli(ctx);
     if (QuestSystem.isActive('dq-m3') && QuestSystem.isObjectiveDone('dq-m3', 'filme') && !QuestSystem.isObjectiveDone('dq-m3', 'dormir')) {
       await ctx.say('bella', 'A cama de esteira de bambu... geladinha.');
       await ctx.say('weng', 'Eu disse que era a melhor invenção da China.');
@@ -732,64 +820,18 @@ export const aptoMap: MapDef = {
         await ctx.say('vom-weng', 'Seja bem-vinda. O Weng não para de falar de você.');
         await ctx.emote('bella', 'heart');
         await ctx.say('bella', 'Ai, que fofos! Eu é que tô feliz de conhecer vocês.');
-        await ctx.say('weng', '(Hotel no alto do morro, restaurante chique, Quitandinha, piquenique... já tá tudo reservado. Agora é só contar.)');
-        ctx.toast('Fale com o Weng');
+        await ctx.say('weng', '(Hotel no alto do morro, restaurante chique, Quitandinha, piquenique... já tá tudo reservado. Só falta a hora certa de contar.)');
+        await ctx.say('vof-weng', 'Weng, aproveita e passa no mercado pra Vó? Tô sem farinha pro bolinho.');
+        await ctx.say('weng', 'Pode deixar, Vó. Bella, bora dar uma volta? Açaí, Multidão e o mercado da Vó.');
+        await ctx.say('bella', 'Açaí E Multidão no mesmo dia? Hoje é meu dia de sorte.');
+        ctx.toast('Saia com o Weng: açaí, Shopping da Multidão e o mercado da Vó');
         return;
       }
       if (QuestSystem.isActive('dq-m5')) {
-        await ctx.say('weng', 'Bella, pega um casaco. Dos grossos.');
-        await ctx.say('bella', 'Casaco? Em Duque de Caxias? Tá tudo bem com você?');
-        await ctx.say('weng', 'É que no seu aniversário a gente vai pra... Petrópolis!');
-        await ctx.emote('bella', 'heart');
-        await ctx.say('bella', 'PETRÓPOLIS?! Sério?! Weng!!!');
-        await ctx.say('weng', 'Hotel lá no alto do morro, frio de verdade. Almoço chique, Quitandinha e piquenique. Tudo nosso.');
-        await ctx.say('bella', 'Você é o melhor namorado do mundo. Já disse isso hoje?');
-        await ctx.say('weng', 'Hoje não. Pode repetir.');
-        ctx.objective('dq-m5', 'convite');
-        ctx.unlockRegion('petropolis');
-        // troca de capítulo: tela preta por trás (o mapa não aparece entre os cartões)
-        await ctx.fadeOut(600);
-        await ctx.chapterCard('Fim do Capítulo 2', 'Duque de Caxias', 'Nosso cantinho.', 'Continuar', {
-          title: 'Nosso cantinho',
-          photos: ['cena-pascoa', 'cena-primeira-noite', 'cena-pazes'],
-          lines: [
-            'Ela conheceu o apê do Weng, e a Meli aprovou a visita (depois de um sachê e um novelo).',
-            'Teve Páscoa com chocolate demais, jantar a dois e a primeira noite juntos.',
-            'Teve a primeira briga boba, por causa de casais perfeitos da internet...',
-            '...e as primeiras pazes: a gente não é régua de ninguém. A gente é a gente.',
-            'E aí veio o convite: o aniversário dela seria na serra.',
-          ],
-        });
-        await ctx.chapterCard('Capítulo 3', 'Petrópolis', 'O aniversário dela.', 'Começar');
-        // a véspera: a Bella escolhendo a roupa da viagem (visual novo a partir daqui)
-        await ctx.narrate('Na noite antes da viagem. Mala aberta em cima da cama, roupa espalhada pelo quarto inteiro.');
-        await ctx.say('bella', 'Ok. Petrópolis. Palácio, piquenique, hotel, almoço chique... o que se veste pra TUDO isso?');
-        await ctx.say('bella', 'A jaqueta preta? Quentinha... mas é foto num PALÁCIO, Bella. Palácio!');
-        await ctx.say('bella', 'O clássico, camiseta preta? Eu amo. Mas é o meu aniversário. Merece algo especial.');
-        await ctx.say('bella', '...O vestido amarelo de florzinha. Ele é praticamente um girassol. Combina com palácio, com piquenique e com aniversário.');
-        await ctx.wardrobe(['floral'], 'petropolis');
-        ctx.sfx('pickup');
-        await ctx.say('bella', 'Decidido! E um casaquinho na mala, que eu não sou boba. Lá faz frio de verdade.');
-        await ctx.phone({ contact: 'Weng ♥', avatar: 'portrait-weng', clock: '23:12', caption: 'Mais tarde...' }, [
-          { from: 'me', text: 'já escolhi a roupa de amanhã 🐥' },
-          { from: 'them', text: 'qual?' },
-          { from: 'me', text: 'surpresa 🤫' },
-          { from: 'them', text: 'vingança pela banoffee, né' },
-          { from: 'me', text: 'exatamente' },
-          { from: 'them', text: 'então eu também vou de surpresa' },
-          { from: 'me', text: 'você vai de camiseta preta' },
-          { from: 'them', text: '...' },
-          { from: 'them', text: 'não vou não' },
-          { from: 'them', text: 'comprei uma camisa nova' },
-          { from: 'me', text: 'WENG 😭' },
-          { from: 'them', text: 'branca. pra combinar com o seu sorriso' },
-          { from: 'me', text: 'que brega' },
-          { from: 'me', text: 'amei 🐥' },
-          { from: 'them', text: 'dorme, aniversariante 💛' },
-          { from: 'me', text: 'ainda nem é meu aniversário' },
-          { from: 'them', text: 'pra mim já é' },
-        ]);
-        await ctx.teleport('pt-quitandinha', 'entrada');
+        if (passeiosFeitos()) return conviteSerra(ctx);
+        const falta = PASSEIOS.filter((o) => !QuestSystem.isObjectiveDone('dq-m5', o.id)).map((o) => o.nome);
+        await ctx.say('weng', `Bora dar uma volta? Ainda falta: ${falta.join(', ')}.`);
+        await ctx.say('bella', 'Bora! (Ele tá com uma cara de quem tá escondendo alguma coisa...)');
         return;
       }
       await ctx.say('weng', 'Que foi? Tá me olhando com cara de quem quer açaí.');

@@ -34,13 +34,9 @@ const scripts: Record<string, Script> = {
     if (objActive('foto')) {
       await ctx.say('bella', 'Foto na escadaria! Com o palácio inteiro atrás. Weng, pega o ângulo bom!');
       await ctx.say('weng', 'Mais pra esquerda... agora pra direita... perfeito. Ficou de revista.');
-      ctx.sfx('confirm');
-      await ctx.fadeOut(90, '#ffffff');
-      await ctx.fadeIn(260);
+      await ctx.photo('A princesa e o palácio');
       await ctx.say('bella', 'Agora uma juntinhos! Vem!');
-      ctx.sfx('confirm');
-      await ctx.fadeOut(90, '#ffffff');
-      await ctx.fadeIn(260);
+      await ctx.photo('Nós dois no Quitandinha');
       ctx.objective(Q, 'foto');
       ctx.hearts('player', 5);
       return;

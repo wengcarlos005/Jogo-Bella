@@ -285,6 +285,37 @@ class UIManagerImpl {
   }
 
   /** Ilustração em tela cheia com legendas; cada legenda avança com interagir/toque. */
+  /** Tira uma "foto" da tela do jogo (flash + polaroid com legenda); clique ou espaço pra guardar. */
+  photo(caption: string): Promise<void> {
+    this.dialogue.close();
+    return new Promise((resolve) => {
+      this.game.renderer.snapshot((img) => {
+        const pic = img as HTMLImageElement;
+        const flash = h('div', { class: 'ph-flash' });
+        const card = h('div', { class: 'polaroid' }, h('div', { class: 'pol-img' }, pic), h('div', { class: 'pol-cap' }, caption));
+        const screen = h('div', { class: 'screen photo-screen' }, flash, card, h('div', { class: 'pol-hint' }, 'clique pra guardar'));
+        this.root.append(screen);
+        AudioSystem.play('confirm');
+        InputSystem.push('minigame');
+        InputSystem.releaseAll();
+        let closed = false;
+        const close = () => {
+          if (closed) return;
+          closed = true;
+          InputSystem.off('minigame:interact', close);
+          InputSystem.pop('minigame');
+          screen.classList.add('out');
+          setTimeout(() => screen.remove(), 250);
+          resolve();
+        };
+        setTimeout(() => {
+          screen.addEventListener('pointerdown', close);
+          InputSystem.once('minigame:interact', close);
+        }, 500);
+      });
+    });
+  }
+
   illustration(key: string, lines: string[]): Promise<void> {
     const url = textureURL(key);
     const caption = h('div', { class: 'ill-caption' });

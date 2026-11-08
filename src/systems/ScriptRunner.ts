@@ -388,6 +388,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       scene.tempProps.delete(id);
     },
     illustration: (key, lines) => UI.illustration(key, lines),
+    photo: (caption) => UI.photo(caption),
     backdrop: (key, rainy) => UI.backdrop(key, rainy),
 
     nerves(value, message) {

@@ -36,15 +36,14 @@ const scripts: Record<string, Script> = {
     ctx.setFlag('pq-malas');
     await ctx.say('bella', 'Bora desfazer as malas? Eu trouxe... quatro casacos, três pijamas e... nenhuma meia.');
     await ctx.say('weng', 'Eu sabia. Trouxe seis pares. Pode escolher.');
-    await ctx.say('bella', 'Ei, o que é essa caixinha embrulhada na sua mala?');
-    await ctx.emote('weng', 'sweat');
-    await ctx.say('weng', 'NADA. Não é nada. Fecha. Fecha essa mala, Bella.');
-    const c = await ctx.choose('bella', '(Ele ficou vermelho...)', ['"Tá bom, não vi nada." (viu tudo)', '"É pra mim? É pra mim, né?"', 'Fechar a mala devagarinho, sorrindo']);
-    if (c === 0) await ctx.say('weng', 'Ótimo. Porque não tinha nada pra ver. Nadinha.');
-    else if (c === 1) await ctx.say('weng', 'Pode ser. Pode não ser. Só amanhã você descobre.');
+    await ctx.say('bella', 'Meia de lã? Você trouxe MEIA DE LÃ? Pra mim?');
+    await ctx.say('weng', 'Eu conheço os seus pés gelados. Já sofri com eles.');
+    const c = await ctx.choose('bella', '(Ele pensou até nas meias...)', ['"Você é o namorado mais preparado do mundo."', '"Agora meus pés vão gelar você com meia e tudo."', 'Calçar as meias na hora']);
+    if (c === 0) await ctx.say('weng', 'Preparado não. Apaixonado. É diferente.');
+    else if (c === 1) await ctx.say('weng', 'Eu aguento. Já me acostumei.');
     else {
       await ctx.emote('weng', 'heart');
-      await ctx.say('weng', 'Obrigado. Você é a melhor fingindo que não viu.');
+      await ctx.say('weng', 'Ficou grande. Ficou perfeito.');
     }
   },
 
@@ -119,12 +118,10 @@ const scripts: Record<string, Script> = {
     await ctx.narrate('Uma série boba na TV, os pés gelados dela nas pernas dele, e conversa até tarde.');
     await ctx.narrate('Ela dormiu primeiro. Ele ficou acordado. De propósito.');
     await ctx.narrate('23:59.');
-    // o bolinho escondido aparece na mesinha, com a velinha acesa
     ctx.follow('weng', false);
-    ctx.place('player', 23.2, 15.2, 'right');
-    ctx.place('weng', 26.3, 15.0, 'left');
-    ctx.prop('bolo', 'hq-bolo', 25.0, 14.7, 0, 0.13, 270);
-    await ctx.frame(24.6, 14.2, 0);
+    ctx.place('player', 9.3, 15.6, 'right');
+    ctx.place('weng', 10.9, 15.6, 'left');
+    await ctx.frame(10.1, 14.6, 0);
     ctx.letterbox(true);
     await ctx.fadeIn(900);
     await ctx.say('weng', '(cochichando) Bella... Bella. Acorda. Só um minutinho.');
@@ -133,22 +130,13 @@ const scripts: Record<string, Script> = {
     ctx.sfx('confirm');
     await ctx.emote('bella', 'exclaim');
     await ctx.say('weng', 'Feliz aniversário, meu amor.');
-    await ctx.say('bella', 'Você... você ficou acordado só pra isso? E esse BOLO? De onde saiu esse bolo?!');
-    await ctx.say('weng', 'Da caixinha da mala. Não era só uma caixinha.');
-    await ctx.say('bella', 'Era isso que você tava escondendo! Weng...');
+    await ctx.say('bella', 'Você ficou acordado só pra isso?');
     await ctx.say('weng', 'Eu queria ser o primeiro. Antes da sua mãe, antes de todo mundo.');
-    const w = await ctx.choose('bella', '(A velinha tremendo... faz um pedido)', ['Pedir mais muitos aniversários juntos', 'Pedir que o tempo passe devagar', 'Fazer um pedido secreto']);
-    await ctx.say('bella', w === 2 ? '(fecha os olhos... e não conta pra ninguém)' : w === 0 ? '(Mais muitos. Todos com ele.)' : '(Devagarinho. Bem devagarinho.)');
-    ctx.sfx('pickup');
-    ctx.removeProp('bolo');
-    ctx.prop('bolo', 'hq-bolo', 25.0, 14.7, 0, 0.13, 270);
     ctx.hearts('player', 12);
-    await ctx.say('weng', 'O que você pediu?');
-    await ctx.say('bella', 'Se contar não vale. Mas... já tá se realizando.');
-    await ctx.emote('weng', 'heart');
+    await ctx.emote('bella', 'heart');
+    await ctx.say('bella', '...Melhor primeiro parabéns da minha vida. Agora dorme comigo.');
     ctx.letterbox(false);
     await ctx.fadeOut(1000);
-    ctx.removeProp('bolo');
     await ctx.narrate('Ele foi o primeiro. Antes de todo mundo.');
     ctx.objective(Q, 'noite');
     ctx.setFlag('pt-manha');
@@ -163,7 +151,7 @@ const scripts: Record<string, Script> = {
   },
 };
 
-/** Capítulo 3 — o quarto 12 do hotel no alto do morro: lareira, a caixinha escondida e a meia-noite. */
+/** Capítulo 3 — o quarto 12 do hotel no alto do morro: lareira, as meias de lã e a meia-noite. */
 export const quartoMap: MapDef = {
   id: 'pt-quarto',
   region: 'petropolis',
@@ -174,6 +162,7 @@ export const quartoMap: MapDef = {
   art: 'native',
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
+  charScale: 1.3,
 
   blocks: [
     R(0, 0, 1536, 478), // parede do fundo (janela, quadros e arandelas)
