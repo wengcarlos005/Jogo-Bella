@@ -119,6 +119,46 @@ export const MEMORIES: MemoryDef[] = [
     text: 'A nossa primeira briga foi por nos comparar com casais perfeitos do TikTok. Aprendemos juntos e pedimos desculpas um pro outro. Nada de régua da internet: só a gente.',
     image: 'cena-pazes',
   },
+  {
+    id: 'mem-dq-09',
+    region: 'duque-de-caxias',
+    title: 'Achadinhos da Multidão',
+    year: 'Ano 1',
+    text: 'Uma tarde inteira rodando o Multidão: eu provando tudo, o Weng segurando as sacolas e dizendo que "só ia olhar".',
+    image: 'memory-dq-09',
+  },
+  {
+    id: 'mem-dq-10',
+    region: 'duque-de-caxias',
+    title: 'A lista da Vó',
+    year: 'Ano 1',
+    text: 'Mercadinho da esquina com a lista da Vó do Weng. A paçoca entrou no carrinho "sozinha", e a moça do caixa perguntou se a gente era casado.',
+    image: 'memory-dq-10',
+  },
+  {
+    id: 'mem-pt-01',
+    region: 'petropolis',
+    title: 'Cisnes e nuvens',
+    year: 'Ano 1',
+    text: 'No Quitandinha: corrida de pedalinho contra o cisne rosa, foto na frente do palácio e um piquenique achando formas nas nuvens.',
+    image: 'memory-pt-01',
+  },
+  {
+    id: 'mem-pt-02',
+    region: 'petropolis',
+    title: 'Meia-noite em ponto',
+    year: 'Ano 1',
+    text: 'Ele ficou acordado de propósito só pra ser o primeiro a me dar parabéns. Antes de todo mundo.',
+    image: 'memory-pt-02',
+  },
+  {
+    id: 'mem-pt-03',
+    region: 'petropolis',
+    title: 'Almoço de aniversário',
+    year: 'Ano 1',
+    text: 'Restaurante chique na serra, um brinde a nós dois e um petit gâteau com velinha. O salão inteiro cantou parabéns.',
+    image: 'memory-pt-03',
+  },
 ];
 
 export const MEMORY_GOAL = 50;

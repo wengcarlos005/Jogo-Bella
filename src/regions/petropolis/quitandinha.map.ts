@@ -129,6 +129,7 @@ const scripts: Record<string, Script> = {
     } else await ctx.say('weng', c === 0 ? 'E ainda nem acabou. Tem hotel lá no alto do morro esperando a gente.' : 'Dá pra voltar sempre. O palácio não sai daqui.');
     ctx.vignette(null);
     ctx.hearts('player', 10);
+    await ctx.memory('mem-pt-01');
     ctx.objective(Q, 'piquenique');
     await ctx.fadeOut(800);
     await ctx.narrate('No fim da tarde, a subida até o hotel, lá no alto do morro.');

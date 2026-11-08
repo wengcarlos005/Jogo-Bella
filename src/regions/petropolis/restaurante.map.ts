@@ -76,6 +76,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Feliz aniversário, Bella. Obrigado por existir.');
     ctx.vignette(null);
     await ctx.unfocus(400);
+    await ctx.memory('mem-pt-03');
     ctx.follow('weng', true);
     ctx.objective(Q, 'almoco');
   },

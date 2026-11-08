@@ -137,6 +137,7 @@ const scripts: Record<string, Script> = {
     await ctx.emote('bella', 'heart');
     await ctx.say('bella', '...Melhor primeiro parabéns da minha vida. Agora dorme comigo.');
     ctx.letterbox(false);
+    await ctx.memory('mem-pt-02');
     await ctx.fadeOut(1000);
     await ctx.narrate('Ele foi o primeiro. Antes de todo mundo.');
     ctx.objective(Q, 'noite');

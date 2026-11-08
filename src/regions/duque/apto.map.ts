@@ -77,6 +77,8 @@ const passeiosFeitos = () => PASSEIOS.every((o) => QuestSystem.isObjectiveDone('
 /** Marca um passeio; quando os 3 acabam, o Weng começa a falar de Petrópolis sozinho. */
 export async function passeioDuque(ctx: ScriptContext, id: (typeof PASSEIOS)[number]['id']): Promise<void> {
   if (!QuestSystem.isActive('dq-m5') || QuestSystem.isObjectiveDone('dq-m5', id)) return;
+  const mem: Partial<Record<string, string>> = { compras: 'mem-dq-09', mercado: 'mem-dq-10' };
+  if (mem[id]) await ctx.memory(mem[id]!);
   ctx.objective('dq-m5', id);
   if (!passeiosFeitos()) {
     const falta = PASSEIOS.filter((o) => !QuestSystem.isObjectiveDone('dq-m5', o.id)).map((o) => o.nome);
