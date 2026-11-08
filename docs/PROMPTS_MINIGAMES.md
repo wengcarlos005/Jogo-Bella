@@ -402,3 +402,107 @@ Row 2:
 
 No text, no labels, no numbers, no watermark.
 ```
+
+## 12. Jantar a dois (minigame de cozinhar no apê do Weng)
+
+Jogo: escolher a receita (macarrão ao molho branco, strogonoff ou miojo gourmet) → pegar os ingredientes certos
+na bancada → cortar no ritmo → acertar o tempo no fogão (mexer, não deixar queimar) → servir.
+
+Anexe o cenário do apê do Weng (cozinha).
+
+```
+Pixel art sprite sheet of kitchen props and ingredients for a cozy cooking minigame, same art style as the attached image (cozy pixel art, clean dark outlines, warm colors), slightly top-down 3/4 view.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 5 columns (each cell about 307x256 px), every sprite centered in its own cell, about 160x160 px, nothing touching:
+Row 1: 1. a pack of dry spaghetti, 2. a carton of cream, 3. a block of cheese, 4. a garlic bulb, 5. a whole onion.
+Row 2: 6. raw beef strips on a small plate, 7. a can of tomato sauce, 8. a bowl of mushrooms, 9. a bag of potato sticks (batata palha), 10. a pack of instant noodles.
+Row 3: 11. a raw egg, 12. a green onion bunch, 13. a wooden cutting board, 14. a chef knife, 15. a wooden spoon.
+Row 4: 16. an empty pan on a stove burner with blue flame, 17. the same pan with creamy pasta bubbling, 18. the same pan with stroganoff bubbling, 19. the same pan with burnt black food and smoke, 20. a finished plate of pasta with a little basil leaf.
+
+No text, no labels, no numbers, no watermark.
+```
+
+## 13. Piquenique: nuvens com forma e o casal deitado
+
+Anexe o cenário do Quitandinha e os sprites da Bella (vestido amarelo) e do Weng (camisa branca).
+
+```
+Pixel art sprite sheet, same art style as the attached images (cozy pixel art, clean dark outlines, soft colors).
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no shadows on the background.
+
+STRICT GRID of 2 rows and 4 columns (each cell 384x512 px), every sprite centered in its own cell, nothing touching:
+Row 1 (fluffy white clouds with a soft blue-grey shading, each clearly shaped like):
+1. a chubby sitting cat, 2. a hamburger, 3. a heart, 4. a swan.
+Row 2:
+5. a dragon, 6. a birthday cake with candles,
+7. the attached girl (long curly brown hair, pink glasses, yellow floral dress) and the attached boy (short black hair, white shirt) lying on their backs side by side on a red and white checkered picnic blanket, seen from above, looking up at the sky, holding hands (about 340x260 px),
+8. the same couple sitting on the blanket, she leaning her head on his shoulder (about 300x260 px).
+
+No text, no labels, no numbers, no watermark.
+```
+
+## 14. Restaurante de Petrópolis: o casal sentado à mesa
+
+Anexe o cenário do restaurante (pt-restaurante) e os sprites da Bella e do Weng (roupas de Petrópolis).
+
+```
+Pixel art sprite sheet, using EXACTLY the same characters, art style, outline, colors and scale as the attached character sprites (a standing adult is about 140 px tall), same top-down 3/4 camera angle as the attached restaurant.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 2 rows and 3 columns (each cell 512x512 px), each drawing centered in its own cell, nothing touching:
+Row 1 — a small round restaurant table with a white tablecloth, a candle, a red rose in a vase and two glasses of wine, with the girl (long curly brown hair, pink glasses, yellow floral dress) sitting on a red velvet chair on the LEFT and the boy (short black hair, white shirt) sitting on a red velvet chair on the RIGHT, facing each other:
+1. talking and smiling, 2. toasting with the glasses, 3. she covering her mouth surprised, eyes sparkling, a small dessert with a birthday candle in front of her.
+Row 2:
+4. a chocolate lava cake (petit gâteau) with ice cream on a plate, 5. a plate of trout with herbs, 6. a small pot of cheese fondue with bread cubes.
+
+No text, no labels, no numbers, no watermark.
+```
+
+## 15. Corrida de Pedalinho (minigame do Quitandinha)
+
+Jogo: pedalar alternando duas teclas, desviar dos outros cisnes e das vitórias-régias, passar pelas boias até o píer.
+
+Anexe o cenário do Quitandinha e o cisne da folha do Quitandinha.
+
+```
+Pixel art sprite sheet for a top-down boat race minigame on a lake, same art style as the attached images (cozy pixel art, clean dark outlines), seen straight from above.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no shadows on the background.
+
+STRICT GRID of 2 rows and 4 columns (each cell 384x512 px), each sprite centered in its own cell, nothing touching:
+Row 1:
+1. a white swan pedal boat seen from above, with a girl (curly brown hair, yellow dress) and a boy (black hair, white shirt) sitting inside, pedaling (about 160x240 px, pointing up),
+2. the same boat with water splashes at the back (pedaling fast),
+3. a different swan pedal boat seen from above, pink, with two strangers (about 160x240 px),
+4. a round orange buoy with a little flag (about 80x80 px).
+Row 2:
+5. a cluster of green lily pads with a pink flower (about 160x140 px),
+6. a small wooden pier seen from above (about 300x160 px),
+7. a group of small ducks swimming (about 160x120 px),
+8. a water ripple ring (about 140x140 px).
+
+No text, no labels, no numbers, no watermark.
+```
+
+## 16. Café da manhã de aniversário (minigame do hotel)
+
+Jogo: o Weng monta a bandeja do café da Bella de memória (o que ela ama vs. o que ela odeia), como o do hambúrguer.
+
+Anexe o cenário do hotel por fora (varanda).
+
+```
+Pixel art sprite sheet of breakfast items, same art style as the attached image (cozy pixel art, clean dark outlines, warm morning colors), slightly top-down view.
+
+Canvas 1536x1024 pixels. Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no shadows on the background.
+
+STRICT GRID of 3 rows and 4 columns (each cell 384x341 px), each item centered in its own cell, about 150x150 px, nothing touching:
+Row 1: 1. a wooden breakfast tray (about 300x180 px), 2. pão de queijo (cheese bread balls) in a basket, 3. a slice of corn cake (bolo de fubá), 4. a cup of coffee with milk.
+Row 2: 5. a small jar of strawberry jam, 6. a glass of orange juice, 7. scrambled eggs on a plate, 8. a slice of papaya.
+Row 3: 9. a small vase with a blue hydrangea, 10. a folded handwritten card with a heart (no text), 11. a croissant, 12. a bowl of fruit salad.
+
+No text, no labels, no numbers, no watermark.
+```
