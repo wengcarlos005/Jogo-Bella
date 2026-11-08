@@ -420,14 +420,11 @@ const scripts: Record<string, Script> = {
   },
   async fogao(ctx) {
     if (QuestSystem.isActive('dq-m3') && !QuestSystem.isObjectiveDone('dq-m3', 'jantar')) {
-      const c = await ctx.choose('bella', 'O que a gente cozinha hoje?', ['Macarrão ao molho branco', 'Strogonoff com batata palha', 'Miojo gourmet (com ovo!)']);
-      const pratos = ['macarrão ao molho branco', 'strogonoff', 'miojo gourmet'];
-      await ctx.say('weng', c === 2 ? 'Miojo gourmet. Respeito a ousadia.' : `Fechado: ${pratos[c]}. Eu pico a cebola e choro sozinho.`);
-      await ctx.fadeOut(400);
-      ctx.sfx('pickup');
-      await ctx.narrate('Panela no fogo, música baixinha e a Meli rondando a cozinha esperando cair alguma coisa.');
-      await ctx.fadeIn(400);
-      await ctx.say('bella', 'Hmm... ficou bom demais! A gente é um ótimo time.');
+      await ctx.say('weng', 'Hoje eu cozinho. Quer dizer... a gente cozinha.');
+      const r = await ctx.cook();
+      ctx.setFlag('dq-jantar-estrelas', r.stars);
+      await ctx.narrate('Música baixinha, a Meli rondando a cozinha esperando cair alguma coisa.');
+      await ctx.say('bella', r.stars >= 2 ? 'Hmm... ficou bom demais! A gente é um ótimo time.' : 'Ficou... diferente. Mas foi a gente que fez. Então é o melhor do mundo.');
       await ctx.say('weng', 'Eu te disse. Agora: filme no sofá?');
       ctx.objective('dq-m3', 'jantar');
       ctx.toast('Sente no sofá para ver o filme');

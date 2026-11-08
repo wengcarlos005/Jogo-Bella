@@ -5,6 +5,7 @@ import { playKissGame, type KissResult } from './screens/KissGame';
 import { playPhoneChat, type PhoneMsg, type PhoneOptions } from './screens/PhoneChat';
 import { playAcaiGame, type AcaiOptions, type AcaiResult } from './screens/AcaiGame';
 import { playTacoGame, type TacoResult } from './screens/TacoGame';
+import { playCookGame, type CookResult } from './screens/CookGame';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -184,6 +185,11 @@ class UIManagerImpl {
   cinema(): Promise<CinemaResult> {
     this.dialogue.close();
     return this.replayable(() => playCinemaGame(this.root));
+  }
+
+  cook(): Promise<CookResult> {
+    this.dialogue.close();
+    return this.replayable(() => playCookGame(this.root));
   }
 
   tacos(opts: { title?: string } = {}): Promise<TacoResult> {
