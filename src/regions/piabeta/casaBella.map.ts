@@ -204,7 +204,8 @@ export const casaBellaMap: MapDef = {
       rect: R(150, 600, 275, 700),
       script: 'chegou-sala',
       once: true,
-      enabledIf: () => objDone('espelho'),
+      // só no 1º encontro (no domingo do churrasco a mãe não manda pegar guarda-chuva)
+      enabledIf: () => QuestSystem.isActive(Q) && objDone('espelho') && !objDone('guarda-chuva'),
     },
     {
       id: 'sair-cedo',

@@ -26,6 +26,8 @@ const scripts: Record<string, Script> = {
     if (!ctx.questActive(Q) && !QuestSystem.isDone(Q)) ctx.startQuest(Q);
     ctx.refresh();
     ctx.visible('weng', false);
+    ctx.face('mae-bella', 'down');
+    ctx.face('avo-bella', 'down');
     await ctx.narrate('Domingo, uma da tarde. Cheiro de carvão no ar.');
     await ctx.say('pai-bella', '(assobiando, abanando a churrasqueira)');
     await ctx.wait(300);
@@ -49,6 +51,10 @@ const scripts: Record<string, Script> = {
     ctx.hearts('player', 4);
     await ctx.say('bella', 'Vem, entra! Todo mundo tá te esperando.');
     ctx.follow('weng', true);
+    // todo mundo vira pra ver quem chegou
+    ctx.face('mae-bella', 'weng');
+    ctx.face('pai-bella', 'weng');
+    ctx.face('avo-bella', 'weng');
     await ctx.say('mae-bella', 'Chegou o Weng! Entra, querido, fica à vontade. O Alexandre já acendeu a churrasqueira.');
     await ctx.say('mae-bella', 'Ai, trouxe sobremesa! Alexandre, ele mesmo FEZ uma banoffee!');
     await ctx.say('pai-bella', '(sem tirar o olho da carne) Banoffee. Hm. Eu faço uma melhor. Mas tudo bem.');
@@ -77,10 +83,12 @@ const scripts: Record<string, Script> = {
       // o Weng assume a churrasqueira (na frente, ao lado do Alexandre); a Bella fica atrás, torcendo
       ctx.follow('bella', false);
       await ctx.fadeOut(250);
-      ctx.place('weng', 6.9, 12.5, 'left');
-      ctx.place('pai-bella', 8.4, 12.3, 'left');
-      ctx.place('bella', 7.6, 15.5, 'up');
-      await ctx.frame(7.6, 13.4, 0);
+      // o Weng na frente da grelha; o Alexandre logo atrás, de braços cruzados, fiscalizando;
+      // a Bella mais atrás, perto da mesa (ninguém em cima de ninguém)
+      ctx.place('weng', 6.7, 12.8, 'left');
+      ctx.place('pai-bella', 7.9, 14.7, 'up');
+      ctx.place('bella', 8.8, 16.4, 'up');
+      await ctx.frame(7.6, 13.8, 0);
       await ctx.fadeIn(300);
       ctx.face('pai-bella', 'weng');
       ctx.face('bella', 'weng');
@@ -299,7 +307,7 @@ export const quintalMap: MapDef = {
   hotspots: [
     { rect: R(150, 330, 335, 600), interact: 'churrasqueira', label: 'Churrasqueira', markerIf: () => objActive('churrasco') },
     { rect: R(440, 365, 870, 800), interact: 'mesa', label: 'Mesa', markerIf: () => objActive('mesa') && objDone('churrasco') },
-    { rect: R(870, 100, 1000, 430), interact: 'porta', label: 'Porta', markerIf: () => objActive('filme') && objDone('mesa') },
+    { rect: R(870, 100, 1000, 430), interact: 'porta', label: 'Porta', markerIf: () => objDone('mesa') && (objActive('lala') || objActive('filme')) },
     { rect: R(604, 845, 905, 890), interact: 'portao', label: 'Portão', markerIf: () => objActive('passeio') && objDone('filme') },
     { rect: R(110, 560, 292, 742), interact: 'cooler', label: 'Isopor' },
     { rect: R(1190, 230, 1400, 520), interact: 'varal', label: 'Varal' },

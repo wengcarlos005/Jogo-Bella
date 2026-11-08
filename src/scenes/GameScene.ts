@@ -1022,6 +1022,22 @@ export class GameScene extends Phaser.Scene {
       if (on) {
         const a = m.anchor();
         const bob = Math.abs(Math.sin(time / 260)) * 5;
+        // fora da tela (ou cortado na borda): a setinha fica na beirada, apontando pra onde ir
+        const v = this.cameras.main.worldView;
+        const pad = 14;
+        if (a.x < v.x + pad || a.x > v.right - pad || a.y - 10 < v.y + pad || a.y > v.bottom - pad) {
+          const cx = Math.max(v.x + pad, Math.min(v.right - pad, a.x));
+          const cy = Math.max(v.y + pad, Math.min(v.bottom - pad - 40, a.y - 10));
+          const ang = Math.atan2(a.y - 10 - cy, a.x - cx);
+          const push = Math.abs(Math.sin(time / 200)) * 3;
+          m.sprite.setPosition(Math.round(cx + Math.cos(ang) * push), Math.round(cy + Math.sin(ang) * push));
+          m.sprite.setRotation(ang - Math.PI / 2);
+          m.sprite.setScale(1.35);
+          m.caption?.setVisible(false);
+          continue;
+        }
+        if (!m.side) m.sprite.setRotation(0);
+        else m.sprite.setRotation(m.side === 'right' ? -Math.PI / 2 : Math.PI / 2);
         if (m.side) {
           // balança só pra dentro do mapa (nunca some na borda)
           const dir = m.side === 'right' ? 1 : -1;

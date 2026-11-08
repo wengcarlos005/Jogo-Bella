@@ -92,7 +92,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     const b = scene.findActor('bella');
     if (!a || !b || a === b || !a.visible || !b.visible) return;
     if (a instanceof NPC && a.behavior === 'scripted') return; // andando numa cena
-    if (Math.hypot(a.x - b.x, a.y - b.y) > 120) return;
+    if (Math.hypot(a.x - b.x, a.y - b.y) > 260) return;
     a.faceTowards(b.x, b.y);
   };
 

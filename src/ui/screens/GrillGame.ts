@@ -38,25 +38,6 @@ const MEATS: MeatDef[] = [
 
 
 
-// ------------------------------------------------------------------ cores
-const hex = (c: string) => {
-  const n = parseInt(c.slice(1), 16);
-  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-};
-const rgb = (r: number, g: number, b: number) => `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
-const mixC = (a: string, b: string, t: number) => {
-  const A = hex(a);
-  const B = hex(b);
-  const k = Math.max(0, Math.min(1, t));
-  return rgb(A[0] + (B[0] - A[0]) * k, A[1] + (B[1] - A[1]) * k, A[2] + (B[2] - A[2]) * k);
-};
-const shade = (c: string, f: number) => {
-  const m = c.match(/\d+/g)!.map(Number);
-  const g = (v: number) => (f >= 0 ? v + (255 - v) * f : v * (1 + f));
-  return rgb(g(m[0]), g(m[1]), g(m[2]));
-};
-const meatColor = (m: MeatDef, d: number) => (d <= 0.74 ? mixC(m.raw, m.ok, d / 0.74) : mixC(m.ok, m.burnt, (d - 0.74) / 0.5));
-
 /** Sprites das carnes (art-source/minigames/churrasco-carnes.webp): 4 pontos cada — cru, dourando, no ponto, carvão. */
 const MEAT_IMG: Record<string, HTMLImageElement[]> = {};
 function meatImgs(id: string): HTMLImageElement[] {
@@ -92,70 +73,6 @@ function drawMeatSprite(c: CanvasRenderingContext2D, id: string, cook: number, c
   return true;
 }
 
-/** Desenha uma carne em pixel art centrada em (cx, cy). `sq` achata na vertical (virando). */
-function drawMeat(c: CanvasRenderingContext2D, m: MeatDef, cook: number, cx: number, cy: number, marked: boolean, sq = 1, sc = 1): void {
-  const base = meatColor(m, cook);
-  const top = shade(base, 0.22);
-  const low = shade(base, -0.28);
-  const line = shade(base, -0.62);
-  const px = (x: number, y: number, col: string) => {
-    c.fillStyle = col;
-    c.fillRect(Math.round(cx + x * sc), Math.round(cy + y * sc * sq), Math.ceil(sc), Math.ceil(sc * Math.max(sq, 0.2)));
-  };
-  // forma: devolve true se (x,y) está dentro, e se é borda
-  let inside: (x: number, y: number) => boolean;
-  let hw = 22;
-  let hh = 11;
-  if (m.id === 'picanha') {
-    hw = 22;
-    hh = 12;
-    inside = (x, y) => (x * x) / (hw * hw) + (y * y) / (hh * hh) <= 1;
-  } else if (m.id === 'linguica') {
-    hw = 26;
-    hh = 7;
-    inside = (x, y) => {
-      const ax = Math.max(0, Math.abs(x) - (hw - hh));
-      return ax * ax + y * y <= hh * hh;
-    };
-  } else if (m.id === 'frango') {
-    hw = 16;
-    hh = 12;
-    inside = (x, y) => ((x + 4) * (x + 4)) / (hw * hw) + (y * y) / (hh * hh) <= 1;
-  } else {
-    hw = 24;
-    hh = 9;
-    inside = (x, y) => {
-      const ax = Math.max(0, Math.abs(x) - (hw - 6));
-      const ay = Math.max(0, Math.abs(y) - (hh - 6));
-      return ax * ax + ay * ay <= 36;
-    };
-  }
-  // osso do frango (por trás)
-  if (m.id === 'frango') {
-    for (let x = 10; x <= 22; x++) for (let y = -2; y <= 2; y++) px(x, y, Math.abs(y) === 2 ? '#8a7a66' : y < 0 ? '#fffaf0' : '#ecdcc4');
-    for (const [kx, ky] of [[22, -4], [22, 3]])
-      for (let x = -2; x <= 2; x++) for (let y = -2; y <= 2; y++) if (x * x + y * y <= 5) px(kx + x, ky + y, x * x + y * y >= 4 ? '#8a7a66' : '#fffaf0');
-  }
-  for (let y = -hh - 1; y <= hh + 1; y++)
-    for (let x = -hw - 1; x <= hw + 1; x++) {
-      if (!inside(x, y)) continue;
-      const edge = !inside(x - 1, y) || !inside(x + 1, y) || !inside(x, y - 1) || !inside(x, y + 1);
-      let col = y < -hh * 0.35 ? top : y > hh * 0.45 ? low : base;
-      // capa de gordura da picanha
-      if (m.id === 'picanha' && y < -hh * 0.45) col = mixC('#fbf1e2', '#e9b45a', Math.min(1, cook * 1.1));
-      if (m.id === 'picanha' && y < -hh * 0.45 && cook > 0.95) col = mixC('#e9b45a', '#3a2412', (cook - 0.95) * 3);
-      // brilho da linguiça
-      if (m.id === 'linguica' && y === -hh + 2 && Math.abs(x) < hw - 9 && x % 5 !== 0) col = shade(base, 0.45);
-      // pão de alho: cortes e salsinha
-      if (m.id === 'pao' && (x + 40) % 12 === 0 && Math.abs(y) < hh - 2) col = shade(base, -0.35);
-      if (m.id === 'pao' && y < 0 && (x * 7 + y * 13 + 91) % 17 === 0) col = '#4f8a2e';
-      // marcas da grelha depois de virar
-      if (marked && (x - y * 1.6 + 200) % 9 < 1.6 && !edge) col = shade(base, -0.55);
-      px(x, y, edge ? line : col);
-    }
-  // brilho
-  if (cook < 0.9) px(-hw * 0.45, -hh * 0.5, 'rgba(255,255,255,0.75)');
-}
 
 
 interface Phase { meat: Kind; speed: number; okW: number; okC: number; twist?: 'fogo' | 'anda' | 'dupla'; line: string }
@@ -195,6 +112,11 @@ const FX = {
     return (FX_CACHE.estrela ??= fxImg('estrela'));
   },
 };
+// pré-carrega assim que o jogo abre (o minigame já começa com as sprites prontas)
+queueMicrotask(() => {
+  void [FX.grelha, FX.fogo, FX.fumaca, FX.estrela];
+  for (const id of ['picanha', 'linguica', 'frango', 'pao']) meatImgs(id);
+});
 const FX_CACHE: { grelha?: HTMLImageElement; fogo?: HTMLImageElement[]; fumaca?: HTMLImageElement[]; estrela?: HTMLImageElement } = {};
 
 export function playGrillGame(parent: HTMLElement, opts: { title?: string; helper?: string } = {}): Promise<GrillResult> {
@@ -213,7 +135,6 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
     let last = 0;
     let time = 0;
     let flipT = 1;
-    let marked = false;
     let side = 0;
     let shake = 0;
     let dropT = 1;
@@ -291,7 +212,6 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
       pos = 0;
       dir = 1;
       side = 0;
-      marked = false;
       dropT = 0;
       layoutZone();
       phaseEl.textContent = `Fase ${phase + 1} de ${PHASES.length}`;
@@ -310,7 +230,6 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
       if (p.twist === 'dupla' && side === 0) {
         // primeira virada da fase dupla: conta metade e vira pro outro lado
         side = 1;
-        marked = true;
         pop(g === 2 ? 'Boa! Agora o outro lado' : g ? 'Quase...' : 'Ih...', g === 2 ? 'g2' : g ? 'g1' : 'g0');
         points += g / 2;
         pos = 0;
@@ -320,7 +239,6 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
       const got = p.twist === 'dupla' ? g / 2 : g;
       points += got;
       grades.push(g);
-      marked = true;
       if (g === 2) {
         pop('PERFEITO!', 'g2');
         burst(14);
@@ -364,7 +282,11 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
         c.fillStyle = glow;
         c.fillRect(0, gy, W, gh);
       } else {
-        drawOldGrill();
+        // sprites ainda carregando: só o fundo escuro (nada do desenho antigo piscando)
+        c.fillStyle = '#2a140e';
+        c.fillRect(0, 0, W, H);
+        c.restore();
+        return;
       }
       // a carne no meio, grande; cor = ponto atual
       const m = meatDef();
@@ -389,7 +311,7 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
           }
         } else drawFlames(W / 2, 80, 70);
       }
-      if (!drawMeatSprite(c, m.id, Math.min(1.25, pos * 1.25), W / 2, y, sq, 96)) drawMeat(c, m, Math.min(1.25, pos * 1.25), W / 2, y, marked, sq, 2.2);
+      drawMeatSprite(c, m.id, Math.min(1.25, pos * 1.25), W / 2, y, sq, 96);
       // fumaça subindo (sprite), mais forte conforme a carne passa do ponto
       const smokeOk = FX.fumaca.every((f) => f.complete && f.naturalWidth > 0);
       for (let k = 0; k < 4; k++) {
@@ -411,24 +333,6 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
       c.globalAlpha = 1;
       c.restore();
     };
-    function drawOldGrill(): void {
-      for (let y = 0; y < H; y += 6)
-        for (let x = -(y % 12 === 0 ? 0 : 6); x < W; x += 12) {
-          c.fillStyle = (x * 3 + y * 7) % 5 === 0 ? '#b5502f' : '#a3452a';
-          c.fillRect(x, y, 11, 5);
-          c.fillStyle = '#c86640';
-          c.fillRect(x, y, 11, 1);
-        }
-      const bx = 10, by = 10, bw = W - 20, bh = 92;
-      c.fillStyle = '#1b0f0b';
-      c.fillRect(bx, by, bw, bh);
-      for (let y = by + 8; y < by + bh - 8; y += 7) {
-        c.fillStyle = '#2a2424';
-        c.fillRect(bx + 2, y, bw - 4, 2);
-        c.fillStyle = '#8b8080';
-        c.fillRect(bx + 2, y, bw - 4, 1);
-      }
-    }
     function drawFlames(cx: number, by2: number, w: number): void {
       for (let k = 0; k < 9; k++) {
         const fx2 = cx - w / 2 + (k + 0.5) * (w / 9);
