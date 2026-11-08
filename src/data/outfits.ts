@@ -45,7 +45,7 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     piabeta: 'casual',
     'duque-de-caxias': 'casual',
     petropolis: 'floral', // aniversário na serra: o vestido amarelo
-    araruama: 'linho', // ano-novo de branco
+    araruama: 'casual', // ano-novo de 2024: "vestimos qualquer coisa"
     'rio-das-ostras': 'floral', // férias de verão
     niteroi: 'floral',
     lapa: 'festa', // aniversário
@@ -58,7 +58,7 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     piabeta: 'casual',
     'duque-de-caxias': 'casual',
     petropolis: 'reveillon', // camisa branca nova
-    araruama: 'reveillon',
+    araruama: 'casual',
     'rio-das-ostras': 'basica',
     niteroi: 'basica',
     lapa: 'xadrez',
