@@ -15,10 +15,10 @@ Regras de sempre:
 |---|---|---|
 | `memory-dq-02.png` | Açaí cheio de complemento | depois do açaí (**pronta**) |
 | `memory-dq-03.png` | O imbatível perdeu | cartas no apê (**pronta**) |
-| `memory-dq-09.png` | Achadinhos da Multidão | **nova**: saindo do Multidão |
-| `memory-dq-10.png` | A lista da Vó | **nova**: saindo do mercadinho |
-| `memory-pt-01.png` | Cisnes e nuvens | **nova**: fim do piquenique |
-| `memory-pt-02.png` | Meia-noite em ponto | **nova**: parabéns à meia-noite |
+| `memory-dq-09.png` | Achadinhos da Multidão | **nova**: saindo do Multidão (**pronta**) |
+| `memory-dq-10.png` | A lista da Vó | **nova**: saindo do mercadinho (**pronta**) |
+| `memory-pt-01.png` | Cisnes e nuvens | **nova**: fim do piquenique (**pronta**) |
+| `memory-pt-02.png` | Meia-noite em ponto | **nova**: parabéns à meia-noite (**pronta**) |
 | `memory-pt-03.png` | Almoço de aniversário | **nova**: fim do almoço |
 
 Os prompts de `memory-dq-02` e `memory-dq-03` estão em `PROMPTS_MINIGAMES.md`, seção 9.

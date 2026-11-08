@@ -111,6 +111,10 @@ Só a roupa casual da Bella tem os óculos rosados.
 | MEM-003 | `cinematics/memory-pia-03.png` | Primeiro beijo no coreto, na chuva | **integrado** |
 | MEM-006 | `cinematics/memory-dq-02.png` | Açaí cheio de complemento | **integrado** |
 | MEM-007 | `cinematics/memory-dq-03.png` | O imbatível perdeu (cartas com a Meli) | **integrado** |
+| MEM-008 | `cinematics/memory-dq-09.png` | Achadinhos da Multidão | **integrado** |
+| MEM-009 | `cinematics/memory-dq-10.png` | A lista da Vó (paçoca no carrinho) | **integrado** |
+| MEM-010 | `cinematics/memory-pt-01.png` | Cisnes e nuvens (piquenique no Quitandinha) | **integrado** |
+| MEM-011 | `cinematics/memory-pt-02.png` | Meia-noite em ponto | **integrado** |
 | UI-001 | `ui/title-art.png` | Capa: casal olhando a lua | **integrado** |
 | UI-003 | `ui/logo.png` | Logo "A Lua está Bella" | **integrado** |
 | UI-004 | `ui/panel.png` | Moldura 9-slice de painéis/botões/diálogo | **integrado** |
