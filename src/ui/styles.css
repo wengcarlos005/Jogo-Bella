@@ -2371,3 +2371,8 @@ img.tc-ico { height: auto; }
 .tr-talk { display: flex; align-items: center; gap: calc(var(--u) * 2); }
 .tr-face { width: calc(var(--u) * 22); height: calc(var(--u) * 22); border-radius: calc(var(--u) * 2); background: #ffe2b8; border: 2px solid #e3c39a; image-rendering: pixelated; flex: none; }
 .tr-msg { flex: 1; min-height: 2.4em; }
+
+.tr-face.bust { width: calc(var(--u) * 34); height: calc(var(--u) * 34); background: none; border: 0; object-fit: contain; image-rendering: auto; filter: drop-shadow(0 3px 0 rgba(90, 30, 10, .25)); }
+.tr-face.pop { animation: gp-bump .35s cubic-bezier(.2, 1.8, .4, 1); }
+.tr-talk { min-height: calc(var(--u) * 34); }
+.tr-face.bust { width: calc(var(--u) * 46); height: calc(var(--u) * 46); margin: calc(var(--u) * -6) 0 calc(var(--u) * -2); }

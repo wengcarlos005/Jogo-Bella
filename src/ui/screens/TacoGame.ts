@@ -79,9 +79,17 @@ export function playTacoGame(parent: HTMLElement, opts: { title?: string } = {})
     InputSystem.releaseAll();
 
     const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-    const say = (who: 'bella' | 'weng' | 'garcom', t: string) => {
-      const url = textureURL(`portrait-${who === 'garcom' ? 'garcom-mex' : who}`) ?? textureURL(`portrait-${who}`);
+    // bustos de sombreiro (art-source/minigames/taco-bustos.webp); o garçom usa o retrato
+    type Mood = 'b-pensa' | 'b-feliz' | 'b-fogo' | 'w-malandro' | 'w-ri' | 'w-orgulho';
+    for (const m of ['b-pensa', 'b-feliz', 'b-fogo', 'w-malandro', 'w-ri', 'w-orgulho']) new Image().src = mg(m);
+    const say = (who: 'bella' | 'weng' | 'garcom', t: string, mood?: Mood) => {
+      const m: Mood | undefined = mood ?? (who === 'bella' ? 'b-pensa' : who === 'weng' ? 'w-malandro' : undefined);
+      const url = m ? mg(m) : textureURL('portrait-garcom-mex') ?? textureURL('portrait-garcom');
       if (url) face.src = url;
+      face.classList.toggle('bust', !!m);
+      face.classList.remove('pop');
+      void face.offsetWidth;
+      face.classList.add('pop');
       msg.textContent = t;
       msg.classList.remove('pop');
       void msg.offsetWidth;
@@ -148,7 +156,7 @@ export function playTacoGame(parent: HTMLElement, opts: { title?: string } = {})
       await wait(450);
       say('garcom', '¡Mezclando!');
       for (let k = 0; k < r.swaps; k++) await swap(r.ms);
-      say('bella', r.revenge ? 'Cadê a pimenta... cadê... (sorriso maligno)' : 'Hmm... qual é o seguro?');
+      say('bella', r.revenge ? 'Cadê a pimenta... cadê... (sorriso maligno)' : 'Hmm... qual é o seguro?', 'b-pensa');
       picking = true;
       setCursor(1);
     };
@@ -166,19 +174,19 @@ export function playTacoGame(parent: HTMLElement, opts: { title?: string } = {})
         hits++;
         fx(i, 'brilho');
         AudioSystem.play('quest');
-        if (r.revenge) say('weng', '(com a boca pegando fogo) ...É. Eu mereci essa.');
-        else say('bella', ['Ufa! Esse tá seguro. Hmm, que delícia.', 'Achei! Sem pimenta. Toma, Weng.', 'Eu sou boa nisso. Muito boa.', 'Ha! Nem tremi.'][round % 4]);
+        if (r.revenge) say('weng', '(com a boca pegando fogo) ...É. Eu mereci essa.', 'w-orgulho');
+        else say('bella', ['Ufa! Esse tá seguro. Hmm, que delícia.', 'Achei! Sem pimenta. Toma, Weng.', 'Eu sou boa nisso. Muito boa.', 'Ha! Nem tremi.'][round % 4], 'b-feliz');
       } else {
         fx(i, r.revenge ? 'x' : 'fogo');
         AudioSystem.play('cancel');
         stage.classList.remove('bg-shake');
         void stage.offsetWidth;
         stage.classList.add('bg-shake');
-        if (r.revenge) say('weng', 'Hahaha! Sem pimenta! Que delícia de taco normal!');
+        if (r.revenge) say('weng', 'Hahaha! Sem pimenta! Que delícia de taco normal!', 'w-ri');
         else {
-          say('bella', ['AAAAAI! ÁGUA! ÁGUA!', 'TÁ PEGANDO FOGO, WENG!', 'Eu vou chorar. Tô chorando.', 'Por que você faz isso comigo?!'][round % 4]);
+          say('bella', ['AAAAAI! ÁGUA! ÁGUA!', 'TÁ PEGANDO FOGO, WENG!', 'Eu vou chorar. Tô chorando.', 'Por que você faz isso comigo?!'][round % 4], 'b-fogo');
           await wait(900);
-          say('weng', '(rindo tanto que nem consegue falar) ...toma a água, toma.');
+          say('weng', '(rindo tanto que nem consegue falar) ...toma a água, toma.', 'w-ri');
         }
       }
       dots.querySelectorAll('i')[round].classList.add(ok ? 'ok' : 'bad');
@@ -201,8 +209,8 @@ export function playTacoGame(parent: HTMLElement, opts: { title?: string } = {})
       banner.textContent = `${hits}/5`;
       banner.classList.add('on');
       if (stars === 3) say('garcom', '¡Increíble! Nenhuma pimenta. Essa señorita tem olho de águia.');
-      else if (stars === 2) say('bella', 'Comi umas pimentas... mas o Weng comeu mais. Isso que importa.');
-      else say('weng', 'Você comeu TODAS as pimentas. Eu nunca ri tanto num encontro.');
+      else if (stars === 2) say('bella', 'Comi umas pimentas... mas o Weng comeu mais. Isso que importa.', 'b-feliz');
+      else say('weng', 'Você comeu TODAS as pimentas. Eu nunca ri tanto num encontro.', 'w-ri');
       AudioSystem.play('quest');
       actions.replaceChildren(
         h('div', { class: 'bg-stars' }, ...[0, 1, 2].map((k) => h('span', { class: k < stars ? 'on' : '', style: `animation-delay:${k * 0.25}s` }, '★'))),
