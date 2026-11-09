@@ -76,6 +76,15 @@ const scripts: Record<string, Script> = {
   async lilian(ctx) {
     await ctx.say('lilian', objDone('virada') ? 'Feliz 2024, Bella! Tirou foto do coração? Me manda depois!' : 'Daqui é a melhor vista dos fogos de Araruama. Todo ano a gente briga pelo lugar no vidro.');
   },
+  async mingau(ctx) {
+    await ctx.say('mingau', objDone('virada') ? 'Eu vi o coração! Eu vi primeiro! Ninguém acredita em mim.' : 'Eu vou ficar acordado até meia-noite. Eu SEMPRE fico. (bocejo)');
+  },
+  async vivian(ctx) {
+    await ctx.say('vivian', objDone('virada') ? 'Feliz ano-novo, Bella! Ano que vem você vem de novo, combinado?' : 'Bora tirar uma foto todo mundo junto antes da virada? Weng, sai do canto!');
+  },
+  async diego(ctx) {
+    await ctx.say('diego', objDone('virada') ? 'Ano novo, churrasco novo. Amanhã eu ligo essa churrasqueira.' : 'Tô de olho na churrasqueira. Amanhã ela trabalha.');
+  },
   async portas(ctx) {
     await ctx.teleport('ar-cobertura', 'varanda');
   },
@@ -131,6 +140,9 @@ export const varandaMap: MapDef = {
   npcs: [
     { id: 'tia-tim', sprite: 'tia-tim', tx: 13.2, ty: 10.2, facing: 'down', interact: 'tiaTim' },
     { id: 'lilian', sprite: 'lilian', tx: 20.6, ty: 10.4, facing: 'down', interact: 'lilian' },
+    { id: 'mingau', sprite: 'mingau', tx: 10.6, ty: 12.4, facing: 'down', interact: 'mingau' },
+    { id: 'vivian', sprite: 'vivian', tx: 24.6, ty: 8.2, facing: 'left', interact: 'vivian' },
+    { id: 'diego', sprite: 'diego', tx: 6.8, ty: 8.6, facing: 'left', interact: 'diego' },
   ],
 
   spawns: {

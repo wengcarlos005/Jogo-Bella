@@ -171,6 +171,9 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | PORT-020 | Retrato do garçom (Petrópolis) | portraits/garcom.png | ✅ feito do quadro de frente |
 | NPC-030 | Tia Tim (4×4 andando, avental vermelho) | npcs/tia-tim-walk.png | ✅ no jogo (+ retrato portraits/tia-tim.png) |
 | NPC-031 | Lilian, prima (4×4 andando) | npcs/lilian-walk.png | ✅ no jogo (+ retrato portraits/lilian.png) |
+| NPC-032 | Mingau (Miguel), primo de 10 anos (4×4 andando, menor) | npcs/mingau-walk.png | ✅ no jogo (+ retrato) |
+| NPC-033 | Vivian, prima (4×4 andando) | npcs/vivian-walk.png | ✅ no jogo (+ retrato) |
+| NPC-034 | Diego, primo (4×4 andando) | npcs/diego-walk.png | ✅ no jogo (+ retrato) |
 
 ### LOTE 4–6 — Viagens do Ano 1 e 2 (Fases 5–6)
 Por cidade: 2–4 cenários pintados + camadas frontais, 3–6 NPCs, objetos-chave dos minigames, 3–4 ilustrações de memória. Lista detalhada será gerada no início de cada fase.

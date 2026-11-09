@@ -59,6 +59,9 @@ export const ASSETS: AssetEntry[] = [
   char('NPC-022', 'caixa', 'npcs/caixa-walk.png', 136),
   char('NPC-030', 'tia-tim', 'npcs/tia-tim-walk.png', 136),
   char('NPC-031', 'lilian', 'npcs/lilian-walk.png', 136),
+  char('NPC-032', 'mingau', 'npcs/mingau-walk.png', 136),
+  char('NPC-033', 'vivian', 'npcs/vivian-walk.png', 136),
+  char('NPC-034', 'diego', 'npcs/diego-walk.png', 136),
   char('NPC-010', 'vof-weng', 'npcs/vof-weng-walk.png', 136),
   char('NPC-011', 'vom-weng', 'npcs/vom-weng-walk.png', 136),
   char('NPC-012', 'kelly', 'npcs/kelly-walk.png', 136),
@@ -126,6 +129,9 @@ export const ASSETS: AssetEntry[] = [
   { id: 'PORT-022', key: 'portrait-caixa', file: 'assets/portraits/caixa.png', kind: 'image' },
   { id: 'PORT-030', key: 'portrait-tia-tim', file: 'assets/portraits/tia-tim.png', kind: 'image' },
   { id: 'PORT-031', key: 'portrait-lilian', file: 'assets/portraits/lilian.png', kind: 'image' },
+  { id: 'PORT-032', key: 'portrait-mingau', file: 'assets/portraits/mingau.png', kind: 'image' },
+  { id: 'PORT-033', key: 'portrait-vivian', file: 'assets/portraits/vivian.png', kind: 'image' },
+  { id: 'PORT-034', key: 'portrait-diego', file: 'assets/portraits/diego.png', kind: 'image' },
 
   // Cenários pintados (opcionais) — se existirem, substituem os tiles visuais
   // Bichinhos: folha 4x4 (quadros 64x64, exibidos em meia escala) + faixa de poses (96x64):

@@ -311,6 +311,38 @@ Row 4: walking away from the viewer (facing up), 4 frames.
 The character must look identical in every frame. No text, no labels, no numbers, no watermark.
 ```
 
+**Anne, irmã do Weng** (`npcs/anne-walk.png`)
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and calm smile, in the same cute chibi pixel style): a young Chinese-Brazilian woman around 20 years old, straight black hair just past the shoulders with a side part, a calm friendly smile, a black zip-up jacket open over a white t-shirt, a small crossbody bag with a mustard yellow strap, dark jeans, white sneakers.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+**Julinha, 10 anos** (`npcs/julinha-walk.png`)
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the round face, the straight black hair with side-swept bangs and the sweet smile, in the same cute chibi pixel style): a 10-year-old Chinese-Brazilian girl, straight black hair to her shoulders with side-swept bangs, a white top, a small navy blue backpack, light blue shorts, pink sneakers. She is a kid, so she is clearly shorter than the adults (about 75% of their height).
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
 ### 2B-2. Varanda de verdade (opcional, mais fiel à foto)
 
 A varanda real tem tela de proteção, guarda-corpo cinza, piso de porcelanato bege e a avenida com palmeiras entre o prédio e a lagoa. Se quiser trocar a varanda do jogo por uma igual à de vocês, anexe a **foto da varanda** e o **cenário atual da varanda** (`art-source/maps/ar-varanda.webp`), e gere de novo o cenário vazio:

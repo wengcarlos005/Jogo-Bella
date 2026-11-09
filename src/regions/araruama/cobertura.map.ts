@@ -125,6 +125,39 @@ const scripts: Record<string, Script> = {
       if (n > 0) ctx.nerves(Math.max(0, n - 15));
     }
   },
+  async mingau(ctx) {
+    if (objDone('ceia')) {
+      await ctx.say('mingau', 'Eu comi três pedaços de pato. A Julinha comeu dois. Eu ganhei.');
+      return;
+    }
+    await ctx.say('mingau', 'Oi, Bella. Eu tenho dez anos, tá? Não sou criança que nem a Laylinha.');
+    await ctx.say('bella', 'Claro que não. Dez anos é praticamente adulto.');
+    await ctx.say('mingau', 'Exatamente. (cochichando) Mas se tiver brigadeiro depois, me avisa.');
+  },
+  async vivian(ctx) {
+    if (objDone('ceia')) {
+      await ctx.say('vivian', 'Você girou a mesa melhor que todo mundo aqui! Até a tia Tim ficou impressionada.');
+      return;
+    }
+    await ctx.say('vivian', 'BELLA! Finalmente! O Weng não para de falar de você, sabia?');
+    await ctx.say('weng', 'Vivian...');
+    await ctx.say('vivian', 'É verdade! "A Bella isso, a Bella aquilo." Desde o ano passado.');
+    await ctx.emote('bella', 'heart');
+    if (!ctx.flag('ar-vivian')) {
+      ctx.setFlag('ar-vivian');
+      const n = Number(GameState.getFlag<number>('nervosismo') ?? 0);
+      if (n > 0) ctx.nerves(Math.max(0, n - 15));
+    }
+  },
+  async diego(ctx) {
+    if (objDone('ceia')) {
+      await ctx.say('diego', 'Comi demais. Vou ficar deitado aqui até 2025.');
+      return;
+    }
+    await ctx.say('diego', 'E aí, Bella. Tranquila? Senta aí, fica à vontade. Aqui ninguém repara em nada.');
+    await ctx.say('bella', 'Valeu, Diego. Tô tentando.');
+    await ctx.say('diego', 'Se a tia Tim oferecer comida, só aceita. É mais fácil.');
+  },
   async porta(ctx) {
     await ctx.say('weng', 'Depois a gente desce pra lagoa. Primeiro dá oi pra todo mundo.');
   },
@@ -252,6 +285,9 @@ export const coberturaMap: MapDef = {
   npcs: [
     { id: 'tia-tim', sprite: 'tia-tim', tx: 24.0, ty: 7.6, facing: 'up', interact: 'tiaTim', behavior: 'wander', wanderRadius: 1.4, wanderAxis: 'x' },
     { id: 'lilian', sprite: 'lilian', tx: 16.6, ty: 11.6, facing: 'down', interact: 'lilian', behavior: 'wander', wanderRadius: 1.0, wanderAxis: 'x' },
+    { id: 'mingau', sprite: 'mingau', tx: 14.6, ty: 16.3, facing: 'left', interact: 'mingau', behavior: 'wander', wanderRadius: 0.8, wanderAxis: 'x' },
+    { id: 'vivian', sprite: 'vivian', tx: 26.2, ty: 14.2, facing: 'left', interact: 'vivian' },
+    { id: 'diego', sprite: 'diego', tx: 9.6, ty: 11.0, facing: 'down', interact: 'diego' },
   ],
 
   spawns: {
