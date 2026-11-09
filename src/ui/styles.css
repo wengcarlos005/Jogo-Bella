@@ -2617,7 +2617,7 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .ce-title { background: linear-gradient(90deg, #d8343f, #e8a23a) !important; }
 .ce-stage { height: min(48vh, calc(var(--u) * 190)) !important; background: radial-gradient(circle at 50% 45%, #f6e7cc, #d9bf98); }
 .ce-table { position: absolute; top: 50%; left: 50%; height: 94%; aspect-ratio: 1; transform: translate(-50%, -50%); }
-.ce-top { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+.ce-top { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
 .ce-disc { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
 .ce-dish { position: absolute; left: 0; top: 0; image-rendering: pixelated; filter: drop-shadow(0 2px 0 rgba(60, 40, 20, .35)); }
 .ce-table { container-type: size; }

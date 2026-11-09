@@ -17,7 +17,7 @@ const DISHES: Dish[] = [
   { id: 'pato', name: 'pato' },
   { id: 'gergelim', name: 'bolinho de gergelim' },
   { id: 'macarrao', name: 'macarrão de arroz' },
-  { id: 'baozi', name: 'pãozinho no vapor' },
+  { id: 'arrozbranco', name: 'arroz branco' },
   { id: 'frango', name: 'frango xadrez' },
   { id: 'rolinho', name: 'rolinho primavera' },
   { id: 'bolinho', name: 'guioza' },
