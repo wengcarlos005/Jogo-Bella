@@ -295,6 +295,22 @@ Row 4: walking away from the viewer (facing up), 4 frames.
 The character must look identical in every frame. No text, no labels, no numbers, no watermark.
 ```
 
+**Laylinha, 5 anos** (`npcs/laylinha-walk.png`). A foto é de quando ela era bem pequena; o prompt já pede ela com 5 anos.
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo of her as a toddler but now 5 years old (keep the round face, the black hair with bangs and the sweet look, in the same cute chibi pixel style): a lively 5-year-old Chinese-Brazilian girl, straight black hair in a short bob with straight bangs, chubby cheeks, a big playful smile, a light pink summer dress with small white flowers, white sandals. She is a small child, so she is clearly much shorter than the adults (about 60% of their height).
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
 ### 2B-2. Varanda de verdade (opcional, mais fiel à foto)
 
 A varanda real tem tela de proteção, guarda-corpo cinza, piso de porcelanato bege e a avenida com palmeiras entre o prédio e a lagoa. Se quiser trocar a varanda do jogo por uma igual à de vocês, anexe a **foto da varanda** e o **cenário atual da varanda** (`art-source/maps/ar-varanda.webp`), e gere de novo o cenário vazio:
