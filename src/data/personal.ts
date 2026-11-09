@@ -24,7 +24,7 @@ export const PERSONAL = {
   /**
    * Família do Weng em Araruama (ano-novo de 2024, na cobertura dos tios em frente à lagoa):
    * 4 tios (a principal é a tia Tim, que fez a ceia), os primos e a Anne, irmã do Weng.
-   * Idades: Mingau (primo) 10, Julinha 10, Laylinha 5.
+   * Idades: Mingau (o Miguel) 10, Julinha 10, Laylinha 5. Lilian, Vivian e Diego são os primos mais velhos.
    * Ceia: pato, macarrão de arroz e frango xadrez. Suco no Cosechas. Parque de diversões: vários brinquedos.
    * A Bella estava nervosa porque conhecia pouco a família e tinha medo de ser julgada.
    */

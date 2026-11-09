@@ -66,7 +66,7 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 - Ceia com **muita comida chinesa**.
 - Virada: fogos na orla, assistidos da **varanda grande da cobertura**.
 - Roupa: "qualquer coisa" (o jogo usa a roupa casual dos dois).
-- Primos pequenos: **Mingau (10, menino)**, **Julinha (10)**, **Laylinha (5)**.
+- Primos pequenos: **Mingau (Miguel, 10, menino)**, **Julinha (10)**, **Laylinha (5)**.
 - A ceia foi a **tia** que fez. Pratos marcantes: **pato**, **macarrão de arroz**, **frango xadrez**.
 - Suco no **Cosechas**. No parque foram em vários brinquedos.
 - A Bella estava nervosa porque **conhecia pouco a família e tinha medo de ser julgada**.
@@ -207,6 +207,121 @@ Pra cada pessoa eu preciso de: idade aproximada, cabelo, um traço (óculos, bar
 Pixel art character sprite sheet, 4 rows x 4 columns walking animation (rows: walking down, walking left, walking right, walking up), same art style, proportions, outline and colors as the attached character sprites. Chibi proportions like the attached ones. Canvas 1024x1024, background ONE flat solid magenta (#FF00FF).
 Character: [descrição da pessoa].
 No text, no UI, no watermark.
+```
+
+### 2F-0. Tia Tim (a partir da foto)
+
+Anexe a folha andando da atendente (`public/assets/npcs/atendente-walk.png`) como modelo de layout **e** a foto da tia Tim. Salvar como `npcs/tia-tim-walk.png`.
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and smile, in the same cute chibi pixel style): a warm Chinese-Brazilian woman in her forties, long straight black hair past her shoulders with a side part, a gentle kind smile, a sleeveless black-and-white patterned blouse, a red kitchen apron tied at the waist (she is the one who cooks the New Year's dinner), black capri pants, simple sandals.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+### 2F-1. Primos (a partir das fotos)
+
+Em cada um, anexe: a folha andando da atendente (`public/assets/npcs/atendente-walk.png`) como modelo de layout **e** a foto da pessoa.
+
+**Lilian** (`npcs/lilian-walk.png`)
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and smile, in the same cute chibi pixel style): a cheerful young Chinese-Brazilian woman around 20 years old, dark brown hair pulled back in a low ponytail, a big bright smile, a thin gold necklace, a fitted brown tank top, light-wash denim cutoff shorts with a small red lips patch, a beige canvas tote bag on her shoulder, white sneakers.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+**Miguel, o Mingau, 10 anos** (`npcs/mingau-walk.png`)
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and smile, in the same cute chibi pixel style): a 10-year-old Chinese-Brazilian boy, short spiky black hair, slim, a calm little smile, a white t-shirt with a small black graphic print on the chest, black shorts, sneakers. He is a kid, so he is clearly shorter than the adults (about 75% of their height).
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+**Vivian** (`npcs/vivian-walk.png`)
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and smile, in the same cute chibi pixel style): a young Chinese-Brazilian woman around 20 years old, long straight dark brown hair falling past her shoulders, a huge sunny smile, a thin silver necklace and small earrings, a black off-the-shoulder top, light jeans shorts, sandals.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+**Diego** (`npcs/diego-walk.png`)
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and smile, in the same cute chibi pixel style): a young Chinese-Brazilian man in his twenties, short messy black hair with a fringe over the forehead, a relaxed half smile, a plain navy blue t-shirt, beige bermuda shorts, flip-flops.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+### 2B-2. Varanda de verdade (opcional, mais fiel à foto)
+
+A varanda real tem tela de proteção, guarda-corpo cinza, piso de porcelanato bege e a avenida com palmeiras entre o prédio e a lagoa. Se quiser trocar a varanda do jogo por uma igual à de vocês, anexe a **foto da varanda** e o **cenário atual da varanda** (`art-source/maps/ar-varanda.webp`), e gere de novo o cenário vazio:
+
+```
+Pixel art top-down 3/4 view of a large penthouse balcony at night on New Year's Eve, EXACTLY the same art style, outline thickness, colors, camera angle and LAYOUT as the attached pixel art balcony, but with the real details of the attached photo: light beige porcelain floor tiles instead of wood, a light grey metal and glass railing along the bottom with a black safety net stretched above it, a small cypress tree in a beige pot and a yellow pot with plants near the railing. Canvas 1536x1024 pixels, landscape.
+
+Keep the open sliding glass doors with warm light at the top, the string lights on the top wall and the built-in barbecue grill in the top-left corner.
+Below and beyond the railing, far down: a wide seaside avenue with two lanes, palm trees and small parked cars along it, a grass strip, then the huge calm lagoon on the left side reflecting the city lights, and the lit city with white buildings on the far shore, dark night sky.
+
+DO NOT draw: tables, chairs, hammocks, people, animals or fireworks. Clean continuous floor.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+### 2C-2. Praia da lagoa, versão fiel à vista real
+
+Use este no lugar do 2C se quiser que a orla pareça a de verdade (anexe a foto da varanda como referência de lugar):
+
+```
+Pixel art top-down 3/4 view of the seaside avenue along a huge calm lagoon in a Brazilian beach town (Lagoa de Araruama) on a sunny summer afternoon, seen from above like the attached photo. Same art style, outline thickness, colors and camera angle as the attached pixel art reference. Canvas 1536x1024 pixels, landscape.
+
+Layout: across the top, the front of tall white apartment buildings with entrances; below them a wide two-lane avenue with a median strip of grass and tall palm trees; then a wide sidewalk promenade with lamp posts and a grass strip with palm trees; then a strip of soft white sand; and the shallow, clear blue-green lagoon water filling the bottom third, getting darker far away. A small kiosk on the left of the promenade.
+
+DO NOT draw: people, cars, animals, umbrellas, chairs, boats, or anything standing on the sand or the avenue. Clean continuous ground.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
 ```
 
 ### 2G. Minigames
