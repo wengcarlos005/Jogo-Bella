@@ -174,6 +174,9 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | NPC-032 | Mingau (Miguel), primo de 10 anos (4×4 andando, menor) | npcs/mingau-walk.png | ✅ no jogo (+ retrato) |
 | NPC-033 | Vivian, prima (4×4 andando) | npcs/vivian-walk.png | ✅ no jogo (+ retrato) |
 | NPC-034 | Diego, primo (4×4 andando) | npcs/diego-walk.png | ✅ no jogo (+ retrato) |
+| NPC-035 | Anne, irmã do Weng (4×4 andando) | npcs/anne-walk.png | ✅ no jogo (+ retrato) |
+| NPC-036 | Julinha, prima de 10 anos (4×4 andando, menor) | npcs/julinha-walk.png | ✅ no jogo (+ retrato) |
+| NPC-037 | Laylinha, prima de 5 anos (4×4 andando, bem menor) | npcs/laylinha-walk.png | ✅ no jogo (+ retrato) |
 
 ### LOTE 4–6 — Viagens do Ano 1 e 2 (Fases 5–6)
 Por cidade: 2–4 cenários pintados + camadas frontais, 3–6 NPCs, objetos-chave dos minigames, 3–4 ilustrações de memória. Lista detalhada será gerada no início de cada fase.

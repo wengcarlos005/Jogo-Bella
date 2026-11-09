@@ -85,6 +85,15 @@ const scripts: Record<string, Script> = {
   async diego(ctx) {
     await ctx.say('diego', objDone('virada') ? 'Ano novo, churrasco novo. Amanhã eu ligo essa churrasqueira.' : 'Tô de olho na churrasqueira. Amanhã ela trabalha.');
   },
+  async anne(ctx) {
+    await ctx.say('anne', objDone('virada') ? 'Feliz ano-novo, cunhada! Cuida bem do meu irmão, tá?' : 'Se a Laylinha dormir antes da meia-noite, ninguém acorda ela. Combinado geral.');
+  },
+  async julinha(ctx) {
+    await ctx.say('julinha', objDone('virada') ? 'Eu pulei sete vezes! Ou oito. O Mingau atrapalhou a conta.' : 'Eu vou pular sete vezes na hora da virada. Dá sorte!');
+  },
+  async laylinha(ctx) {
+    await ctx.say('laylinha', objDone('virada') ? 'Os fogos fizeram BUM! E um coração! Eu vi, tia Bella!' : 'Já é meia-noite? E agora? E agora?');
+  },
   async portas(ctx) {
     await ctx.teleport('ar-cobertura', 'varanda');
   },
@@ -141,8 +150,11 @@ export const varandaMap: MapDef = {
     { id: 'tia-tim', sprite: 'tia-tim', tx: 13.2, ty: 10.2, facing: 'down', interact: 'tiaTim' },
     { id: 'lilian', sprite: 'lilian', tx: 20.6, ty: 10.4, facing: 'down', interact: 'lilian' },
     { id: 'mingau', sprite: 'mingau', tx: 10.6, ty: 12.4, facing: 'down', interact: 'mingau' },
-    { id: 'vivian', sprite: 'vivian', tx: 24.6, ty: 8.2, facing: 'left', interact: 'vivian' },
+    { id: 'vivian', sprite: 'vivian', tx: 29.0, ty: 8.4, facing: 'left', interact: 'vivian' },
     { id: 'diego', sprite: 'diego', tx: 6.8, ty: 8.6, facing: 'left', interact: 'diego' },
+    { id: 'anne', sprite: 'anne', tx: 9.6, ty: 7.0, facing: 'down', interact: 'anne' },
+    { id: 'julinha', sprite: 'julinha', tx: 12.4, ty: 12.4, facing: 'down', interact: 'julinha' },
+    { id: 'laylinha', sprite: 'laylinha', tx: 15.2, ty: 11.2, facing: 'down', interact: 'laylinha' },
   ],
 
   spawns: {

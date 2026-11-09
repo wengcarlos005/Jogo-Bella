@@ -158,6 +158,40 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Valeu, Diego. Tô tentando.');
     await ctx.say('diego', 'Se a tia Tim oferecer comida, só aceita. É mais fácil.');
   },
+  async anne(ctx) {
+    if (objDone('ceia')) {
+      await ctx.say('anne', 'Eu falei que você ia se dar bem com todo mundo. A tia Tim já tá te chamando de "a menina do Weng".');
+      return;
+    }
+    await ctx.say('anne', 'Bella! Que bom que você veio. Agora eu não sou a única aqui que aguenta o Weng.');
+    await ctx.say('weng', 'Eu tô ouvindo, Anne.');
+    await ctx.say('anne', 'Era pra ouvir mesmo.');
+    await ctx.say('anne', '(pra Bella) Qualquer coisa, fica do meu lado na ceia. Eu te salvo das perguntas difíceis.');
+    if (!ctx.flag('ar-anne')) {
+      ctx.setFlag('ar-anne');
+      const n = Number(GameState.getFlag<number>('nervosismo') ?? 0);
+      if (n > 0) ctx.nerves(Math.max(0, n - 15));
+    }
+  },
+  async julinha(ctx) {
+    if (objDone('ceia')) {
+      await ctx.say('julinha', 'O Mingau tá falando que comeu mais pato que eu. É MENTIRA. Eu comi devagar, que é diferente.');
+      return;
+    }
+    await ctx.say('julinha', 'Bella, você joga Uno? A gente vai jogar depois da ceia. O Mingau rouba, só pra você saber.');
+    await ctx.say('bella', 'Eu jogo! E eu não deixo ninguém roubar.');
+    await ctx.say('julinha', 'Então você é do meu time.');
+  },
+  async laylinha(ctx) {
+    if (objDone('ceia')) {
+      await ctx.say('laylinha', 'Eu comi bolinho de gergelim! Dois! Não conta pra mamãe!');
+      return;
+    }
+    await ctx.say('laylinha', 'Tia Bella! Tia Bella! Olha meu ursinho! Ele vai ver os fogos também!');
+    await ctx.say('bella', '"Tia Bella"... Weng, ela me chamou de tia.');
+    await ctx.say('weng', 'Pronto. Agora é oficial.');
+    await ctx.emote('bella', 'heart');
+  },
   async porta(ctx) {
     await ctx.say('weng', 'Depois a gente desce pra lagoa. Primeiro dá oi pra todo mundo.');
   },
@@ -288,6 +322,9 @@ export const coberturaMap: MapDef = {
     { id: 'mingau', sprite: 'mingau', tx: 14.6, ty: 16.3, facing: 'left', interact: 'mingau', behavior: 'wander', wanderRadius: 0.8, wanderAxis: 'x' },
     { id: 'vivian', sprite: 'vivian', tx: 26.2, ty: 14.2, facing: 'left', interact: 'vivian' },
     { id: 'diego', sprite: 'diego', tx: 9.6, ty: 11.0, facing: 'down', interact: 'diego' },
+    { id: 'anne', sprite: 'anne', tx: 22.2, ty: 10.4, facing: 'down', interact: 'anne' },
+    { id: 'julinha', sprite: 'julinha', tx: 16.2, ty: 16.3, facing: 'left', interact: 'julinha' },
+    { id: 'laylinha', sprite: 'laylinha', tx: 6.9, ty: 15.2, facing: 'down', interact: 'laylinha', behavior: 'wander', wanderRadius: 0.6, wanderAxis: 'x' },
   ],
 
   spawns: {
