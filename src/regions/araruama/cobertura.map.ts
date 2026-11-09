@@ -25,6 +25,7 @@ async function canto(ctx: ScriptContext, flag: string): Promise<void> {
   await ctx.wait(400);
   await ctx.say('weng', 'Pronto, tour completo. Viu? Ninguém mordeu.');
   await ctx.say('bella', 'A tia Tim já me deu três coisas pra comer e perguntou duas vezes se eu tô com fome.');
+  await ctx.say('bella', 'E ninguém ficou me olhando torto. Eu acho.');
   await ctx.say('weng', 'Isso na língua da família quer dizer "a gente gosta de você".');
   ctx.nerves(20);
   ctx.objective(Q, 'casa');
@@ -47,8 +48,11 @@ const scripts: Record<string, Script> = {
     const p = PERSONAL.wengFamily.primos;
     await ctx.say('weng', `Hm... os quatro tios, a tia ${PERSONAL.wengFamily.tia}, a ${PERSONAL.wengFamily.irma}, a ${p[0]}, a ${p[1]}, o ${p[2]}, a ${p[3]}, o ${p[4]}, a ${p[5]}...`);
     await ctx.say('bella', 'Você contou nos dedos. Você precisou CONTAR NOS DEDOS.');
-    await ctx.say('weng', 'Você já conhece todo mundo.');
-    await ctx.say('bella', 'Conhecer é uma coisa. Passar o ano-novo inteiro com todo mundo olhando é outra.');
+    await ctx.say('weng', 'Você já viu todo mundo antes.');
+    await ctx.say('bella', 'Vi, tipo, duas vezes. Eu mal conheço eles direito.');
+    await ctx.say('bella', 'E se acharem que eu sou esquisita? E se ficarem me julgando a noite inteira?');
+    await ctx.say('weng', 'Ninguém vai te julgar. No máximo vão te dar comida demais.');
+    await ctx.say('bella', '...Isso eu aguento.');
     await ctx.narrate('A porta mal fechou e o barulho veio junto: panela no fogo, criança correndo, TV ligada e todo mundo falando ao mesmo tempo.');
     await ctx.say('tia-tim', 'Chegaram! Entra, entra! Bella, tá com fome? Já comeu?');
     await ctx.say('bella', 'Oi, tia Tim! Tô bem, obrigada!');
@@ -81,7 +85,7 @@ const scripts: Record<string, Script> = {
   },
   async fogao(ctx) {
     await ctx.say('bella', 'Tem tanta panela no fogo que parece cozinha de restaurante.');
-    await ctx.say('tia-tim', 'Hoje é dia de comida chinesa! Bolinho, macarrão, peixe... e mais um monte. Ninguém sai com fome daqui.');
+    await ctx.say('tia-tim', 'Hoje é dia de comida chinesa! Pato, macarrão de arroz, frango xadrez... e mais um monte. Ninguém sai com fome daqui.');
     await ctx.say('bella', 'Tá cheirando muito bem, tia!');
     await ctx.say('tia-tim', 'Então prova esse aqui. Prova! Tá quente, sopra.');
     await ctx.emote('bella', 'heart');
@@ -102,7 +106,8 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Tradição. Ninguém assiste, mas ninguém desliga.');
   },
   async brinquedos(ctx) {
-    await ctx.say('bella', 'Brinquedo espalhado pelo chão inteiro. Os pequenos já passaram por aqui.');
+    await ctx.say('bella', 'Brinquedo espalhado pelo chão inteiro. A Laylinha passou por aqui.');
+    await ctx.say('weng', 'Cinco anos e a energia de vinte. O Mingau e a Julinha, com dez, já fingem que são grandes demais pra brincar.');
     await ctx.say('weng', 'Cuidado onde pisa. Peça de brinquedo no pé descalço não perdoa.');
   },
   async sofa(ctx) {

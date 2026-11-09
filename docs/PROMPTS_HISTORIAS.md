@@ -66,6 +66,10 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 - Ceia com **muita comida chinesa**.
 - Virada: fogos na orla, assistidos da **varanda grande da cobertura**.
 - Roupa: "qualquer coisa" (o jogo usa a roupa casual dos dois).
+- Primos pequenos: **Mingau (10, menino)**, **Julinha (10)**, **Laylinha (5)**.
+- A ceia foi a **tia** que fez. Pratos marcantes: **pato**, **macarrão de arroz**, **frango xadrez**.
+- Suco no **Cosechas**. No parque foram em vários brinquedos.
+- A Bella estava nervosa porque **conhecia pouco a família e tinha medo de ser julgada**.
 
 ### Roteiro do capítulo
 
@@ -192,7 +196,7 @@ Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, no gradient, no g
 Anexe `pascoa.png` + `bella-casual` + `weng-casual`.
 
 ```
-Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. A bright juice bar inside a small shopping mall in a Brazilian beach town on a hot summer day: a colorful counter with fresh fruits (oranges, pineapples, watermelon, strawberries, passion fruit, açaí) and blenders. The attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) sit at a small round table with two big cups of fresh juice with straws, she offers him a sip of hers and he makes a surprised face at the taste. Cold air-conditioning vibe, warm smiles. No text, no UI, no watermark.
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. A bright, modern juice and smoothie bar inside a shopping mall in a Brazilian beach town on a hot summer day, green and white decor with a wooden counter, fresh fruits (oranges, pineapples, watermelon, strawberries, passion fruit) and blenders, a menu board without readable text. The attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) sit at a small round table with two big cups of fresh juice with straws, she offers him a sip of hers and he makes a surprised face at the taste. Cold air-conditioning vibe, warm smiles. No text, no UI, no watermark.
 ```
 
 ### 2F. Família (NPCs)
@@ -212,7 +216,7 @@ No text, no UI, no watermark.
 ```
 Pixel art sprite sheet of a Chinese family New Year's Eve dinner seen from directly above (top-down), same art style and colors as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it, nothing touching the edge:
 1. A big round dining table with a white tablecloth seen from above, with a round glass lazy susan in the middle, EMPTY (about 520x520 px).
-2. Dishes seen from above, each about 110x110 px: a bamboo steamer with dumplings (jiaozi); a plate of steamed buns (baozi); a plate of long noodles; a whole steamed fish with green onions; a plate of spring rolls; a bowl of fried rice; a plate of kung pao chicken; a plate of crispy roast duck slices; a plate of sesame balls; a bowl of tangerines; a pot of jasmine tea with cups.
+2. Dishes seen from above, each about 110x110 px: a whole glazed roast duck on a platter; a plate of crispy roast duck slices; a big plate of stir-fried rice noodles (thin rice vermicelli with vegetables); a plate of diced chicken with peppers, onions and peanuts in brown sauce (Brazilian-style "frango xadrez"); a bamboo steamer with dumplings; a plate of spring rolls; a bowl of fried rice; a bowl of white rice; a plate of sesame balls; a bowl of tangerines; a pot of jasmine tea with cups.
 3. A pair of chopsticks (about 100x20 px).
 4. A small red "speech bubble" with no text (about 60x50 px).
 No text, no UI, no watermark.
@@ -258,7 +262,7 @@ Anexe `pascoa.png` + `bella-casual` + `weng-casual`.
 **Ceia chinesa em família** (`memory-ar-01`)
 
 ```
-Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. New Year's Eve in a bright penthouse apartment: a big round table with a glass lazy susan full of Chinese food (dumplings, noodles, steamed fish, roast duck, spring rolls, fried rice, tangerines). A big, loud, happy Chinese-Brazilian family around it, kids laughing, an aunt serving food to everyone. The attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) sit side by side; she holds chopsticks a bit nervously and he helps her pick up a dumpling. Warm golden light, red lanterns on the wall. No text, no UI, no watermark.
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. New Year's Eve in a bright penthouse apartment: a big round table with a glass lazy susan full of Chinese food (dumplings, noodles, steamed fish, stir-fried rice noodles, Brazilian-style "frango xadrez" chicken with peppers and peanuts, dumplings, tangerines) with a whole glazed roast duck in the center. A big, loud, happy Chinese-Brazilian family around it: uncles and aunts, adult cousins, two 10-year-old kids and a 5-year-old girl laughing, and an aunt proudly serving food to everyone. The attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) sit side by side; she smiles a little shy and nervous with chopsticks in her hand, and he helps her pick up a piece of duck. Warm golden light, red lanterns on the wall. No text, no UI, no watermark.
 ```
 
 **Roda-gigante** (`memory-ar-02`)
