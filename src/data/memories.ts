@@ -159,6 +159,22 @@ export const MEMORIES: MemoryDef[] = [
     text: 'Restaurante chique na serra, um brinde a nós dois e um petit gâteau com velinha. O salão inteiro cantou parabéns.',
     image: 'memory-pt-03',
   },
+  {
+    id: 'mem-ar-01',
+    region: 'araruama',
+    title: 'A mesa giratória',
+    year: 'Ano 1',
+    text: 'A ceia da tia Tim: pato, macarrão de arroz, frango xadrez e a família inteira girando a mesa. Eu estava com medo de ser julgada. Ninguém me julgou.',
+    image: 'memory-ar-01',
+  },
+  {
+    id: 'mem-ar-03',
+    region: 'araruama',
+    title: 'Feliz 2024',
+    year: 'Ano 1',
+    text: 'A virada na varanda da cobertura, os fogos estourando sobre a Lagoa de Araruama e o primeiro beijo do ano.',
+    image: 'memory-ar-03',
+  },
 ];
 
 export const MEMORY_GOAL = 50;

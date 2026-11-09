@@ -115,7 +115,7 @@ Draw these objects, each complete and separate, in a loose grid, at least 60 pix
 8. A pile of kids' toys and a small tablet on a floor cushion (about 90x60 px).
 ```
 
-### 2B. Varanda da cobertura à noite (cenário vazio)
+### 2B. Varanda da cobertura à noite (cenário vazio) — **pronto** (cenário, objetos, fogos e ceia já no jogo)
 
 ```
 Pixel art top-down 3/4 view of a very large penthouse balcony at night on New Year's Eve, high above a Brazilian beach town, facing a huge calm lagoon (Lagoa de Araruama). Same art style, outline thickness, colors and camera angle as the attached reference image. Canvas 1536x1024 pixels, landscape.

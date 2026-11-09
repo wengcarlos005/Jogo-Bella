@@ -60,6 +60,8 @@ const PRESETS: Preset[] = [
   { quest: 'pt-m1', sub: 'quarto', title: 'A noite no quarto 12 (meia-noite)', mapId: 'pt-quarto', spawn: 'porta', active: true, doneObjs: ['quitandinha', 'mirante', 'fotos', 'checkin'], flags: { 'weng-segue': true, 'pt-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral' } },
   { quest: 'pt-m1', sub: 'almoco', title: 'Almoço de aniversário', mapId: 'pt-restaurante', spawn: 'porta', active: true, doneObjs: ['quitandinha', 'mirante', 'fotos', 'checkin', 'noite', 'cafe'], flags: { 'weng-segue': true, 'pt-chegou': true, 'pt-manha': true, 'pt-manha-1': true }, outfits: { piabeta: 'casual', petropolis: 'floral' } },
   { quest: 'ar-m1', mapId: 'ar-cobertura', spawn: 'porta', active: true, flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual' } },
+  { quest: 'ar-m1', sub: 'ceia', title: 'A ceia na mesa giratória', mapId: 'ar-cobertura', spawn: 'porta', active: true, doneObjs: ['chegar', 'casa'], flags: { 'weng-segue': true, 'ar-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual' } },
+  { quest: 'ar-m1', sub: 'virada', title: 'A virada de 2024 na varanda', mapId: 'ar-varanda', spawn: 'porta', active: true, doneObjs: ['chegar', 'casa', 'ceia'], flags: { 'weng-segue': true, 'ar-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual' } },
 ];
 
 function presetData(pr: Preset): SaveData {

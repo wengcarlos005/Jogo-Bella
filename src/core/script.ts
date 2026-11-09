@@ -60,6 +60,10 @@ export interface ScriptContext {
   phone(opts: import('@/ui/screens/PhoneChat').PhoneOptions, msgs: import('@/ui/screens/PhoneChat').PhoneMsg[]): Promise<void>;
   cards(opts?: { title?: string; rounds?: number }): Promise<import('@/ui/screens/CardGame').CardResult>;
   market(): Promise<import('@/ui/screens/PetroGames').MiniResult & { pacoca: boolean }>;
+  /** Mesa Giratória: a ceia de ano-novo na cobertura (Araruama). */
+  ceia(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
+  /** Foto dos fogos: a virada de 2024 na varanda (Araruama). */
+  fogos(): Promise<import('@/ui/screens/PetroGames').MiniResult & { photos: number }>;
   clouds(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
   boatRace(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
   breakfast(): Promise<import('@/ui/screens/PetroGames').MiniResult>;

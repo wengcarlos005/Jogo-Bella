@@ -117,6 +117,9 @@ Só a roupa casual da Bella tem os óculos rosados.
 | MEM-011 | `cinematics/memory-pt-02.png` | Meia-noite em ponto | **integrado** |
 | MEM-012 | `cinematics/memory-pt-03.png` | Almoço de aniversário | **integrado** |
 | MAP-040 | `maps/ar-cobertura-bg.png` (fonte: `art-source/maps/ar-cobertura.webp`) | Araruama: cobertura dos tios (vazia) + objetos `objects/cb-*` | **integrado** |
+| MAP-041 | `maps/ar-varanda-bg.png` (fonte: `art-source/maps/ar-varanda.webp`) | Araruama: varanda da cobertura à noite + objetos `objects/vr-*` | **integrado** |
+| MG-ceia | `minigames/mg-*.png` | Mesa Giratória: mesa vista de cima, pratos, hashi, balão (folha antiga, provisória até chegar a nova) | integrado (trocar) |
+| MG-fogos | `minigames/fg-*.png` | Foto dos fogos: foguete, 5 estouros, coração, casal na varanda | **integrado** |
 | UI-001 | `ui/title-art.png` | Capa: casal olhando a lua | **integrado** |
 | UI-003 | `ui/logo.png` | Logo "A Lua está Bella" | **integrado** |
 | UI-004 | `ui/panel.png` | Moldura 9-slice de painéis/botões/diálogo | **integrado** |

@@ -29,7 +29,44 @@ async function canto(ctx: ScriptContext, flag: string): Promise<void> {
   await ctx.say('weng', 'Isso na língua da família quer dizer "a gente gosta de você".');
   ctx.nerves(20);
   ctx.objective(Q, 'casa');
-  ctx.toast('Em breve: a praia da lagoa, o suco no shopping, o parque, a ceia e a virada');
+  ctx.toast('À noite, a ceia: a mesa giratória da tia Tim');
+}
+
+/** A ceia de ano-novo: a mesa giratória da tia Tim (pato, macarrão de arroz, frango xadrez...). */
+async function ceia(ctx: ScriptContext): Promise<void> {
+  await ctx.say('weng', 'Tá na hora. Senta do meu lado?');
+  await ctx.fadeOut(600);
+  await ctx.narrate('31 de dezembro, noite. A mesa redonda lotada e a família inteira em volta.');
+  await ctx.narrate('Pato, macarrão de arroz, frango xadrez e mais um monte de coisa que a tia Tim passou o dia fazendo.');
+  ctx.follow('weng', false);
+  ctx.place('player', 20.6, 17.2, 'up');
+  ctx.place('weng', 22.6, 17.2, 'up');
+  await ctx.fadeIn(500);
+  await ctx.say('tia-tim', 'Todo mundo sentando! Bella, senta aí do lado do Weng. Come, come!');
+  await ctx.say('bella', '(cochichando) Weng, como funciona essa mesa? Eu vou derrubar alguma coisa.');
+  await ctx.say('weng', '(cochichando) Gira devagar. E sempre olha quem pediu. Você vai arrasar.');
+  const r = await ctx.ceia();
+  ctx.setFlag('ar-ceia-estrelas', r.stars);
+  await ctx.say('tia-tim', 'E aí, Bella? Gostou do pato?');
+  const c = await ctx.choose('bella', '(A família inteira olhando pra ela)', ['"Tia, é o melhor pato da minha vida."', '"Posso levar a receita?"', 'Pedir mais um pedaço (o terceiro)']);
+  if (c === 0) await ctx.say('tia-tim', 'Ah, essa menina! Pode vir todo ano, viu?');
+  else if (c === 1) await ctx.say('tia-tim', 'Receita é segredo de família. Mas se for da família... a gente conversa.');
+  else {
+    await ctx.say('tia-tim', 'ISSO! Gosto de quem come! Weng, essa aí pode ficar.');
+    await ctx.emote('weng', 'heart');
+  }
+  await ctx.say('anne', r.stars >= 2 ? 'Ela gira essa mesa melhor que você, Weng.' : 'Relaxa, Bella. Até o Weng já derrubou o frango xadrez nessa mesa.');
+  await ctx.say('weng', 'Ninguém precisava saber disso, Anne.');
+  ctx.nerves(0);
+  await ctx.say('bella', '(baixinho) Weng... ninguém me julgou. Eles são muito legais.');
+  await ctx.say('weng', 'Eu falei. Agora você é da família, querendo ou não.');
+  ctx.hearts('player', 10);
+  await ctx.memory('mem-ar-01');
+  ctx.objective(Q, 'ceia');
+  await ctx.say('weng', 'Faltam quinze minutos pra meia-noite. Bora pra varanda?');
+  ctx.follow('weng', true);
+  await ctx.fadeOut(500);
+  await ctx.teleport('ar-varanda', 'porta');
 }
 
 const scripts: Record<string, Script> = {
@@ -95,6 +132,11 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'O isopor de gelo. Em ano-novo de família, ele é o objeto mais importante da casa.');
   },
   async mesa(ctx) {
+    if (objDone('casa') && objActive('ceia')) return ceia(ctx);
+    if (objDone('ceia')) {
+      await ctx.say('bella', 'Sobrou pato. Sempre sobra pato. A tia Tim cozinha pro bairro inteiro.');
+      return;
+    }
     await ctx.say('bella', 'Uma mesa redonda GIGANTE. E o meio dela gira!');
     await ctx.say('weng', 'É pra passar os pratos sem ninguém precisar levantar. Na ceia ela vai estar lotada.');
     await ctx.say('bella', 'E se eu quiser um prato que tá do outro lado?');
@@ -114,6 +156,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Esse sofá cabe a família inteira. Quase.');
   },
   async varanda(ctx) {
+    if (objDone('ceia')) {
+      await ctx.teleport('ar-varanda', 'porta');
+      return;
+    }
     await ctx.say('bella', 'Weng, a varanda dá de frente pra lagoa INTEIRA.');
     await ctx.say('weng', 'À meia-noite os fogos estouram ali na orla. Daqui a gente vê tudo, de camarote.');
     await ctx.say('bella', 'Então já tá reservado: meia-noite, nessa varanda, com você.');
@@ -173,15 +219,17 @@ export const coberturaMap: MapDef = {
     { rect: R(860, 380, 960, 500), interact: 'relogio', label: 'Relógio' },
     { rect: R(1100, 250, 1220, 340), interact: 'fogao', label: 'Cozinha', markerIf: () => objDone('chegar') && objActive('casa') && !GameState.is('ar-cozinha') },
     { rect: R(1190, 370, 1310, 445), interact: 'cooler', label: 'Isopor' },
-    { rect: R(850, 560, 1210, 800), interact: 'mesa', label: 'Mesa', markerIf: () => objDone('chegar') && objActive('casa') && !GameState.is('ar-mesa') },
+    { rect: R(850, 560, 1210, 800), interact: 'mesa', label: 'Mesa', markerIf: () => (objDone('chegar') && objActive('casa') && !GameState.is('ar-mesa')) || (objDone('casa') && objActive('ceia')) },
     { rect: R(1300, 490, 1330, 800), interact: 'tv', label: 'TV' },
     { rect: R(150, 760, 320, 835), interact: 'brinquedos', label: 'Brinquedos' },
     { rect: R(300, 590, 740, 700), interact: 'sofa', label: 'Sofá' },
-    { rect: R(560, 815, 1000, 845), interact: 'varanda', label: 'Varanda', markerIf: () => objDone('chegar') && objActive('casa') && !GameState.is('ar-varanda') },
+    { rect: R(560, 815, 1000, 845), interact: 'varanda', label: 'Varanda', markerIf: () => (objDone('chegar') && objActive('casa') && !GameState.is('ar-varanda')) || (objDone('ceia') && objActive('virada')) },
   ],
 
   spawns: {
     porta: { tx: 3.6, ty: 12.8, facing: 'right' },
+    // voltando da varanda
+    varanda: { tx: 16.5, ty: 16.8, facing: 'up' },
   },
   scripts,
   onEnter: 'chegada',

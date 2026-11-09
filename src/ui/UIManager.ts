@@ -8,6 +8,8 @@ import { playTacoGame, type TacoResult } from './screens/TacoGame';
 import { playCookGame, type CookResult } from './screens/CookGame';
 import { playCloudGame, playBoatGame, playBreakfastGame, type MiniResult } from './screens/PetroGames';
 import { playMarketGame } from './screens/MarketGame';
+import { playCeiaGame } from './screens/CeiaGame';
+import { playFogosGame } from './screens/FogosGame';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -187,6 +189,16 @@ class UIManagerImpl {
   cinema(): Promise<CinemaResult> {
     this.dialogue.close();
     return this.replayable(() => playCinemaGame(this.root));
+  }
+
+  ceia(): Promise<MiniResult> {
+    this.dialogue.close();
+    return this.replayable(() => playCeiaGame(this.root));
+  }
+
+  fogos(): Promise<MiniResult & { photos: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playFogosGame(this.root));
   }
 
   market(): Promise<MiniResult & { pacoca: boolean }> {
