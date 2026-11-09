@@ -121,6 +121,8 @@ Só a roupa casual da Bella tem os óculos rosados.
 | MAP-040 | `maps/ar-cobertura-bg.png` (fonte: `art-source/maps/ar-cobertura.webp`) | Araruama: cobertura dos tios (vazia) + objetos `objects/cb-*` | **integrado** |
 | MAP-041 | `maps/ar-varanda-bg.png` (fonte: `art-source/maps/ar-varanda.webp`) | Araruama: varanda da cobertura à noite + objetos `objects/vr-*` | **integrado** |
 | MAP-042 | `maps/ar-praia-bg.png` (fonte: `art-source/maps/ar-praia.webp`) | Araruama: orla da lagoa (tarde) + objetos `objects/pr-*` | **integrado** |
+| MAP-043 | `maps/ar-parque-bg.png` (fonte: `art-source/maps/ar-parque.webp`) | Araruama: parque de diversões à noite + objetos `objects/pq-*` (carrinhos, bilheteria, balões, barraca das argolas) | **integrado** |
+| CIN-020 | `cinematics/ar-cosechas.png` | Suco no Cosechas (fundo da cena) | **integrado** |
 | MG-ceia | `minigames/mg-*.png` | Mesa Giratória: mesa vista de cima, pato inteiro e fatiado, macarrão de arroz, frango xadrez, guioza, rolinho, arroz, gergelim, hashi, balão | **integrado** |
 | MG-fogos | `minigames/fg-*.png` | Foto dos fogos: foguete, 5 estouros, coração, casal na varanda | **integrado** |
 | UI-001 | `ui/title-art.png` | Capa: casal olhando a lua | **integrado** |

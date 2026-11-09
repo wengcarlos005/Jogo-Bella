@@ -431,7 +431,7 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 **Roda-gigante** (`memory-ar-02`)
 
 ```
-Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Night at a small amusement park in a Brazilian beach town. The attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) sit together inside a Ferris wheel gondola at the top, the colorful lights of the park and the dark lagoon below them. She hugs a big orange cat plush he won for her; he looks at her instead of the view. No text, no UI, no watermark.
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Night at a small amusement park in a Brazilian beach town. The attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) sit together inside a Ferris wheel gondola at the top, the colorful lights of the park and the dark lagoon below them. She hugs a big orange teddy bear plush he won for her at the ring-toss booth; he looks at her instead of the view. No text, no UI, no watermark.
 ```
 
 **Fogos da varanda** (`memory-ar-03`)

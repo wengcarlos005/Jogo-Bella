@@ -64,6 +64,8 @@ export interface ScriptContext {
   ceia(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
   /** Pedrinha na lagoa (Araruama). */
   pedrinha(): Promise<import('@/ui/screens/PetroGames').MiniResult & { skips: number }>;
+  /** Argolas no parque de diversões (Araruama). */
+  argolas(): Promise<import('@/ui/screens/PetroGames').MiniResult & { prize: boolean }>;
   /** Foto dos fogos: a virada de 2024 na varanda (Araruama). */
   fogos(): Promise<import('@/ui/screens/PetroGames').MiniResult & { photos: number }>;
   clouds(): Promise<import('@/ui/screens/PetroGames').MiniResult>;

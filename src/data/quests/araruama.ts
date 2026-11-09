@@ -15,5 +15,21 @@ export const ARARUAMA_QUESTS: QuestDef[] = [
       { id: 'ceia', text: 'A ceia na mesa giratória', hint: 'A mesa redonda fica no meio da sala, perto da cozinha.' },
       { id: 'virada', text: 'A virada na varanda', hint: 'Saia pelas portas de vidro e vá até o guarda-corpo, de frente pra lagoa.' },
     ],
+    next: 'ar-m2',
+  },
+  {
+    id: 'ar-m2',
+    region: 'araruama',
+    chapter: 'Capítulo 4',
+    title: 'O primeiro dia de 2024',
+    kind: 'principal',
+    description: 'Suco no Cosechas e, à noite, o parque de diversões com os primos.',
+    objectives: [
+      { id: 'cosechas', text: 'Um suco no Cosechas', hint: 'É logo no começo do dia.' },
+      { id: 'carrossel', text: 'Andar no carrossel', hint: 'O carrossel fica à esquerda, no meio do parque.' },
+      { id: 'bate', text: 'Andar no carrinho de bate-bate', hint: 'A pista fica no alto, à direita.' },
+      { id: 'argolas', text: 'Tentar ganhar uma pelúcia nas argolas', hint: 'A barraca das argolas fica no meio do caminho, perto das barracas.' },
+      { id: 'roda', text: 'A roda-gigante, por último', hint: 'A roda-gigante fica lá no alto, à esquerda.' },
+    ],
   },
 ];

@@ -2689,3 +2689,19 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 @keyframes nv-pop2b { 40% { transform: translateX(-50%) scale(1.3); } }
 .pe-ico { flex: none; width: 34px; height: 20px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #c8ccd2, #7a808a 70%); border: 3px solid #2a2e36; }
 .pe-ico.ring { background: transparent; border-color: #fff; }
+
+/* ===== Argolas (parque de Araruama) ===== */
+.ag-title { background: linear-gradient(90deg, #e94a7a, #f0a030) !important; }
+.ag-stage { height: min(48vh, calc(var(--u) * 190)) !important; background: radial-gradient(circle at 50% 40%, #4a2a6a, #1a1030); }
+.ag-booth { position: absolute; top: -14%; bottom: -34%; left: 50%; aspect-ratio: 454 / 397; transform: translateX(-50%); }
+.ag-img { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+.ag-glow { position: absolute; width: 5%; height: 15%; transform: translate(-50%, -50%); border-radius: 40% 40% 20% 20%; pointer-events: none; }
+.ag-glow.on { box-shadow: 0 0 0 4px #ffd23f, 0 0 22px 10px rgba(255, 230, 90, .95); background: rgba(255, 240, 150, .35); animation: ce-pulse 0.9s infinite; }
+.ag-glow.on::after { content: '▼'; position: absolute; left: 50%; top: -95%; transform: translateX(-50%); color: #ffd23f; font-size: 18px; text-shadow: 0 2px 0 #6a2a00; }
+.ag-glow.hit { box-shadow: 0 0 0 3px #7fe39a, 0 0 18px 8px rgba(127, 227, 154, .9); }
+.ag-aim { position: absolute; top: 46%; width: 8%; aspect-ratio: 2.2; transform: translate(-50%, -50%); border: 5px solid #ff2a5a; border-radius: 50%; box-shadow: 0 0 0 2px #fff, 0 0 10px 3px rgba(255, 255, 255, .7); z-index: 2; }
+.ag-aim.fly { animation: ag-fly .38s ease-in; }
+@keyframes ag-fly { 0% { transform: translate(-50%, -50%) scale(1.4); } 100% { transform: translate(-50%, 40%) scale(.8); } }
+.ag-left { position: absolute; left: 3%; bottom: 5%; display: flex; flex-direction: column-reverse; gap: 3px; z-index: 3; }
+.ag-ring { width: 26px; height: 12px; border: 4px solid #ff4a6a; border-radius: 50%; display: block; }
+.ag-ico { flex: none; width: 34px; height: 16px; border: 4px solid #ff4a6a; border-radius: 50%; }

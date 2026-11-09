@@ -1,6 +1,6 @@
 import { T } from '@/world/tiles';
 import type { MapDef, TileRect } from '@/world/MapTypes';
-import type { Script } from '@/core/script';
+import type { Script, ScriptContext } from '@/core/script';
 import { QuestSystem } from '@/systems/QuestSystem';
 
 const Q = 'ar-m1';
@@ -8,6 +8,25 @@ const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
 const objActive = (o: string) => QuestSystem.isActive(Q) && !objDone(o);
 /** Retângulo no cenário ORIGINAL (art-source/maps/ar-varanda.webp, 1536x1024). 48 px = 1 tile. */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
+
+/** A tarde no shopping: o suco no Cosechas (ilustração de fundo). */
+async function cosechas(ctx: ScriptContext): Promise<void> {
+  await ctx.backdrop('cena-ar-cosechas');
+  await ctx.say('bella', 'Eu vou de maracujá. É o meu do Cosechas.');
+  await ctx.say('weng', 'E eu de morango. O de sempre.');
+  await ctx.say('bella', 'Prova o meu. Prova!');
+  await ctx.say('weng', '(provando) ...Azedinho. Muito azedinho. Por que você gosta disso?');
+  await ctx.say('bella', 'Porque é perfeito. Me dá o seu agora.');
+  const c = await ctx.choose('bella', '(Ar-condicionado, suco gelado e nenhuma pressa)', ['"Melhor primeiro dia do ano."', '"Ontem eu tava morrendo de medo da sua família."', 'Roubar o canudo do suco dele']);
+  if (c === 0) await ctx.say('weng', 'E ainda tem o parque à noite.');
+  else if (c === 1) {
+    await ctx.say('weng', 'E hoje?');
+    await ctx.say('bella', 'Hoje a Laylinha me chama de tia e a tia Tim já me mandou levar pato pra casa. Acho que passei.');
+  } else await ctx.say('weng', 'Isso é roubo de canudo em pleno ano-novo. Vou registrar queixa.');
+  ctx.hearts('player', 6);
+  await ctx.backdrop(null);
+  ctx.objective('ar-m2', 'cosechas');
+}
 
 const scripts: Record<string, Script> = {
   async chegada(ctx) {
@@ -54,7 +73,13 @@ const scripts: Record<string, Script> = {
     await ctx.memory('mem-ar-03');
     ctx.objective(Q, 'virada');
     ctx.follow('weng', true);
-    ctx.toast('Continua em breve: a praia da lagoa, o Cosechas e o parque de diversões');
+    await ctx.fadeOut(900);
+    await ctx.narrate('1º de janeiro de 2024. A família inteira acordou depois do meio-dia.');
+    await ctx.narrate('À tarde, o shopping, pra fugir do calor. E uma parada obrigatória: o Cosechas.');
+    if (!ctx.questActive('ar-m2') && !QuestSystem.isDone('ar-m2')) ctx.startQuest('ar-m2');
+    await cosechas(ctx);
+    await ctx.narrate('À noite, a família inteira foi pro parque de diversões.');
+    await ctx.teleport('ar-parque', 'entrada');
   },
 
   async churrasqueira(ctx) {

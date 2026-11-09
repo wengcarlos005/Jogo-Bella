@@ -11,6 +11,7 @@ import { playMarketGame } from './screens/MarketGame';
 import { playCeiaGame } from './screens/CeiaGame';
 import { playFogosGame } from './screens/FogosGame';
 import { playPedrinhaGame } from './screens/PedrinhaGame';
+import { playArgolasGame } from './screens/ArgolasGame';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -200,6 +201,11 @@ class UIManagerImpl {
   pedrinha(): Promise<MiniResult & { skips: number }> {
     this.dialogue.close();
     return this.replayable(() => playPedrinhaGame(this.root));
+  }
+
+  argolas(): Promise<MiniResult & { prize: boolean }> {
+    this.dialogue.close();
+    return this.replayable(() => playArgolasGame(this.root));
   }
 
   fogos(): Promise<MiniResult & { photos: number }> {

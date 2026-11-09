@@ -168,6 +168,14 @@ export const MEMORIES: MemoryDef[] = [
     image: 'memory-ar-01',
   },
   {
+    id: 'mem-ar-02',
+    region: 'araruama',
+    title: 'Lá no alto da roda-gigante',
+    year: 'Ano 1',
+    text: 'Primeiro dia de 2024: suco no Cosechas, parque de diversões com os primos e, no ponto mais alto da roda-gigante, ele olhando pra mim em vez da vista.',
+    image: 'memory-ar-02',
+  },
+  {
     id: 'mem-ar-03',
     region: 'araruama',
     title: 'Feliz 2024',
