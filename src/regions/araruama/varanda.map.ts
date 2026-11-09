@@ -70,6 +70,12 @@ const scripts: Record<string, Script> = {
   async cooler(ctx) {
     await ctx.say('weng', 'O espumante tá no gelo. A tia Tim contou as taças três vezes.');
   },
+  async tiaTim(ctx) {
+    await ctx.say('tia-tim', objDone('virada') ? 'Feliz ano-novo, minha filha! Agora come uma uva, que dá sorte.' : 'Já pegou a taça? Daqui a pouco é meia-noite!');
+  },
+  async lilian(ctx) {
+    await ctx.say('lilian', objDone('virada') ? 'Feliz 2024, Bella! Tirou foto do coração? Me manda depois!' : 'Daqui é a melhor vista dos fogos de Araruama. Todo ano a gente briga pelo lugar no vidro.');
+  },
   async portas(ctx) {
     await ctx.teleport('ar-cobertura', 'varanda');
   },
@@ -120,6 +126,11 @@ export const varandaMap: MapDef = {
     { rect: R(1080, 460, 1360, 530), interact: 'rede', label: 'Rede' },
     { rect: R(550, 330, 970, 440), interact: 'mesaFrutas', label: 'Mesa de frutas' },
     { rect: R(1240, 290, 1360, 340), interact: 'cooler', label: 'Isopor' },
+  ],
+
+  npcs: [
+    { id: 'tia-tim', sprite: 'tia-tim', tx: 13.2, ty: 10.2, facing: 'down', interact: 'tiaTim' },
+    { id: 'lilian', sprite: 'lilian', tx: 20.6, ty: 10.4, facing: 'down', interact: 'lilian' },
   ],
 
   spawns: {

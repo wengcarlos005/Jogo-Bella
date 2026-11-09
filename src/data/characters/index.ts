@@ -32,6 +32,7 @@ export const SPEAKERS: Record<string, SpeakerDef> = {
   'avo-bella': { name: 'Vó', portrait: 'portrait-avo-bella' },
   'tia-tim': { name: `Tia ${PERSONAL.wengFamily.tia}`, portrait: 'portrait-tia-tim' },
   anne: { name: PERSONAL.wengFamily.irma, portrait: 'portrait-anne' },
+  lilian: { name: 'Lilian', portrait: 'portrait-lilian' },
   familia: { name: 'Família' },
   narrador: { name: '' },
   celular: { name: 'Celular' },

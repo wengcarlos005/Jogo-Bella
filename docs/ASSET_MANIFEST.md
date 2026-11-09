@@ -169,6 +169,8 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CHAR-030 | Moça do caixa do Multidão (4×4 andando) | npcs/caixa-walk.png | ✅ no jogo (+ retrato portraits/caixa.png) |
 | CHAR-029 | Garçom do restaurante mexicano (4×4 andando) | npcs/garcom-mex-walk.png | ✅ no jogo (+ retrato portraits/garcom-mex.png) |
 | PORT-020 | Retrato do garçom (Petrópolis) | portraits/garcom.png | ✅ feito do quadro de frente |
+| NPC-030 | Tia Tim (4×4 andando, avental vermelho) | npcs/tia-tim-walk.png | ✅ no jogo (+ retrato portraits/tia-tim.png) |
+| NPC-031 | Lilian, prima (4×4 andando) | npcs/lilian-walk.png | ✅ no jogo (+ retrato portraits/lilian.png) |
 
 ### LOTE 4–6 — Viagens do Ano 1 e 2 (Fases 5–6)
 Por cidade: 2–4 cenários pintados + camadas frontais, 3–6 NPCs, objetos-chave dos minigames, 3–4 ilustrações de memória. Lista detalhada será gerada no início de cada fase.

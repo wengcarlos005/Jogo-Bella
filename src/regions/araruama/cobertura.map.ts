@@ -102,6 +102,29 @@ const scripts: Record<string, Script> = {
     ctx.toast('Conheça a cobertura: a cozinha, a mesa giratória e a varanda');
   },
 
+  async tiaTim(ctx) {
+    if (objDone('ceia')) {
+      await ctx.say('tia-tim', 'Sobrou pato! Amanhã você leva um pouco pra casa, tá? Não aceito não como resposta.');
+      return;
+    }
+    await ctx.say('tia-tim', 'Tá com fome? Já experimentou o bolinho? Pega mais um, pega!');
+    await ctx.say('bella', 'Tia, eu já comi três...');
+    await ctx.say('tia-tim', 'Três é pouco! Hoje é ano-novo!');
+  },
+  async lilian(ctx) {
+    if (objDone('ceia')) {
+      await ctx.say('lilian', 'Amanhã a gente vai pro parque de diversões. Vocês vêm, né? Vai ser muito bom!');
+      return;
+    }
+    await ctx.say('lilian', 'Bella! Que bom que você veio. Relaxa, a tia Tim fala alto, mas é um amor.');
+    await ctx.say('bella', 'Tá tão na cara assim que eu tô nervosa?');
+    await ctx.say('lilian', 'Um pouquinho. Mas todo mundo aqui já gosta de você, sério.');
+    if (!ctx.flag('ar-lilian')) {
+      ctx.setFlag('ar-lilian');
+      const n = Number(GameState.getFlag<number>('nervosismo') ?? 0);
+      if (n > 0) ctx.nerves(Math.max(0, n - 15));
+    }
+  },
   async porta(ctx) {
     await ctx.say('weng', 'Depois a gente desce pra lagoa. Primeiro dá oi pra todo mundo.');
   },
@@ -224,6 +247,11 @@ export const coberturaMap: MapDef = {
     { rect: R(150, 760, 320, 835), interact: 'brinquedos', label: 'Brinquedos' },
     { rect: R(300, 590, 740, 700), interact: 'sofa', label: 'Sofá' },
     { rect: R(560, 815, 1000, 845), interact: 'varanda', label: 'Varanda', markerIf: () => (objDone('chegar') && objActive('casa') && !GameState.is('ar-varanda')) || (objDone('ceia') && objActive('virada')) },
+  ],
+
+  npcs: [
+    { id: 'tia-tim', sprite: 'tia-tim', tx: 24.0, ty: 7.6, facing: 'up', interact: 'tiaTim', behavior: 'wander', wanderRadius: 1.4, wanderAxis: 'x' },
+    { id: 'lilian', sprite: 'lilian', tx: 16.6, ty: 11.6, facing: 'down', interact: 'lilian', behavior: 'wander', wanderRadius: 1.0, wanderAxis: 'x' },
   ],
 
   spawns: {
