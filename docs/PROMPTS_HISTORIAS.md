@@ -422,10 +422,10 @@ No text, no UI, no watermark.
 
 Anexe `pascoa.png` + `bella-casual` + `weng-casual`.
 
-**Ceia chinesa em família** (`memory-ar-01`)
+**Ceia chinesa em família** (`memory-ar-01`). Anexe `pascoa.png`, `bella-casual`, `weng-casual` e a folha da tia Tim (`npcs/tia-tim-walk.png`).
 
 ```
-Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. New Year's Eve in a bright penthouse apartment: a big round table with a glass lazy susan full of Chinese food (dumplings, noodles, steamed fish, stir-fried rice noodles, Brazilian-style "frango xadrez" chicken with peppers and peanuts, dumplings, tangerines) with a whole glazed roast duck in the center. A big, loud, happy Chinese-Brazilian family around it: uncles and aunts, adult cousins, two 10-year-old kids and a 5-year-old girl laughing, and an aunt proudly serving food to everyone. The attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) sit side by side; she smiles a little shy and nervous with chopsticks in her hand, and he helps her pick up a piece of duck. Warm golden light, red lanterns on the wall. No text, no UI, no watermark.
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. New Year's Eve dinner in a bright penthouse apartment in a Brazilian beach town, warm golden light, a painting of red Chinese lanterns and a red Chinese knot on the wall. A big round table with a white tablecloth and a glass lazy susan in the middle, full of Chinese food: a whole glazed roast duck in the center, stir-fried rice noodles, Brazilian-style "frango xadrez" (diced chicken with peppers and peanuts), dumplings in a bamboo steamer, spring rolls, fried rice, a bowl of tangerines. Around the table, a big, happy Chinese-Brazilian family: the attached aunt (long straight black hair, red apron) proudly serving food, adult cousins laughing, a 10-year-old boy and a 10-year-old girl, and a 5-year-old girl with a black bob and a pink dress. The attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) sit side by side; she smiles a little shy, holding chopsticks, and he helps her pick up a piece of duck. No text, no UI, no watermark.
 ```
 
 **Roda-gigante** (`memory-ar-02`)
