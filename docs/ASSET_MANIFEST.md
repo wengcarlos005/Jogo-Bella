@@ -116,6 +116,8 @@ Só a roupa casual da Bella tem os óculos rosados.
 | MEM-010 | `cinematics/memory-pt-01.png` | Cisnes e nuvens (piquenique no Quitandinha) | **integrado** |
 | MEM-011 | `cinematics/memory-pt-02.png` | Meia-noite em ponto | **integrado** |
 | MEM-012 | `cinematics/memory-pt-03.png` | Almoço de aniversário | **integrado** |
+| MEM-013 | `cinematics/memory-ar-01.png` | A mesa giratória (ceia chinesa em família) | **integrado** |
+| MEM-014 | `cinematics/memory-ar-03.png` | Feliz 2024 (beijo na varanda com os fogos) | **integrado** |
 | MAP-040 | `maps/ar-cobertura-bg.png` (fonte: `art-source/maps/ar-cobertura.webp`) | Araruama: cobertura dos tios (vazia) + objetos `objects/cb-*` | **integrado** |
 | MAP-041 | `maps/ar-varanda-bg.png` (fonte: `art-source/maps/ar-varanda.webp`) | Araruama: varanda da cobertura à noite + objetos `objects/vr-*` | **integrado** |
 | MG-ceia | `minigames/mg-*.png` | Mesa Giratória: mesa vista de cima, pato inteiro e fatiado, macarrão de arroz, frango xadrez, guioza, rolinho, arroz, gergelim, hashi, balão | **integrado** |
