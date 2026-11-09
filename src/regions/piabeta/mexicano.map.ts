@@ -197,7 +197,13 @@ export const mexicanoMap: MapDef = {
   ],
 
   // porta de entrada (folhas abertas): sempre por cima de quem passa, transparente
-  overlays: [{ x0: 620, y0: 728, x1: 856, y1: 950, base: 1000, front: true }],
+  // A porta faz parte do cenário pintado: ela fica NA FRENTE de quem passa por ela, translúcida
+  // (folha da esquerda, folha da direita e o batente de cima, sem se sobrepor).
+  overlays: [
+    { x0: 620, y0: 728, x1: 705, y1: 950, base: 1000, front: true, frontAlpha: 0.45 },
+    { x0: 762, y0: 728, x1: 856, y1: 950, base: 1000, front: true, frontAlpha: 0.45 },
+    { x0: 705, y0: 728, x1: 762, y1: 785, base: 1000, front: true, frontAlpha: 0.45 },
+  ],
 
   npcs: [
     // garçom: anda pertinho do balcão, entre os banquinhos e a mesa do meio

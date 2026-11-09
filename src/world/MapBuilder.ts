@@ -28,6 +28,7 @@ export interface BuiltOverlay {
   fade: boolean;
   when?: () => boolean;
   front?: boolean;
+  frontAlpha?: number;
   tall?: boolean;
   fadeX?: [number, number];
 }
@@ -210,6 +211,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
         fade: o.fade ?? o.front ?? false,
         when: o.when,
         front: o.front,
+        frontAlpha: o.frontAlpha,
         tall: o.tall,
         fadeX: o.fadeX ? [o.fadeX[0] / 3, o.fadeX[1] / 3] : undefined,
       });

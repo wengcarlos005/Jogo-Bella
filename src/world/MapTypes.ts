@@ -130,6 +130,8 @@ export interface MapDef {
     slice?: boolean;
     /** Sempre na frente dos personagens (portas, molduras), translúcido quando alguém está atrás. */
     front?: boolean;
+    /** Opacidade da porta (front) quando alguém passa por ela. Padrão 0 (some). Use ~0.45 quando a porta faz parte do cenário pintado. */
+    frontAlpha?: number;
     /** Objetos altos (postes, árvores): a profundidade é sempre a base, mesmo com alguém ao norte. */
     tall?: boolean;
     /** Só fica translúcido quando alguém está nesta faixa x (px da arte), ex.: passagem do arco. */

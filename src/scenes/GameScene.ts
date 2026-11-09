@@ -987,7 +987,7 @@ export class GameScene extends Phaser.Scene {
           (a) => a && a.visible && a.x + 16 > o.rect.x && a.x - 16 < o.rect.right && a.y > o.rect.y - 4 && a.headY < o.rect.bottom,
         );
         // porta da frente: some de vez enquanto alguém está atrás dela
-        const target = behind ? 0 : 1;
+        const target = behind ? (o.frontAlpha ?? 0) : 1;
         o.img.alpha += (target - o.img.alpha) * 0.2;
         continue;
       }
