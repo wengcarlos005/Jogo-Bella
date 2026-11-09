@@ -10,6 +10,7 @@ import { playCloudGame, playBoatGame, playBreakfastGame, type MiniResult } from 
 import { playMarketGame } from './screens/MarketGame';
 import { playCeiaGame } from './screens/CeiaGame';
 import { playFogosGame } from './screens/FogosGame';
+import { playPedrinhaGame } from './screens/PedrinhaGame';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -194,6 +195,11 @@ class UIManagerImpl {
   ceia(): Promise<MiniResult> {
     this.dialogue.close();
     return this.replayable(() => playCeiaGame(this.root));
+  }
+
+  pedrinha(): Promise<MiniResult & { skips: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playPedrinhaGame(this.root));
   }
 
   fogos(): Promise<MiniResult & { photos: number }> {

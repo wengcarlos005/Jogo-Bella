@@ -259,6 +259,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     market: () => UI.market(),
     ceia: () => UI.ceia(),
     fogos: () => UI.fogos(),
+    pedrinha: () => UI.pedrinha(),
     boatRace: () => UI.boatRace(),
     breakfast: () => UI.breakfast(),
     vignette: (m, side) => UI.vignette(m, side),

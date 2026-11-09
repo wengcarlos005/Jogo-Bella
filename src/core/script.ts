@@ -62,6 +62,8 @@ export interface ScriptContext {
   market(): Promise<import('@/ui/screens/PetroGames').MiniResult & { pacoca: boolean }>;
   /** Mesa Giratória: a ceia de ano-novo na cobertura (Araruama). */
   ceia(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
+  /** Pedrinha na lagoa (Araruama). */
+  pedrinha(): Promise<import('@/ui/screens/PetroGames').MiniResult & { skips: number }>;
   /** Foto dos fogos: a virada de 2024 na varanda (Araruama). */
   fogos(): Promise<import('@/ui/screens/PetroGames').MiniResult & { photos: number }>;
   clouds(): Promise<import('@/ui/screens/PetroGames').MiniResult>;

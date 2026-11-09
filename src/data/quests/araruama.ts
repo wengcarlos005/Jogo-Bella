@@ -11,6 +11,7 @@ export const ARARUAMA_QUESTS: QuestDef[] = [
     objectives: [
       { id: 'chegar', text: 'Chegar na cobertura', hint: 'A porta de entrada fica na parede da esquerda.' },
       { id: 'casa', text: 'Conhecer a cobertura', hint: 'Procure os ♥: a cozinha da tia Tim, a mesa giratória e a varanda.' },
+      { id: 'praia', text: 'Um passeio na beira da lagoa', hint: 'Saia pela porta de entrada da cobertura (na parede da esquerda).' },
       { id: 'ceia', text: 'A ceia na mesa giratória', hint: 'A mesa redonda fica no meio da sala, perto da cozinha.' },
       { id: 'virada', text: 'A virada na varanda', hint: 'Saia pelas portas de vidro e vá até o guarda-corpo, de frente pra lagoa.' },
     ],

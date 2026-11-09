@@ -358,7 +358,7 @@ DO NOT draw: tables, chairs, hammocks, people, animals or fireworks. Clean conti
 Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
 ```
 
-### 2C-2. Praia da lagoa, versão fiel à vista real
+### 2C-2. Praia da lagoa, versão fiel à vista real — **pronto** (cenário e objetos já no jogo)
 
 Use este no lugar do 2C se quiser que a orla pareça a de verdade (anexe a foto da varanda como referência de lugar):
 

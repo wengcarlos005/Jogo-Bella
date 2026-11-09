@@ -29,7 +29,9 @@ async function canto(ctx: ScriptContext, flag: string): Promise<void> {
   await ctx.say('weng', 'Isso na língua da família quer dizer "a gente gosta de você".');
   ctx.nerves(20);
   ctx.objective(Q, 'casa');
-  ctx.toast('À noite, a ceia: a mesa giratória da tia Tim');
+  await ctx.say('weng', 'Ainda falta um tempão pra ceia. Bora descer e dar uma volta na beira da lagoa?');
+  await ctx.say('bella', 'Bora! Eu preciso de um ar.');
+  ctx.toast('Saia pela porta de entrada pra ir até a lagoa');
 }
 
 /** A ceia de ano-novo: a mesa giratória da tia Tim (pato, macarrão de arroz, frango xadrez...). */
@@ -193,6 +195,15 @@ const scripts: Record<string, Script> = {
     await ctx.emote('bella', 'heart');
   },
   async porta(ctx) {
+    if (objDone('casa') && objActive('praia')) {
+      await ctx.fadeOut(400);
+      await ctx.teleport('ar-praia', 'chegada');
+      return;
+    }
+    if (objDone('praia')) {
+      await ctx.say('weng', 'Agora só saio daqui depois da meia-noite.');
+      return;
+    }
     await ctx.say('weng', 'Depois a gente desce pra lagoa. Primeiro dá oi pra todo mundo.');
   },
   async quadro(ctx) {
@@ -222,7 +233,11 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'O isopor de gelo. Em ano-novo de família, ele é o objeto mais importante da casa.');
   },
   async mesa(ctx) {
-    if (objDone('casa') && objActive('ceia')) return ceia(ctx);
+    if (objDone('praia') && objActive('ceia')) return ceia(ctx);
+    if (objDone('casa') && objActive('praia')) {
+      await ctx.say('weng', 'A ceia é só à noite. Bora pra lagoa primeiro?');
+      return;
+    }
     if (objDone('ceia')) {
       await ctx.say('bella', 'Sobrou pato. Sempre sobra pato. A tia Tim cozinha pro bairro inteiro.');
       return;
@@ -302,14 +317,14 @@ export const coberturaMap: MapDef = {
   ],
 
   hotspots: [
-    { rect: R(60, 400, 200, 690), interact: 'porta', label: 'Porta' },
+    { rect: R(60, 400, 200, 690), interact: 'porta', label: 'Porta', markerIf: () => objDone('casa') && objActive('praia'), marker: { dir: 'left' } },
     { rect: R(590, 380, 845, 500), interact: 'quadro', label: 'Quadro' },
     { rect: R(395, 380, 470, 500), interact: 'gato', label: 'Gatinho da sorte' },
     { rect: R(495, 380, 560, 500), interact: 'no', label: 'Nó vermelho' },
     { rect: R(860, 380, 960, 500), interact: 'relogio', label: 'Relógio' },
     { rect: R(1100, 250, 1220, 340), interact: 'fogao', label: 'Cozinha', markerIf: () => objDone('chegar') && objActive('casa') && !GameState.is('ar-cozinha') },
     { rect: R(1190, 370, 1310, 445), interact: 'cooler', label: 'Isopor' },
-    { rect: R(850, 560, 1210, 800), interact: 'mesa', label: 'Mesa', markerIf: () => (objDone('chegar') && objActive('casa') && !GameState.is('ar-mesa')) || (objDone('casa') && objActive('ceia')) },
+    { rect: R(850, 560, 1210, 800), interact: 'mesa', label: 'Mesa', markerIf: () => (objDone('chegar') && objActive('casa') && !GameState.is('ar-mesa')) || (objDone('praia') && objActive('ceia')) },
     { rect: R(1300, 490, 1330, 800), interact: 'tv', label: 'TV' },
     { rect: R(150, 760, 320, 835), interact: 'brinquedos', label: 'Brinquedos' },
     { rect: R(300, 590, 740, 700), interact: 'sofa', label: 'Sofá' },
