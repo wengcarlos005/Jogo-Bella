@@ -10,6 +10,10 @@ const passeiosFeitos = () => ['foto', 'pedalinho', 'algodao'].every((o) => objDo
 /** Retângulo no cenário ORIGINAL (art-source/maps/pt-quitandinha.webp, 1536x1024). 48 px = 1 tile. */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
+/** Linha dos pés em cima do deck do píer (art y ≈ 612) e a vaga do cisne na água, à esquerda do píer. */
+const PIER_Y = 11.8;
+const PIER_BOAT = { x: 22.3, y: 13.6 };
+
 const scripts: Record<string, Script> = {
   async chegada(ctx) {
     ctx.follow('weng', true);
@@ -52,18 +56,24 @@ const scripts: Record<string, Script> = {
     }
     await ctx.say('bella', 'PEDALINHO DE CISNE! Weng, por favor, por favor, por favor.');
     await ctx.say('weng', 'Eu já paguei. Sobe.');
+    // o cisne fica amarrado na ponta do píer (na água, à esquerda); os dois andam pelo deck e embarcam
     await ctx.fadeOut(400);
     ctx.follow('weng', false);
+    ctx.prop('barco', 'qd-cisne', PIER_BOAT.x, PIER_BOAT.y, 0, 0.19);
+    ctx.place('player', 25.6, PIER_Y, 'left');
+    ctx.place('weng', 27.0, PIER_Y, 'left');
+    await ctx.fadeIn(400);
+    await Promise.all([ctx.move('player', 23.6, PIER_Y, 55), ctx.move('weng', 24.9, PIER_Y, 55)]);
+    await ctx.say('weng', 'Cuidado no degrau. Esse cisne balança.');
+    await ctx.fadeOut(300);
     ctx.visible('player', false);
     ctx.visible('weng', false);
-    ctx.prop('barco', 'qd-cisne', 26.0, 12.6, 0, 0.19);
-    await ctx.fadeIn(400);
-    await ctx.moveProp('barco', 21.0, 13.2, 1600);
+    await ctx.fadeIn(300);
+    await ctx.moveProp('barco', 17.5, 13.9, 1800);
     await ctx.say('bella', 'Weng... aquele cisne rosa tá olhando pra gente. Ele quer apostar corrida.');
     await ctx.say('weng', 'Ele não sabe com quem tá mexendo.');
     const corrida = await ctx.boatRace();
     ctx.setFlag('pt-pedalinho-estrelas', corrida.stars);
-    ctx.place('player', 24.6, 13.0, 'down');
     await ctx.moveProp('barco', 13.0, 14.2, 1800);
     const c = await ctx.choose('bella', '(No meio do lago, os dois pararam de pedalar)', ['"A gente tá no meio do Brasil."', '"Se esse cisne afundar, você me salva?"', 'Encostar a cabeça no ombro dele']);
     if (c === 0) await ctx.say('weng', 'Mais ou menos em Goiás, eu acho. O lugar mais bonito do país.');
@@ -72,15 +82,18 @@ const scripts: Record<string, Script> = {
       await ctx.emote('weng', 'heart');
       await ctx.say('weng', '...Pode ficar aqui o tempo que quiser.');
     }
-    await ctx.moveProp('barco', 26.0, 12.6, 3200);
-    await ctx.fadeOut(400);
-    ctx.removeProp('barco');
-    ctx.place('player', 24.6, 13.0, 'down');
-    ctx.place('weng', 26.2, 13.0, 'down');
+    // volta pra ponta do píer, desembarca e os dois saem andando pelo deck
+    await ctx.moveProp('barco', PIER_BOAT.x, PIER_BOAT.y, 3000);
+    await ctx.fadeOut(300);
+    ctx.place('player', 23.6, PIER_Y, 'right');
+    ctx.place('weng', 24.9, PIER_Y, 'right');
     ctx.visible('player', true);
     ctx.visible('weng', true);
+    await ctx.fadeIn(300);
+    await Promise.all([ctx.move('player', 25.0, PIER_Y, 55), ctx.move('weng', 27.0, PIER_Y, 55)]);
+    ctx.face('player', 'right');
+    ctx.face('weng', 'left');
     ctx.follow('weng', true);
-    await ctx.fadeIn(400);
     ctx.objective(Q, 'pedalinho');
     await ctx.say('weng', 'Minhas pernas... nunca mais. (Mentira. Faço de novo se você pedir.)');
   },

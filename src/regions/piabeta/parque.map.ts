@@ -55,8 +55,8 @@ const scripts: Record<string, Script> = {
     await ctx.fadeOut(300);
     ctx.follow('weng', false);
     // dentro do coreto, no piso, entre as colunas da frente
-    ctx.place('player', 12.7, 5.65, 'right');
-    ctx.place('weng', 14.05, 5.65, 'left');
+    ctx.place('player', 12.95, 5.55, 'right');
+    ctx.place('weng', 14.1, 5.55, 'left');
     ctx.scale('player', 0.86);
     ctx.scale('weng', 0.86);
     await ctx.fadeIn(500);
@@ -349,6 +349,11 @@ export const parqueMap: MapDef = {
     { x0: 1238, y0: 140, x1: 1452, y1: 278, base: 276, cut: 'furniture', slice: true },
     // só o telhado (até a viga): as pilastras da frente ficam dos lados, não por cima dos dois
     { x0: 500, y0: 25, x1: 845, y1: 203, base: 3000, when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    // as duas pilastras da frente (com os pilaretes do guarda-corpo) passam NA FRENTE dos dois
+    { x0: 584, y0: 200, x1: 616, y1: 362, base: 3000, cut: 'outline', when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    { x0: 724, y0: 200, x1: 758, y1: 362, base: 3000, cut: 'outline', when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    { x0: 604, y0: 305, x1: 630, y1: 362, base: 3000, cut: 'outline', when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
+    { x0: 712, y0: 305, x1: 738, y1: 362, base: 3000, cut: 'outline', when: () => QuestSystem.isObjectiveDone(Q, 'abrigo') && !QuestSystem.isObjectiveDone(Q, 'beijo') },
   ],
 
   // Noite (o passeio é depois do lanche): véu escuro + postes e lanternas acesos
