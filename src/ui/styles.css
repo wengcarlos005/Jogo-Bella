@@ -2670,27 +2670,52 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 
 /* ===== Pedrinha na lagoa (Araruama) ===== */
 .pe-title { background: linear-gradient(90deg, #2fb3c8, #2f7ad3) !important; }
-.pe-stage { height: min(48vh, calc(var(--u) * 190)) !important; background: #2a8ab8; }
+.pe-stage { height: min(54vh, calc(var(--u) * 215)) !important; background: #2a8ab8; }
 .pe-water { position: absolute; inset: 0; background-size: 170% auto; background-position: 30% 100%; image-rendering: pixelated; }
-.pe-layer { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-.pe-stone { position: absolute; width: 18px; height: 11px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #c8ccd2, #7a808a 70%); border: 2px solid #2a2e36; transform: translate(-50%, -50%); }
-.pe-stone.weng { background: radial-gradient(circle at 35% 35%, #d8c8b0, #8a7a62 70%); }
+.pe-layer { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.pe-pads { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.pe-pad { position: absolute; width: 9%; transform: translate(-50%, -50%); image-rendering: pixelated; }
+.pe-pad.hit { animation: pe-bob .5s; filter: drop-shadow(0 0 8px #aaff88); }
+@keyframes pe-bob { 40% { transform: translate(-50%, -38%) scale(1.15); } }
+.pe-boia { position: absolute; top: 49%; width: 6%; transform: translate(-50%, -50%); image-rendering: pixelated; z-index: 2; animation: pe-float 2s ease-in-out infinite; }
+.pe-boia.hit { animation: pe-bob .6s; filter: drop-shadow(0 0 10px #ffd23f); }
+@keyframes pe-float { 50% { transform: translate(-50%, -58%); } }
+.pe-ducks { position: absolute; left: 76%; top: 58%; width: 9%; transform: translate(-50%, -50%); image-rendering: pixelated; z-index: 2; transition: transform .6s, opacity .6s; }
+.pe-ducks.fly { transform: translate(40%, -120%) scale(.8); opacity: 0; }
+.pe-stone { position: absolute; width: 40px; height: 24px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #eef0f4, #a0a6b0 45%, #5a606a 85%); border: 3px solid #23262c; box-shadow: 0 3px 0 rgba(0,0,0,.35); transform: translate(-50%, -50%); }
+.pe-stone.weng { background: radial-gradient(circle at 35% 30%, #f2e6d2, #b8a284 45%, #7a6448 85%); }
+.pe-stone.heart { border-color: #8a1a3a; background: radial-gradient(circle at 35% 30%, #ffd0e0, #ff6a9a 50%, #c0305f 90%); }
+.pe-stone.heart::after { content: '♥'; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 14px; }
 .pe-stone.sink { animation: pe-sink .45s forwards; }
 @keyframes pe-sink { to { opacity: 0; transform: translate(-50%, -20%) scale(.4); } }
-.pe-ring { position: absolute; width: 10px; height: 4px; border: 2px solid rgba(255, 255, 255, .85); border-radius: 50%; transform: translate(-50%, -50%); animation: pe-ring .9s ease-out forwards; }
-@keyframes pe-ring { to { width: 70px; height: 22px; opacity: 0; } }
-.pe-bar { position: absolute; left: 50%; top: 5%; width: 56%; transform: translateX(-50%); z-index: 3; background: rgba(255, 248, 236, .92); border: 2px solid #4a2a5a; border-radius: 10px; padding: 6px 8px; }
-.pe-meter { position: relative; height: 14px; border-radius: 99px; overflow: hidden; border: 2px solid #4a2a5a; display: flex; }
-.pe-meter .z { flex: none; height: 100%; }
-.pe-meter .weak, .pe-meter .strong { width: 24%; background: #e98585; }
-.pe-meter .ok, .pe-meter .ok2 { width: 16%; background: #f4cf63; }
-.pe-meter .good { width: 20%; background: linear-gradient(90deg, #5fcf7a, #3fb860 50%, #5fcf7a); }
-.pe-needle { position: absolute; top: -2px; bottom: -2px; width: 4px; margin-left: -2px; background: #2a1638; border-radius: 2px; }
-.pe-score { position: absolute; top: 32%; left: 50%; transform: translateX(-50%); z-index: 3; font-family: var(--font-pixel); color: #fff; font-size: clamp(14px, calc(var(--u) * 8), 28px); text-shadow: 0 3px 0 #1a4a7a; pointer-events: none; }
+.pe-ring { position: absolute; width: 16px; height: 6px; border: 3px solid rgba(255, 255, 255, .9); border-radius: 50%; transform: translate(-50%, -50%); animation: pe-ring .9s ease-out forwards; }
+@keyframes pe-ring { to { width: 90px; height: 28px; opacity: 0; } }
+.pe-pop { position: absolute; transform: translate(-50%, -50%); font-family: var(--font-pixel); font-size: clamp(13px, 2vw, 22px); color: #fff; text-shadow: 0 2px 0 #1a4a7a, 0 0 6px rgba(0,0,0,.4); animation: pe-up .9s ease-out forwards; }
+.pe-pop.green { color: #aaff88; }
+.pe-pop.gold { color: #ffd23f; font-size: clamp(16px, 2.6vw, 28px); }
+@keyframes pe-up { to { transform: translate(-50%, -160%); opacity: 0; } }
+.pe-thrower { position: absolute; left: 6%; bottom: 6%; width: 40px; height: 40px; z-index: 3; }
+.pe-thrower::before { content: ''; position: absolute; left: 0; bottom: 0; width: 70px; height: 4px; background: #ffd23f; border-radius: 2px; transform-origin: 0 50%; box-shadow: 0 0 6px #ffd23f; }
+.pe-thrower.a0::before { transform: rotate(-8deg); }
+.pe-thrower.a1::before { transform: rotate(-24deg); }
+.pe-thrower.a2::before { transform: rotate(-42deg); }
+.pe-thrower.throw::before { opacity: 0; }
+.pe-bar { position: absolute; left: 50%; top: 4%; width: 64%; transform: translateX(-50%); z-index: 5; background: rgba(255, 248, 236, .94); border: 2px solid #4a2a5a; border-radius: 10px; padding: 6px 10px; }
+.pe-bar-top { display: flex; justify-content: space-between; gap: 8px; font-weight: 900; color: #4a2a5a; font-size: clamp(11px, 1.4vw, 15px); margin-bottom: 4px; flex-wrap: wrap; }
+.pe-angle span { padding: 0 5px; border-radius: 6px; color: #9a8aa8; }
+.pe-angle span.on { background: #4a2a5a; color: #fff; }
+.pe-special { color: #c0305f; }
+.pe-meter { position: relative; height: 16px; border-radius: 99px; overflow: hidden; border: 2px solid #4a2a5a; background: #e98585; }
+.pe-meter .weak, .pe-meter .strong { background: #e98585; }
+.pe-meter .ok, .pe-meter .ok2 { background: #f4cf63; }
+.pe-meter .good { background: linear-gradient(90deg, #5fcf7a, #3fb860 50%, #5fcf7a); }
+.pe-needle { position: absolute; top: -2px; bottom: -2px; width: 5px; margin-left: -2px; background: #2a1638; border-radius: 2px; z-index: 2; }
+.pe-score { position: absolute; top: 36%; left: 50%; transform: translateX(-50%); z-index: 5; font-family: var(--font-pixel); color: #fff; font-size: clamp(16px, calc(var(--u) * 9), 32px); text-shadow: 0 3px 0 #1a4a7a; pointer-events: none; }
 .pe-score.pop { animation: nv-pop2b .5s; }
 @keyframes nv-pop2b { 40% { transform: translateX(-50%) scale(1.3); } }
-.pe-ico { flex: none; width: 34px; height: 20px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #c8ccd2, #7a808a 70%); border: 3px solid #2a2e36; }
-.pe-ico.ring { background: transparent; border-color: #fff; }
+.pe-placar { font-weight: 900; }
+.pe-ico { flex: none; width: 40px; height: 24px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #eef0f4, #a0a6b0 45%, #5a606a 85%); border: 3px solid #23262c; }
+.pe-rules img { aspect-ratio: 1; background: #2a8ab8; padding: 3px; }
 
 /* ===== Argolas (parque de Araruama) ===== */
 .ag-title { background: linear-gradient(90deg, #e94a7a, #f0a030) !important; }
