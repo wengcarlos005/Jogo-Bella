@@ -1,6 +1,7 @@
 import type { Script } from '@/core/script';
 import { PERSONAL } from '@/data/personal';
 import { GameState } from '@/core/GameState';
+import { QuestSystem } from '@/systems/QuestSystem';
 
 /**
  * Roteiro da Missão 1 — "O encontro marcado".
@@ -264,16 +265,38 @@ export const casaScripts: Record<string, Script> = {
     ctx.pose('lala', 'lala-poses', 3);
     ctx.hearts('lala', 6);
     await ctx.say('lala', 'Prrrr...');
-    const falas = [
+    // antes do Weng chegar: a Bella conversa com a Lala sozinha
+    const sozinha = [
       'Bom dia, Lala. Dormiu bem? Claro que dormiu, você só dorme.',
       'Lala, deseja sorte pra mim hoje. Muita sorte.',
       'Depois eu te conto tudo, tá? Tudinho.',
     ];
-    await ctx.say('bella', ctx.flag('weng-entrou') ? 'Weng, essa é a Lala. A princesa da casa.' : falas[n % falas.length]);
-    if (ctx.flag('weng-entrou') && !ctx.flag('lala-weng')) {
+    // depois que a Lala já conquistou o Weng (churrasco): ela vira fã dele
+    const fa = [
+      ['bella', 'Olha ela ronronando... Weng, ela tá olhando pra você, não pra mim.'],
+      ['weng', 'A Lala e eu temos uma conexão agora. É profundo.'],
+      ['bella', 'Traidora. Eu te dou sachê todo dia, Lala.'],
+      ['weng', 'Ela piscou devagar pra mim. Isso é "eu te amo" em gatês, sabia?'],
+    ] as const;
+    // o Weng já conhece a Lala, mas ela ainda não liga muito pra ele
+    const conhece = [
+      ['bella', 'Princesa da casa, toda esparramada.'],
+      ['weng', 'Oi de novo, Lala. ...Ainda me ignorando, né.'],
+      ['bella', 'Ela tá te observando. É um bom sinal. Acho.'],
+    ] as const;
+    if (!ctx.flag('weng-entrou')) {
+      await ctx.say('bella', sozinha[n % sozinha.length]);
+    } else if (!ctx.flag('lala-weng')) {
+      // a primeira vez que o Weng vê a Lala (só uma vez)
       ctx.setFlag('lala-weng');
+      await ctx.say('bella', 'Weng, essa é a Lala. A princesa da casa.');
       await ctx.say('weng', 'Oi, Lala! ...Ela me ignorou completamente.');
       await ctx.say('bella', 'Ela é assim. Você tem que merecer.');
+    } else {
+      const ganhou = ctx.objectiveDone('dq-e2', 'lala') || QuestSystem.isDone('dq-e2');
+      const lista = ganhou ? fa : conhece;
+      const [who, line] = lista[n % lista.length];
+      await ctx.say(who, line);
     }
     GameState.setFlag('lala-carinhos', n + 1);
     ctx.pose('lala', 'lala-poses', 1);
