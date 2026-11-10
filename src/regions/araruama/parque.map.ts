@@ -57,14 +57,22 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Meu pescoço ainda tá doendo da batida do Mingau.');
       return;
     }
-    await ctx.fadeOut(400);
-    await ctx.narrate('Faísca no teto, cheiro de borracha e todo mundo gritando.');
-    await ctx.fadeIn(400);
-    await ctx.say('mingau', 'SAI DA FRENTE, WENG!');
-    await ctx.say('weng', 'Mingau, eu sou seu primo mais velho, você tem que me respeitar— AI!');
-    await ctx.say('bella', 'Hahaha! Bate nele de novo, Mingau!');
-    await ctx.say('diego', '(do outro lado da pista) Eu tô preso na parede há três minutos. Alguém me ajuda.');
-    ctx.hearts('player', 4);
+    await ctx.say('mingau', 'Bate-bate! Weng, Bella, vocês vão perder. Eu sou o melhor da família.');
+    await ctx.say('diego', 'Ele diz isso todo ano. E todo ano fica preso na parede.');
+    await ctx.say('mingau', 'Quem fica preso na parede é VOCÊ, Diego.');
+    await ctx.say('bella', 'Weng, você pisa e eu dirijo. Combinado?');
+    await ctx.say('weng', 'Você vai dirigir? ...Combinado. Que Deus nos proteja.');
+    const r = await ctx.bateBate();
+    ctx.setFlag('ar-bate-estrelas', r.stars);
+    if (r.stars >= 2) {
+      await ctx.say('mingau', 'Não valeu! A Bella tava pilotando! Revanche!');
+      await ctx.say('bella', 'Revanche aceita. Perde de novo amanhã.');
+    } else {
+      await ctx.say('mingau', 'EU FALEI! Eu sou o rei do bate-bate!');
+      await ctx.say('weng', 'Ano que vem a gente treina antes. Escondido.');
+    }
+    await ctx.say('diego', '(saindo do carrinho) Fiquei preso na parede. De novo.');
+    ctx.hearts('player', 5);
     ctx.objective(Q, 'bate');
     await falta(ctx);
   },
@@ -147,17 +155,60 @@ const scripts: Record<string, Script> = {
     await ctx.say('julinha', 'Posso pegar um pouquinho? Só um pouquinho. Um punhado.');
   },
   async algodao(ctx) {
+    if (ctx.flag('ar-algodao')) {
+      await ctx.say('bella', 'Ainda tô com a boca rosa do algodão-doce.');
+      return;
+    }
+    ctx.setFlag('ar-algodao');
     await ctx.say('bella', 'Algodão-doce rosa! Igual o do Quitandinha, lembra?');
     await ctx.say('weng', 'Lembro. Você comeu o seu e metade do meu.');
+    const c = await ctx.choose('bella', '(Um algodão-doce gigante, um palito só)', ['Dividir com ele', 'Comer tudo sozinha', 'Dar um pedaço pra Laylinha']);
+    if (c === 0) await ctx.say('weng', 'Dividir algodão-doce é praticamente casar. Só pra você saber.');
+    else if (c === 1) await ctx.say('weng', 'Eu sabia. Eu SEMPRE sei.');
+    else {
+      await ctx.say('laylinha', 'OBRIGADA TIA BELLA! (com a cara inteira rosa)');
+      ctx.hearts('player', 3);
+    }
+    ctx.sfx('pickup');
   },
   async churros(ctx) {
+    if (!ctx.flag('ar-churros') && objDone('roda')) {
+      ctx.setFlag('ar-churros');
+      await ctx.say('weng', 'Agora sim: churros de doce de leite. Prometi, tá prometido.');
+      ctx.sfx('pickup');
+      await ctx.say('bella', '(com doce de leite no nariz) Melhor ano-novo. Já falei isso?');
+      await ctx.say('weng', 'Umas seis vezes. Pode falar de novo.');
+      return;
+    }
     await ctx.say('weng', 'Churros de doce de leite. Depois da roda-gigante, pra não passar mal.');
   },
   async bilheteria(ctx) {
     await ctx.say('bella', 'A bilheteria. A tia Tim comprou ficha pra todo mundo antes de a gente chegar.');
   },
   async baloes(ctx) {
+    if (ctx.flag('ar-balao')) {
+      await ctx.say('bella', 'A Laylinha não larga o balão rosa por nada.');
+      return;
+    }
+    ctx.setFlag('ar-balao');
     await ctx.say('bella', 'Um balão pra Laylinha? Ela ia amar o rosa.');
+    await ctx.say('weng', 'Moço, um rosa, por favor!');
+    ctx.sfx('pickup');
+    await ctx.say('laylinha', 'É PRA MIM?! Tia Bella, você é a minha tia preferida!');
+    await ctx.say('weng', '(cochichando) Pronto. Agora você ganhou de todas as tias de verdade.');
+    ctx.hearts('player', 4);
+  },
+  async mingauTalk(ctx) {
+    await ctx.say('mingau', objDone('bate') ? 'Revanche no bate-bate! Ano que vem! Tá marcado!' : 'Vão no bate-bate? Eu tô esperando. Com fome de vitória.');
+  },
+  async diegoTalk(ctx) {
+    await ctx.say('diego', objDone('bate') ? 'Minha meta pro ano: não ficar preso na parede do bate-bate.' : 'Eu vou no bate-bate só pra ver o Mingau perder.');
+  },
+  async vivianTalk(ctx) {
+    await ctx.say('vivian', objDone('argolas') ? 'Bella, o Weng nunca ganhou nada aqui antes de você. Sério.' : 'Desafio o Weng a ganhar uma pelúcia nas argolas. Duvido!');
+  },
+  async julinhaTalk(ctx) {
+    await ctx.say('julinha', 'Eu tô cuidando da pipoca. Ninguém mexe. Só a Laylinha. E a Bella. E... tá, pode pegar.');
   },
   async saida(ctx) {
     if (QuestSystem.isActive(Q)) {
@@ -230,10 +281,10 @@ export const parqueMap: MapDef = {
 
   npcs: [
     { id: 'laylinha', sprite: 'laylinha', tx: 700 / 48, ty: 728 / 48, facing: 'left', interact: 'carrossel' },
-    { id: 'mingau', sprite: 'mingau', tx: 712 / 48, ty: 300 / 48, facing: 'down', interact: 'bate' },
+    { id: 'mingau', sprite: 'mingau', tx: 712 / 48, ty: 300 / 48, facing: 'down', interact: 'mingauTalk' },
     { id: 'vivian', sprite: 'vivian', tx: 15.6, ty: 11.2, facing: 'down', interact: 'argolas' },
     { id: 'julinha', sprite: 'julinha', tx: 270 / 48, ty: 800 / 48, facing: 'left', interact: 'pipoca' },
-    { id: 'diego', sprite: 'diego', tx: 712 / 48, ty: 372 / 48, facing: 'left', interact: 'bate' },
+    { id: 'diego', sprite: 'diego', tx: 712 / 48, ty: 372 / 48, facing: 'left', interact: 'diegoTalk' },
   ],
 
   hotspots: [

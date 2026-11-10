@@ -2764,3 +2764,26 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .ce-order-who { font-weight: 900; color: #5a3a2a; font-size: clamp(14px, 1.9vw, 22px); }
 .ce-order-img { width: 60%; image-rendering: pixelated; }
 .ce-order-dish { font-weight: 900; color: #b0402a; font-size: clamp(14px, 1.9vw, 22px); line-height: 1.1; }
+
+/* ===== Bate-bate (parque de Araruama) ===== */
+.bb-title { background: linear-gradient(90deg, #ff4a6a, #4a6aff) !important; }
+.bb-stage { height: min(52vh, calc(var(--u) * 205)) !important; background: #2a2440; }
+.bb-arena { position: absolute; inset: 4%; border: 6px solid #ffd23f; border-radius: 18px; box-shadow: inset 0 0 0 4px #c0305f, 0 0 18px rgba(255, 210, 63, .5); background: repeating-linear-gradient(45deg, #3a3a4a 0 22px, #34344a 22px 44px); overflow: hidden; }
+.bb-car { position: absolute; width: 10.4%; aspect-ratio: 1; transform: translate(-50%, -50%); z-index: 2; }
+.bb-car::before { content: ''; position: absolute; inset: 0; border-radius: 34%; transform: rotate(var(--rot, 0deg)); border: 3px solid #1a1428; box-shadow: 0 4px 0 rgba(0, 0, 0, .4), inset 0 -6px 0 rgba(0, 0, 0, .18); }
+.bb-car.pink::before { background: #ff6a9a; }
+.bb-car.yellow::before { background: #ffd23f; }
+.bb-car.blue::before { background: #4a8aff; }
+.bb-car.green::before { background: #5fcf7a; }
+.bb-car.orange::before { background: #ff9a3a; }
+.bb-car img { position: absolute; left: 50%; top: 50%; width: 70%; transform: translate(-50%, -50%); border-radius: 50%; border: 2px solid #fff; background: #fff; image-rendering: pixelated; }
+.bb-car .bb-name { position: absolute; left: 50%; top: 100%; transform: translateX(-50%); font-size: clamp(9px, 1vw, 12px); color: #fff; white-space: nowrap; text-shadow: 0 1px 0 #000; }
+.bb-car.pink .bb-name { color: #ffd0e0; }
+.bb-car.stun { animation: bb-spin .5s linear infinite; }
+@keyframes bb-spin { to { filter: brightness(1.4); transform: translate(-50%, -50%) rotate(360deg); } }
+.bb-pop { position: absolute; transform: translate(-50%, -50%); font-family: var(--font-pixel); font-size: clamp(13px, 1.8vw, 20px); z-index: 5; animation: pe-up .9s ease-out forwards; text-shadow: 0 2px 0 #000; }
+.bb-pop.good { color: #7fe39a; }
+.bb-pop.bad { color: #ff8a8a; }
+.bb-ico { flex: none; width: 34px; height: 34px; border-radius: 30%; background: #4a8aff; border: 3px solid #1a1428; }
+.bb-ico.me { background: #ff6a9a; }
+.bb-ico.red { background: #ffd23f; }
