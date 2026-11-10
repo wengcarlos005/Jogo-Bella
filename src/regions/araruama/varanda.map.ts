@@ -150,7 +150,9 @@ export const varandaMap: MapDef = {
     // móveis soltos: só a base
     R(560, 368, 960, 432), // mesa de frutas
     R(1085, 470, 1355, 522), // rede
-    R(318, 500, 442, 560), // espreguiçadeira
+    R(318, 400, 445, 560), // espreguiçadeira (inteira)
+    R(488, 392, 552, 428), // cadeira (esq. da mesa)
+    R(968, 392, 1032, 428), // cadeira (dir. da mesa)
     R(1250, 300, 1350, 334), // isopor
   ],
 
@@ -176,7 +178,7 @@ export const varandaMap: MapDef = {
     { id: 'lilian', sprite: 'lilian', tx: 20.6, ty: 10.4, facing: 'down', interact: 'lilian' },
     { id: 'mingau', sprite: 'mingau', tx: 10.6, ty: 12.4, facing: 'down', interact: 'mingau' },
     { id: 'vivian', sprite: 'vivian', tx: 29.0, ty: 8.4, facing: 'left', interact: 'vivian' },
-    { id: 'diego', sprite: 'diego', tx: 6.8, ty: 8.6, facing: 'left', interact: 'diego' },
+    { id: 'diego', sprite: 'diego', tx: 230 / 48, ty: 445 / 48, facing: 'right', interact: 'diego' },
     { id: 'anne', sprite: 'anne', tx: 9.6, ty: 7.0, facing: 'down', interact: 'anne' },
     { id: 'julinha', sprite: 'julinha', tx: 12.4, ty: 12.4, facing: 'down', interact: 'julinha' },
     { id: 'laylinha', sprite: 'laylinha', tx: 15.2, ty: 11.2, facing: 'down', interact: 'laylinha' },
@@ -184,7 +186,7 @@ export const varandaMap: MapDef = {
 
   spawns: {
     // ao lado da mesa de frutas (na frente das portas da direita)
-    porta: { tx: 23.5, ty: 6.6, facing: 'down' },
+    porta: { tx: 1110 / 48, ty: 372 / 48, facing: 'down' },
   },
   triggers: [{ id: 'portas', rect: R(390, 252, 1240, 268), script: 'portas' }],
   scripts,

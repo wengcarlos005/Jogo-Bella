@@ -222,7 +222,7 @@ export function playBurgerGame(parent: HTMLElement, opts: BurgerOptions): Promis
       const url = textureURL(`burger-${ing.id}`);
       const b = h(
         'button',
-        { class: 'bg-btn', title: ing.name, 'aria-label': ing.name },
+        { class: 'bg-btn', title: ing.name, 'aria-label': ing.name, 'data-nav': '' },
         url ? h('img', { src: url, alt: '' }) : null,
         h('span', { class: 'bg-key' }, String((i + 1) % 10)),
         h('span', { class: 'bg-name' }, ing.name),
@@ -232,10 +232,10 @@ export function playBurgerGame(parent: HTMLElement, opts: BurgerOptions): Promis
     });
 
     if (opts.mode === 'livre') {
-      actions.append(h('button', { class: 'btn small', onclick: undo }, '↶ Desfazer'));
+      actions.append(h('button', { class: 'btn small', onclick: undo, 'data-nav': '' }, '↶ Desfazer'));
       say('Escolha os ingredientes!');
     } else {
-      const hintBtn = h('button', { class: 'btn small' }, 'Lembrar pedido');
+      const hintBtn = h('button', { class: 'btn small', 'data-nav': '' }, 'Lembrar pedido');
       hintBtn.addEventListener('click', () => {
         if (done) return;
         hints++;

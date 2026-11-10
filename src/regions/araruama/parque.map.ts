@@ -205,32 +205,35 @@ export const parqueMap: MapDef = {
     // objetos soltos: só a base
     R(800, 455, 1080, 505), // barraca das argolas
     R(150, 755, 250, 790), // pipoca
-    R(955, 680, 1045, 712), // algodão-doce
-    R(400, 800, 485, 830), // bilheteria
-    R(330, 760, 365, 780), // balões
-    R(815, 640, 905, 670), // churros
+    R(1010, 800, 1110, 832), // algodão-doce (na grama, perto das barracas)
+    R(425, 820, 520, 852), // bilheteria (ao lado do portal)
+    R(355, 832, 390, 850), // balões
+    R(585, 222, 675, 252), // churros (no caminho de cima, perto da roda)
   ],
 
   objects: [
     { key: 'pq-argolas', x: 940, y: 506, w: 300, shadow: 0.5 },
     { key: 'pq-pipoca', x: 200, y: 792, w: 120, shadow: 0.6 },
-    { key: 'pq-algodao', x: 1000, y: 714, w: 115, shadow: 0.6 },
-    { key: 'pq-churros', x: 860, y: 672, w: 115, shadow: 0.6 },
-    { key: 'pq-bilheteria', x: 442, y: 832, w: 105, shadow: 0.6 },
-    { key: 'pq-baloes', x: 348, y: 782, w: 62, shadow: 0.4 },
+    { key: 'pq-algodao', x: 1060, y: 834, w: 115, shadow: 0.6 },
+    { key: 'pq-churros', x: 630, y: 254, w: 115, shadow: 0.6 },
+    { key: 'pq-bilheteria', x: 472, y: 854, w: 105, shadow: 0.6 },
+    { key: 'pq-baloes', x: 372, y: 852, w: 62, shadow: 0.4 },
   ],
 
   overlays: [
     // a cobertura do carrossel passa na frente de quem anda atrás dele
-    { x0: 240, y0: 250, x1: 700, y1: 520, base: 700 },
+    // (elipse: só o carrossel, sem o chão e a base da roda-gigante dos cantos)
+    { x0: 245, y0: 255, x1: 695, y1: 700, base: 700, ellipse: true },
+    // o arco do portal: quem passa por baixo fica atrás da parte de cima
+    { x0: 540, y0: 690, x1: 1000, y1: 800, base: 990 },
   ],
 
   npcs: [
-    { id: 'laylinha', sprite: 'laylinha', tx: 15.0, ty: 15.4, facing: 'left', interact: 'carrossel' },
-    { id: 'mingau', sprite: 'mingau', tx: 19.2, ty: 8.8, facing: 'down', interact: 'bate' },
+    { id: 'laylinha', sprite: 'laylinha', tx: 700 / 48, ty: 728 / 48, facing: 'left', interact: 'carrossel' },
+    { id: 'mingau', sprite: 'mingau', tx: 712 / 48, ty: 300 / 48, facing: 'down', interact: 'bate' },
     { id: 'vivian', sprite: 'vivian', tx: 15.6, ty: 11.2, facing: 'down', interact: 'argolas' },
-    { id: 'julinha', sprite: 'julinha', tx: 5.9, ty: 17.0, facing: 'right', interact: 'pipoca' },
-    { id: 'diego', sprite: 'diego', tx: 22.8, ty: 9.0, facing: 'down', interact: 'bate' },
+    { id: 'julinha', sprite: 'julinha', tx: 270 / 48, ty: 800 / 48, facing: 'left', interact: 'pipoca' },
+    { id: 'diego', sprite: 'diego', tx: 712 / 48, ty: 372 / 48, facing: 'left', interact: 'bate' },
   ],
 
   hotspots: [
@@ -239,10 +242,10 @@ export const parqueMap: MapDef = {
     { rect: R(800, 400, 1080, 515), interact: 'argolas', label: 'Argolas', markerIf: () => objActive('argolas') },
     { rect: R(100, 200, 460, 315), interact: 'roda', label: 'Roda-gigante', markerIf: () => objActive('roda') && brinquedosFeitos() },
     { rect: R(150, 700, 250, 800), interact: 'pipoca', label: 'Pipoca' },
-    { rect: R(955, 620, 1045, 720), interact: 'algodao', label: 'Algodão-doce' },
-    { rect: R(815, 590, 905, 680), interact: 'churros', label: 'Churros' },
-    { rect: R(400, 740, 485, 840), interact: 'bilheteria', label: 'Bilheteria' },
-    { rect: R(320, 700, 370, 790), interact: 'baloes', label: 'Balões' },
+    { rect: R(1005, 740, 1115, 840), interact: 'algodao', label: 'Algodão-doce' },
+    { rect: R(580, 170, 680, 260), interact: 'churros', label: 'Churros' },
+    { rect: R(425, 760, 520, 860), interact: 'bilheteria', label: 'Bilheteria' },
+    { rect: R(345, 770, 395, 855), interact: 'baloes', label: 'Balões' },
   ],
 
   spawns: {

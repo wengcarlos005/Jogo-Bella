@@ -1,4 +1,5 @@
 import { h } from '@/utils/dom';
+import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { shell, type MiniResult } from './PetroGames';
 
@@ -8,7 +9,12 @@ import { shell, type MiniResult } from './PetroGames';
  * As prateleiras vão passando (o carrinho de roda torta andando pelo corredor). Clique nos itens da
  * lista da Vó antes que saiam da tela. Item errado = erro. A paçoca é a tentação da Bella: pegar
  * conta como "paçoca escondida" (não é erro, mas o Weng vê). 45 segundos.
+ *
+ * Teclado / controle: a mão do Weng fica na frente do carrinho (à esquerda). ↑ ↓ escolhe a prateleira
+ * e Espaço / E pega o que estiver passando na frente da mão. O mouse continua funcionando.
  */
+/** Faixa da mão (em % da prateleira): o item precisa estar passando aqui pra ser pego pelo teclado. */
+const HAND = [6, 26];
 type Item = { id: string; file: string; name: string };
 const LIST: Item[] = [
   { id: 'ovo', file: 'cz-ovo', name: 'Ovos' },
@@ -43,6 +49,13 @@ export function playMarketGame(parent: HTMLElement): Promise<MiniResult & { paco
     let raf = 0;
     let spawnIn = [0.2, 0.9, 1.6];
     const rows = [0, 1, 2].map((r) => h('div', { class: `mk-row r${r}` }));
+    let rowSel = 1;
+    const hand = h('div', { class: 'mk-hand' });
+    const placeHand = () => {
+      rows.forEach((r, i) => r.classList.toggle('sel', i === rowSel));
+      rows[rowSel].append(hand);
+    };
+    placeHand();
     const list = h('div', { class: 'mk-list' });
     ui.stage.append(h('div', { class: 'mk-shelves' }, ...rows), list);
     const live: { el: HTMLElement; it: Item; x: number; row: number }[] = [];
@@ -119,19 +132,53 @@ export function playMarketGame(parent: HTMLElement): Promise<MiniResult & { paco
       if (!running) return;
       running = false;
       cancelAnimationFrame(raf);
+      window.removeEventListener('keydown', onKey);
       const missing = LIST.length - got.size;
       const score = mistakes + missing * 2;
       const stars = score <= 1 ? 3 : score <= 4 ? 2 : 1;
       ui.say('bella', missing ? `Esquecemos ${missing === 1 ? 'uma coisa' : `${missing} coisas`}... a Vó vai improvisar.` : 'Lista completa! E a moça do caixa perguntou se a gente é casado...');
       ui.end(stars, 'Pagar e voltar', () => resolve({ stars, mistakes, pacoca }));
     };
+    const grabKey = () => {
+      // o item da prateleira escolhida que está passando na frente da mão (o mais perto do meio dela)
+      const mid = (HAND[0] + HAND[1]) / 2;
+      const cands = live.filter((o) => o.row === rowSel && o.x >= HAND[0] - 2 && o.x <= HAND[1] && !o.el.classList.contains('gone'));
+      if (!cands.length) {
+        hand.classList.remove('miss');
+        void hand.offsetWidth;
+        hand.classList.add('miss');
+        return;
+      }
+      cands.sort((a, b) => Math.abs(a.x - mid) - Math.abs(b.x - mid));
+      grab(cands[0].el, cands[0].it);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (InputSystem.context !== 'minigame' || e.repeat) return;
+      const act = e.code === 'Space' || e.code === 'KeyE' || e.code === 'Enter';
+      if (!running) {
+        if (act && start.isConnected) {
+          e.preventDefault();
+          begin();
+        }
+        return;
+      }
+      if (e.code === 'ArrowUp' || e.code === 'KeyW') rowSel = Math.max(0, rowSel - 1);
+      else if (e.code === 'ArrowDown' || e.code === 'KeyS') rowSel = Math.min(2, rowSel + 1);
+      else if (act) grabKey();
+      else return;
+      e.preventDefault();
+      placeHand();
+    };
+    window.addEventListener('keydown', onKey);
     const start = h('button', { class: 'btn primary' }, 'Empurrar o carrinho');
     ui.actions.append(start);
-    start.addEventListener('click', () => {
+    const begin = () => {
+      if (running || !start.isConnected) return;
       start.remove();
       running = true;
-      ui.say('weng', 'Clica nos itens da lista quando passarem nas prateleiras. Rápido, que esse carrinho tem vontade própria!');
-    });
+      ui.say('weng', 'Escolhe a prateleira e pega o que tá na lista quando passar na frente da mão. Rápido, que esse carrinho tem vontade própria!');
+    };
+    start.addEventListener('click', begin);
     ui.say('bella', 'Ovos, leite condensado, creme de leite, queijo, banana e chocolate. A Vó vai fazer bolinho pra mim!');
     raf = requestAnimationFrame(tick);
   });

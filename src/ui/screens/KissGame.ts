@@ -237,7 +237,7 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
         setTimeout(() => {
           momEl.classList.remove('show');
           say('A mãe desconfiou de tudo... Ela foi pra cozinha. Bora tentar de novo, com mais cuidado!');
-          actions.replaceChildren(h('button', { class: 'btn primary', onclick: retry }, 'Tentar de novo'));
+          actions.replaceChildren(h('button', { class: 'btn primary', onclick: retry, 'data-nav': '' }, 'Tentar de novo'));
         }, 1400);
       }
     };

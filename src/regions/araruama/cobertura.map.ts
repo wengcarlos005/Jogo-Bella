@@ -299,9 +299,9 @@ export const coberturaMap: MapDef = {
     R(40, 740, 150, 830), // planta (esq., embaixo)
     R(0, 842, 1536, 1024), // portas de vidro da varanda
     // móveis soltos: só a base
-    R(860, 650, 1200, 790), // mesa redonda
-    R(300, 610, 740, 700), // sofá
-    R(420, 745, 590, 800), // mesinha de centro
+    R(845, 520, 1225, 790), // mesa redonda com as cadeiras (quem passa atrás fica escondido pelas cadeiras de cima)
+    R(290, 500, 755, 700), // sofá em L (assento e chaise)
+    R(410, 700, 605, 800), // mesinha de centro
     R(1205, 390, 1295, 422), // isopor
     R(1252, 588, 1290, 602), // ventilador
     R(160, 785, 305, 822), // brinquedos
@@ -332,14 +332,19 @@ export const coberturaMap: MapDef = {
   ],
 
   npcs: [
-    { id: 'tia-tim', sprite: 'tia-tim', tx: 24.0, ty: 7.6, facing: 'up', interact: 'tiaTim', behavior: 'wander', wanderRadius: 1.4, wanderAxis: 'x' },
-    { id: 'lilian', sprite: 'lilian', tx: 16.6, ty: 11.6, facing: 'down', interact: 'lilian', behavior: 'wander', wanderRadius: 1.0, wanderAxis: 'x' },
-    { id: 'mingau', sprite: 'mingau', tx: 14.6, ty: 16.3, facing: 'left', interact: 'mingau', behavior: 'wander', wanderRadius: 0.8, wanderAxis: 'x' },
-    { id: 'vivian', sprite: 'vivian', tx: 26.2, ty: 14.2, facing: 'left', interact: 'vivian' },
-    { id: 'diego', sprite: 'diego', tx: 9.6, ty: 11.0, facing: 'down', interact: 'diego' },
-    { id: 'anne', sprite: 'anne', tx: 22.2, ty: 10.4, facing: 'down', interact: 'anne' },
-    { id: 'julinha', sprite: 'julinha', tx: 16.2, ty: 16.3, facing: 'left', interact: 'julinha' },
-    { id: 'laylinha', sprite: 'laylinha', tx: 6.9, ty: 15.2, facing: 'down', interact: 'laylinha', behavior: 'wander', wanderRadius: 0.6, wanderAxis: 'x' },
+    // cozinha: a tia Tim no fogão e a Anne ajudando
+    { id: 'tia-tim', sprite: 'tia-tim', tx: 1110 / 48, ty: 398 / 48, facing: 'up', interact: 'tiaTim', behavior: 'wander', wanderRadius: 0.8, wanderAxis: 'x' },
+    { id: 'anne', sprite: 'anne', tx: 1048 / 48, ty: 405 / 48, facing: 'right', interact: 'anne' },
+    // entre o sofá e a mesa
+    { id: 'lilian', sprite: 'lilian', tx: 800 / 48, ty: 600 / 48, facing: 'down', interact: 'lilian' },
+    // perto da TV
+    { id: 'vivian', sprite: 'vivian', tx: 1282 / 48, ty: 727 / 48, facing: 'left', interact: 'vivian' },
+    // na frente, perto da porta da varanda
+    { id: 'diego', sprite: 'diego', tx: 1150 / 48, ty: 828 / 48, facing: 'up', interact: 'diego' },
+    // os primos de 10 anos juntos, e a Laylinha com os brinquedos
+    { id: 'mingau', sprite: 'mingau', tx: 640 / 48, ty: 826 / 48, facing: 'right', interact: 'mingau' },
+    { id: 'julinha', sprite: 'julinha', tx: 728 / 48, ty: 826 / 48, facing: 'left', interact: 'julinha' },
+    { id: 'laylinha', sprite: 'laylinha', tx: 340 / 48, ty: 772 / 48, facing: 'left', interact: 'laylinha' },
   ],
 
   spawns: {

@@ -15,6 +15,8 @@ import { playArgolasGame } from './screens/ArgolasGame';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
+import { showHowTo, HOWTO } from './screens/HowTo';
+import { attachKeyNav } from './keyNav';
 import { UI_WIDTH } from '@/config/gameConfig';
 import { DialogueBox } from './components/DialogueBox';
 import { HUD } from './components/HUD';
@@ -156,7 +158,9 @@ class UIManagerImpl {
    * Roda um minigame com a opção "Jogar de novo": quando a tela final aparece (as estrelas), entra
    * um botão ao lado do de continuar; se clicar, o mesmo minigame recomeça do zero.
    */
-  private async replayable<T>(run: () => Promise<T>): Promise<T> {
+  private async replayable<T>(run: () => Promise<T>, howto?: keyof typeof HOWTO): Promise<T> {
+    // "Como jogar" antes da primeira partida (os minigames com regras na própria tela não passam isso)
+    if (howto) await showHowTo(this.root, HOWTO[howto]);
     for (;;) {
       let again = false;
       const obs = new MutationObserver(() => {
@@ -168,6 +172,10 @@ class UIManagerImpl {
         const btn = document.createElement('button');
         btn.className = 'btn mg-replay';
         btn.textContent = 'Jogar de novo';
+        // no teclado / controle: ← → escolhe entre "Jogar de novo" e continuar
+        btn.setAttribute('data-nav', '');
+        go.setAttribute('data-nav', '');
+        go.setAttribute('data-nav-default', '');
         btn.addEventListener('click', () => {
           again = true;
           go.click();
@@ -175,17 +183,19 @@ class UIManagerImpl {
         box.insertBefore(btn, go);
       });
       obs.observe(this.root, { childList: true, subtree: true });
+      const detach = attachKeyNav(this.root);
       try {
         const r = await run();
         if (!again) return r;
       } finally {
         obs.disconnect();
+        detach();
       }
     }
   }
 
   burger(opts: BurgerOptions): Promise<BurgerResult> {
-    return this.replayable(() => playBurgerGame(this.root, opts));
+    return this.replayable(() => playBurgerGame(this.root, opts), opts.mode === 'livre' ? 'burgerLivre' : 'burgerMemoria');
   }
 
   cinema(): Promise<CinemaResult> {
@@ -215,7 +225,7 @@ class UIManagerImpl {
 
   market(): Promise<MiniResult & { pacoca: boolean }> {
     this.dialogue.close();
-    return this.replayable(() => playMarketGame(this.root));
+    return this.replayable(() => playMarketGame(this.root), 'market');
   }
   clouds(): Promise<MiniResult> {
     this.dialogue.close();
@@ -227,7 +237,7 @@ class UIManagerImpl {
   }
   breakfast(): Promise<MiniResult> {
     this.dialogue.close();
-    return this.replayable(() => playBreakfastGame(this.root));
+    return this.replayable(() => playBreakfastGame(this.root), 'breakfast');
   }
 
   private vignetteEl: HTMLElement | null = null;
@@ -252,25 +262,25 @@ class UIManagerImpl {
 
   cook(): Promise<CookResult> {
     this.dialogue.close();
-    return this.replayable(() => playCookGame(this.root));
+    return this.replayable(() => playCookGame(this.root), 'cook');
   }
 
   tacos(opts: { title?: string } = {}): Promise<TacoResult> {
     this.dialogue.close();
-    return this.replayable(() => playTacoGame(this.root, opts));
+    return this.replayable(() => playTacoGame(this.root, opts), 'tacos');
   }
 
   acai(opts: AcaiOptions): Promise<AcaiResult> {
-    return this.replayable(() => playAcaiGame(this.root, opts));
+    return this.replayable(() => playAcaiGame(this.root, opts), 'acai');
   }
 
   uberRide(opts: { title?: string; destino?: string } = {}): Promise<UberResult> {
-    return this.replayable(() => playUberGame(this.root, opts));
+    return this.replayable(() => playUberGame(this.root, opts), 'uber');
   }
 
   kissGame(): Promise<KissResult> {
     this.dialogue.close();
-    return this.replayable(() => playKissGame(this.root));
+    return this.replayable(() => playKissGame(this.root), 'kiss');
   }
 
   phone(opts: PhoneOptions, msgs: PhoneMsg[]): Promise<void> {
@@ -279,11 +289,11 @@ class UIManagerImpl {
   }
 
   grill(opts: { title?: string; helper?: string } = {}): Promise<GrillResult> {
-    return this.replayable(() => playGrillGame(this.root, opts));
+    return this.replayable(() => playGrillGame(this.root, opts), 'grill');
   }
 
   cards(opts: { title?: string; rounds?: number } = {}): Promise<CardResult> {
-    return this.replayable(() => playCardGame(this.root, opts));
+    return this.replayable(() => playCardGame(this.root, opts), 'cards');
   }
 
   private bars: HTMLElement[] = [];

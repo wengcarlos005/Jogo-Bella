@@ -100,6 +100,7 @@ export function playCookGame(parent: HTMLElement): Promise<CookResult> {
               'button',
               {
                 class: 'ck-recipe',
+                'data-nav': '',
                 onclick: () => {
                   recipe = i;
                   AudioSystem.play('confirm');
@@ -128,7 +129,7 @@ export function playCookGame(parent: HTMLElement): Promise<CookResult> {
         'div',
         { class: 'ck-shelf' },
         ...SHELF.map((k) => {
-          const b = h('button', { class: 'ck-ing', title: NAME[k] }, h('img', { src: mg(k), alt: '' }), h('span', {}, NAME[k])) as HTMLButtonElement;
+          const b = h('button', { class: 'ck-ing', title: NAME[k], 'data-nav': '' }, h('img', { src: mg(k), alt: '' }), h('span', {}, NAME[k])) as HTMLButtonElement;
           b.addEventListener('click', () => {
             if (got.has(k)) return;
             if (!r.need.includes(k)) {

@@ -485,7 +485,7 @@ export function playBreakfastGame(parent: HTMLElement): Promise<MiniResult> {
       'div',
       { class: 'cf-shelf' },
       ...[...CAFE, ...EXTRA].sort(() => Math.random() - 0.5).map((c) => {
-        const b = h('button', { class: 'cf-item', title: c.name }, h('img', { src: mg(`cf-${c.id}`), alt: '' }), h('span', {}, c.name)) as HTMLButtonElement;
+        const b = h('button', { class: 'cf-item', title: c.name, 'data-nav': '' }, h('img', { src: mg(`cf-${c.id}`), alt: '' }), h('span', {}, c.name)) as HTMLButtonElement;
         b.addEventListener('click', () => add(c.id, b));
         return b;
       }),

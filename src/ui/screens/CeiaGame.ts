@@ -69,7 +69,7 @@ export function playCeiaGame(parent: HTMLElement): Promise<MiniResult> {
       return el;
     });
     const seatEls = SEATS.map((s) => {
-      const r = 47;
+      const r = 51;
       const x = 50 + r * Math.sin((s.a * Math.PI) / 180);
       const y = 50 - r * Math.cos((s.a * Math.PI) / 180);
       return h('div', { class: `ce-seat${s.id === 'bella' ? ' me' : ''}`, style: `left:${x}%;top:${y}%` }, s.name);
@@ -77,15 +77,26 @@ export function playCeiaGame(parent: HTMLElement): Promise<MiniResult> {
     const ask = h('div', { class: 'ce-ask off' }, h('img', { class: 'ce-ask-bg', src: mg('mg-balao'), alt: '' }), h('img', { class: 'ce-ask-dish', alt: '' }));
     const table = h('div', { class: 'ce-table' }, h('img', { class: 'ce-top', src: mg('mg-mesa'), alt: '' }), disc, ...seatEls, ask);
     const timer = h('i');
+    const legend = h(
+      'div',
+      { class: 'ce-legend' },
+      h('b', {}, 'Na mesa'),
+      ...DISHES.map((d) => h('div', { class: 'ce-leg', 'data-dish': d.id }, h('img', { src: mg(`mg-${d.id}`), alt: '' }), h('span', {}, d.name))),
+    );
+    const orderWho = h('div', { class: 'ce-order-who' });
+    const orderImg = h('img', { class: 'ce-order-img', alt: '' }) as HTMLImageElement;
+    const orderDish = h('div', { class: 'ce-order-dish' });
+    const order = h('div', { class: 'ce-order off' }, h('b', {}, 'Pedido'), orderWho, orderImg, orderDish, h('div', { class: 'ce-timer' }, timer));
     const rules = h(
       'div',
       { class: 'cs-rules ce-rules' },
       h('b', {}, 'Como jogar'),
-      h('div', {}, h('img', { src: mg('mg-pato'), alt: '' }), h('span', {}, 'Alguém pede um prato. Gire o tampo de vidro com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), ' (segurando) até o prato ficar NA FRENTE de quem pediu.')),
+      h('div', {}, h('img', { src: mg('mg-pato'), alt: '' }), h('span', {}, 'Alguém pede um prato (o pedido aparece à direita). Gire o tampo de vidro com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), ' (segurando) até o prato ficar NA FRENTE de quem pediu.')),
+      h('div', {}, h('img', { src: mg('mg-macarrao'), alt: '' }), h('span', {}, 'À esquerda tem o nome de cada prato da tia Tim: pato, macarrão de arroz, frango xadrez, guioza...')),
       h('div', {}, h('img', { src: mg('mg-balao'), alt: '' }), h('span', {}, 'Aí aperte ', h('kbd', {}, 'Espaço'), ' ou ', h('kbd', {}, 'E'), ' pra servir. O balão mostra quem pediu e o quê.')),
       h('div', {}, h('img', { src: mg('mg-hashi'), alt: '' }), h('span', {}, 'Prato errado, pessoa errada ou demorar demais: ', h('u', {}, 'perde 1 ♥'), ' (são 3). Cuidado com as crianças girando a mesa!')),
     );
-    ui.stage.append(table, h('div', { class: 'ce-timer' }, timer), rules);
+    ui.stage.append(legend, table, order, rules);
 
     const left = h('button', { class: 'btn pd-steer', 'aria-label': 'Girar pra esquerda' }, '⟲');
     const serveBtn = h('button', { class: 'btn primary ce-serve' }, 'SERVIR');
@@ -118,6 +129,14 @@ export function playCeiaGame(parent: HTMLElement): Promise<MiniResult> {
       void ask.offsetWidth;
       ask.classList.add('pop');
       seatEls.forEach((el, i) => el.classList.toggle('want', SEATS[i].id === r.seat));
+      const dish = DISHES.find((d) => d.id === r.dish)!;
+      orderWho.textContent = `${s.name} quer:`;
+      orderImg.src = mg(`mg-${r.dish}`);
+      orderDish.textContent = dish.name;
+      order.classList.remove('off', 'pop');
+      void order.offsetWidth;
+      order.classList.add('pop');
+      legend.querySelectorAll('.ce-leg').forEach((el) => el.classList.toggle('on', (el as HTMLElement).dataset.dish === r.dish));
     };
     const next = () => {
       if (round >= ROUNDS.length) return finish();

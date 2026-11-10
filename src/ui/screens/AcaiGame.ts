@@ -64,7 +64,7 @@ export function playAcaiGame(parent: HTMLElement, opts: AcaiOptions): Promise<Ac
     const domeUrl = textureURL('acai-acai');
     const toppingLayer = h('div', { class: 'ac-toppings' });
     const dome = h('img', { class: 'ac-dome', alt: '', src: domeUrl ?? '' });
-    const cup = h('div', { class: 'ac-cup' }, dome, toppingLayer, bowl ? h('img', { class: 'ac-bowl', alt: '', src: bowl }) : null);
+    const cup = h('div', { class: 'ac-cup' }, bowl ? h('img', { class: 'ac-bowl', alt: '', src: bowl }) : null, dome, bowl ? h('img', { class: 'ac-bowl ac-bowl-front', alt: '', src: bowl }) : null, toppingLayer);
     const msg = h('div', { class: 'bg-msg' });
     const counter = h('div', { class: 'ac-count' });
     const buttons = h('div', { class: 'bg-buttons ac-buttons' });
@@ -110,38 +110,38 @@ export function playAcaiGame(parent: HTMLElement, opts: AcaiOptions): Promise<Ac
       cup.classList.add('bg-shake');
     };
 
-    // como num açaí de verdade: cada complemento ganha o seu "cantinho" numa faixa em arco por cima do
-    // açaí (repetidos empilham no mesmo cantinho); as caldas escorrem por cima, no topo
+    // como num açaí de verdade: cada complemento ganha um "cantinho" na cúpula do açaí (do topo pra
+    // frente, em fileiras); repetidos empilham no mesmo cantinho. As caldas escorrem do topo.
     const SAUCE: AcaiItemId[] = ['leite-condensado', 'creme-avela'];
+    const SLOTS: [number, number][] = [
+      [50, 4], [33, 14], [67, 14], [50, 22], [22, 28], [78, 28], [36, 34], [64, 34], [50, 38],
+    ];
     const renderToppings = () => {
       const kinds = [...new Set(toppings.filter((t) => !SAUCE.includes(t)))];
-      const n = kinds.length;
       const seen: Record<string, number> = {};
+      const big = scoops > 1;
       toppingLayer.replaceChildren(
         ...toppings.map((id, i) => {
           const rep = (seen[id] = (seen[id] ?? 0) + 1) - 1;
           let x: number;
           let y: number;
-          let w = 24;
+          let w = 26;
           if (SAUCE.includes(id)) {
-            // calda escorrendo no topo do açaí
-            x = 50 + (rep % 2 ? 6 : -4);
-            y = -6 + rep * 5;
-            w = 36;
+            x = 50 + (rep % 2 ? 7 : -5);
+            y = -10 + rep * 6;
+            w = 40;
           } else {
-            // cada complemento num cantinho do arco da frente do açaí (como numa tigela de verdade)
-            const k = kinds.indexOf(id);
-            const t = Math.PI * (n > 1 ? 0.12 + (0.76 * k) / (n - 1) : 0.5);
-            x = 50 - 33 * Math.cos(t) + (rep % 2 ? 4 : -3) * Math.min(rep, 1);
-            y = 16 + 16 * Math.sin(t) - rep * 7;
+            const [sx, sy] = SLOTS[kinds.indexOf(id) % SLOTS.length];
+            x = sx + (rep ? (rep % 2 ? 5 : -5) : 0);
+            y = sy - rep * 5 - (big ? 4 : 0);
           }
           const url = textureURL(`acai-${id}`);
           const el = url ? h('img', { src: url, alt: nameOf(id), class: 'ac-top' }) : h('span', { class: 'ac-top' }, nameOf(id));
           el.style.left = `${x}%`;
           el.style.top = `${y}%`;
           el.style.width = `${w}%`;
-          el.style.zIndex = String(SAUCE.includes(id) ? 8 + i : 40 + Math.round(y) + i);
-          el.style.setProperty('--rot', `${((i * 37) % 24) - 12}deg`);
+          el.style.zIndex = String(SAUCE.includes(id) ? 90 + i : 40 + Math.round(y) + i);
+          el.style.setProperty('--rot', `${((i * 37) % 20) - 10}deg`);
           return el;
         }),
       );
@@ -242,7 +242,7 @@ export function playAcaiGame(parent: HTMLElement, opts: AcaiOptions): Promise<Ac
       const url = textureURL(`acai-${it.id}`);
       const b = h(
         'button',
-        { class: 'bg-btn', title: it.name, 'aria-label': it.name },
+        { class: 'bg-btn', title: it.name, 'aria-label': it.name, 'data-nav': '' },
         url ? h('img', { src: url, alt: '' }) : null,
         h('span', { class: 'bg-key' }, String((i + 1) % 10)),
         h('span', { class: 'bg-name' }, it.name),
@@ -252,8 +252,8 @@ export function playAcaiGame(parent: HTMLElement, opts: AcaiOptions): Promise<Ac
     });
     const spoonUrl = textureURL('acai-colher');
     actions.append(
-      h('button', { class: 'btn small', onclick: undo }, '↶ Desfazer'),
-      h('button', { class: 'btn primary', onclick: serve, 'aria-label': 'Servir' }, spoonUrl ? h('img', { class: 'ac-spoon-btn', src: spoonUrl, alt: '' }) : null, 'Servir'),
+      h('button', { class: 'btn small', onclick: undo, 'data-nav': '' }, '↶ Desfazer'),
+      h('button', { class: 'btn primary', onclick: serve, 'aria-label': 'Servir', 'data-nav': '' }, spoonUrl ? h('img', { class: 'ac-spoon-btn', src: spoonUrl, alt: '' }) : null, 'Servir'),
     );
     say('Escolha o açaí e os complementos!');
     updateCount();
