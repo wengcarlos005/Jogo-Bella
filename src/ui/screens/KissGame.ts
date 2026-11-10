@@ -91,8 +91,8 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
 
     const livesEl = h('div', { class: 'kg-lives' });
     const kissesEl = h('div', { class: 'kg-kisses' });
-    const msg = h('div', { class: 'gp-bubble kg-msg' }, 'Segura o botão (ou espaço) pra beijar. Mas fica de ouvido nos passos da mãe!');
-    const btn = h('button', { class: 'kg-btn' }, 'Segura pra beijar');
+    const msg = h('div', { class: 'gp-bubble kg-msg' }, 'Segura Espaço ou E pra beijar. Ouviu passos? Solta!');
+    const btn = h('button', { class: 'kg-btn' }, 'Segura pra beijar (Espaço)');
     const startBtn = h('button', { class: 'btn primary gp-start' }, 'Dar play no filme');
     const actions = h('div', { class: 'bg-actions' }, startBtn);
     const panel = h(

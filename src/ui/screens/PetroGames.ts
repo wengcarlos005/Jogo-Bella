@@ -468,13 +468,16 @@ export function playBreakfastGame(parent: HTMLElement): Promise<MiniResult> {
     };
     ui.say('weng', '(Ela ainda tá dormindo. Café na cama: tudo que ela ama. Decora a lista!)');
     hud();
-    const go = h('button', { class: 'btn primary', 'data-nav': '' }, 'Decorei!');
+    const go = h('button', { class: 'btn primary', 'data-nav': '', 'data-nav-default': '' }, 'Decorei!');
+    // enquanto decora, a prateleira não entra no cursor do teclado
+    shelf.setAttribute('data-nav-off', '');
     ui.actions.append(go);
     const startPick = () => {
       if (phase !== 'memo') return;
       phase = 'pick';
       note.classList.add('hide');
       shelf.classList.add('on');
+      shelf.removeAttribute('data-nav-off');
       go.remove();
       ui.say('weng', '(Agora monta a bandeja. E se quiser, um mimo a mais...)');
       hud();

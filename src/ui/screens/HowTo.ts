@@ -103,9 +103,10 @@ export const HOWTO: Record<string, HowTo> = {
   kiss: {
     title: 'Beijo escondido',
     rows: [
-      { img: 'casal-beijo', text: '{Segure} [Espaço] / [E] (ou o botão) pra beijar. Cada beijo precisa de um tempinho sem soltar.' },
-      { img: 'mae-espia', text: 'Ouviu passos? {Solte} e finja que tá vendo o filme! Se a mãe pegar no flagra, perde 1 ♥.' },
-      { img: 'casal-inocente', text: 'Às vezes é só a Lala passando... e às vezes a mãe aparece sem aviso. São 7 beijos.' },
+      { img: 'casal-beijo', text: 'Pra beijar, SEGURE [Espaço] ou [E]. O beijo só conta se você segurar até a barrinha encher.' },
+      { img: 'mae-espia', text: 'Ouviu passos ou viu a sombra na porta da cozinha? SOLTE na hora!' },
+      { img: 'casal-inocente', text: 'Soltou, os dois fingem que estão vendo o filme. Se a mãe pegar no flagra, {perde 1 ♥} (são 3).' },
+      { img: 'mae-desconfia', text: 'São 7 beijos. Nos 2 últimos a mãe fica desconfiada e aparece mais rápido. Às vezes é só a Lala passando!' },
     ],
   },
   tacos: {

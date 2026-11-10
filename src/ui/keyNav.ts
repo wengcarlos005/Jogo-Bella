@@ -17,7 +17,7 @@ export function attachKeyNav(root: HTMLElement): () => void {
     const stars = root.querySelector('.screen .bg-stars');
     const scope: ParentNode = stars?.parentElement ?? root;
     return (Array.from(scope.querySelectorAll<HTMLElement>('[data-nav]')) as HTMLElement[]).filter((el) => {
-      if ((el as HTMLButtonElement).disabled || el.closest('.off')) return false;
+      if ((el as HTMLButtonElement).disabled || el.closest('.off') || el.closest('[data-nav-off]')) return false;
       const r = el.getBoundingClientRect();
       return r.width > 0 && r.height > 0 && getComputedStyle(el).visibility !== 'hidden';
     });
