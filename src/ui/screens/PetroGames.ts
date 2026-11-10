@@ -6,7 +6,7 @@ import { textureURL } from '../textures';
 /**
  * Minigames de Petrópolis (sprites em assets/minigames):
  *  - Formas nas Nuvens (piquenique no Quitandinha): ache a nuvem pedida entre as que passam no céu.
- *  - Corrida de Pedalinho (lago do Quitandinha): pedale no ritmo (espaço / botão A) e desvie com ← →.
+ *  - Corrida de Pedalinho (lago do Quitandinha): o casal pedala sozinho; você só desvia com ← →.
  *  - Café da manhã (varanda do hotel): o Weng monta a bandeja de memória.
  */
 export interface MiniResult {
@@ -240,7 +240,7 @@ export function playCloudGame(parent: HTMLElement): Promise<MiniResult> {
 
 // ====================================================================== Corrida de Pedalinho
 /**
- * Controles pensados pra controle de videogame: direcional + 1 botão.
+ * Controles pensados pra controle de videogame: só o direcional (o casal pedala sozinho).
  *  - Desviar: ← → (ou A / D). No controle: direcional / analógico.
  *  - Pedalar: Espaço / E / ↑ (ou o botão PEDALAR). No controle: botão A.
  * Pedalar é no RITMO: depois de cada pedalada o ponteiro corre na barra; apertar com ele no verde
@@ -252,17 +252,13 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
     const ui = shell(parent, 'pd', 'Corrida de Pedalinho');
     const LANES = [22, 50, 78];
     const GOAL = 100;
-    const CYCLE = 0.62; // segundos de uma volta do ponteiro
+    const BASE = 30; // velocidade normal (os dois pedalando)
     let lane = 1;
     let speed = 0;
     let dist = 0;
     let rival = 0;
     let hits = 0;
     let buoys = 0;
-    let combo = 0;
-    let best = 0;
-    let since = 9; // tempo desde a última pedalada
-    let jam = 0; // pedal travado
     let running = false;
     let done = false;
     let last = 0;
@@ -278,17 +274,13 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       'div',
       { class: 'cs-rules pd-rules' },
       h('b', {}, 'Como jogar'),
-      h('div', {}, h('img', { src: mg('pd-barco2'), alt: '' }), h('span', {}, 'Pedale com ', h('kbd', {}, 'Espaço'), ' ou ', h('kbd', {}, 'E'), ' NO RITMO: aperte quando o ponteiro da barra estiver no ', h('u', { class: 'g' }, 'verde'), '. Apertar sem parar trava o pedal.')),
+      h('div', {}, h('img', { src: mg('pd-barco2'), alt: '' }), h('span', {}, 'O Weng e a Bella pedalam sozinhos. Você só guia o pedalinho com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), ' (são 3 faixas).')),
       h('div', {}, h('img', { src: mg('pd-vitoria'), alt: '' }), h('span', {}, 'Desvie das vitórias-régias e dos patinhos com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), '. Boia dá impulso.')),
       h('div', {}, h('img', { src: mg('pd-rosa'), alt: '' }), h('span', {}, 'Chegue no píer antes do cisne rosa. Ele não está pra brincadeira.')),
     );
     ui.stage.append(water, pier, rivalEl, boat, rules);
     const bar = h('i');
     const rbar = h('i', { class: 'rv' });
-    const needle = h('i', { class: 'pd-needle' });
-    const meter = h('div', { class: 'pd-meter' }, h('i', { class: 'z early' }), h('i', { class: 'z ok' }), h('i', { class: 'z good' }), h('i', { class: 'z ok2' }), needle);
-    const comboEl = h('span', { class: 'pd-combo' });
-    const pedBtn = h('button', { class: 'btn primary pd-ped' }, 'PEDALAR');
     const left = h('button', { class: 'btn pd-steer', 'aria-label': 'Esquerda' }, '◀');
     const right = h('button', { class: 'btn pd-steer', 'aria-label': 'Direita' }, '▶');
     const startBtn = h('button', { class: 'btn primary' }, 'Largada!');
@@ -298,45 +290,6 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
     hud();
     const place = () => (boat.style.left = `${LANES[lane]}%`);
     place();
-    // zonas do ponteiro (fração do ciclo); ficam mais apertadas depois da metade
-    const zones = () => (dist > 55 ? { early: 0.42, good0: 0.66, good1: 0.82 } : { early: 0.38, good0: 0.6, good1: 0.84 });
-    const paintMeter = () => {
-      const z = zones();
-      const [e, o, g, o2] = Array.from(meter.querySelectorAll('.z')) as HTMLElement[];
-      e.style.cssText = `left:0;width:${z.early * 100}%`;
-      o.style.cssText = `left:${z.early * 100}%;width:${(z.good0 - z.early) * 100}%`;
-      g.style.cssText = `left:${z.good0 * 100}%;width:${(z.good1 - z.good0) * 100}%`;
-      o2.style.cssText = `left:${z.good1 * 100}%;width:${(1 - z.good1) * 100}%`;
-    };
-    const setCombo = () => (comboEl.textContent = combo >= 2 ? `Ritmo x${combo}` : '');
-    const pedal = () => {
-      if (!running || jam > 0) return;
-      const ph = since / CYCLE;
-      const z = zones();
-      let imp: number;
-      if (ph < z.early) {
-        // cedo demais: perde o ritmo e trava o pedal um instante
-        imp = 0;
-        combo = 0;
-        jam = 0.35;
-        speed *= 0.8;
-        meter.classList.add('bad');
-        setTimeout(() => meter.classList.remove('bad'), 300);
-      } else if (ph >= z.good0 && ph <= z.good1) {
-        combo++;
-        best = Math.max(best, combo);
-        imp = 8.5 * (1 + Math.min(combo, 6) * 0.06);
-        meter.classList.add('hit');
-        setTimeout(() => meter.classList.remove('hit'), 160);
-      } else {
-        combo = 0;
-        imp = 4.2;
-      }
-      setCombo();
-      speed = Math.min(40, speed + imp);
-      since = 0;
-      if (imp) boat.src = mg('pd-barco2');
-    };
     const steer = (d: number) => {
       if (!running) return;
       lane = Math.max(0, Math.min(2, lane + d));
@@ -346,17 +299,15 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       const dt = last ? Math.min(0.05, (t - last) / 1000) : 0;
       last = t;
       if (running) {
-        since += dt;
-        if (jam > 0) jam -= dt;
-        needle.style.left = `${Math.min(1, since / CYCLE) * 100}%`;
-        speed = Math.max(0, speed - speed * 1.15 * dt);
-        if (speed < 6) boat.src = mg('pd-barco');
+        // pedalam sozinhos: a velocidade volta pro normal depois de uma boia
+        speed += (BASE - speed) * Math.min(1, dt * 0.8);
+        boat.src = mg(Math.floor(t / 220) % 2 ? 'pd-barco' : 'pd-barco2');
         if (bump > 0) bump -= dt;
         const v = bump > 0 ? speed * 0.3 : speed;
         dist += (v * dt) / 5;
         // cisne rosa: constante no começo, arranca no meio e faz sprint no final; se ficar muito pra trás, recupera
         const gap = dist - rival;
-        const rate = (rival < 35 ? 2.35 : rival < 70 ? 2.65 : 2.95) + (gap > 8 ? 0.5 : 0);
+        const rate = (rival < 35 ? 5.0 : rival < 70 ? 5.4 : 5.9) + (gap > 8 ? 0.8 : 0);
         rival += dt * rate;
         water.style.backgroundPositionY = `${dist * 40}px`;
         bar.style.width = `${Math.min(100, dist)}%`;
@@ -396,18 +347,16 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
             }
             hits++;
             bump = 1;
-            combo = 0;
-            setCombo();
             AudioSystem.play('cancel');
             ui.shake();
-            ui.say(o.kind === 'pd-patos' ? 'bella' : 'weng', o.kind === 'pd-patos' ? 'DESVIA DOS PATINHOS! Desculpa, família pato!' : 'Enroscou na vitória-régia! Pedala, pedala!');
+            ui.say(o.kind === 'pd-patos' ? 'bella' : 'weng', o.kind === 'pd-patos' ? 'DESVIA DOS PATINHOS! Desculpa, família pato!' : 'Enroscou na vitória-régia! Desvia, desvia!');
           }
           if (o.y > 110) {
             o.el.remove();
             objs.splice(i, 1);
           }
         }
-        if (Math.floor(rival) === 36 && rate > 2.7) ui.say('bella', 'O cisne rosa acelerou! Mantém o ritmo!');
+        if (Math.floor(rival) === 36 && rate > 5.3) ui.say('bella', 'O cisne rosa acelerou! Pega as boias!');
         if (dist >= GOAL || rival >= GOAL) finish(dist >= GOAL);
       }
       raf = requestAnimationFrame(tick);
@@ -430,8 +379,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
         if (act) start();
         return;
       }
-      if (act) pedal();
-      else if (e.code === 'ArrowLeft' || e.code === 'KeyA') steer(-1);
+      if (e.code === 'ArrowLeft' || e.code === 'KeyA') steer(-1);
       else if (e.code === 'ArrowRight' || e.code === 'KeyD') steer(1);
       else return;
       e.preventDefault();
@@ -440,17 +388,15 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       if (running || done) return;
       running = true;
       rules.classList.add('off');
-      paintMeter();
-      ui.actions.replaceChildren(left, h('div', { class: 'pd-pedal' }, meter, pedBtn, comboEl), right);
-      ui.say('weng', 'Espera o ponteiro chegar no verde e pedala! Um, dois... um, dois...');
-      setInterval(() => running && paintMeter(), 1000);
+      speed = BASE;
+      ui.actions.replaceChildren(left, right);
+      ui.say('weng', 'Eu e você pedalando, e você no leme. Desvia de tudo e pega as boias!');
     };
     startBtn.addEventListener('click', start);
-    pedBtn.addEventListener('pointerdown', pedal);
     left.addEventListener('pointerdown', () => steer(-1));
     right.addEventListener('pointerdown', () => steer(1));
     window.addEventListener('keydown', onKey);
-    ui.say('bella', 'Corrida até o píer contra aquele cisne rosa! Pedala no ritmo e desvia de tudo. Bora?');
+    ui.say('bella', 'Corrida até o píer contra aquele cisne rosa! A gente pedala, você desvia. Bora?');
     raf = requestAnimationFrame(tick);
   });
 }

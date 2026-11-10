@@ -63,7 +63,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Ele não sabe com quem tá mexendo.');
     const corrida = await ctx.boatRace();
     ctx.setFlag('pt-pedalinho-estrelas', corrida.stars);
-    ctx.place('player', 24.6, 11.6, 'down');
+    ctx.place('player', 24.6, 13.0, 'down');
     await ctx.moveProp('barco', 13.0, 14.2, 1800);
     const c = await ctx.choose('bella', '(No meio do lago, os dois pararam de pedalar)', ['"A gente tá no meio do Brasil."', '"Se esse cisne afundar, você me salva?"', 'Encostar a cabeça no ombro dele']);
     if (c === 0) await ctx.say('weng', 'Mais ou menos em Goiás, eu acho. O lugar mais bonito do país.');
@@ -75,8 +75,8 @@ const scripts: Record<string, Script> = {
     await ctx.moveProp('barco', 26.0, 12.6, 3200);
     await ctx.fadeOut(400);
     ctx.removeProp('barco');
-    ctx.place('player', 24.6, 11.6, 'down');
-    ctx.place('weng', 26.2, 11.6, 'down');
+    ctx.place('player', 24.6, 13.0, 'down');
+    ctx.place('weng', 26.2, 13.0, 'down');
     ctx.visible('player', true);
     ctx.visible('weng', true);
     ctx.follow('weng', true);
@@ -178,6 +178,7 @@ export const quitandinhaMap: MapDef = {
     R(192, 504, 1248, 528),
     R(144, 528, 1272, 552),
     R(168, 552, 1104, 576),
+    R(1104, 540, 1290, 566), // faixa de água logo acima do píer
     R(264, 576, 1104, 600),
     R(384, 600, 1104, 648),
     R(480, 648, 1320, 672),

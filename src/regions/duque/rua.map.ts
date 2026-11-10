@@ -75,9 +75,12 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', '"Ainda não." (sorriso)');
     await ctx.emote('weng', 'heart');
     ctx.sfx('pickup');
-    ctx.place('player', 1.8, 16.3, 'right');
-    ctx.place('weng', 3.2, 16.3, 'left');
+    // saindo do mercado: um do lado do outro, sem se sobrepor
+    ctx.follow('weng', false);
+    ctx.place('player', 2.2, 16.3, 'right');
+    ctx.place('weng', 4.1, 16.3, 'left');
     await ctx.fadeIn(400);
+    ctx.follow('weng', true);
     await passeioDuque(ctx, 'mercado');
   },
   async acai(ctx) {

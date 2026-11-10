@@ -178,7 +178,7 @@ export const restauranteMap: MapDef = {
   ],
 
   // porta de entrada: fica por cima de quem passa, transparente
-  overlays: [{ x0: 585, y0: 850, x1: 945, y1: 1024, base: 1024, front: true }],
+  overlays: [{ x0: 585, y0: 850, x1: 945, y1: 1024, base: 1024, front: true, frontAlpha: 0.45 }],
 
   lighting: {
     darkness: 0.12,
