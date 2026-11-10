@@ -98,7 +98,8 @@ export class NPC extends Character {
       const p = this.followTarget;
       const trail = p.trail;
       const goal = trail.length > 8 ? trail[trail.length - 8] : null;
-      const d = Phaser.Math.Distance.Between(this.x, this.y, p.x, p.y);
+      const mk = (this.scene.data?.get('charScale') as number | undefined) ?? 1;
+      const d = Phaser.Math.Distance.Between(this.x, this.y, p.x, p.y) / mk;
       // Histerese: começa a andar longe (>34), para perto (<24) — evita o "pisca-pisca".
       if (!this.followMoving && d > 34) this.followMoving = true;
       if (this.followMoving && d < 24) this.followMoving = false;
@@ -140,7 +141,7 @@ export class NPC extends Character {
       if (goal && this.followMoving && toGoal > 3) {
         const dx = goal.x - this.x;
         const dy = goal.y - this.y;
-        const sp = d > 70 ? 140 : d > 40 ? 95 : 70;
+        const sp = (d > 70 ? 140 : d > 40 ? 95 : 70) * mk;
         body.setVelocity((dx / toGoal) * sp, (dy / toGoal) * sp);
         // preso num móvel/parede: reaparece no rastro dela
         this.stuckMs = body.blocked.none && body.touching.none ? 0 : this.stuckMs + delta;

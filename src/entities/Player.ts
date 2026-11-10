@@ -20,7 +20,9 @@ export class Player extends Character {
     }
     const v = InputSystem.vector();
     const run = InputSystem.running();
-    const speed = run ? PLAYER.runSpeed : PLAYER.walkSpeed;
+    // cenários de perto (personagens maiores): o passo é maior, senão parecem pesados
+    const mk = (this.scene.data?.get('charScale') as number | undefined) ?? 1;
+    const speed = (run ? PLAYER.runSpeed : PLAYER.walkSpeed) * mk;
     // aceleração/frenagem suaves (sem "tranco" ao começar e ao parar)
     const dt = Math.min(2, this.scene.game.loop.delta / (1000 / 60));
     const tx = v.x * speed;
@@ -37,7 +39,7 @@ export class Player extends Character {
       else this.facing = v.y < 0 ? 'up' : 'down';
     }
     // passos no ritmo da velocidade real
-    this.animateFromVelocity(Math.max(0.6, Math.hypot(vx, vy) / PLAYER.walkSpeed) * 1.15, moving);
+    this.animateFromVelocity(Math.max(0.6, Math.hypot(vx, vy) / (PLAYER.walkSpeed * mk)) * 1.15, moving);
 
     const last = this.trail[this.trail.length - 1];
     if (!last || Phaser.Math.Distance.Between(last.x, last.y, this.x, this.y) > 3) {
