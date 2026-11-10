@@ -152,7 +152,7 @@ export const HOWTO: Record<string, HowTo> = {
     title: 'Café da manhã de aniversário',
     rows: [
       { img: 'cf-paodequeijo', text: 'O bilhete mostra o que a Bella ama. {Decore}: ele some em alguns segundos!' },
-      { img: 'cf-bandeja', text: 'Depois clique nas coisas certas pra montar a bandeja.' },
+      { img: 'cf-bandeja', text: 'Depois escolha com as setas e aperte [Espaço] / [E] nas coisas certas pra montar a bandeja.' },
       { img: 'cf-mamao', text: 'Coisa que ela não ama conta como erro (mamão, nem pensar). Flor e cartãozinho são um extra.' },
     ],
   },

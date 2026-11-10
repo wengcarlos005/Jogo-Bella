@@ -468,7 +468,7 @@ export function playBreakfastGame(parent: HTMLElement): Promise<MiniResult> {
     };
     ui.say('weng', '(Ela ainda tá dormindo. Café na cama: tudo que ela ama. Decora a lista!)');
     hud();
-    const go = h('button', { class: 'btn primary' }, 'Decorei!');
+    const go = h('button', { class: 'btn primary', 'data-nav': '' }, 'Decorei!');
     ui.actions.append(go);
     const startPick = () => {
       if (phase !== 'memo') return;
