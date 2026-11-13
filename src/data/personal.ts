@@ -29,6 +29,12 @@ export const PERSONAL = {
    * A Bella estava nervosa porque conhecia pouco a família e tinha medo de ser julgada.
    */
   wengFamily: { tia: 'Tim', irma: 'Anne', primos: ['Lilian', 'Vivian', 'Diego', 'Julinha', 'Mingau', 'Laylinha'] },
+  /**
+   * Rio das Ostras (passagem rápida, o ponto alto foi a praia): o pai da Bella não quis pagar o
+   * guarda-sol, os dois se queimaram, o Weng ajudou a pagar (o salvador). O pai trouxe frutas e
+   * torradas (a Bella achou ele canguinha). No fim, petisco na barraca até a tempestade.
+   */
+  rioDasOstras: { pai: 'Pai da Bella' },
   /** Gatos: Meli (do Weng, laranja); Pombo (preto) e Lala (branca com manchas marrons) da Bella. */
   pets: { weng: ['Meli'], bella: ['Pombo', 'Lala'] },
   /**

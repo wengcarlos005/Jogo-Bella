@@ -439,3 +439,181 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 ```
 Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Midnight on New Year's Eve on the big balcony of a penthouse high above a huge calm lagoon (Lagoa de Araruama, Brazil). Colorful fireworks explode over the water along the lit seaside promenade below and reflect on the lagoon. The attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) kiss at the glass railing; behind them, the whole family celebrates and hugs with glasses raised. No text, no UI, no watermark.
 ```
+
+
+---
+
+## 3. Capítulo 5 — Rio das Ostras: "Um dia de praia"
+
+### O que aconteceu (contado pelo Weng)
+
+- Uma passagem rápida por Rio das Ostras. O ponto alto foi a praia: ficaram um bom tempo curtindo.
+- O pai da Bella não quis pagar o guarda-sol: os dois ficaram no sol e se queimaram um pouco.
+- O Weng ajudou a pagar o guarda-sol e virou o salvador do dia.
+- Brincaram na praia.
+- O pai trouxe frutas e torradas de casa; a Bella ficou bolada achando ele "canguinha".
+- No fim, comeram petisco na barraca até a tempestade chegar.
+
+### Roteiro do capítulo
+
+1. **Chegada na praia**: o pai da Bella escolhe um lugar no sol ("guarda-sol é roubo!"). Conversa com a Bella revirando os olhos.
+2. **Minigame Sol de rachar**: a barra de queimadura sobe; corra pra sombrinhas que passam (nuvens, guarda-sol dos vizinhos) e passe protetor no tempo certo. Mesmo assim os dois ficam vermelhinhos.
+3. **O salvador**: o Weng vai até o barraqueiro e racha o guarda-sol. Sombra, cadeira e a Bella olhando pra ele como herói.
+4. **Lanche do pai**: o isopor com frutas e torradas. A Bella bolada ("pai, a gente tá na praia, não no piquenique da escola"). Escolhas de diálogo.
+5. **Minigame Frescobol**: rebater a bolinha com o Weng no ritmo; o vento e as ondas atrapalham. Quanto mais longa a sequência, mais estrelas.
+6. **Petisco na barraca**: escolher os petiscos (batata frita, isca de peixe, camarão, aipim) e conversar.
+7. **Minigame A tempestade**: o céu escurece de repente. Junte tudo (toalhas, cadeiras, guarda-sol, isopor) antes da chuva e corra pro quiosque. Raio cai: desvia.
+8. **Fim**: os dois molhados e queimados de sol, rindo debaixo do toldo do quiosque.
+
+Todos os minigames com direcional + 1 botão (prontos pra controle).
+
+### 3A. Praia de Rio das Ostras (cenário vazio)
+
+Anexe como referência de estilo a orla de Araruama (`art-source/maps/ar-praia.webp`).
+
+```
+Pixel art top-down 3/4 view of a wide sunny ocean beach in Rio das Ostras, Brazil, on a hot summer day. Same art style, outline thickness, colors and camera angle as the attached reference image. Canvas 1536x1024 pixels, landscape.
+
+Layout: across the top, a seaside promenade with a low stone wall, palm trees and a row of colorful beach kiosks (one bigger kiosk with a striped awning on the right, with an open front where people can sit). Below it, a very wide strip of light golden sand filling the middle of the canvas, with footprints. At the bottom, the ocean: turquoise shallow water with white foam and small waves coming to the sand, darker blue further away. A small rental stand for beach umbrellas and chairs on the left side of the sand.
+
+DO NOT draw: people, animals, beach umbrellas, chairs, towels, coolers, balls or anything standing on the sand. Clean continuous sand and water.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Folha de objetos (praia)**, anexando o cenário vazio novo:
+
+```
+Pixel art sprite sheet of props for the beach scene in the attached images. EXACTLY the same art style, outline, colors, lighting and top-down 3/4 camera angle, same scale: a standing adult is about 140 pixels tall.
+Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, no gradient, no ground, no shadows on the background. Each object complete and separate, at least 60 px of magenta between objects, nothing touching the edge:
+1. A big rental beach umbrella, blue and white stripes, open, planted in the sand (about 170x170 px).
+2. The same umbrella CLOSED, leaning (about 40x150 px).
+3. Two folding beach chairs, blue and white, separate (about 70x90 px each).
+4. A big beach towel with a yellow and pink pattern, flat on the sand (about 150x80 px).
+5. A red cooler box (isopor) with the lid open showing fruit, a bag of toast and drinks (about 90x80 px).
+6. A plastic beach table with a plate of fried snacks (french fries and fried fish) and two drinks (about 110x90 px).
+7. A pair of wooden beach paddle rackets (frescobol) and a small rubber ball, lying on the sand (about 90x60 px).
+8. A sandcastle (about 70x60 px).
+9. A sunscreen bottle (about 30x50 px).
+10. A small sign "ALUGUEL" style board WITHOUT readable text, with a drawing of an umbrella (about 70x90 px).
+```
+
+### 3B. Roupa de praia da Bella e do Weng
+
+Anexe a folha andando da Bella (`public/assets/characters/bella-casual.png`) no prompt da Bella e a do Weng (`weng-casual.png`) no do Weng, como modelo de rosto, cabelo e layout.
+
+**Bella**
+
+```
+Pixel art walking sprite sheet of the SAME character as the attached sprite sheet (same face, curly long brown hair, pink glasses, same proportions, outline and style), now dressed for the beach: a light coral one-piece swimsuit under a loose white cotton beach shirt worn open, short denim shorts, flip-flops and a straw hat with a pink ribbon.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+**Weng**
+
+```
+Pixel art walking sprite sheet of the SAME character as the attached sprite sheet (same face, short black messy hair, same proportions, outline and style), now dressed for the beach: a light blue short-sleeve shirt with small white palm-tree prints, worn open over a white tank top, navy blue swim shorts, flip-flops, sunglasses pushed up on the head.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+### 3C. NPCs
+
+**Pai da Bella** (anexe `public/assets/npcs/atendente-walk.png` como modelo de layout e, se puder, uma foto dele). Troque a descrição pela aparência real:
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and expression, in the same cute chibi pixel style): [a Brazilian man around 50 years old, short dark hair, a cheerful stubborn smile, a white tank top, colorful beach shorts, flip-flops, a cap, carrying a red cooler box in one hand].
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+**Barraqueiro do aluguel de guarda-sol** (anexe `atendente-walk.png`):
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person: a friendly suntanned Brazilian beach vendor around 40 years old, short curly black hair, a big smile, an orange tank top with a small umbrella logo (no text), white bermuda shorts, flip-flops, a fanny pack and a towel over the shoulder.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+### 3D. Minigames
+
+**Sol de rachar** (anexe o cenário da praia):
+
+```
+Pixel art sprite sheet, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it, nothing touching the edge:
+1. A big cartoon sun with a hot, grumpy face and wavy rays (about 200x200 px).
+2. A small fluffy white cloud (about 180x100 px) and its round shadow on the sand, semi-dark oval (about 160x60 px).
+3. A sunscreen bottle (about 50x80 px) and a white splash of sunscreen (about 60x40 px).
+4. A thermometer-like "sunburn" meter: a vertical bar frame with a sun icon on top, EMPTY inside (about 50x200 px).
+5. The attached girl and boy (beach clothes) sitting on a towel on the sand, both with red sunburned cheeks and shoulders, fanning themselves, funny suffering faces (about 300x220 px).
+No text, no UI, no watermark.
+```
+
+**Frescobol** (anexe as folhas de praia da Bella e do Weng):
+
+```
+Pixel art sprite sheet for a beach paddle game, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it:
+1. The attached girl in beach clothes seen from the side, holding a wooden beach paddle, 3 frames: ready, swinging, after the hit (about 180x220 px each).
+2. The attached boy in beach clothes seen from the side, facing left, holding a wooden beach paddle, 3 frames: ready, swinging, after the hit (about 180x220 px each).
+3. A small rubber ball (about 30x30 px), and a motion trail of the ball (about 120x30 px).
+4. A small sand splash where the ball falls (about 80x50 px).
+No text, no UI, no watermark.
+```
+
+**A tempestade** (anexe o cenário da praia):
+
+```
+Pixel art sprite sheet, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it:
+1. A big dark grey storm cloud (about 360x180 px), and a smaller one (about 220x120 px).
+2. A lightning bolt (about 80x220 px) and a bright flash star where it hits the sand (about 120x80 px).
+3. Items scattered on the sand to pick up, each about 80-120 px: a folded beach towel, a closed beach umbrella, a folded beach chair, a red cooler box, a straw hat, a pair of flip-flops.
+4. The attached girl and boy in beach clothes running side by side, carrying a closed umbrella and a cooler over their heads, laughing in the rain (about 300x240 px).
+No text, no UI, no watermark.
+```
+
+### 3E. Lembranças (1672x941, anexe `pascoa.png` + as folhas de praia da Bella e do Weng)
+
+**O salvador do guarda-sol** (`memory-ro-01`)
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. A sunny, crowded beach in Rio das Ostras, Brazil. The attached boy (beach clothes) proudly plants a big blue-and-white striped rental beach umbrella in the sand like a hero, sunlight behind him. The attached girl (beach clothes, straw hat) sits on a towel looking up at him with heart eyes, both with red sunburned cheeks and shoulders. Nearby, a red cooler with fruit and a bag of toast. Turquoise sea and white foam in the background. No text, no UI, no watermark.
+```
+
+**Petisco até a tempestade** (`memory-ro-02`)
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. A beach kiosk with a striped awning in Rio das Ostras, Brazil, late afternoon. Dark storm clouds roll in over the sea and the first big raindrops fall. Under the awning, the attached girl and boy (beach clothes, a little sunburned and wet) sit at a plastic table full of fried snacks (french fries, fried fish, shrimp, fried cassava), laughing, while the wind blows napkins away. No text, no UI, no watermark.
+```
