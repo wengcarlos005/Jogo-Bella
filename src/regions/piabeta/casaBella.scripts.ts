@@ -8,6 +8,10 @@ import { QuestSystem } from '@/systems/QuestSystem';
  * Textos provisórios: revise à vontade, mantendo a estrutura.
  */
 const Q = 'pia-m1';
+/** O Weng está aqui na casa com a Bella? (no 1º encontro, depois que ele entrou; e no 2º encontro inteiro) */
+const wengAqui = (): boolean => GameState.is('weng-entrou') || QuestSystem.isActive('dq-e2');
+/** A cena do 2º encontro (churrasco/filme) */
+const segundoEncontro = (): boolean => QuestSystem.isActive('dq-e2');
 const W = PERSONAL.weng.name;
 /** Como a Bella chama o padrasto (personal.ts). */
 const CHAMADO = PERSONAL.bellaStepdad.chamado;
@@ -56,6 +60,10 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async cama(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'A minha cama. Com o Weng aqui, ela tá arrumadinha. Pela primeira vez na vida.' : 'Minha cama. Um dia eu acordo cedo. Hoje não.');
+      return;
+    }
     if (!ctx.objectiveDone(Q, 'celular')) {
       ctx.sfx('pickup');
       await ctx.give('celular', 1, true);
@@ -75,6 +83,10 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async 'guarda-roupa'(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'Hoje eu escolhi a camiseta preta. A de sempre. A favorita.' : 'O guarda-roupa. Metade das roupas aqui eu ainda não usei.');
+      return;
+    }
     if (!ctx.objectiveDone(Q, 'celular')) {
       await ctx.say('bella', 'Primeiro deixa eu ver o que vibrou no celular...');
       return;
@@ -104,6 +116,10 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async oculos(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'A escrivaninha. Cadernos, canetas e a foto da gente que eu ainda não contei pra ninguém.' : 'Cadernos, canetas e uma pilha de coisas que eu juro que vou organizar.');
+      return;
+    }
     if (ctx.objectiveDone(Q, 'oculos')) {
       await ctx.say('bella', 'Cadernos, canetas e uma pilha de coisas que eu juro que vou organizar.');
       return;
@@ -118,6 +134,10 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async colar(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'O colar da sorte tá aqui. Dessa vez eu nem precisei: já tá tudo dando certo.' : 'Perfume, maquiagem... tudo no lugar.');
+      return;
+    }
     if (ctx.objectiveDone(Q, 'colar')) {
       await ctx.say('bella', 'Perfume, maquiagem... tudo pronto por aqui.');
       return;
@@ -138,6 +158,10 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async espelho(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'Tô bem. Tô bem até demais. O Weng que fique nervoso dessa vez.' : 'Os cachos colaboraram hoje. Raro.');
+      return;
+    }
     const ready =
       ctx.objectiveDone(Q, 'roupa') && ctx.objectiveDone(Q, 'oculos') && ctx.objectiveDone(Q, 'colar') && ctx.objectiveDone(Q, 'presente');
     if (ctx.objectiveDone(Q, 'espelho')) {
@@ -171,6 +195,10 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async 'guarda-chuva'(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'O guarda-chuva. Hoje não tá chovendo... mas de chuva eu já não tenho medo.' : 'O guarda-chuva do primeiro encontro. Ele virou especial.');
+      return;
+    }
     if (!ctx.objectiveDone(Q, 'espelho')) {
       await ctx.say('bella', 'O guarda-chuva. Primeiro deixa eu terminar de me arrumar.');
       return;
@@ -195,6 +223,20 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async weng(ctx) {
+    if (segundoEncontro()) {
+      const done = (o: string) => ctx.objectiveDone('dq-e2', o);
+      const fala = !done('churrasco')
+        ? 'Bora pro quintal? O Alexandre já acendeu a churrasqueira e tá me esperando. Acho.'
+        : !done('mesa')
+          ? 'A mesa lá fora tá esperando a gente. Sua mãe fez banoffee, eu vi.'
+          : !done('lala')
+            ? 'A Lala tá dormindo no quarto. Será que hoje ela me deixa fazer carinho?'
+            : !done('filme')
+              ? 'Sofá, filme e você do meu lado. Melhor parte do dia.'
+              : 'Bora dar uma volta? Tá uma noite bonita lá fora.';
+      await ctx.say('weng', fala);
+      return;
+    }
     if (ctx.objectiveDone(Q, 'mae') && ctx.objectiveDone(Q, 'pai')) {
       await ctx.say('weng', 'Sobrevivi! Bora? A hamburgueria tá esperando a gente.');
       return;
@@ -211,11 +253,26 @@ export const casaScripts: Record<string, Script> = {
     ctx.pose('pombo', 'pombo-poses', 0);
     await ctx.emote('pombo', 'question');
     await ctx.say('pombo', 'Mrrr.');
-    await ctx.say('bella', ctx.flag('weng-entrou') ? 'Esse é o Pombo. Ele julga todo mundo. Não leva pro pessoal.' : 'Pombo, para de me olhar com essa cara de julgamento.');
-    if (ctx.flag('weng-entrou') && !ctx.flag('pombo-weng')) {
+    const np = Number(GameState.getFlag<number>('pombo-carinhos') ?? 0);
+    GameState.setFlag('pombo-carinhos', np + 1);
+    if (!wengAqui()) {
+      const sozinha = ['Pombo, para de me olhar com essa cara de julgamento.', 'Hoje eu vou num encontro, Pombo. Não me julga.', 'Se eu ficar nervosa, você me dá força? ...Não, né.'];
+      await ctx.say('bella', sozinha[np % sozinha.length]);
+    } else if (!ctx.flag('pombo-weng')) {
+      // a primeira vez que o Weng vê o Pombo (só uma vez)
       ctx.setFlag('pombo-weng');
+      await ctx.say('bella', 'Weng, esse é o Pombo. Ele julga todo mundo. Não leva pro pessoal.');
       await ctx.say('weng', 'Ele tá me encarando. Ele tá me encarando muito.');
       await ctx.say('bella', 'Ele tá decidindo se gosta de você.');
+    } else {
+      const falas = [
+        ['weng', 'Oi, Pombo. Ainda me julgando?'],
+        ['bella', 'Ele piscou pra você. Devagar. Isso é um avanço.'],
+        ['weng', 'Um dia ele vai me amar. Eu sinto.'],
+        ['bella', 'O Pombo e a Lala: um me julga, a outra me ignora. Família perfeita.'],
+      ] as const;
+      const [who, line] = falas[np % falas.length];
+      await ctx.say(who, line);
     }
     // carinho: ele finge que não gosta, mas ronrona
     ctx.pose('pombo', 'pombo-poses', 3);
@@ -284,7 +341,7 @@ export const casaScripts: Record<string, Script> = {
       ['weng', 'Oi de novo, Lala. ...Ainda me ignorando, né.'],
       ['bella', 'Ela tá te observando. É um bom sinal. Acho.'],
     ] as const;
-    if (!ctx.flag('weng-entrou')) {
+    if (!wengAqui()) {
       await ctx.say('bella', sozinha[n % sozinha.length]);
     } else if (!ctx.flag('lala-weng')) {
       // a primeira vez que o Weng vê a Lala (só uma vez)
@@ -412,6 +469,10 @@ export const casaScripts: Record<string, Script> = {
   },
 
   async pia(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'A louça do churrasco. Muita louça. A gente lava depois, combinado?' : 'Uma louça pra lavar. Ela pode esperar.');
+      return;
+    }
     await ctx.say('bella', 'Uma louça pra lavar. Ela pode esperar até amanhã. Hoje não.');
   },
   async sofa(ctx) {
@@ -429,15 +490,31 @@ export const casaScripts: Record<string, Script> = {
     await ctx.sit(730, 714, ctx.flag('weng-segue') ? [['weng', 'Esse sofá é confortável demais. Perigoso.'], ['bella', 'É o sofá do cochilo de domingo.']] : [['bella', 'O sofá do cochilo de domingo. Hoje não tem cochilo, tem encontro!']]);
   },
   async geladeira(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'A banoffee tá aqui dentro. Escondida do Alexandre.' : 'Água gelada. Tá calor.');
+      return;
+    }
     await ctx.say('bella', 'Água gelada pra acalmar. Ok, não acalmou.');
   },
   async fogao(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'O cheiro da carne do churrasco ainda tá na casa inteira.' : 'Cheirinho de café da tarde.');
+      return;
+    }
     await ctx.say('bella', 'Cheirinho de café da tarde. Não dá tempo, infelizmente.');
   },
   async tv(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'A TV da sala. Mais tarde é ela que vai passar o nosso filme.' : 'Passando novela. Minha mãe vai me contar tudo depois.');
+      return;
+    }
     await ctx.say('bella', 'Passando novela. Minha mãe vai me contar tudo depois.');
   },
   async estante(ctx) {
+    if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
+      await ctx.say('bella', segundoEncontro() ? 'A estante. O Weng achou minha foto de criança aqui. Vergonha eterna.' : 'Livros, porta-retratos e um enfeite que ninguém lembra de onde veio.');
+      return;
+    }
     await ctx.say('bella', 'Livros, porta-retratos e um enfeite que ninguém lembra de onde veio.');
   },
 };

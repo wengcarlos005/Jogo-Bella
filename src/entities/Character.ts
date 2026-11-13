@@ -81,7 +81,25 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
     this.setOrigin(0.5, 1);
     this.applySheet(key);
+    // sombrinha oval no chão: o personagem "pisa" no cenário em vez de parecer colado por cima
+    if (!scene.textures.exists('fx-charshadow')) {
+      const t = scene.textures.createCanvas('fx-charshadow', 32, 12)!;
+      const c = t.getContext();
+      const g = c.createRadialGradient(16, 6, 1, 16, 6, 16);
+      g.addColorStop(0, 'rgba(20,10,20,0.55)');
+      g.addColorStop(0.6, 'rgba(20,10,20,0.3)');
+      g.addColorStop(1, 'rgba(20,10,20,0)');
+      c.fillStyle = g;
+      c.beginPath();
+      c.ellipse(16, 6, 16, 6, 0, 0, Math.PI * 2);
+      c.fill();
+      t.refresh();
+    }
+    this.shadow = scene.add.image(x, y, 'fx-charshadow').setOrigin(0.5, 0.5);
+    this.once(Phaser.GameObjects.Events.DESTROY, () => this.shadow?.destroy());
   }
+
+  shadow: Phaser.GameObjects.Image | null = null;
 
   /**
    * Troca a spritesheet (ex.: roupa nova) mantendo posição e direção.
@@ -249,6 +267,12 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
 
   preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta);
+    if (this.shadow) {
+      const w = this.frame.width * this.scaleX * 0.52;
+      this.shadow.setPosition(this.x, this.y - 1).setDisplaySize(w, w * 0.32).setDepth(this.depth - 0.5);
+      this.shadow.setVisible(this.visible && this.alpha > 0.2);
+      this.shadow.setAlpha(this.alpha);
+    }
     if (this.sitting) return;
     this.setDepth(this.y);
     const k = this.perspectiveAt(this.y);
