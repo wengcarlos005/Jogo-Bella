@@ -46,6 +46,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', '(cochichando) Seu pai é bem... econômico.');
     await ctx.say('bella', '(cochichando) Canguinha. A palavra é canguinha.');
     ctx.objective(Q, 'chegar');
+    await ctx.say('pai-ro', 'Sol faz bem pra saúde! Vitamina D!');
+    await ctx.say('bella', 'Pai, tá quarenta graus.');
+    const sol = await ctx.sol();
+    ctx.setFlag('ro-sol-estrelas', sol.stars);
     await ctx.narrate('Uma hora no sol depois...');
     await ctx.say('bella', 'Weng. Olha o meu ombro. Tá VERMELHO.');
     await ctx.say('weng', 'O meu nariz tá parecendo um tomate. Eu sinto ele pulsando.');
@@ -153,9 +157,14 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Weng... aquilo é uma tempestade?');
     await ctx.say('weng', 'Pega as coisas! Guarda-sol, toalha, cadeira! CORRE!');
     await ctx.fadeOut(400);
-    await ctx.narrate('Os dois correram pela areia carregando tudo, rindo, debaixo de um toró.');
+    await ctx.fadeIn(300);
+    const tp = await ctx.tempestade();
+    ctx.setFlag('ro-tempestade-estrelas', tp.stars);
+    await ctx.fadeOut(300);
     await ctx.narrate('Chegaram no toldo do quiosque ensopados, vermelhos de sol... e ainda com a batata frita na mão.');
     await ctx.fadeIn(400);
+    await ctx.say('pai-ro', '(chegando ensopado, com o isopor) Viu? Se tivesse alugado dois guarda-sóis, ia ter perdido os dois!');
+    await ctx.say('bella', 'Pai. Para.');
     await ctx.say('bella', 'A gente tá queimado, molhado e cheio de areia.');
     await ctx.say('weng', 'Melhor dia de praia da vida?');
     await ctx.say('bella', 'Melhor dia de praia da vida.');
@@ -178,6 +187,20 @@ const scripts: Record<string, Script> = {
     await ctx.fadeIn(600);
   },
 
+  async pai(ctx) {
+    if (!objDone('guardasol')) {
+      await ctx.say('pai-ro', 'Tá vendo? Sol de graça! Guarda-sol é coisa de turista.');
+      return;
+    }
+    if (!objDone('lanche')) {
+      await ctx.say('pai-ro', 'Quem tá com fome? Tem fruta e torrada no isopor! Coisa boa.');
+      return;
+    }
+    const f = ['A sombra até que é boa. Mas eu aguentava o sol, viu?', 'Weng, você é um rapaz direito. Gastador, mas direito.', 'Esse petisco do quiosque tá muito caro. Mas tá cheiroso, né?'];
+    const n = Number(ctx.flag('ro-pai-n') || 0);
+    ctx.setFlag('ro-pai-n', (n + 1) % f.length);
+    await ctx.say('pai-ro', f[n % f.length]);
+  },
   async castelo(ctx) {
     await ctx.say('bella', 'Um castelo de areia! Alguém caprichou. O nosso vai ficar torto, já aviso.');
   },
@@ -230,7 +253,11 @@ export const roPraiaMap: MapDef = {
     { key: 'ro-protetor', x: 640, y: 652, w: 24, shadow: false },
   ],
 
-  npcs: [{ id: 'barraqueiro', sprite: 'garcom-mex', tx: 6.0, ty: 11.3, facing: 'down', interact: 'aluguel' }],
+  npcs: [
+    { id: 'barraqueiro', sprite: 'barraqueiro', tx: 6.0, ty: 11.3, facing: 'down', interact: 'aluguel' },
+    // o Anderson, pai da Bella, do lado do isopor
+    { id: 'pai-ro', sprite: 'pai-ro', tx: 12.6, ty: 13.6, facing: 'right', interact: 'pai' },
+  ],
 
   hotspots: [
     { rect: R(60, 420, 300, 560), interact: 'aluguel', label: 'Aluguel', markerIf: () => objDone('sol') && objActive('guardasol') },

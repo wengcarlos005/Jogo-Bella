@@ -534,7 +534,7 @@ Row 4: walking away from the viewer (facing up), 4 frames.
 The character must look identical in every frame. No text, no labels, no numbers, no watermark.
 ```
 
-### 3C. NPCs
+### 3C. NPCs — **prontos** (Anderson, pai da Bella, e o barraqueiro)
 
 **Pai da Bella** (anexe `public/assets/npcs/atendente-walk.png` como modelo de layout e, se puder, uma foto dele). Troque a descrição pela aparência real:
 
@@ -570,7 +570,7 @@ The character must look identical in every frame. No text, no labels, no numbers
 
 ### 3D. Minigames
 
-**Sol de rachar** (anexe o cenário da praia):
+**Sol de rachar** — **pronto**:
 
 ```
 Pixel art sprite sheet, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it, nothing touching the edge:
@@ -593,7 +593,7 @@ Pixel art sprite sheet for a beach paddle game, same art style as the attached r
 No text, no UI, no watermark.
 ```
 
-**A tempestade** (anexe o cenário da praia):
+**A tempestade** — **pronto**:
 
 ```
 Pixel art sprite sheet, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it:

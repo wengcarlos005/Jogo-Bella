@@ -35,7 +35,7 @@ export const PERSONAL = {
    * torradas (a Bella achou ele canguinha). No fim, petisco na barraca até a tempestade.
    */
   /** pai biológico da Bella (o padrasto é o Alexandre) */
-  rioDasOstras: { pai: 'Pai da Bella' },
+  rioDasOstras: { pai: 'Anderson' },
   /** Gatos: Meli (do Weng, laranja); Pombo (preto) e Lala (branca com manchas marrons) da Bella. */
   pets: { weng: ['Meli'], bella: ['Pombo', 'Lala'] },
   /**
