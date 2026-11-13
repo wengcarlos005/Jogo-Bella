@@ -467,7 +467,7 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 
 Todos os minigames com direcional + 1 botão (prontos pra controle).
 
-### 3A. Praia de Rio das Ostras (cenário vazio)
+### 3A. Praia de Rio das Ostras (cenário vazio) — **pronto** (cenário e objetos no jogo)
 
 Anexe como referência de estilo a orla de Araruama (`art-source/maps/ar-praia.webp`).
 
@@ -498,7 +498,7 @@ Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, no gradient, no g
 10. A small sign "ALUGUEL" style board WITHOUT readable text, with a drawing of an umbrella (about 70x90 px).
 ```
 
-### 3B. Roupa de praia da Bella e do Weng
+### 3B. Roupa de praia da Bella e do Weng — **pronto**
 
 Anexe a folha andando da Bella (`public/assets/characters/bella-casual.png`) no prompt da Bella e a do Weng (`weng-casual.png`) no do Weng, como modelo de rosto, cabelo e layout.
 

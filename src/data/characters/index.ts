@@ -39,6 +39,8 @@ export const SPEAKERS: Record<string, SpeakerDef> = {
   julinha: { name: 'Julinha', portrait: 'portrait-julinha' },
   laylinha: { name: 'Laylinha', portrait: 'portrait-laylinha' },
   familia: { name: 'Família' },
+  'pai-ro': { name: PERSONAL.rioDasOstras.pai },
+  barraqueiro: { name: 'Barraqueiro', portrait: 'portrait-garcom-mex' },
   narrador: { name: '' },
   celular: { name: 'Celular' },
 };

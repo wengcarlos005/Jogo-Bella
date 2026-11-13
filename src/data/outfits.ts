@@ -23,6 +23,7 @@ export const OUTFITS: Record<'bella' | 'weng', Wardrobe> = {
     ['linho', 'Linho branco', 'Leve e elegante. Combina com a noite.'],
     ['festa', 'Vestido laranja', 'Pra brilhar. Talvez demais pra uma hamburgueria?'],
     ['inverno', 'Jaqueta preta', 'Quentinha pra noite de chuva.'],
+    ['praia', 'Roupa de praia', 'Maiô coral, camisa aberta, short e chapéu de palha.'],
   ]),
   weng: wardrobe('weng', [
     ['casual', 'Camiseta preta com estampa'],
@@ -30,6 +31,7 @@ export const OUTFITS: Record<'bella' | 'weng', Wardrobe> = {
     ['social', 'Colete e gravata'],
     ['xadrez', 'Camisa xadrez preta'],
     ['reveillon', 'Camisa branca'],
+    ['praia', 'Camisa de coqueirinho e bermuda'],
   ]),
 };
 
@@ -46,7 +48,7 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     'duque-de-caxias': 'casual',
     petropolis: 'floral', // aniversário na serra: o vestido amarelo
     araruama: 'casual', // ano-novo de 2024: "vestimos qualquer coisa"
-    'rio-das-ostras': 'floral', // férias de verão
+    'rio-das-ostras': 'praia', // dia de praia
     niteroi: 'floral',
     lapa: 'festa', // aniversário
     'cabo-frio': 'linho', // outro réveillon de branco
@@ -59,7 +61,7 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     'duque-de-caxias': 'casual',
     petropolis: 'reveillon', // camisa branca nova
     araruama: 'casual',
-    'rio-das-ostras': 'basica',
+    'rio-das-ostras': 'praia',
     niteroi: 'basica',
     lapa: 'xadrez',
     'cabo-frio': 'reveillon',

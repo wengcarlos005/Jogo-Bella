@@ -40,7 +40,7 @@ interface Preset {
   flags?: Record<string, boolean | string>;
   outfits?: Partial<Record<RegionId, string>>;
 }
-const STORY = ['pia-m1', 'pia-m2', 'pia-m3', 'dq-e2', 'dq-e3', 'dq-m1', 'dq-m2', 'dq-m3', 'dq-m4', 'dq-m5', 'pt-q1', 'pt-m1', 'ar-m1', 'ar-m2'];
+const STORY = ['pia-m1', 'pia-m2', 'pia-m3', 'dq-e2', 'dq-e3', 'dq-m1', 'dq-m2', 'dq-m3', 'dq-m4', 'dq-m5', 'pt-q1', 'pt-m1', 'ar-m1', 'ar-m2', 'ro-m1'];
 const PRESETS: Preset[] = [
   { quest: 'pia-m1', mapId: 'piabeta-casa-bella', spawn: 'start' },
   { quest: 'pia-m2', mapId: 'piabeta-rua', spawn: 'from-casa', active: true, flags: { 'weng-segue': true, 'weng-entrou': true, 'look-escolhido': 'casual' }, outfits: { piabeta: 'casual' } },
@@ -64,6 +64,7 @@ const PRESETS: Preset[] = [
   { quest: 'ar-m1', sub: 'ceia', title: 'A ceia na mesa giratória', mapId: 'ar-cobertura', spawn: 'porta', active: true, doneObjs: ['chegar', 'casa', 'praia'], flags: { 'weng-segue': true, 'ar-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual' } },
   { quest: 'ar-m1', sub: 'virada', title: 'A virada de 2024 na varanda', mapId: 'ar-varanda', spawn: 'porta', active: true, doneObjs: ['chegar', 'casa', 'praia', 'ceia'], flags: { 'weng-segue': true, 'ar-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual' } },
   { quest: 'ar-m2', title: 'O parque de diversões', mapId: 'ar-parque', spawn: 'entrada', active: true, doneObjs: ['cosechas'], flags: { 'weng-segue': true, 'ar-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual' } },
+  { quest: 'ro-m1', mapId: 'ro-praia', spawn: 'chegada', active: true, flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia' } },
 ];
 
 function presetData(pr: Preset): SaveData {
@@ -84,6 +85,7 @@ function presetData(pr: Preset): SaveData {
   if (idx >= STORY.indexOf('dq-e2')) reg.push('duque-de-caxias');
   if (idx >= STORY.indexOf('pt-q1')) reg.push('petropolis');
   if (idx >= STORY.indexOf('ar-m1')) reg.push('araruama');
+  if (idx >= STORY.indexOf('ro-m1')) reg.push('rio-das-ostras');
   d.regionsUnlocked = reg;
   d.regionsVisited = [...reg]; // sem o cartão de abertura da região ao pular pra cena
   d.mapId = pr.mapId;

@@ -140,8 +140,11 @@ const scripts: Record<string, Script> = {
         'Ninguém julgou. A Laylinha chamou ela de tia, e a Anne, de cunhada.',
       ],
     });
-    ctx.toast('O Capítulo 5 chega em breve');
-    await ctx.fadeIn(600);
+    await ctx.chapterCard('Capítulo 5', 'Rio das Ostras', 'Um dia de praia.', 'Começar');
+    ctx.unlockRegion('rio-das-ostras');
+    if (!GameState.data.regionsVisited.includes('rio-das-ostras')) GameState.data.regionsVisited.push('rio-das-ostras');
+    if (!ctx.questActive('ro-m1') && !QuestSystem.isDone('ro-m1')) ctx.startQuest('ro-m1');
+    await ctx.teleport('ro-praia', 'chegada');
   },
 
   async pipoca(ctx) {

@@ -183,6 +183,22 @@ export const MEMORIES: MemoryDef[] = [
     text: 'A virada na varanda da cobertura, os fogos estourando sobre a Lagoa de Araruama e o primeiro beijo do ano.',
     image: 'memory-ar-03',
   },
+  {
+    id: 'mem-ro-01',
+    region: 'rio-das-ostras',
+    title: 'O salvador do guarda-sol',
+    year: 'Ano 1',
+    text: 'Meu pai não quis pagar o guarda-sol e a gente virou camarão. O Weng foi lá e salvou o dia: sombra, cadeira e um herói de chinelo.',
+    image: 'memory-ro-01',
+  },
+  {
+    id: 'mem-ro-02',
+    region: 'rio-das-ostras',
+    title: 'Petisco até a tempestade',
+    year: 'Ano 1',
+    text: 'Torrada do meu pai, frescobol, onda... e no fim, petisco no quiosque até o céu desabar. A gente correu rindo, queimado e molhado.',
+    image: 'memory-ro-02',
+  },
 ];
 
 export const MEMORY_GOAL = 50;
