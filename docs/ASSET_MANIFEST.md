@@ -123,6 +123,7 @@ Só a roupa casual da Bella tem os óculos rosados.
 | MAP-042 | `maps/ar-praia-bg.png` (fonte: `art-source/maps/ar-praia.webp`) | Araruama: orla da lagoa (tarde) + objetos `objects/pr-*` | **integrado** |
 | MAP-043 | `maps/ar-parque-bg.png` (fonte: `art-source/maps/ar-parque.webp`) | Araruama: parque de diversões à noite + objetos `objects/pq-*` (carrinhos, bilheteria, balões, barraca das argolas) | **integrado** |
 | MAP-050 | `maps/ro-praia-bg.png` (fonte: `art-source/maps/ro-praia.webp`) | Rio das Ostras: praia + objetos `objects/ro-*` | **integrado** |
+| MEM-015/016 | `cinematics/memory-ro-01.png`, `memory-ro-02.png` | Rio das Ostras: o salvador do guarda-sol, petisco até a tempestade | **integrado** |
 | CHAR-017/025 | `characters/bella-praia.png`, `weng-praia.png` | Roupas de praia (+ retratos) | **integrado** |
 | CIN-020 | `cinematics/ar-cosechas.png` | Suco no Cosechas (fundo da cena) | **integrado** |
 | MG-ceia | `minigames/mg-*.png` | Mesa Giratória: mesa vista de cima, pato inteiro e fatiado, macarrão de arroz, frango xadrez, guioza, rolinho, arroz, gergelim, hashi, balão | **integrado** |
