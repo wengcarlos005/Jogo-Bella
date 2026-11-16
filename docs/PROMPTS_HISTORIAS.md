@@ -720,7 +720,7 @@ Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, no floor, no shad
 **Mãe da Lilian.** Anexe `public/assets/npcs/atendente-walk.png` como layout e uma foto dela.
 
 ```
-Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and smile, in the same cute chibi pixel style): [descrição da mãe da Lilian: idade, cabelo, roupa], carrying a small gift bag full of chocolates.
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and smile, in the same cute chibi pixel style): a friendly Asian woman around 50 years old, round face, straight black hair pulled back in a low ponytail with a few loose strands framing the face, warm gentle smile, a simple light grey t-shirt, dark capri pants and sandals, carrying a small pink gift bag full of chocolates.
 
 Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
 
