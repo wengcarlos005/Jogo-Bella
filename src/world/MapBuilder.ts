@@ -223,10 +223,11 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     // sombra de contato: oval escuro e macio, pra o objeto "pisar" no chão
     const t = scene.textures.createCanvas('fx-shadow', 64, 32)!;
     const c = t.getContext();
-    const g = c.createRadialGradient(32, 16, 2, 32, 16, 32);
-    g.addColorStop(0, 'rgba(20,6,10,0.75)');
-    g.addColorStop(0.55, 'rgba(20,6,10,0.45)');
-    g.addColorStop(1, 'rgba(20,6,10,0)');
+    // (centro no meio da tela achatada: oval inteiro, sem borda reta em cima — antes parecia um retângulo cinza)
+    const g = c.createRadialGradient(32, 32, 1, 32, 32, 32);
+    g.addColorStop(0, 'rgba(30,12,16,0.7)');
+    g.addColorStop(0.5, 'rgba(30,12,16,0.38)');
+    g.addColorStop(1, 'rgba(30,12,16,0)');
     c.save();
     c.scale(1, 0.5);
     c.fillStyle = g;
@@ -240,9 +241,9 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
       const sw = ((ob.w ?? 60) * (ob.shadow ?? 1.05)) / 3;
       scene.add
         .image(ob.x / 3, ob.y / 3 - 1, 'fx-shadow')
-        .setDisplaySize(sw, Math.max(4, sw * 0.22))
+        .setDisplaySize(sw, Math.max(4, sw * 0.3))
         .setDepth(-4)
-        .setAlpha(0.8);
+        .setAlpha(0.75);
     }
     const img = scene.add.image(ob.x / 3, ob.y / 3, ob.key).setOrigin(0.5, 1);
     if (ob.w) img.setScale(ob.w / 3 / img.width);

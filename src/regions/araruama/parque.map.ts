@@ -111,7 +111,11 @@ const scripts: Record<string, Script> = {
     }
     await ctx.say('weng', 'Agora sim. Só eu e você.');
     await ctx.fadeOut(600);
+    await ctx.ferris('spin');
     await ctx.narrate('A cabine subiu devagar. Lá embaixo, as luzes do parque e a lagoa escura.');
+    await ctx.say('bella', 'Tá subindo... tá subindo... Weng, segura minha mão.');
+    await ctx.say('weng', 'Já tô segurando faz tempo.');
+    await ctx.ferris('top');
     await ctx.narrate('No ponto mais alto, a roda parou por um minuto inteiro.');
     await ctx.say('bella', GameState.is('ar-pelucia') ? '(abraçando o ursinho) Weng, olha a vista!' : 'Weng, olha a vista! Dá pra ver o prédio da tia Tim!');
     await ctx.say('weng', 'Eu tô olhando.');
@@ -126,6 +130,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', '...Pode parar a roda aqui pra sempre.');
     }
     ctx.hearts('player', 12);
+    await ctx.ferris(null);
     await ctx.memory('mem-ar-02');
     ctx.objective(Q, 'roda');
     await ctx.fadeOut(600);
@@ -140,6 +145,38 @@ const scripts: Record<string, Script> = {
         'Ninguém julgou. A Laylinha chamou ela de tia, e a Anne, de cunhada.',
       ],
     });
+    // o pai da Bella chama os dois pra praia em Rio das Ostras
+    await ctx.narrate('Algum tempo depois.');
+    await ctx.phone({ contact: 'Pai', avatar: 'portrait-pai-ro', clock: '09:12', caption: 'No celular da Bella' }, [
+      { from: 'them', text: 'Filha, bom dia' },
+      { from: 'them', text: 'Sábado eu vou pra Rio das Ostras passar o dia na praia. Bora?' },
+      { from: 'them', text: 'Chama o Weng também' },
+      { from: 'me', text: 'Bora!!! Vai ter guarda-sol né pai?' },
+      { from: 'them', text: 'Guarda-sol a gente vê lá' },
+      { from: 'me', text: 'Pai...' },
+      { from: 'them', text: 'Eu levo fruta e torrada. Não precisa gastar com nada' },
+      { from: 'me', text: 'Já sei que vai ser sol na cabeça o dia inteiro 😂' },
+      { from: 'them', text: 'Sol faz bem! Vitamina D. Saio às 7, não atrasa' },
+      { from: 'me', text: 'Tá bom pai. A gente vai 🐥' },
+    ]);
+    await ctx.say('bella', 'Weng, meu pai chamou a gente pra praia em Rio das Ostras no sábado.');
+    await ctx.say('weng', 'Praia com o seu pai? Bora! Ele vai alugar guarda-sol?');
+    await ctx.say('bella', 'Ele disse "a gente vê lá". O que significa: não.');
+    await ctx.say('weng', 'Eu levo protetor. O fator mais alto que existir.');
+    await ctx.roadTrip(
+      'Araruama',
+      'Rio das Ostras',
+      [
+        { who: 'bella', text: 'Sete da manhã de sábado. Só meu pai pra achar isso normal.' },
+        { who: 'weng', text: 'Ele já mandou três áudios perguntando se a gente saiu.' },
+        { who: 'bella', text: 'E a torrada? Ele vai mesmo levar torrada pra praia?' },
+        { who: 'weng', text: 'Torrada e fruta. Numa bolsa térmica. Ele me mostrou a foto.' },
+        { who: 'bella', text: 'Olha o mar! Abre a janela, abre a janela!' },
+        { who: 'weng', text: 'Rio das Ostras. Hoje o dia é de praia.' },
+      ],
+      ['pr-palmeira', 'rs-palmeira'],
+      { coast: true, sunset: false },
+    );
     await ctx.chapterCard('Capítulo 5', 'Rio das Ostras', 'Um dia de praia.', 'Começar');
     ctx.unlockRegion('rio-das-ostras');
     if (!GameState.data.regionsVisited.includes('rio-das-ostras')) GameState.data.regionsVisited.push('rio-das-ostras');
@@ -290,16 +327,18 @@ export const parqueMap: MapDef = {
   ],
 
   npcs: [
-    { id: 'laylinha', sprite: 'laylinha', tx: 700 / 48, ty: 728 / 48, facing: 'left', interact: 'carrossel' },
-    { id: 'mingau', sprite: 'mingau', tx: 712 / 48, ty: 300 / 48, facing: 'down', interact: 'mingauTalk' },
+    // a Laylinha perto do algodão-doce (antes ficava em cima do arco)
+    { id: 'laylinha', sprite: 'laylinha', tx: 1040 / 48, ty: 768 / 48, facing: 'down', interact: 'carrossel' },
+    // Mingau e Diego na grade do bate-bate (fora do caminho principal)
+    { id: 'mingau', sprite: 'mingau', tx: 845 / 48, ty: 408 / 48, facing: 'up', interact: 'mingauTalk' },
     { id: 'vivian', sprite: 'vivian', tx: 15.6, ty: 11.2, facing: 'down', interact: 'argolas' },
     { id: 'julinha', sprite: 'julinha', tx: 270 / 48, ty: 800 / 48, facing: 'left', interact: 'pipoca' },
-    { id: 'diego', sprite: 'diego', tx: 712 / 48, ty: 372 / 48, facing: 'left', interact: 'diegoTalk' },
+    { id: 'diego', sprite: 'diego', tx: 1048 / 48, ty: 425 / 48, facing: 'left', interact: 'diegoTalk' },
   ],
 
   hotspots: [
     { rect: R(245, 470, 690, 715), interact: 'carrossel', label: 'Carrossel', markerIf: () => objActive('carrossel') },
-    { rect: R(770, 280, 1300, 400), interact: 'bate', label: 'Bate-bate', markerIf: () => objActive('bate') },
+    { rect: R(790, 330, 1090, 440), interact: 'bate', label: 'Bate-bate', marker: { x: 0.5, y: 0.42 }, markerIf: () => objActive('bate') },
     { rect: R(800, 400, 1080, 515), interact: 'argolas', label: 'Argolas', markerIf: () => objActive('argolas') },
     { rect: R(100, 200, 460, 315), interact: 'roda', label: 'Roda-gigante', markerIf: () => objActive('roda') && brinquedosFeitos() },
     { rect: R(150, 700, 250, 800), interact: 'pipoca', label: 'Pipoca' },

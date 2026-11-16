@@ -22,6 +22,10 @@ export interface TripOptions {
   car?: string | null;
   faceBella?: string | null;
   faceWeng?: string | null;
+  /** Já começa no litoral (lagoa/mar desde o início). */
+  coast?: boolean;
+  /** Pôr do sol no fim da viagem (padrão: sim). */
+  sunset?: boolean;
 }
 
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
@@ -77,8 +81,8 @@ export function playRoadTrip(root: HTMLElement, o: TripOptions): Promise<void> {
       card.style.setProperty('--p', String(p));
       fill.style.width = `${p * 100}%`;
       pin.style.left = `${p * 100}%`;
-      card.classList.toggle('coast', p >= 0.5);
-      card.classList.toggle('sunset', p >= 0.72);
+      card.classList.toggle('coast', o.coast === true || p >= 0.5);
+      card.classList.toggle('sunset', o.sunset !== false && p >= 0.72);
     };
     const next = () => {
       if (done) return;

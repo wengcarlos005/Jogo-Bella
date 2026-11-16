@@ -28,7 +28,7 @@ export function showMemoryPopup(parent: HTMLElement, id: string): Promise<void> 
         h('div', { class: 't' }, def.title),
         h('div', { class: 'img' }, url ? h('img', { src: url, alt: '' }) : h('span', { class: 'mp-soon' }, 'foto em breve')),
         h('p', {}, def.text),
-        h('p', { class: 'muted', style: 'opacity:.7;font-size:.85em' }, `${def.year} · ${dateOrPlaceholder(def.date ?? '')}`),
+        h('p', { class: 'muted', style: 'opacity:.7;font-size:.85em' }, [def.year, dateOrPlaceholder(def.date ?? '')].filter(Boolean).join(' · ')),
         h('button', { class: 'btn primary', onclick: close }, 'Guardar no álbum'),
       ),
     );

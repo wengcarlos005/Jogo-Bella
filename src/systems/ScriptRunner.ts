@@ -348,7 +348,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     },
 
     travel: (label, icon, ms) => UI.travel(label, icon, ms),
-    roadTrip: (from, to, lines, trees) => UI.roadTrip(from, to, lines, trees),
+    roadTrip: (from, to, lines, trees, opts) => UI.roadTrip(from, to, lines, trees, opts),
     chapterCard: (k, t, s, b, r) => UI.chapterCard(k, t, s, b, r),
     unlockRegion(id) {
       if (!GameState.data.regionsUnlocked.includes(id)) GameState.data.regionsUnlocked.push(id);
@@ -413,6 +413,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       }
     },
     backdrop: (key, rainy) => UI.backdrop(key, rainy),
+    ferris: (mode) => UI.ferris(mode),
 
     nerves(value, message) {
       const v = Math.max(0, Math.min(100, Math.round(value)));

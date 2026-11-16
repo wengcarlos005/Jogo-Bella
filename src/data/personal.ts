@@ -86,5 +86,5 @@ export const PERSONAL = {
 };
 
 export function dateOrPlaceholder(value: string): string {
-  return value.trim() ? value : '[data a definir]';
+  return value.trim();
 }

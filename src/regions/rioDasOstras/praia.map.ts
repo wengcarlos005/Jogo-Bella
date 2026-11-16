@@ -263,7 +263,7 @@ export const roPraiaMap: MapDef = {
     { rect: R(60, 420, 300, 560), interact: 'aluguel', label: 'Aluguel', markerIf: () => objDone('sol') && objActive('guardasol') },
     { rect: R(640, 600, 760, 680), interact: 'isopor', label: 'Isopor', markerIf: () => objDone('guardasol') && objActive('lanche') },
     { rect: R(910, 570, 1010, 640), interact: 'raquetes', label: 'Frescobol', markerIf: () => objDone('guardasol') && objActive('brincar') },
-    { rect: R(1060, 300, 1420, 480), interact: 'quiosque', label: 'Quiosque', markerIf: () => objDone('lanche') && objDone('brincar') && objActive('petisco') },
+    { rect: R(1060, 300, 1420, 480), interact: 'quiosque', label: 'Quiosque', marker: { x: 0.5, y: -0.55 }, markerIf: () => objDone('lanche') && objDone('brincar') && objActive('petisco') },
     { rect: R(390, 690, 480, 760), interact: 'castelo', label: 'Castelo de areia' },
     { rect: R(300, 480, 360, 540), interact: 'placa', label: 'Placa' },
     { rect: R(500, 760, 1400, 820), interact: 'mar', label: 'Mar' },

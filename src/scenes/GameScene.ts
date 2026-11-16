@@ -1016,7 +1016,7 @@ export class GameScene extends Phaser.Scene {
     {
       const cam = this.cameras.main;
       const ys = [this.player, this.npcs.get('weng')?.npc].filter((c) => c && c.visible).map((c) => (c!.y - cam.worldView.y) / cam.worldView.height);
-      const low = ys.length > 0 && Math.max(...ys) > 0.6;
+      const low = ys.length > 0 && Math.max(...ys) > 0.6 && !document.querySelector('#ui .backdrop');
       const ui = document.getElementById('ui');
       if (ui && ui.classList.contains('chars-low') !== low) ui.classList.toggle('chars-low', low);
     }

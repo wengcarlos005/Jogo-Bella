@@ -102,7 +102,7 @@ export interface ScriptContext {
   hearts(who: string, count?: number): void;
   travel(label: string, icon?: string, ms?: number): Promise<void>;
   /** Viagem de carro animada entre duas cidades, com a conversa do casal em balões. */
-  roadTrip(from: string, to: string, lines: { who: string; text: string }[], trees?: [string, string]): Promise<void>;
+  roadTrip(from: string, to: string, lines: { who: string; text: string }[], trees?: [string, string], opts?: { coast?: boolean; sunset?: boolean }): Promise<void>;
   /** Cartão de capítulo. `recap`: resumo do que aconteceu (fotos + frases que aparecem uma a uma). */
   chapterCard(kicker: string, title: string, sub: string, button?: string, recap?: { title?: string; photos?: string[]; lines: string[] }): Promise<void>;
   unlockRegion(id: import('./types').RegionId): void;
@@ -112,6 +112,8 @@ export interface ScriptContext {
   removeProp(id: string): void;
   /** Ilustração de fundo em tela cheia; os diálogos continuam por cima. null remove. */
   backdrop(key: string | null, rainy?: boolean): Promise<void>;
+  /** Roda-gigante animada: 'spin' girando, 'top' para a cabine do casal no alto, null esconde. */
+  ferris(mode: 'spin' | 'top' | null): Promise<void>;
   /** Ilustração em tela cheia com legendas (avança com interagir). */
   illustration(key: string, lines: string[]): Promise<void>;
   /** Foto de verdade da cena (polaroid com legenda). */

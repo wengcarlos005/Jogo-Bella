@@ -85,14 +85,16 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     if (!scene.textures.exists('fx-charshadow')) {
       const t = scene.textures.createCanvas('fx-charshadow', 32, 12)!;
       const c = t.getContext();
-      const g = c.createRadialGradient(16, 6, 1, 16, 6, 16);
-      g.addColorStop(0, 'rgba(20,10,20,0.55)');
-      g.addColorStop(0.6, 'rgba(20,10,20,0.3)');
-      g.addColorStop(1, 'rgba(20,10,20,0)');
+      // oval macio de verdade (gradiente achatado, sem contorno duro)
+      const g = c.createRadialGradient(16, 16, 1, 16, 16, 16);
+      g.addColorStop(0, 'rgba(30,12,24,0.6)');
+      g.addColorStop(0.55, 'rgba(30,12,24,0.32)');
+      g.addColorStop(1, 'rgba(30,12,24,0)');
+      c.save();
+      c.scale(1, 12 / 32);
       c.fillStyle = g;
-      c.beginPath();
-      c.ellipse(16, 6, 16, 6, 0, 0, Math.PI * 2);
-      c.fill();
+      c.fillRect(0, 0, 32, 32);
+      c.restore();
       t.refresh();
     }
     this.shadow = scene.add.image(x, y, 'fx-charshadow').setOrigin(0.5, 0.5);

@@ -20,6 +20,7 @@ import { h } from '@/utils/dom';
 import { showHowTo, HOWTO } from './screens/HowTo';
 import { curtainClose } from './screens/Curtain';
 import { playRoadTrip, type TripLine } from './screens/RoadTrip';
+import { ferrisShow, ferrisTop, ferrisHide } from './screens/FerrisScene';
 import { attachKeyNav } from './keyNav';
 import { UI_WIDTH } from '@/config/gameConfig';
 import { DialogueBox } from './components/DialogueBox';
@@ -376,12 +377,25 @@ class UIManagerImpl {
   }
 
   /** Viagem de carro animada entre cidades (paisagem muda no caminho, conversa em balões). */
-  roadTrip(from: string, to: string, lines: { who: string; text: string }[], trees: [string, string] = ['hf-araucaria', 'pr-palmeira']): Promise<void> {
+  roadTrip(from: string, to: string, lines: { who: string; text: string }[], trees: [string, string] = ['hf-araucaria', 'pr-palmeira'], opts: { coast?: boolean; sunset?: boolean } = {}): Promise<void> {
     this.dialogue.close();
     const NAMES: Record<string, string> = { bella: 'Bella', weng: 'Weng' };
     const face = (who: string) => textureURL(`portrait-${who}`);
     const tl: TripLine[] = lines.map((l) => ({ name: NAMES[l.who] ?? l.who, face: face(l.who), text: l.text, side: l.who === 'weng' ? 'right' : 'left' }));
-    return playRoadTrip(this.root, { from, to, lines: tl, treeA: textureURL(trees[0]), treeB: textureURL(trees[1]), car: textureURL('uber-car') });
+    return playRoadTrip(this.root, { from, to, lines: tl, treeA: textureURL(trees[0]), treeB: textureURL(trees[1]), car: textureURL('uber-car'), coast: opts.coast, sunset: opts.sunset });
+  }
+
+  /** Cena animada da roda-gigante: 'spin' mostra girando, 'top' para a cabine do casal lá no alto, null esconde. */
+  async ferris(mode: 'spin' | 'top' | null): Promise<void> {
+    if (mode === null) {
+      await ferrisHide();
+      this.hud.el.classList.remove('hidden');
+      return;
+    }
+    ferrisShow(this.root);
+    this.hud.el.classList.add('hidden');
+    if (mode === 'top') await ferrisTop();
+    else await new Promise((r) => setTimeout(r, 700));
   }
 
   private backdropEl: HTMLElement | null = null;
