@@ -66,6 +66,8 @@ export interface ScriptContext {
   pedrinha(): Promise<import('@/ui/screens/PetroGames').MiniResult & { skips: number }>;
   /** Sol de rachar (Rio das Ostras). */
   sol(): Promise<import('@/ui/screens/PetroGames').MiniResult & { burn: number }>;
+  /** Frescobol (Rio das Ostras). */
+  frescobol(): Promise<import('@/ui/screens/PetroGames').MiniResult & { best: number }>;
   /** A tempestade (Rio das Ostras). */
   tempestade(): Promise<import('@/ui/screens/PetroGames').MiniResult & { lives: number }>;
   /** Bate-bate no parque de diversões (Araruama). */

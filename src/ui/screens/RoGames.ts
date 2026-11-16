@@ -395,3 +395,201 @@ export function playTempestadeGame(parent: HTMLElement): Promise<MiniResult & { 
     raf = requestAnimationFrame(tick);
   });
 }
+
+// ====================================================================== Frescobol
+/**
+ * A Bella (esquerda) e o Weng (direita) batem a bolinha. Quando a bolinha chega na Bella, aperte
+ * Espaço / E na hora certa: o anel em volta da raquete fica verde. Cedo ou tarde demais, a bolinha
+ * cai na areia (perde 1 ♥, são 3). Cada rebatida a bolinha vem mais rápida. Meta: 15 seguidas.
+ */
+export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { best: number }> {
+  return new Promise((resolve) => {
+    const ui = shell(parent, 'fr', 'Frescobol');
+    const bg = textureURL('map-ro-praia-bg');
+    const GOAL = 15;
+    const bellaEl = h('img', { class: 'fr-p fr-bella', src: mg('fr-b0'), alt: '' }) as HTMLImageElement;
+    const wengEl = h('img', { class: 'fr-p fr-weng', src: mg('fr-w0'), alt: '' }) as HTMLImageElement;
+    const ball = h('img', { class: 'fr-ball', src: mg('fr-bola'), alt: '' });
+    const trailEl = h('img', { class: 'fr-trail', src: mg('fr-rastro'), alt: '' });
+    const ring = h('div', { class: 'fr-ring' });
+    const count = h('div', { class: 'fr-count' });
+    const rules = h(
+      'div',
+      { class: 'cs-rules fr-rules' },
+      h('b', {}, 'Como jogar'),
+      h('div', {}, h('img', { src: mg('fr-b1'), alt: '' }), h('span', {}, 'Quando a bolinha chegar na Bella, aperte ', h('kbd', {}, 'Espaço'), ' ou ', h('kbd', {}, 'E'), ' pra rebater.')),
+      h('div', {}, h('img', { src: mg('fr-bola'), alt: '' }), h('span', {}, 'Bata quando o anel em volta da raquete ficar ', h('u', { class: 'g' }, 'verde'), '. Cedo ou tarde demais, a bolinha cai.')),
+      h('div', {}, h('img', { src: mg('fr-areia'), alt: '' }), h('span', {}, `Cada vez ela vem mais rápida. Deixou cair: perde 1 ♥ (são 3). Meta: ${GOAL} rebatidas seguidas!`)),
+    );
+    ui.stage.append(h('div', { class: 'fr-bg', style: bg ? `background-image:url(${bg})` : '' }), ring, bellaEl, wengEl, trailEl, ball, count, rules);
+
+    const BX = 22;
+    const WX = 78;
+    const HIT_Y = 50;
+    let lives = 3;
+    let rally = 0;
+    let best = 0;
+    let dir = 1; // 1: indo pro Weng, -1: vindo pra Bella
+    let t = 0; // 0..1 ao longo do voo
+    let dur = 1.35;
+    let arc = 22;
+    let running = false;
+    let done = false;
+    let wait = 0;
+    let swung = false;
+    let last = 0;
+    let raf = 0;
+
+    const hud = () =>
+      ui.hud.replaceChildren(
+        h('span', {}, `Seguidas: ${rally}`),
+        h('span', {}, `Recorde: ${best}`),
+        h('span', { class: 'nv-lives' }, ...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥'))),
+      );
+    const pose = (el: HTMLImageElement, who: 'b' | 'w', f: number) => (el.src = mg(`fr-${who}${f}`));
+    const posAt = (tt: number) => {
+      const from = dir > 0 ? BX + 6 : WX - 6;
+      const to = dir > 0 ? WX - 6 : BX + 6;
+      const x = from + (to - from) * tt;
+      const y = HIT_Y - Math.sin(Math.PI * tt) * arc;
+      return { x, y };
+    };
+    const place = () => {
+      const { x, y } = posAt(t);
+      ball.style.left = `${x}%`;
+      ball.style.top = `${y}%`;
+      trailEl.style.left = `${x}%`;
+      trailEl.style.top = `${y}%`;
+      trailEl.style.transform = `translate(${dir > 0 ? '-100%' : '0'}, -50%) scaleX(${dir > 0 ? 1 : -1})`;
+      // anel: aparece quando a bolinha vem pra Bella; verde na janela boa
+      if (dir < 0 && running) {
+        const good = t > 0.8 && t < 1.0;
+        ring.classList.toggle('on', t > 0.55);
+        ring.classList.toggle('good', good);
+        ring.style.setProperty('--k', String(Math.max(0, 1 - (t - 0.55) / 0.42)));
+      } else ring.classList.remove('on', 'good');
+    };
+    const serve = () => {
+      dir = -1;
+      t = 0;
+      swung = false;
+      arc = 18 + Math.random() * 10;
+      pose(wengEl, 'w', 1);
+      setTimeout(() => pose(wengEl, 'w', 0), 260);
+    };
+    const miss = (line: string) => {
+      lives--;
+      rally = 0;
+      AudioSystem.play('cancel');
+      ui.shake();
+      const { x } = posAt(1);
+      const sp = h('img', { class: 'fr-splash', src: mg('fr-areia'), alt: '', style: `left:${x}%` });
+      ui.stage.append(sp);
+      setTimeout(() => sp.remove(), 900);
+      ball.classList.add('off');
+      trailEl.classList.add('off');
+      ui.say('weng', line);
+      hud();
+      if (lives <= 0) return finish();
+      wait = 1.2;
+    };
+    const swing = () => {
+      if (!running || swung) return;
+      swung = true;
+      pose(bellaEl, 'b', 1);
+      setTimeout(() => pose(bellaEl, 'b', 2), 160);
+      setTimeout(() => pose(bellaEl, 'b', 0), 420);
+      if (dir < 0 && t > 0.8 && t < 1.0) {
+        // rebateu!
+        rally++;
+        best = Math.max(best, rally);
+        AudioSystem.play('pickup');
+        count.textContent = String(rally);
+        count.classList.remove('pop');
+        void count.offsetWidth;
+        count.classList.add('pop');
+        if (rally === 5) ui.say('bella', 'Cinco! Tá pegando o ritmo, hein!');
+        if (rally === 10) ui.say('weng', 'DEZ! A praia inteira tá olhando!');
+        hud();
+        if (rally >= GOAL) return finish();
+        dir = 1;
+        t = 0;
+        dur = Math.max(0.75, 1.35 - rally * 0.045);
+        arc = 16 + Math.random() * 12;
+      } else if (dir < 0) {
+        swung = true;
+      }
+    };
+    const tick = (now: number) => {
+      const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
+      last = now;
+      if (running) {
+        if (wait > 0) {
+          wait -= dt;
+          if (wait <= 0) {
+            ball.classList.remove('off');
+            trailEl.classList.remove('off');
+            serve();
+          }
+        } else {
+          t += dt / dur;
+          if (dir > 0 && t >= 1) {
+            // o Weng sempre devolve (e às vezes faz graça)
+            pose(wengEl, 'w', 1);
+            setTimeout(() => pose(wengEl, 'w', 2), 160);
+            setTimeout(() => pose(wengEl, 'w', 0), 420);
+            AudioSystem.play('blip');
+            dir = -1;
+            t = 0;
+            swung = false;
+            arc = 16 + Math.random() * 14;
+          } else if (dir < 0 && t >= 1.06) {
+            miss(swung ? 'Bateu cedo demais! Espera ela chegar.' : ['Ih, passou!', 'Cadê a raquete, amor?', 'A bolinha fugiu!'][Math.floor(Math.random() * 3)]);
+          } else if (dir < 0 && swung && t < 0.84 && !ball.classList.contains('early')) {
+            // bateu cedo: a bolinha passa direto
+            ball.classList.add('early');
+          }
+        }
+        if (dir < 0 && t < 0.05) ball.classList.remove('early');
+        place();
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    const finish = () => {
+      if (done) return;
+      done = true;
+      running = false;
+      cancelAnimationFrame(raf);
+      window.removeEventListener('keydown', onKey);
+      ring.classList.remove('on', 'good');
+      const stars = best >= GOAL ? 3 : best >= 8 ? 2 : 1;
+      ui.say(stars === 3 ? 'bella' : 'weng', stars === 3 ? `${best} seguidas! A gente é a dupla de frescobol mais linda dessa praia.` : `Recorde: ${best}. E a bolinha acertou a cabeça de um senhor dormindo... DESCULPA, SENHOR!`);
+      ui.end(stars, 'Correr pro mar', () => resolve({ stars, mistakes: 3 - lives, best }));
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (InputSystem.context !== 'minigame' || e.repeat) return;
+      if (e.code !== 'Space' && e.code !== 'KeyE' && e.code !== 'Enter') return;
+      e.preventDefault();
+      if (!running && !done) start();
+      else swing();
+    };
+    const hitBtn = h('button', { class: 'btn primary ce-serve' }, 'Rebater');
+    hitBtn.addEventListener('click', swing);
+    const start = () => {
+      if (running || done) return;
+      rules.classList.add('off');
+      running = true;
+      ui.actions.replaceChildren(hitBtn);
+      ui.say('weng', 'Lá vai! Devagarinho primeiro.');
+      serve();
+    };
+    const startBtn = h('button', { class: 'btn primary' }, 'Bora jogar');
+    startBtn.addEventListener('click', start);
+    ui.actions.append(startBtn);
+    window.addEventListener('keydown', onKey);
+    hud();
+    place();
+    ui.say('bella', 'Frescobol! Valendo: quem deixar cair paga o açaí.');
+    raf = requestAnimationFrame(tick);
+  });
+}

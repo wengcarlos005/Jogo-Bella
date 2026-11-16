@@ -264,6 +264,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     bateBate: () => UI.bateBate(),
     sol: () => UI.sol(),
     tempestade: () => UI.tempestade(),
+    frescobol: () => UI.frescobol(),
     boatRace: () => UI.boatRace(),
     breakfast: () => UI.breakfast(),
     vignette: (m, side) => UI.vignette(m, side),

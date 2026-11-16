@@ -13,7 +13,7 @@ import { playFogosGame } from './screens/FogosGame';
 import { playPedrinhaGame } from './screens/PedrinhaGame';
 import { playArgolasGame } from './screens/ArgolasGame';
 import { playBateBateGame } from './screens/BateBateGame';
-import { playSolGame, playTempestadeGame } from './screens/RoGames';
+import { playSolGame, playTempestadeGame, playFrescobolGame } from './screens/RoGames';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -218,6 +218,11 @@ class UIManagerImpl {
   sol(): Promise<MiniResult & { burn: number }> {
     this.dialogue.close();
     return this.replayable(() => playSolGame(this.root));
+  }
+
+  frescobol(): Promise<MiniResult & { best: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playFrescobolGame(this.root));
   }
 
   tempestade(): Promise<MiniResult & { lives: number }> {

@@ -124,9 +124,9 @@ const scripts: Record<string, Script> = {
     }
     await ctx.say('weng', 'Frescobol! Vamos ver quem deixa cair primeiro.');
     await ctx.say('bella', 'Você. Com certeza você.');
-    await ctx.fadeOut(400);
-    await ctx.narrate('Toc. Toc. Toc. Toc... e a bolinha foi parar na cabeça de um senhor que tava dormindo.');
-    await ctx.fadeIn(400);
+    const fr = await ctx.frescobol();
+    ctx.setFlag('ro-frescobol-estrelas', fr.stars);
+    await ctx.narrate('Na última rebatida, a bolinha foi parar na cabeça de um senhor que tava dormindo.');
     await ctx.say('weng', 'DESCULPA, SENHOR!');
     await ctx.say('bella', 'Hahahaha! Corre, Weng!');
     await ctx.narrate('Depois, os dois correram pro mar, pularam onda e fizeram um castelo de areia meio torto.');
