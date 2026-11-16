@@ -625,17 +625,18 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 ### O que aconteceu (contado pelo Weng)
 
 - Fomos pra **Praia de Icaraí**, onde os tios do Weng moram, num **apartamento luxuoso**.
-- Era a família da **outra tia** (a mãe da Lilian), não a tia Tim.
+- Era a família da **outra tia**, que todo mundo chama só de **"mãe da Lilian"** (sem nome no jogo), não a tia Tim.
+- Estavam lá: a **mãe da Lilian**, o **tio** (marido dela), a **Lilian** e o namorado dela, **Vinicius**, a **Vivian**, o **Diego** e o **Mingau**. Mais ninguém.
 - Passeamos no **Caminho Niemeyer**.
-- Almoçamos no **OnFire American BBQ** (churrasco americano defumado, em São Francisco, Niterói).
-- A tia **lotou a Bella de chocolates**.
+- Comemos **churrasco no OnFire American BBQ** (churrasco americano defumado, em São Francisco, Niterói).
+- A mãe da Lilian **lotou a Bella de chocolates**.
 
 ### Roteiro
 
-1. **O apê em Icaraí**: chegada, a tia recebe e já enche a Bella de chocolate. Minigame **Chuva de chocolate** (pegar os chocolates que a tia joga, desviando dos "chega, tia!").
+1. **O apê em Icaraí**: chegada, a mãe da Lilian recebe e já enche a Bella de chocolate; o tio na varanda; a Lilian apresenta o Vinicius (o Weng e o Diego zoam ele); o Mingau querendo os chocolates da Bella. Minigame **Chuva de chocolate** (pegar os chocolates que a tia joga, desviando dos "chega, tia!").
 2. **A varanda**: vista da Praia de Icaraí e da Pedra de Itapuca, com o Rio e o Pão de Açúcar do outro lado da baía.
 3. **Caminho Niemeyer**: as curvas brancas, a Praça JK, o Teatro Popular. Minigame **Foto no Niemeyer** (enquadrar o casal e o prédio na foto).
-4. **Almoço no OnFire**: brisket, costela, pulled pork, molho barbecue. Minigame **Bandeja do pitmaster**.
+4. **Churrasco no OnFire**: a família inteira numa mesa grande; brisket, costela, linguiça, molho barbecue. Minigame **Bandeja do pitmaster** (montar a bandeja do pedido de cada um).
 5. **Fim**: pôr do sol na baía.
 
 ### 4A. Apê em Icaraí (cenário vazio). Anexe `art-source/maps/ar-cobertura.webp` como estilo.
@@ -714,10 +715,44 @@ Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, no floor, no shad
 5. A potted plant in a barrel planter (about 80x110 px).
 ```
 
-### 4D. A tia (mãe da Lilian). Anexe `public/assets/npcs/atendente-walk.png` como layout e uma foto dela.
+### 4D. NPCs novos: mãe da Lilian, tio e Vinicius
+
+**Mãe da Lilian.** Anexe `public/assets/npcs/atendente-walk.png` como layout e uma foto dela.
 
 ```
-Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and smile, in the same cute chibi pixel style): [descrição da tia: idade, cabelo, roupa], carrying a small gift bag full of chocolates.
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and smile, in the same cute chibi pixel style): [descrição da mãe da Lilian: idade, cabelo, roupa], carrying a small gift bag full of chocolates.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+**Tio (marido da mãe da Lilian).** Anexe `atendente-walk.png` como layout e uma foto dele:
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and expression, in the same cute chibi pixel style): [descrição do tio: idade, cabelo, barba/óculos, roupa].
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+**Vinicius (namorado da Lilian).** Anexe `atendente-walk.png` como layout e uma foto dele:
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and expression, in the same cute chibi pixel style): [descrição do Vinicius: idade, cabelo, roupa].
 
 Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
 
@@ -778,5 +813,5 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 **Almoço no OnFire** (`memory-nt-03`)
 
 ```
-Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Inside a warm American barbecue restaurant with brick walls, a big black smoker with fire glow and Edison bulbs. At a wooden table with checkered paper, the attached girl and boy share a huge tray of smoked brisket, glazed ribs, pulled pork, mac and cheese and fries, both with barbecue sauce on their faces, laughing, with the boy's aunt and family around the table. No text, no logos, no UI, no watermark.
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Inside a warm American barbecue restaurant with brick walls, a big black smoker with fire glow and Edison bulbs. At a wooden table with checkered paper, the attached girl and boy share a huge tray of smoked brisket, glazed ribs, pulled pork, mac and cheese and fries, both with barbecue sauce on their faces, laughing. Around the big table, the boy's family: his aunt, his uncle, two young women cousins, a young man cousin, the boyfriend of one cousin and a 10-year-old boy, all laughing and passing plates. No text, no logos, no UI, no watermark.
 ```
