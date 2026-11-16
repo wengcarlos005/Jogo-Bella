@@ -74,8 +74,25 @@ export function playPedrinhaGame(parent: HTMLElement): Promise<MiniResult & { sk
     let raf = 0;
     let padXs: number[] = [];
 
-    const hud = () =>
-      ui.hud.replaceChildren(h('span', {}, `Jogada ${Math.min(round + 1, ROUNDS)}/${ROUNDS}`), h('span', { class: 'pe-placar' }, `Bella ${bella} × ${weng} Weng`));
+    let lastB = 0;
+    let lastW = 0;
+    const hud = () => {
+      const side = (who: 'bella' | 'weng', name: string, n: number, bump: boolean) =>
+        h('div', { class: `pe-sb-side ${who}` + (bump ? ' bump' : '') }, h('span', { class: 'pe-sb-name' }, name), h('span', { class: 'pe-sb-n' }, String(n)));
+      const lead = bella > weng ? 'bella' : weng > bella ? 'weng' : '';
+      const pips = h('div', { class: 'pe-sb-pips' }, ...Array.from({ length: ROUNDS }, (_, i) => h('i', { class: i < round ? 'done' : i === round ? 'now' : '' })));
+      ui.hud.replaceChildren(
+        h(
+          'div',
+          { class: 'pe-sb' + (lead ? ` lead-${lead}` : '') },
+          side('bella', 'Bella', bella, bella !== lastB),
+          h('div', { class: 'pe-sb-mid' }, h('span', { class: 'pe-sb-x' }, '×'), h('span', { class: 'pe-sb-round' }, `Jogada ${Math.min(round + 1, ROUNDS)}/${ROUNDS}`), pips),
+          side('weng', 'Weng', weng, weng !== lastW),
+        ),
+      );
+      lastB = bella;
+      lastW = weng;
+    };
     const paintAngle = () => {
       angleEl.replaceChildren('Ângulo: ', ...ANGLES.map((a, i) => h('span', { class: i === angle ? 'on' : '' }, a.name)));
       thrower.className = `pe-thrower a${angle}`;

@@ -756,6 +756,8 @@ export class GameScene extends Phaser.Scene {
         enabled: () => (h.enabledIf ? h.enabledIf() : true),
         run: () => this.runScript(h.interact),
         anchor: () => ({ x: r.centerX, y: r.y - 2 }),
+        // com a seta acesa, esse ponto vence os vizinhos (porta x varanda, luneta x foto)
+        priority: () => (h.markerIf?.() ? 1 : 0),
       });
       if (h.markerIf) {
         const m = h.marker;
@@ -1010,6 +1012,14 @@ export class GameScene extends Phaser.Scene {
       }
     }
     this.updateUmbrellas();
+    // personagens na parte de baixo da tela: a caixa de falas sobe pro topo (não cobre os dois)
+    {
+      const cam = this.cameras.main;
+      const ys = [this.player, this.npcs.get('weng')?.npc].filter((c) => c && c.visible).map((c) => (c!.y - cam.worldView.y) / cam.worldView.height);
+      const low = ys.length > 0 && Math.max(...ys) > 0.6;
+      const ui = document.getElementById('ui');
+      if (ui && ui.classList.contains('chars-low') !== low) ui.classList.toggle('chars-low', low);
+    }
 
     // tempo de jogo + autosave
     GameState.data.playtimeMs += time - this.lastTick;

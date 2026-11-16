@@ -8,7 +8,7 @@ export interface Interactable {
   enabled: () => boolean;
   run: () => Promise<void> | void;
   /** Prioridade (maior vence). O Weng que segue a Bella tem prioridade baixa. */
-  priority?: number;
+  priority?: number | (() => number);
   /** Ponto (mundo) onde o prompt aparece. */
   anchor: () => Vec2;
 }
@@ -40,8 +40,11 @@ export class InteractionSystem {
       if (!it.enabled()) continue;
       const r = Phaser.Geom.Rectangle.Clone(it.rect());
       Phaser.Geom.Rectangle.Inflate(r, 3, 3);
-      if (!r.contains(probe.x, probe.y)) continue;
-      const d = Phaser.Math.Distance.Between(feet.x, feet.y, r.centerX, r.centerY) - (it.priority ?? 0) * 100;
+      // olha do pé até o ponto à frente (personagens pequenos/perspectiva: o ponto pode passar por cima da área)
+      let hit = false;
+      for (const t of [1, 0.66, 0.33]) if (r.contains(feet.x + (probe.x - feet.x) * t, feet.y + (probe.y - feet.y) * t)) hit = true;
+      if (!hit) continue;
+      const d = Phaser.Math.Distance.Between(feet.x, feet.y, r.centerX, r.centerY) - (typeof it.priority === 'function' ? it.priority() : it.priority ?? 0) * 100;
       if (d < bestD) {
         best = it;
         bestD = d;

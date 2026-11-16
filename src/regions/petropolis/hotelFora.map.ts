@@ -36,24 +36,13 @@ const scripts: Record<string, Script> = {
   async chegada(ctx) {
     ctx.follow('weng', true);
     // manhã do aniversário: saindo do quarto
-    if (ctx.flag('pt-manha') && !ctx.flag('pt-manha-1')) {
-      ctx.setFlag('pt-manha-1');
+    if (ctx.flag('pt-manha') && !ctx.flag('pt-manha-2')) {
+      ctx.setFlag('pt-manha-2');
       ctx.weather('clear');
-      await ctx.narrate('Na manhã seguinte. Sol, neblina se abrindo e o cheiro de pão quentinho.');
-      await ctx.phone({ contact: 'Mãe', avatar: 'portrait-mae-bella', clock: '08:02', caption: 'No celular da Bella' }, [
-        { from: 'them', text: 'PARABÉNS MINHA FILHA!!!!!! 🎉🎂🎈' },
-        { from: 'them', text: 'Que Deus te abençoe muito, te amo demais' },
-        { from: 'me', text: 'Obrigada mãe!!! Te amo 🐥💕' },
-        { from: 'them', text: 'Fui a primeira a dar parabéns né??' },
-        { from: 'me', text: 'kkkkkk segunda. o Weng me acordou à meia-noite pra dar parabéns 🐥' },
-        { from: 'them', text: 'ESSE MENINO 😭 tá aprovado de novo' },
-        { from: 'them', text: 'Tá frio aí? Tá usando o casaco?' },
-        { from: 'me', text: 'Tô de casaco, de meia (dele), de manta e de Weng kkkkk' },
-        { from: 'them', text: 'Kkkkk manda beijo pra ele. O Alexandre mandou parabéns também' },
-        { from: 'them', text: '(ele disse "parabéns". só isso. mas disse com carinho)' },
-        { from: 'me', text: 'kkkkkk vindo dele é um abraço' },
-      ]);
-      ctx.toast('Tomem café da manhã na varanda do hotel');
+      await ctx.narrate('Depois do café na cama, os dois desceram pro jardim. Sol, e a neblina se abrindo lá embaixo.');
+      await ctx.say('bella', 'Olha esse sol! Ontem tava tudo branco de neblina.');
+      await ctx.say('weng', 'O dia sabia que era seu aniversário.');
+      ctx.toast('Hora do almoço: saiam pelo portão');
       return;
     }
     if (ctx.flag('pt-chegou')) return;
@@ -107,7 +96,7 @@ const scripts: Record<string, Script> = {
     }
     if (objActive('almoco')) {
       if (objActive('cafe')) {
-        await ctx.say('weng', 'Primeiro o café da manhã! Na varanda, ali à esquerda.');
+        await ctx.say('weng', 'Primeiro o café da manhã!');
         return;
       }
       await ctx.teleport('pt-restaurante', 'porta');
@@ -126,20 +115,8 @@ const scripts: Record<string, Script> = {
     await tirarFoto(ctx, 'pt-foto-3', 'A neblina descendo a serra. Ninguém vai acreditar que é de verdade.', ['bella', 'Selfie! Encosta aqui. Mais. MAIS.']);
   },
   async varanda(ctx) {
-    if (ctx.flag('pt-manha') && objActive('cafe')) {
-      await ctx.narrate('Antes de ela acordar, o Weng desceu escondido pra montar uma bandeja.');
-      const cf = await ctx.breakfast();
-      ctx.setFlag('pt-cafe-estrelas', cf.stars);
-      await ctx.narrate('Café na varanda, com a serra inteira de vista.');
-      await ctx.say('bella', cf.stars >= 2 ? 'Tudo que eu amo. Você decorou mesmo.' : 'Teve mamão na bandeja... mas eu perdoo. Hoje eu perdoo tudo.');
-      await ctx.say('garcom', 'Bom dia! Ficamos sabendo que tem aniversariante...');
-      await ctx.say('garcom', '(trazendo um bolinho com uma velinha) Parabéns, senhorita!');
-      await ctx.emote('bella', 'heart');
-      await ctx.say('bella', 'Esse é o segundo parabéns do dia. E ainda são nove da manhã!');
-      await ctx.say('weng', 'E ainda tem o almoço. Reservei um lugar especial.');
-      ctx.objective(Q, 'cafe');
-      ctx.hearts('player', 6);
-      ctx.toast('Quando quiserem, o almoço: saiam pelo portão');
+    if (ctx.flag('pt-manha')) {
+      await ctx.say('bella', 'Depois do café na cama, nem cabe mais nada. Mas que varanda linda.');
       return;
     }
     await ctx.say('bella', 'Mesinhas com guarda-sol e velinha. Café da manhã aqui amanhã, combinado?');
@@ -194,12 +171,16 @@ export const hotelForaMap: MapDef = {
     R(714, 388, 760, 472), // muro à direita da escada
     R(760, 392, 1000, 478), // canteiro de hortênsias e pedras
     R(965, 250, 1536, 425), // floresta e serra atrás do mirante
+    R(1068, 425, 1395, 452), // grade de trás do mirante (ninguém fica "voando" atrás dela)
+    R(1268, 448, 1302, 462), // pé da luneta
     R(1045, 425, 1068, 505), // grade esquerda do mirante
     R(1150, 500, 1405, 552), // grade da frente do mirante
     R(1395, 420, 1536, 600), // floresta à direita
     R(1068, 552, 1405, 650), // pedras embaixo do mirante
     R(1195, 600, 1536, 820), // árvores da direita
     R(0, 250, 140, 650), // árvores da esquerda
+    R(140, 488, 182, 566), // pedras rosadas da esquerda (a ponta que saía do bloco)
+    R(572, 352, 602, 394), // vaso à esquerda da porta da recepção
     R(85, 560, 230, 652), // hortênsias da esquerda
     R(0, 640, 665, 1024), // estacionamento e muros
     R(436, 615, 500, 675), // pedra
@@ -262,10 +243,9 @@ export const hotelForaMap: MapDef = {
     { rect: R(560, 560, 700, 640), interact: 'foto1', label: 'Foto do hotel', markerIf: () => objActive('fotos') && objDone('mirante') && !GameState.is('pt-foto-1') },
     { rect: R(715, 590, 850, 670), interact: 'foto2', label: 'Foto das hortênsias', markerIf: () => objActive('fotos') && objDone('mirante') && !GameState.is('pt-foto-2') },
     { rect: R(1290, 425, 1370, 500), interact: 'foto3', label: 'Foto da serra', markerIf: () => objActive('fotos') && objDone('mirante') && !GameState.is('pt-foto-3') },
-    { rect: R(1265, 395, 1310, 480), interact: 'luneta', label: 'Luneta', markerIf: () => objActive('mirante') },
-    { rect: R(595, 300, 672, 400), interact: 'porta', label: 'Recepção', markerIf: () => objActive('checkin') && objDone('fotos') },
+    { rect: R(1200, 395, 1360, 510), interact: 'luneta', label: 'Luneta', markerIf: () => objActive('mirante') },
+    { rect: R(580, 300, 690, 420), interact: 'porta', label: 'Recepção', markerIf: () => objActive('checkin') && objDone('fotos') },
     // a varanda: entra-se pelo patamar da escada (seta pra esquerda)
-    { rect: R(560, 340, 625, 400), interact: 'varanda', label: 'Varanda', markerIf: () => GameState.is('pt-manha') && objActive('cafe'), marker: { dir: 'left' } },
     { rect: R(160, 380, 560, 460), interact: 'varanda', label: 'Varanda' },
     // depois do café: o portão leva pro restaurante
     { rect: R(745, 890, 940, 955), interact: 'saida', label: 'Restaurante', markerIf: () => GameState.is('pt-manha') && objDone('cafe') },

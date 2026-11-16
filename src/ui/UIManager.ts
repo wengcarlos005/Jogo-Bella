@@ -18,6 +18,7 @@ import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
 import { showHowTo, HOWTO } from './screens/HowTo';
+import { curtainClose } from './screens/Curtain';
 import { attachKeyNav } from './keyNav';
 import { UI_WIDTH } from '@/config/gameConfig';
 import { DialogueBox } from './components/DialogueBox';
@@ -160,10 +161,19 @@ class UIManagerImpl {
    * Roda um minigame com a opção "Jogar de novo": quando a tela final aparece (as estrelas), entra
    * um botão ao lado do de continuar; se clicar, o mesmo minigame recomeça do zero.
    */
-  private async replayable<T>(run: () => Promise<T>, howto?: keyof typeof HOWTO): Promise<T> {
+  private async replayable<T>(run: () => Promise<T>, howto?: keyof typeof HOWTO, name?: string): Promise<T> {
+    const title = name ?? (howto ? HOWTO[howto].title : 'Minijogo');
+    // cortina de entrada: o jogo nunca começa "do nada"
+    let open: (() => Promise<void>) | null = await curtainClose(this.root, title);
     // "Como jogar" antes da primeira partida (os minigames com regras na própria tela não passam isso)
-    if (howto) await showHowTo(this.root, HOWTO[howto]);
-    for (;;) {
+    if (howto) {
+      const shown = showHowTo(this.root, HOWTO[howto]);
+      await open();
+      await shown;
+      open = await curtainClose(this.root, title, 'Valendo!', true);
+    }
+    for (let round = 0; ; round++) {
+      if (round > 0) open = await curtainClose(this.root, title, 'De novo!', true);
       let again = false;
       const obs = new MutationObserver(() => {
         const stars = this.root.querySelector('.screen .bg-stars');
@@ -187,7 +197,13 @@ class UIManagerImpl {
       obs.observe(this.root, { childList: true, subtree: true });
       const detach = attachKeyNav(this.root);
       try {
-        const r = await run();
+        const game = run();
+        if (open) {
+          const o = open;
+          open = null;
+          void o();
+        }
+        const r = await game;
         if (!again) return r;
       } finally {
         obs.disconnect();
@@ -202,47 +218,47 @@ class UIManagerImpl {
 
   cinema(): Promise<CinemaResult> {
     this.dialogue.close();
-    return this.replayable(() => playCinemaGame(this.root));
+    return this.replayable(() => playCinemaGame(this.root), undefined, 'Susto na Sala 3');
   }
 
   ceia(): Promise<MiniResult> {
     this.dialogue.close();
-    return this.replayable(() => playCeiaGame(this.root));
+    return this.replayable(() => playCeiaGame(this.root), undefined, 'A mesa giratória');
   }
 
   pedrinha(): Promise<MiniResult & { skips: number }> {
     this.dialogue.close();
-    return this.replayable(() => playPedrinhaGame(this.root));
+    return this.replayable(() => playPedrinhaGame(this.root), undefined, 'Pedrinha na lagoa');
   }
 
   sol(): Promise<MiniResult & { burn: number }> {
     this.dialogue.close();
-    return this.replayable(() => playSolGame(this.root));
+    return this.replayable(() => playSolGame(this.root), undefined, 'Sol de rachar');
   }
 
   frescobol(): Promise<MiniResult & { best: number }> {
     this.dialogue.close();
-    return this.replayable(() => playFrescobolGame(this.root));
+    return this.replayable(() => playFrescobolGame(this.root), undefined, 'Frescobol');
   }
 
   tempestade(): Promise<MiniResult & { lives: number }> {
     this.dialogue.close();
-    return this.replayable(() => playTempestadeGame(this.root));
+    return this.replayable(() => playTempestadeGame(this.root), undefined, 'A tempestade');
   }
 
   bateBate(): Promise<MiniResult & { hits: number }> {
     this.dialogue.close();
-    return this.replayable(() => playBateBateGame(this.root));
+    return this.replayable(() => playBateBateGame(this.root), undefined, 'Bate-bate');
   }
 
   argolas(): Promise<MiniResult & { prize: boolean }> {
     this.dialogue.close();
-    return this.replayable(() => playArgolasGame(this.root));
+    return this.replayable(() => playArgolasGame(this.root), undefined, 'Jogo das argolas');
   }
 
   fogos(): Promise<MiniResult & { photos: number }> {
     this.dialogue.close();
-    return this.replayable(() => playFogosGame(this.root));
+    return this.replayable(() => playFogosGame(this.root), undefined, 'Fogos da virada');
   }
 
   market(): Promise<MiniResult & { pacoca: boolean }> {
@@ -251,11 +267,11 @@ class UIManagerImpl {
   }
   clouds(): Promise<MiniResult> {
     this.dialogue.close();
-    return this.replayable(() => playCloudGame(this.root));
+    return this.replayable(() => playCloudGame(this.root), undefined, 'Formas nas nuvens');
   }
   boatRace(): Promise<MiniResult> {
     this.dialogue.close();
-    return this.replayable(() => playBoatGame(this.root));
+    return this.replayable(() => playBoatGame(this.root), undefined, 'Corrida de pedalinho');
   }
   breakfast(): Promise<MiniResult> {
     this.dialogue.close();

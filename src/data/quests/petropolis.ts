@@ -28,7 +28,7 @@ export const PETROPOLIS_QUESTS: QuestDef[] = [
       { id: 'fotos', text: 'Tirar 3 fotos do hotel', hint: 'Procure os ♥: a casa, as hortênsias azuis e a neblina na serra.' },
       { id: 'checkin', text: 'Fazer o check-in', hint: 'A recepção fica no alto da escadaria.' },
       { id: 'noite', text: 'A primeira noite no quarto 12', hint: 'Lareira primeiro. Depois, a cama (e a meia-noite).' },
-      { id: 'cafe', text: 'Café da manhã de aniversário na varanda', hint: 'A varanda fica à esquerda, no alto da escada.' },
+      { id: 'cafe', text: 'Café da manhã de aniversário na cama', hint: 'O Weng acorda cedo e monta a bandeja escondido.' },
       { id: 'almoco', text: 'Almoço de aniversário no restaurante', hint: 'A mesa da rosa fica no meio do salão, debaixo do lustre.' },
     ],
   },

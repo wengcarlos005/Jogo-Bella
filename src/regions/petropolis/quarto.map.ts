@@ -142,6 +142,47 @@ const scripts: Record<string, Script> = {
     await ctx.narrate('Ele foi o primeiro. Antes de todo mundo.');
     ctx.objective(Q, 'noite');
     ctx.setFlag('pt-manha');
+    // de manhã cedo: só o Weng sai, de fininho, pra montar a bandeja (a Bella ainda dorme)
+    ctx.weather('clear');
+    await ctx.narrate('Sete da manhã. A Bella dormindo de boca aberta, enrolada na manta.');
+    await ctx.narrate('O Weng saiu de fininho, de meia, segurando a porta pra ela não bater.');
+    await ctx.narrate('Lá embaixo, o buffet do hotel. Ele sabia de cor tudo que ela ama. (Quase tudo.)');
+    const cf = await ctx.breakfast();
+    ctx.setFlag('pt-cafe-estrelas', cf.stars);
+    ctx.place('player', 13.6, 15.4, 'right');
+    ctx.place('weng', 16.1, 15.4, 'left');
+    await ctx.frame(13.0, 14.4, 0);
+    await ctx.fadeIn(800);
+    await ctx.say('weng', '(abrindo a porta com o pé, bandeja na mão) Bom dia, aniversariante...');
+    await ctx.say('bella', 'Hm... que cheiro é esse... PÃO DE QUEIJO?');
+    await ctx.emote('bella', 'exclaim');
+    await ctx.say('bella', 'Café na cama?! Você saiu sozinho pra fazer isso?');
+    await ctx.say('weng', 'Saí de meia pra não fazer barulho. Quase escorreguei na escada.');
+    await ctx.say('bella', cf.stars >= 2 ? 'Tudo que eu amo. Você decorou mesmo, né?' : 'Tem mamão na bandeja... mas hoje eu perdoo tudo.');
+    await ctx.say('weng', cf.stars >= 2 ? 'Eu presto atenção em você. É meu hobby.' : 'O mamão é decoração. Juro.');
+    ctx.hearts('player', 6);
+    await ctx.narrate('Aí o celular dela começou a vibrar em cima da mesinha.');
+    await ctx.phone({ contact: 'Mãe', avatar: 'portrait-mae-bella', clock: '08:02', caption: 'No celular da Bella' }, [
+      { from: 'them', text: 'PARABÉNS MINHA FILHA!!!!!! 🎉🎂🎈' },
+      { from: 'them', text: 'Que Deus te abençoe muito, te amo demais' },
+      { from: 'me', text: 'Obrigada mãe!!! Te amo 🐥💕' },
+      { from: 'them', text: 'Fui a primeira a dar parabéns né??' },
+      { from: 'me', text: 'kkkkkk segunda. o Weng me acordou à meia-noite pra dar parabéns 🐥' },
+      { from: 'me', text: 'e agora trouxe café na cama 😭' },
+      { from: 'them', text: 'ESSE MENINO 😭 tá aprovado de novo' },
+      { from: 'them', text: 'Tá frio aí? Tá usando o casaco?' },
+      { from: 'me', text: 'Tô de casaco, de meia (dele), de manta e de Weng kkkkk' },
+      { from: 'them', text: 'Kkkkk manda beijo pra ele. O Alexandre mandou parabéns também' },
+      { from: 'them', text: '(ele disse "parabéns". só isso. mas disse com carinho)' },
+      { from: 'me', text: 'kkkkkk vindo dele é um abraço' },
+    ]);
+    await ctx.say('bella', 'Minha mãe mandou beijo. E disse que você tá aprovado de novo.');
+    await ctx.say('weng', 'De novo? Eu tinha sido reprovado em algum momento?');
+    await ctx.say('bella', 'Nunca. Ela só gosta de aprovar você.');
+    await ctx.say('weng', 'E ainda tem o almoço. Reservei um lugar especial.');
+    ctx.objective(Q, 'cafe');
+    await ctx.fadeOut(700);
+    ctx.setFlag('pt-manha-1');
     ctx.follow('weng', true);
     await ctx.teleport('pt-hotel-fora', 'manha');
   },

@@ -11,19 +11,20 @@ const objActive = (o: string) => QuestSystem.isActive(Q) && !objDone(o);
 /** Retângulo no cenário ORIGINAL (art-source/maps/ar-cobertura.webp, 1536x1024). 48 px = 1 tile. */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
-/** Os cantinhos da cobertura que a Bella explora logo que chega. */
-const CANTOS = ['ar-cozinha', 'ar-mesa', 'ar-varanda'];
+/** Quem a Bella precisa cumprimentar logo que chega (a seta fica em cima de cada um). */
+const CANTOS = ['ar-oi-tim', 'ar-oi-anne', 'ar-oi-vivian', 'ar-oi-lilian'];
+const precisaOi = (f: string) => QuestSystem.isActive(Q) && objDone('chegar') && !objDone('casa') && !GameState.is(f);
 const cantoFeito = (f: string) => GameState.is(f);
 async function canto(ctx: ScriptContext, flag: string): Promise<void> {
-  if (!QuestSystem.isActive(Q) || !objDone('chegar') || objDone('casa') || ctx.flag(flag)) return;
+  if (!CANTOS.includes(flag) || !QuestSystem.isActive(Q) || !objDone('chegar') || objDone('casa') || ctx.flag(flag)) return;
   ctx.setFlag(flag);
   const falta = CANTOS.filter((c) => !cantoFeito(c)).length;
   if (falta) {
-    ctx.toast(falta === 1 ? 'Falta 1 cantinho da cobertura' : `Faltam ${falta} cantinhos da cobertura`);
+    ctx.toast(falta === 1 ? 'Falta dar oi pra 1 pessoa' : `Falta dar oi pra ${falta} pessoas`);
     return;
   }
   await ctx.wait(400);
-  await ctx.say('weng', 'Pronto, tour completo. Viu? Ninguém mordeu.');
+  await ctx.say('weng', 'Pronto, deu oi pra todo mundo. Viu? Ninguém mordeu.');
   await ctx.say('bella', 'A tia Tim já me deu três coisas pra comer e perguntou duas vezes se eu tô com fome.');
   await ctx.say('bella', 'E ninguém ficou me olhando torto. Eu acho.');
   await ctx.say('weng', 'Isso na língua da família quer dizer "a gente gosta de você".');
@@ -101,12 +102,22 @@ const scripts: Record<string, Script> = {
     ctx.nerves(60);
     ctx.follow('weng', true);
     ctx.objective(Q, 'chegar');
-    ctx.toast('Conheça a cobertura: a cozinha, a mesa giratória e a varanda');
+    ctx.toast('Dê oi pra família: tia Tim, Anne, Vivian e Lilian');
   },
 
   async tiaTim(ctx) {
     if (objDone('ceia')) {
       await ctx.say('tia-tim', 'Sobrou pato! Amanhã você leva um pouco pra casa, tá? Não aceito não como resposta.');
+      return;
+    }
+    if (precisaOi('ar-oi-tim')) {
+      await ctx.say('bella', 'Tia, precisa de ajuda aí? Tem tanta panela que parece cozinha de restaurante.');
+      await ctx.say('tia-tim', 'Ajuda nada, hoje você é visita! Hoje é dia de comida chinesa: pato, macarrão de arroz, frango xadrez... e mais um monte.');
+      await ctx.say('tia-tim', 'Prova esse aqui. Prova! Tá quente, sopra.');
+      await ctx.emote('bella', 'heart');
+      await ctx.say('bella', 'Tia... isso tá MUITO bom.');
+      await ctx.say('tia-tim', 'Então come mais! Ninguém sai com fome daqui.');
+      await canto(ctx, 'ar-oi-tim');
       return;
     }
     await ctx.say('tia-tim', 'Tá com fome? Já experimentou o bolinho? Pega mais um, pega!');
@@ -126,6 +137,7 @@ const scripts: Record<string, Script> = {
       const n = Number(GameState.getFlag<number>('nervosismo') ?? 0);
       if (n > 0) ctx.nerves(Math.max(0, n - 15));
     }
+    await canto(ctx, 'ar-oi-lilian');
   },
   async mingau(ctx) {
     if (objDone('ceia')) {
@@ -150,6 +162,7 @@ const scripts: Record<string, Script> = {
       const n = Number(GameState.getFlag<number>('nervosismo') ?? 0);
       if (n > 0) ctx.nerves(Math.max(0, n - 15));
     }
+    await canto(ctx, 'ar-oi-vivian');
   },
   async diego(ctx) {
     if (objDone('ceia')) {
@@ -174,6 +187,7 @@ const scripts: Record<string, Script> = {
       const n = Number(GameState.getFlag<number>('nervosismo') ?? 0);
       if (n > 0) ctx.nerves(Math.max(0, n - 15));
     }
+    await canto(ctx, 'ar-oi-anne');
   },
   async julinha(ctx) {
     if (objDone('ceia')) {
@@ -223,11 +237,7 @@ const scripts: Record<string, Script> = {
   },
   async fogao(ctx) {
     await ctx.say('bella', 'Tem tanta panela no fogo que parece cozinha de restaurante.');
-    await ctx.say('tia-tim', 'Hoje é dia de comida chinesa! Pato, macarrão de arroz, frango xadrez... e mais um monte. Ninguém sai com fome daqui.');
-    await ctx.say('bella', 'Tá cheirando muito bem, tia!');
-    await ctx.say('tia-tim', 'Então prova esse aqui. Prova! Tá quente, sopra.');
-    await ctx.emote('bella', 'heart');
-    await canto(ctx, 'ar-cozinha');
+    await ctx.say('weng', 'A tia Tim cozinha desde cedo. Se chegar perto, ela te dá comida. É uma armadilha.');
   },
   async cooler(ctx) {
     await ctx.say('weng', 'O isopor de gelo. Em ano-novo de família, ele é o objeto mais importante da casa.');
@@ -246,7 +256,6 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'É pra passar os pratos sem ninguém precisar levantar. Na ceia ela vai estar lotada.');
     await ctx.say('bella', 'E se eu quiser um prato que tá do outro lado?');
     await ctx.say('weng', 'Você gira. Devagar. Se girar rápido demais, alguém perde o bolinho.');
-    await canto(ctx, 'ar-mesa');
   },
   async tv(ctx) {
     await ctx.say('bella', 'A TV ligada no especial de fim de ano e ninguém assistindo.');
@@ -268,7 +277,6 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Weng, a varanda dá de frente pra lagoa INTEIRA.');
     await ctx.say('weng', 'À meia-noite os fogos estouram ali na orla. Daqui a gente vê tudo, de camarote.');
     await ctx.say('bella', 'Então já tá reservado: meia-noite, nessa varanda, com você.');
-    await canto(ctx, 'ar-varanda');
   },
 };
 
@@ -299,9 +307,9 @@ export const coberturaMap: MapDef = {
     R(40, 740, 150, 830), // planta (esq., embaixo)
     R(0, 842, 1536, 1024), // portas de vidro da varanda
     // móveis soltos: só a base
-    R(845, 520, 1225, 790), // mesa redonda com as cadeiras (quem passa atrás fica escondido pelas cadeiras de cima)
-    R(290, 500, 755, 700), // sofá em L (assento e chaise)
-    R(410, 700, 605, 800), // mesinha de centro
+    R(860, 562, 1212, 782), // mesa redonda com as cadeiras (dá pra passar atrás: as cadeiras de cima escondem)
+    R(285, 548, 760, 700), // sofá em L (assento e chaise; atrás dele é corredor)
+    R(420, 722, 595, 796), // mesinha de centro
     R(1205, 390, 1295, 422), // isopor
     R(1252, 588, 1290, 602), // ventilador
     R(160, 785, 305, 822), // brinquedos
@@ -322,28 +330,28 @@ export const coberturaMap: MapDef = {
     { rect: R(395, 380, 470, 500), interact: 'gato', label: 'Gatinho da sorte' },
     { rect: R(495, 380, 560, 500), interact: 'no', label: 'Nó vermelho' },
     { rect: R(860, 380, 960, 500), interact: 'relogio', label: 'Relógio' },
-    { rect: R(1100, 250, 1220, 340), interact: 'fogao', label: 'Cozinha', markerIf: () => objDone('chegar') && objActive('casa') && !GameState.is('ar-cozinha') },
+    { rect: R(1100, 250, 1220, 340), interact: 'fogao', label: 'Cozinha', },
     { rect: R(1190, 370, 1310, 445), interact: 'cooler', label: 'Isopor' },
-    { rect: R(850, 560, 1210, 800), interact: 'mesa', label: 'Mesa', markerIf: () => (objDone('chegar') && objActive('casa') && !GameState.is('ar-mesa')) || (objDone('praia') && objActive('ceia')) },
+    { rect: R(850, 560, 1210, 800), interact: 'mesa', label: 'Mesa', markerIf: () => objDone('praia') && objActive('ceia') },
     { rect: R(1300, 490, 1330, 800), interact: 'tv', label: 'TV' },
     { rect: R(150, 760, 320, 835), interact: 'brinquedos', label: 'Brinquedos' },
     { rect: R(300, 590, 740, 700), interact: 'sofa', label: 'Sofá' },
-    { rect: R(560, 815, 1000, 845), interact: 'varanda', label: 'Varanda', markerIf: () => (objDone('chegar') && objActive('casa') && !GameState.is('ar-varanda')) || (objDone('ceia') && objActive('virada')) },
+    { rect: R(500, 800, 1100, 845), interact: 'varanda', label: 'Varanda', marker: { x: 0.5, y: 1.05 }, markerIf: () => objDone('ceia') && objActive('virada') },
   ],
 
   npcs: [
     // cozinha: a tia Tim no fogão e a Anne ajudando
-    { id: 'tia-tim', sprite: 'tia-tim', tx: 1110 / 48, ty: 398 / 48, facing: 'up', interact: 'tiaTim', behavior: 'wander', wanderRadius: 0.8, wanderAxis: 'x' },
-    { id: 'anne', sprite: 'anne', tx: 1048 / 48, ty: 405 / 48, facing: 'right', interact: 'anne' },
+    { id: 'tia-tim', sprite: 'tia-tim', tx: 1110 / 48, ty: 398 / 48, facing: 'up', interact: 'tiaTim', markerIf: () => precisaOi('ar-oi-tim'), behavior: 'wander', wanderRadius: 0.8, wanderAxis: 'x' },
+    { id: 'anne', sprite: 'anne', tx: 1048 / 48, ty: 405 / 48, facing: 'right', interact: 'anne', markerIf: () => precisaOi('ar-oi-anne') },
     // entre o sofá e a mesa
-    { id: 'lilian', sprite: 'lilian', tx: 800 / 48, ty: 600 / 48, facing: 'down', interact: 'lilian' },
+    { id: 'lilian', sprite: 'lilian', tx: 808 / 48, ty: 650 / 48, facing: 'down', interact: 'lilian', markerIf: () => precisaOi('ar-oi-lilian') },
     // perto da TV
-    { id: 'vivian', sprite: 'vivian', tx: 1282 / 48, ty: 727 / 48, facing: 'left', interact: 'vivian' },
+    { id: 'vivian', sprite: 'vivian', tx: 1282 / 48, ty: 727 / 48, facing: 'left', interact: 'vivian', markerIf: () => precisaOi('ar-oi-vivian') },
     // na frente, perto da porta da varanda
-    { id: 'diego', sprite: 'diego', tx: 1150 / 48, ty: 828 / 48, facing: 'up', interact: 'diego' },
+    { id: 'diego', sprite: 'diego', tx: 1268 / 48, ty: 806 / 48, facing: 'left', interact: 'diego' },
     // os primos de 10 anos juntos, e a Laylinha com os brinquedos
-    { id: 'mingau', sprite: 'mingau', tx: 640 / 48, ty: 826 / 48, facing: 'right', interact: 'mingau' },
-    { id: 'julinha', sprite: 'julinha', tx: 728 / 48, ty: 826 / 48, facing: 'left', interact: 'julinha' },
+    { id: 'mingau', sprite: 'mingau', tx: 650 / 48, ty: 770 / 48, facing: 'right', interact: 'mingau' },
+    { id: 'julinha', sprite: 'julinha', tx: 738 / 48, ty: 770 / 48, facing: 'left', interact: 'julinha' },
     { id: 'laylinha', sprite: 'laylinha', tx: 340 / 48, ty: 772 / 48, facing: 'left', interact: 'laylinha' },
   ],
 
