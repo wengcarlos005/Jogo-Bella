@@ -231,6 +231,7 @@ export const ASSETS: AssetEntry[] = [
   { id: 'MEM-013', key: 'memory-ar-01', file: 'assets/cinematics/memory-ar-01.png', kind: 'image' },
   { id: 'MEM-015', key: 'memory-ro-01', file: 'assets/cinematics/memory-ro-01.png', kind: 'image' },
   { id: 'MEM-016', key: 'memory-ro-02', file: 'assets/cinematics/memory-ro-02.png', kind: 'image' },
+  { id: 'MEM-017', key: 'memory-ar-02', file: 'assets/cinematics/memory-ar-02.png', kind: 'image' },
   { id: 'MEM-014', key: 'memory-ar-03', file: 'assets/cinematics/memory-ar-03.png', kind: 'image' },
 
   // UI

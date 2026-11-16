@@ -165,7 +165,7 @@ export const varandaMap: MapDef = {
     R(1400, 560, 1515, 625), // planta (dir., embaixo)
     R(1440, 0, 1536, 470), // parede da direita (em cima)
     R(1478, 470, 1536, 1024), // parede da direita (embaixo)
-    R(0, 628, 1536, 1024), // guarda-corpo de vidro e a vista
+    R(0, 612, 1536, 1024), // guarda-corpo de vidro e a vista (ninguém pisa no corrimão)
     // móveis soltos: só a base
     R(560, 368, 960, 432), // mesa de frutas
     R(1085, 470, 1355, 522), // rede
@@ -185,7 +185,7 @@ export const varandaMap: MapDef = {
   ],
 
   hotspots: [
-    { rect: R(380, 560, 1150, 628), interact: 'guarda', label: 'Guarda-corpo', markerIf: () => objActive('virada') },
+    { rect: R(380, 545, 1150, 615), interact: 'guarda', label: 'Guarda-corpo', markerIf: () => objActive('virada') },
     { rect: R(62, 40, 305, 430), interact: 'churrasqueira', label: 'Churrasqueira' },
     { rect: R(1080, 460, 1360, 530), interact: 'rede', label: 'Rede' },
     { rect: R(550, 330, 970, 440), interact: 'mesaFrutas', label: 'Mesa de frutas' },
@@ -195,11 +195,11 @@ export const varandaMap: MapDef = {
   npcs: [
     { id: 'tia-tim', sprite: 'tia-tim', tx: 13.2, ty: 10.2, facing: 'down', interact: 'tiaTim' },
     { id: 'lilian', sprite: 'lilian', tx: 20.6, ty: 10.4, facing: 'down', interact: 'lilian' },
-    { id: 'mingau', sprite: 'mingau', tx: 10.6, ty: 12.4, facing: 'down', interact: 'mingau' },
+    { id: 'mingau', sprite: 'mingau', tx: 10.6, ty: 11.4, facing: 'down', interact: 'mingau' },
     { id: 'vivian', sprite: 'vivian', tx: 29.0, ty: 8.4, facing: 'left', interact: 'vivian' },
     { id: 'diego', sprite: 'diego', tx: 230 / 48, ty: 445 / 48, facing: 'right', interact: 'diego' },
     { id: 'anne', sprite: 'anne', tx: 9.6, ty: 7.0, facing: 'down', interact: 'anne' },
-    { id: 'julinha', sprite: 'julinha', tx: 12.4, ty: 12.4, facing: 'down', interact: 'julinha' },
+    { id: 'julinha', sprite: 'julinha', tx: 12.4, ty: 11.4, facing: 'down', interact: 'julinha' },
     { id: 'laylinha', sprite: 'laylinha', tx: 15.2, ty: 11.2, facing: 'down', interact: 'laylinha' },
   ],
 
