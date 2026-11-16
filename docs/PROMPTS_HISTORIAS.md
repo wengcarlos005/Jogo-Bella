@@ -617,3 +617,166 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 ```
 Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. A beach kiosk with a striped awning in Rio das Ostras, Brazil, late afternoon. Dark storm clouds roll in over the sea and the first big raindrops fall. Under the awning, the attached girl and boy (beach clothes, a little sunburned and wet) sit at a plastic table full of fried snacks (french fries, fried fish, shrimp, fried cassava), laughing, while the wind blows napkins away. No text, no UI, no watermark.
 ```
+
+---
+
+## 4. Capítulo 6 — Niterói: "Do outro lado da baía"
+
+### O que aconteceu (contado pelo Weng)
+
+- Fomos pra **Praia de Icaraí**, onde os tios do Weng moram, num **apartamento luxuoso**.
+- Era a família da **outra tia** (a mãe da Lilian), não a tia Tim.
+- Passeamos no **Caminho Niemeyer**.
+- Almoçamos no **OnFire American BBQ** (churrasco americano defumado, em São Francisco, Niterói).
+- A tia **lotou a Bella de chocolates**.
+
+### Roteiro
+
+1. **O apê em Icaraí**: chegada, a tia recebe e já enche a Bella de chocolate. Minigame **Chuva de chocolate** (pegar os chocolates que a tia joga, desviando dos "chega, tia!").
+2. **A varanda**: vista da Praia de Icaraí e da Pedra de Itapuca, com o Rio e o Pão de Açúcar do outro lado da baía.
+3. **Caminho Niemeyer**: as curvas brancas, a Praça JK, o Teatro Popular. Minigame **Foto no Niemeyer** (enquadrar o casal e o prédio na foto).
+4. **Almoço no OnFire**: brisket, costela, pulled pork, molho barbecue. Minigame **Bandeja do pitmaster**.
+5. **Fim**: pôr do sol na baía.
+
+### 4A. Apê em Icaraí (cenário vazio). Anexe `art-source/maps/ar-cobertura.webp` como estilo.
+
+```
+Pixel art top-down 3/4 view of the inside of a luxurious, modern apartment facing the beach in Icaraí, Niterói, Brazil, seen from above with the walls cut away. Same art style, outline thickness, colors and camera angle as the attached reference image. Canvas 1536x1024 pixels, landscape.
+
+Layout: a spacious living and dining room with polished light marble floor in the center; an elegant open kitchen with a long island and bar stools at the top right; a hallway with bedroom doors at the top left; the front door at the left edge; along the whole bottom edge, wide floor-to-ceiling glass doors opening to a long balcony with a glass railing, and beyond it, far below, the curved Icaraí beach, the blue Guanabara Bay and a rocky islet near the sand.
+Details: a big abstract painting, warm wall lamps, a tall bookshelf, a bar cart against the wall, white curtains, indoor plants against the walls.
+
+DO NOT draw: the dining table, chairs, sofas, coffee table, rugs, people or animals. Where they would be, show clean continuous floor.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Objetos do apê** (anexe o cenário novo):
+
+```
+Pixel art sprite sheet of props for the luxurious apartment shown in the attached images. EXACTLY the same art style, outline, colors, lighting and top-down 3/4 camera angle, same scale: a standing adult is about 140 pixels tall.
+Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, no gradient, no floor, no shadows on the background. Each object complete and separate, at least 60 px of magenta between objects, nothing touching the edge:
+1. A large modern grey sectional sofa with cushions (about 300x150 px).
+2. A low marble coffee table with a big bowl FULL of colorful wrapped chocolates and bonbons (about 140x80 px).
+3. A long dark wood dining table for 6, empty on top (about 280x130 px), and 6 modern chairs, separate (about 50x80 px each).
+4. A soft round beige rug (about 260x120 px), flat.
+5. A tall floor lamp (about 40x150 px).
+6. Two balcony lounge chairs, separate (about 70x120 px each).
+7. A big gift basket full of chocolates with a red ribbon (about 100x100 px).
+```
+
+### 4B. Caminho Niemeyer (cenário vazio). Anexe `art-source/maps/ro-praia.webp` como estilo.
+
+```
+Pixel art top-down 3/4 view of the Caminho Niemeyer cultural complex in Niterói, Brazil, on a sunny late afternoon. Same art style, outline thickness, colors and camera angle as the attached reference image. Canvas 1536x1024 pixels, landscape.
+
+Layout: a huge open white concrete plaza (Praça JK) filling the center, with smooth curved paths; at the top left, a white modernist theater with a big undulating wavy concrete roof and a red curved ramp (Teatro Popular); at the top right, a white dome-shaped modern building; a long curved white walkway along the right side; at the bottom, a seaside promenade with palm trees and the blue Guanabara Bay with the Rio de Janeiro skyline and Sugarloaf Mountain far away on the horizon.
+
+DO NOT draw: people, animals, benches, lamp posts, kiosks or anything standing on the plaza. Clean continuous ground.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Objetos do Caminho Niemeyer** (anexe o cenário novo):
+
+```
+Pixel art sprite sheet of props for the modernist plaza shown in the attached images. EXACTLY the same art style, outline, colors, lighting and top-down 3/4 camera angle, same scale: a standing adult is about 140 pixels tall.
+Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, no ground, no shadows on the background. Each object separate, at least 60 px of magenta between objects, nothing touching the edge:
+1. A modern white curved concrete bench (about 180x70 px).
+2. A tall slim modern lamp post (about 40x180 px).
+3. A coconut water / ice cream cart with an umbrella (about 110x120 px).
+4. A palm tree (about 140x240 px).
+5. A white sculpture with a soft wavy shape (about 100x140 px).
+6. A small flock of pigeons on the ground (about 90x40 px).
+```
+
+### 4C. OnFire American BBQ (por dentro). Anexe `art-source/maps/piabeta-mexicano.webp` como estilo.
+
+```
+Pixel art top-down 3/4 view of the inside of an American barbecue restaurant (smokehouse) in Niterói, Brazil, seen from above with the walls cut away. Same art style, outline thickness, colors and camera angle as the attached reference image. Canvas 1536x1024 pixels, landscape.
+
+Layout: dark wood floor; exposed red brick walls; a long counter at the top with a big black barrel smoker and a grill behind it, with warm fire glow and smoke; neon-like warm signs WITHOUT readable text; Edison light bulbs hanging; a small kids play corner with colorful soft blocks at the top left; the entrance door at the bottom center.
+
+DO NOT draw: tables, chairs, booths, people or animals. Clean continuous floor where they would be.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Objetos do OnFire** (anexe o cenário novo):
+
+```
+Pixel art sprite sheet of props for the barbecue restaurant shown in the attached images. EXACTLY the same art style, outline, colors, lighting and top-down 3/4 camera angle, same scale: a standing adult is about 140 pixels tall.
+Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, no floor, no shadows on the background. Each object separate, at least 60 px of magenta between objects, nothing touching the edge:
+1. A big wooden table for 6 with a red-and-white checkered paper (about 260x130 px), EMPTY.
+2. Six wooden chairs, separate (about 50x80 px each).
+3. A rustic wooden booth bench (about 200x90 px).
+4. A metal bucket with a roll of paper towels and bottles of barbecue sauce (about 60x70 px).
+5. A potted plant in a barrel planter (about 80x110 px).
+```
+
+### 4D. A tia (mãe da Lilian). Anexe `public/assets/npcs/atendente-walk.png` como layout e uma foto dela.
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and smile, in the same cute chibi pixel style): [descrição da tia: idade, cabelo, roupa], carrying a small gift bag full of chocolates.
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+### 4E. Minigames
+
+**Chuva de chocolate** (anexe `bella-casual.png`):
+
+```
+Pixel art sprite sheet, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it:
+1. Chocolates and sweets, each about 70-90 px: a chocolate bar in red wrapper, a chocolate bar in blue wrapper, a heart-shaped chocolate box, a golden wrapped bonbon, a brigadeiro with sprinkles, a chocolate egg with a pink ribbon, a Kinder-style small egg (no logo).
+2. A green vegetable as a "trap" item: a broccoli (about 70 px).
+3. The attached girl seen from the front holding open a big pink gift bag with both hands above her head, happy, 2 frames: normal and catching (about 180x220 px each).
+4. A sparkle burst (about 80x80 px).
+No text, no logos, no UI, no watermark.
+```
+
+**Foto no Niemeyer** (anexe `bella-casual.png` + `weng-casual.png`):
+
+```
+Pixel art sprite sheet, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it:
+1. The attached girl and boy standing side by side posing for a photo, 3 poses: making a heart with hands together, peace sign, hugging (about 220x260 px each).
+2. A white seagull flying, 2 frames (about 90x60 px each).
+3. A phone camera viewfinder frame with white corners and a small focus square in the center (about 360x240 px).
+No text, no UI, no watermark.
+```
+
+**Bandeja do pitmaster** (anexe o cenário do OnFire):
+
+```
+Pixel art sprite sheet of American barbecue food seen from slightly above, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it, each about 120x110 px:
+1. Sliced smoked brisket with a dark pink smoke ring. 2. A rack of pork ribs glazed with barbecue sauce. 3. Pulled pork. 4. Smoked sausage slices. 5. Mac and cheese in a small skillet. 6. Coleslaw in a bowl. 7. Corn on the cob with butter. 8. French fries in a paper cone. 9. A cup of barbecue sauce. 10. A metal tray lined with checkered paper, EMPTY (about 360x220 px).
+No text, no logos, no UI, no watermark.
+```
+
+### 4F. Lembranças (1672x941, anexe `pascoa.png` + `bella-casual` + `weng-casual`)
+
+**Chocolates da tia** (`memory-nt-01`)
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. A bright, luxurious apartment living room in Icaraí, Niterói, with a big glass window showing the beach and Guanabara Bay. A smiling aunt piles a huge amount of chocolates and bonbons into the arms of the attached girl (long curly brown hair, pink glasses, black t-shirt), who laughs and can barely hold them all. The attached boy (short black hair, black t-shirt) stands next to her trying to steal one chocolate. No text, no UI, no watermark.
+```
+
+**Caminho Niemeyer** (`memory-nt-02`)
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Sunset at the Caminho Niemeyer in Niterói, Brazil: white modernist buildings with wavy concrete roofs, a big open white plaza, and the Guanabara Bay with the Rio de Janeiro skyline and Sugarloaf Mountain on the horizon, under an orange and pink sky. The attached girl (long curly brown hair, pink glasses, black t-shirt) and the attached boy (short black hair, black t-shirt) take a selfie together, cheek to cheek, smiling. No text, no UI, no watermark.
+```
+
+**Almoço no OnFire** (`memory-nt-03`)
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Inside a warm American barbecue restaurant with brick walls, a big black smoker with fire glow and Edison bulbs. At a wooden table with checkered paper, the attached girl and boy share a huge tray of smoked brisket, glazed ribs, pulled pork, mac and cheese and fries, both with barbecue sauce on their faces, laughing, with the boy's aunt and family around the table. No text, no logos, no UI, no watermark.
+```
