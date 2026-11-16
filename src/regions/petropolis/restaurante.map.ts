@@ -115,9 +115,40 @@ const scripts: Record<string, Script> = {
           'Corrida de pedalinho contra um cisne rosa, foto no palácio e formas nas nuvens no piquenique.',
           'Um hotel no alto do morro, lareira, chocolate quente e meias de lã.',
           'Meia-noite em ponto: ele ficou acordado só pra ser o primeiro a dar parabéns.',
-          'Café da manhã na varanda e um almoço chique com petit gâteau e velinha.',
+          'Café na cama de surpresa e um almoço chique com petit gâteau e velinha.',
         ],
       });
+      // a tia Tim chama os dois pra virada em Araruama
+      await ctx.narrate('Alguns meses depois. Fim de dezembro.');
+      await ctx.phone({ contact: 'Tia Tim', avatar: 'portrait-tia-tim', clock: '19:40', caption: 'No celular do Weng' }, [
+        { from: 'them', text: 'Weng!! Ano-novo é aqui em Araruama, já tá decidido' },
+        { from: 'them', text: 'A cobertura tá pronta, de frente pra lagoa. Dá pra ver os fogos da varanda' },
+        { from: 'them', text: 'E traz a Bella!!! Quero conhecer ela direito, nada de oi correndo' },
+        { from: 'me', text: 'Tia, vai ter muita gente?' },
+        { from: 'them', text: 'Só a família. Seus tios, a Anne, a Lilian, a Vivian, o Diego, as crianças...' },
+        { from: 'me', text: 'Então muita gente kkkk' },
+        { from: 'them', text: 'Vou fazer pato, macarrão de arroz, frango xadrez. Avisa ela que é pra vir com fome' },
+        { from: 'them', text: 'E fica até o dia primeiro! Tem parque de diversões aqui perto' },
+        { from: 'me', text: 'Vou falar com ela. Mas já pode contar com a gente 🧡' },
+        { from: 'them', text: 'Isso!!! Beijo, meu filho' },
+      ]);
+      await ctx.say('weng', 'Bella... a tia Tim chamou a gente pra passar a virada em Araruama.');
+      await ctx.say('bella', 'Com a sua família INTEIRA? Tipo, todo mundo junto, no mesmo lugar?');
+      await ctx.say('weng', 'Todo mundo. Mas ela fez questão de dizer: "traz a Bella". Com três pontos de exclamação.');
+      await ctx.say('bella', 'Três?! ...Tá. Eu vou. Mas se eu travar, você me salva.');
+      await ctx.say('weng', 'Sempre.');
+      await ctx.roadTrip('Petrópolis', 'Araruama', [
+        { who: 'bella', text: 'Weng, me fala de novo o nome de todo mundo. Devagar.' },
+        { who: 'weng', text: 'Tia Tim, a dona da casa. A Anne, minha irmã. A Lilian, a Vivian, o Diego...' },
+        { who: 'bella', text: 'E as crianças?' },
+        { who: 'weng', text: 'Mingau e Julinha, os dois de dez anos. E a Laylinha, de cinco. Ela vai grudar em você.' },
+        { who: 'bella', text: 'E se eu esquecer um nome? E se eu chamar a Vivian de Lilian?' },
+        { who: 'weng', text: 'Elas se confundem entre si. Ninguém vai notar.' },
+        { who: 'bella', text: 'Olha a lagoa! É enorme... parece mar.' },
+        { who: 'weng', text: 'É a Lagoa de Araruama. A varanda da tia dá de frente pra ela.' },
+        { who: 'bella', text: 'Tá. Respira, Bella. É só uma família. Uma família GRANDE.' },
+        { who: 'weng', text: 'Que já gosta de você. Chegamos.' },
+      ]);
       await ctx.chapterCard('Capítulo 4', 'Araruama', 'Ano-novo em família.', 'Começar');
       // o cartão do capítulo já apareceu: sem o banner de região repetido na chegada
       if (!GameState.data.regionsVisited.includes('araruama')) GameState.data.regionsVisited.push('araruama');

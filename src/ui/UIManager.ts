@@ -19,6 +19,7 @@ import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
 import { showHowTo, HOWTO } from './screens/HowTo';
 import { curtainClose } from './screens/Curtain';
+import { playRoadTrip, type TripLine } from './screens/RoadTrip';
 import { attachKeyNav } from './keyNav';
 import { UI_WIDTH } from '@/config/gameConfig';
 import { DialogueBox } from './components/DialogueBox';
@@ -372,6 +373,15 @@ class UIManagerImpl {
     card.classList.remove('show');
     await new Promise((r) => setTimeout(r, 500));
     card.remove();
+  }
+
+  /** Viagem de carro animada entre cidades (paisagem muda no caminho, conversa em balões). */
+  roadTrip(from: string, to: string, lines: { who: string; text: string }[], trees: [string, string] = ['hf-araucaria', 'pr-palmeira']): Promise<void> {
+    this.dialogue.close();
+    const NAMES: Record<string, string> = { bella: 'Bella', weng: 'Weng' };
+    const face = (who: string) => textureURL(`portrait-${who}`);
+    const tl: TripLine[] = lines.map((l) => ({ name: NAMES[l.who] ?? l.who, face: face(l.who), text: l.text, side: l.who === 'weng' ? 'right' : 'left' }));
+    return playRoadTrip(this.root, { from, to, lines: tl, treeA: textureURL(trees[0]), treeB: textureURL(trees[1]), car: textureURL('uber-car') });
   }
 
   private backdropEl: HTMLElement | null = null;

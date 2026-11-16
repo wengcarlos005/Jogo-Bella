@@ -101,6 +101,8 @@ export interface ScriptContext {
   /** Explosão de corações sobre um personagem. */
   hearts(who: string, count?: number): void;
   travel(label: string, icon?: string, ms?: number): Promise<void>;
+  /** Viagem de carro animada entre duas cidades, com a conversa do casal em balões. */
+  roadTrip(from: string, to: string, lines: { who: string; text: string }[], trees?: [string, string]): Promise<void>;
   /** Cartão de capítulo. `recap`: resumo do que aconteceu (fotos + frases que aparecem uma a uma). */
   chapterCard(kicker: string, title: string, sub: string, button?: string, recap?: { title?: string; photos?: string[]; lines: string[] }): Promise<void>;
   unlockRegion(id: import('./types').RegionId): void;
