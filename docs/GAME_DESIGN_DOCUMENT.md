@@ -46,7 +46,7 @@ Idle e caminhada em 4 direções (implementado), corrida (implementado via veloc
 
 ## 3. Estrutura da campanha (ordem cronológica obrigatória)
 
-9 capítulos. Lapa e Seropédica saíram do plano (decisão de escopo).
+10 capítulos. Lapa e Seropédica saíram do plano (decisão de escopo). O Capítulo 10 é uma reflexão em que a Bella decide o que vem depois.
 
 | # | Região | Capítulo | Ano | Papel narrativo | Duração alvo |
 |---|---|---|---|---|---|
@@ -58,7 +58,8 @@ Idle e caminhada em 4 direções (implementado), corrida (implementado via veloc
 | 6 | Niterói | Cap. 6 | Ano 1 | Do outro lado da baía | 30 min |
 | 7 | Cabo Frio | Cap. 7 | Ano 1 | Outro ano-novo | 30 min |
 | 8 | Botafogo | Cap. 8 | Ano 2 | Com o Pão de Açúcar ao fundo | 25 min |
-| 9 | Curitiba | Cap. 9 | Ano 3 | A melhor viagem (capítulo final) | 75 min |
+| 9 | Curitiba | Cap. 9 | Ano 3 | A melhor viagem | 75 min |
+| 10 | O próximo capítulo | Cap. 10 | Daqui pra frente | Reflexão: a Bella decide o que vem depois (conteúdo a definir pelo Weng) | — |
 | — | Piabetá (retorno) | Final | — | A carta | 15 min |
 | | | | | **Total campanha** | **≈ 6h40** |
 

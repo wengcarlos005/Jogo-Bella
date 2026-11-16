@@ -180,6 +180,8 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | PORT-020 | Retrato do garçom (Petrópolis) | portraits/garcom.png | ✅ feito do quadro de frente |
 | NPC-030 | Tia Tim (4×4 andando, avental vermelho) | npcs/tia-tim-walk.png | ✅ no jogo (+ retrato portraits/tia-tim.png) |
 | NPC-060 | Mãe da Lilian (4×4 andando, camiseta cinza, sacolinha de chocolates) | npcs/mae-lilian-walk.png | ✅ no jogo (+ retrato portraits/mae-lilian.png); entra no Cap. 6 |
+| NPC-061 | Tio (marido da mãe da Lilian; camiseta preta, bermuda cinza) | npcs/tio-nt-walk.png | ✅ no jogo (+ retrato portraits/tio-nt.png); Cap. 6 |
+| NPC-062 | Vinicius (namorado da Lilian; barba, bolsa transversal) | npcs/vinicius-walk.png | ✅ no jogo (+ retrato portraits/vinicius.png); Cap. 6 |
 | NPC-031 | Lilian, prima (4×4 andando) | npcs/lilian-walk.png | ✅ no jogo (+ retrato portraits/lilian.png) |
 | NPC-032 | Mingau (Miguel), primo de 10 anos (4×4 andando, menor) | npcs/mingau-walk.png | ✅ no jogo (+ retrato) |
 | NPC-033 | Vivian, prima (4×4 andando) | npcs/vivian-walk.png | ✅ no jogo (+ retrato) |

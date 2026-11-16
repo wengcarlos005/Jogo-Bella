@@ -24,6 +24,8 @@ export const REGIONS: RegionMeta[] = [
   { id: 'cabo-frio', name: 'Cabo Frio', chapter: 'Capítulo 7', year: 'Ano 1', subtitle: 'Mais um ano-novo', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.92, y: 0.62 } },
   { id: 'botafogo', name: 'Botafogo', chapter: 'Capítulo 8', year: 'Ano 2', subtitle: 'Com o Pão de Açúcar ao fundo', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.46, y: 0.80 } },
   { id: 'curitiba', name: 'Curitiba', chapter: 'Capítulo 9', year: 'Ano 3', subtitle: 'A melhor viagem', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.10, y: 0.90 } },
+  // capítulo 10: uma reflexão; a Bella decide o que vem depois (conteúdo a definir)
+  { id: 'proximo', name: 'O próximo capítulo', chapter: 'Capítulo 10', year: 'Daqui pra frente', subtitle: 'Ela decide', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.56, y: 0.40 } },
 ];
 
 export function regionMeta(id: RegionId): RegionMeta {

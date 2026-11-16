@@ -53,6 +53,7 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     'cabo-frio': 'linho', // outro réveillon de branco
     botafogo: 'casual',
     curitiba: 'inverno', // frio de Curitiba
+    proximo: 'casual',
   },
   weng: {
     piabeta: 'casual',
@@ -64,5 +65,6 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     'cabo-frio': 'reveillon',
     botafogo: 'casual',
     curitiba: 'xadrez',
+    proximo: 'casual',
   },
 };

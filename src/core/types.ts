@@ -9,7 +9,8 @@ export type RegionId =
   | 'niteroi'
   | 'cabo-frio'
   | 'botafogo'
-  | 'curitiba';
+  | 'curitiba'
+  | 'proximo';
 
 export type ItemCategory =
   | 'fotografias'
