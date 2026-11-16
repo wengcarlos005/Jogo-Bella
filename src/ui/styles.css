@@ -3258,3 +3258,16 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .tp-sb-lives i.on { color: #ff6a8a; text-shadow: 0 0 6px rgba(255, 106, 138, .6); }
 
 .so-bg { background-position: 50% 32%; }
+
+/* "Carregando NN%" dentro da barra (sem plaquinha espremida em cima da dica) */
+.ld-road { height: 4.6vmin; bottom: 0; }
+.ld-track { height: calc(var(--sz) + 6vmin); }
+.ld-bella, .ld-weng { bottom: 4.6vmin; }
+.ld-cap { width: 5.6vmin; height: 5.6vmin; bottom: -0.5vmin; font-size: 3vmin; }
+.ld-beads i { opacity: .45; }
+.ld-beads i.on { opacity: .55; }
+.ld-inbar { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 1.4vmin; pointer-events: none; z-index: 1; }
+.ld-inbar .ld-label { font-size: 2.3vmin; color: #fff; text-shadow: 0 0.25vmin 0 #4a1a3a, 0 0 0.8vmin rgba(42, 12, 36, .9); }
+.ld-inbar .ld-pct { font-size: 2.7vmin; min-width: 3em; text-align: left; color: #ffe27a; text-shadow: 0 0.25vmin 0 #4a1a3a, 0 0 0.8vmin rgba(42, 12, 36, .9); }
+.ld-info { margin-top: 3.2vmin; }
+.ld-tip { font-size: 2.4vmin; letter-spacing: .02em; }

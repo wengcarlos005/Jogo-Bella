@@ -67,7 +67,7 @@ export function showLoader(): void {
     h(
       'div',
       { class: 'ld-track' },
-      h('div', { class: 'ld-road', style: `left:${ROAD0}%;right:${100 - ROAD1}%` }, fill, h('div', { class: 'ld-beads' }, ...beads)),
+      h('div', { class: 'ld-road', style: `left:${ROAD0}%;right:${100 - ROAD1}%` }, fill, h('div', { class: 'ld-beads' }, ...beads), h('div', { class: 'ld-inbar' }, h('span', { class: 'ld-label' }, 'Carregando'), pct)),
       h('div', { class: 'ld-cap ld-cap-a', style: `left:${ROAD0}%` }, '☾'),
       h('div', { class: 'ld-cap ld-cap-b', style: `left:${ROAD1}%` }, '♥'),
       trail,
@@ -75,7 +75,7 @@ export function showLoader(): void {
       weng,
       h('div', { class: 'ld-love' }, '♥'),
     ),
-    h('div', { class: 'ld-info' }, h('div', { class: 'ld-plaque' }, h('span', { class: 'ld-label' }, 'Carregando'), pct), tip),
+    h('div', { class: 'ld-info' }, tip),
   );
   document.body.append(loader);
 }

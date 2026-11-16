@@ -65,6 +65,7 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 | PORT-004 | `portraits/pai-bella.png` | Retrato (gerado da folha) | 192×192 | 1 | **integrado** |
 | PORT-005 | `portraits/vizinha.png` | Retrato (gerado da folha) | 192×192 | 1 | **integrado** |
 | MAP-001 | `maps/piabeta-casa-bella-bg.png` | Cenário (original 1536×1024) | 1024×683 | — | **integrado** |
+| MAP-NT1 | `maps/nt-apto-bg.png` | Apê em Icaraí, cenário vazio (original 1536×1024 em art-source/maps/nt-apto.webp) | 1024×683 | — | recebido; mapa entra com os objetos |
 | MAP-003 | `maps/piabeta-rua-bg.png` | Cenário (original 1619×971) | 1079×647 | — | **integrado** |
 | MAP-002 | `maps/piabeta-casa-bella-fg.png` | Camada frontal | 704×480 | — | planejado (opcional) |
 | MAP-004 | `maps/piabeta-rua-fg.png` | Camada frontal | 1280×768 | — | planejado (opcional) |
