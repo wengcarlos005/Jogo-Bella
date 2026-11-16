@@ -12,7 +12,7 @@ const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0
 
 /** Linha dos pés em cima do deck do píer (art y ≈ 612) e a vaga do cisne na água, à esquerda do píer. */
 const PIER_Y = 11.8;
-const PIER_BOAT = { x: 22.3, y: 13.6 };
+const PIER_BOAT = { x: 20.7, y: 13.9 };
 
 const scripts: Record<string, Script> = {
   async chegada(ctx) {

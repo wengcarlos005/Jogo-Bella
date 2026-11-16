@@ -402,7 +402,15 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       scene.tempProps.delete(id);
     },
     illustration: (key, lines) => UI.illustration(key, lines),
-    photo: (caption) => UI.photo(caption),
+    // toda foto pergunta se ficou boa (dá pra tirar de novo quantas vezes quiser)
+    async photo(caption) {
+      for (let tries = 0; ; tries++) {
+        await UI.photo(caption);
+        const c = await ctx.choose('bella', tries ? 'E essa, ficou boa?' : 'Ficou boa?', ['Ficou ótima!', 'Tirar de novo']);
+        if (c === 0) return;
+        await ctx.say('weng', ['Tá, mais uma. Sorri!', 'De novo? ...Tá bom. Diz "xis"!', 'Essa é a última. (Não é.)'][tries % 3]);
+      }
+    },
     backdrop: (key, rainy) => UI.backdrop(key, rainy),
 
     nerves(value, message) {

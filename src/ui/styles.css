@@ -2871,3 +2871,43 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .fr-count.pop { animation: nv-pop2b .4s; }
 .fr-splash { position: absolute; bottom: 8%; width: 9%; transform: translateX(-50%); z-index: 4; image-rendering: pixelated; animation: so-lotion .9s ease-out forwards; opacity: 1; }
 .fr-rules img { aspect-ratio: 1; background: #ffe9b8; padding: 3px; }
+
+/* ===== Corrida de Pedalinho (kart) ===== */
+.pd-stage { height: min(58vh, calc(var(--u) * 230)) !important; }
+.bk-water { position: absolute; inset: 0; background:
+  radial-gradient(ellipse 6% 2% at 20% 30%, rgba(255,255,255,.35), transparent),
+  radial-gradient(ellipse 5% 1.6% at 70% 70%, rgba(255,255,255,.3), transparent),
+  repeating-linear-gradient(0deg, #3a8ad8 0 26px, #4696e0 26px 30px, #3a8ad8 30px 60px);
+  background-size: 100% 240px, 100% 300px, 100% 60px; }
+.bk-banks { position: absolute; inset: 0; pointer-events: none; background:
+  linear-gradient(90deg, #6fae3a 0 3%, #c8b07a 3% 5%, transparent 5% 95%, #c8b07a 95% 97%, #6fae3a 97%),
+  repeating-linear-gradient(0deg, transparent 0 70px, rgba(255,255,255,.08) 70px 72px); }
+.bk-world { position: absolute; inset: 0; z-index: 2; }
+.bk-boat { position: absolute; height: 26%; image-rendering: pixelated; z-index: 4; transform: translate(-50%, -50%); filter: drop-shadow(0 6px 0 rgba(0,40,90,.3)); }
+.bk-boat.rv { z-index: 3; }
+.bk-boat.boost { filter: drop-shadow(0 0 10px #ffd23f) drop-shadow(0 10px 0 rgba(255,210,63,.6)); }
+.bk-obj { position: absolute; height: 13%; transform: translate(-50%, -50%); image-rendering: pixelated; }
+.bk-obj.hit { opacity: .25; }
+.bk-box { position: absolute; width: 6%; aspect-ratio: 1; transform: translate(-50%, -50%) rotate(8deg); display: grid; place-items: center; border-radius: 8px; border: 3px solid #fff; background: linear-gradient(135deg, #ffd23f, #ff6a9a 50%, #6aa8ff); color: #fff; font-family: var(--font-pixel); font-size: clamp(14px, 2vw, 22px); text-shadow: 0 2px 0 #5a2a6a; box-shadow: 0 0 10px rgba(255,255,255,.8); animation: bk-spin 1.6s linear infinite; }
+.bk-box.got { opacity: 0; }
+@keyframes bk-spin { 50% { transform: translate(-50%, -60%) rotate(-8deg); } }
+.bk-pad { position: absolute; width: 8%; transform: translate(-50%, -50%); text-align: center; color: #ffd23f; font-size: clamp(14px, 2vw, 22px); letter-spacing: -4px; text-shadow: 0 0 6px #ff8a3a; background: rgba(255,210,63,.18); border: 2px solid rgba(255,210,63,.7); border-radius: 6px; animation: ce-pulse .6s infinite; }
+.bk-wave { position: absolute; height: 9%; transform: translate(-50%, -50%); image-rendering: pixelated; filter: drop-shadow(0 0 6px #fff); }
+.bk-wave.rv { filter: drop-shadow(0 0 6px #ff6a9a); }
+.bk-arrow { display: none; position: absolute; transform: translateX(-50%); z-index: 6; font-family: var(--font-pixel); font-size: 13px; color: #fff; background: #ff6a9a; padding: 2px 8px; border-radius: 99px; border: 2px solid #fff; }
+.bk-arrow.on { display: block; }
+.bk-arrow.up { top: 2%; }
+.bk-arrow.down { bottom: 2%; }
+.bk-pos { position: absolute; right: 2%; top: 3%; z-index: 7; font-family: var(--font-pixel); font-size: clamp(26px, 4.4vw, 52px); color: #ffd23f; text-shadow: 0 4px 0 #b0402a, 0 0 10px rgba(0,0,0,.4); }
+.bk-pos.second { color: #e8eef4; text-shadow: 0 4px 0 #4a5a7a; }
+.bk-item { position: absolute; left: 2%; top: 3%; z-index: 7; min-width: 18%; padding: 4px 10px; border-radius: 10px; background: rgba(20,12,30,.75); border: 2px solid #ffd23f; color: #fff; font-weight: 900; display: flex; flex-direction: column; font-size: clamp(11px, 1.4vw, 15px); }
+.bk-item b { font-family: var(--font-pixel); color: #ffd23f; font-size: .85em; }
+.bk-item.has { box-shadow: 0 0 12px #ffd23f; animation: ce-pulse 1s infinite; }
+.bk-banner { position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%) scale(.6); z-index: 8; font-family: var(--font-pixel); font-size: clamp(32px, 6vw, 72px); color: #fff; text-shadow: 0 5px 0 #2f6ad3, 0 0 16px rgba(0,0,0,.4); opacity: 0; pointer-events: none; transition: opacity .2s, transform .25s cubic-bezier(.2,1.8,.4,1); white-space: nowrap; }
+.bk-banner.on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.bk-banner.go { color: #7fe39a; text-shadow: 0 5px 0 #2a7a3a; }
+.bk-banner.last { color: #ff6a9a; text-shadow: 0 5px 0 #8a1a3a; }
+.bk-speed { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: 0; background: repeating-linear-gradient(90deg, transparent 0 9%, rgba(255,255,255,.5) 9% 9.3%); background-size: 100% 200%; transition: opacity .2s; }
+.bk-speed.on { opacity: .6; animation: bk-lines .25s linear infinite; }
+@keyframes bk-lines { to { background-position: 0 100%; } }
+.bk-q { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 8px; border: 3px solid #fff; background: linear-gradient(135deg, #ffd23f, #ff6a9a 50%, #6aa8ff); color: #fff; font-family: var(--font-pixel); font-size: 20px; }
