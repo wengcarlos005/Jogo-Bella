@@ -179,6 +179,7 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | CHAR-029 | Garçom do restaurante mexicano (4×4 andando) | npcs/garcom-mex-walk.png | ✅ no jogo (+ retrato portraits/garcom-mex.png) |
 | PORT-020 | Retrato do garçom (Petrópolis) | portraits/garcom.png | ✅ feito do quadro de frente |
 | NPC-030 | Tia Tim (4×4 andando, avental vermelho) | npcs/tia-tim-walk.png | ✅ no jogo (+ retrato portraits/tia-tim.png) |
+| NPC-060 | Mãe da Lilian (4×4 andando, camiseta cinza, sacolinha de chocolates) | npcs/mae-lilian-walk.png | ✅ no jogo (+ retrato portraits/mae-lilian.png); entra no Cap. 6 |
 | NPC-031 | Lilian, prima (4×4 andando) | npcs/lilian-walk.png | ✅ no jogo (+ retrato portraits/lilian.png) |
 | NPC-032 | Mingau (Miguel), primo de 10 anos (4×4 andando, menor) | npcs/mingau-walk.png | ✅ no jogo (+ retrato) |
 | NPC-033 | Vivian, prima (4×4 andando) | npcs/vivian-walk.png | ✅ no jogo (+ retrato) |

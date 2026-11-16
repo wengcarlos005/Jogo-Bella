@@ -30,6 +30,7 @@ export const SPEAKERS: Record<string, SpeakerDef> = {
   kelly: { name: PERSONAL.bellaFamily.prima, portrait: 'portrait-kelly' },
   'tia-jaque': { name: `Tia ${PERSONAL.bellaFamily.tia}`, portrait: 'portrait-tia-jaque' },
   'avo-bella': { name: 'Vó', portrait: 'portrait-avo-bella' },
+  'mae-lilian': { name: 'Mãe da Lilian', portrait: 'portrait-mae-lilian' },
   'tia-tim': { name: `Tia ${PERSONAL.wengFamily.tia}`, portrait: 'portrait-tia-tim' },
   anne: { name: PERSONAL.wengFamily.irma, portrait: 'portrait-anne' },
   lilian: { name: 'Lilian', portrait: 'portrait-lilian' },
