@@ -219,9 +219,9 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
   }
 
   // Objetos soltos (folha de objetos): cada um com a própria profundidade, sem recorte do cenário.
-  if ((def.objects ?? []).length && !scene.textures.exists('fx-shadow')) {
+  if ((def.objects ?? []).length && !scene.textures.exists('fx-objshadow')) {
     // sombra de contato: oval escuro e macio, pra o objeto "pisar" no chão
-    const t = scene.textures.createCanvas('fx-shadow', 64, 32)!;
+    const t = scene.textures.createCanvas('fx-objshadow', 64, 32)!;
     const c = t.getContext();
     // (centro no meio da tela achatada: oval inteiro, sem borda reta em cima — antes parecia um retângulo cinza)
     const g = c.createRadialGradient(32, 32, 1, 32, 32, 32);
@@ -240,7 +240,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     if (ob.shadow !== false) {
       const sw = ((ob.w ?? 60) * (ob.shadow ?? 1.05)) / 3;
       scene.add
-        .image(ob.x / 3, ob.y / 3 - 1, 'fx-shadow')
+        .image(ob.x / 3, ob.y / 3 - 1, 'fx-objshadow')
         .setDisplaySize(sw, Math.max(4, sw * 0.3))
         .setDepth(-4)
         .setAlpha(0.75);

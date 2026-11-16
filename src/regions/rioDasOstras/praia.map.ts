@@ -27,8 +27,39 @@ const comSombra = () => GameState.is('ro-guardasol');
 async function proximo(ctx: ScriptContext): Promise<void> {
   if (!objDone('guardasol')) ctx.toast('Procure o barraqueiro do aluguel (a barraquinha listrada, à esquerda)');
   else if (!objDone('lanche')) ctx.toast('O isopor do seu pai tá do lado da toalha');
-  else if (!objDone('brincar')) ctx.toast('As raquetes de frescobol tão ali na areia');
+  else if (!objDone('brincar') || !objDone('castelo') || !objDone('mar')) {
+    const falta = [!objDone('brincar') && 'o frescobol', !objDone('castelo') && 'o castelo de areia', !objDone('mar') && 'pular onda'].filter(Boolean);
+    ctx.toast(`Ainda dá pra aproveitar: ${falta.join(', ')}`);
+  } else if (!objDone('sogro')) ctx.toast('O pai da Bella tá chamando o Weng pra conversar');
   else if (!objDone('petisco')) ctx.toast('Fim de tarde: petisco no quiosque de toldo amarelo');
+}
+
+/** O pai da Bella chama o Weng pra uma conversa de sogro (enquanto a Bella vai buscar mate). */
+async function conversaSogro(ctx: ScriptContext): Promise<void> {
+  await ctx.say('pai-ro', 'Filha, vai ali no barraqueiro buscar um mate pra gente? Eu pago. ...O meu.');
+  await ctx.say('bella', '(olhando pro Weng, desconfiada) Tá... já volto.');
+  await ctx.say('pai-ro', 'Senta aqui, Weng. Na cadeira que você pagou.');
+  await ctx.say('weng', '(engolindo seco) Claro, sogro.');
+  await ctx.say('pai-ro', 'Eu trazia a Bella aqui quando ela era pequenininha. Ela chorava quando a onda derrubava o castelo.');
+  await ctx.say('pai-ro', 'Hoje eu vi ela rindo quando a onda derrubou. Por sua causa, eu acho.');
+  const c = await ctx.choose('weng', '(O pai da Bella olhando sério pro mar)', ['"Eu gosto muito dela, de verdade."', '"Ela me faz rir o dia inteiro também."', '"Prometo que guarda-sol nunca mais vai faltar."']);
+  if (c === 0) {
+    await ctx.say('pai-ro', 'Dá pra ver. Você olha pra ela do jeito que eu olhava pra mãe dela.');
+  } else if (c === 1) {
+    await ctx.say('pai-ro', 'Ela é engraçada desde pequena. Puxou a mim. (A mãe dela discorda.)');
+  } else {
+    await ctx.say('pai-ro', 'Hahaha! Gastador. Mas tá certo, tá certo. Hoje você salvou a gente.');
+  }
+  await ctx.say('pai-ro', 'Só uma coisa. Cuida dela. Ela é o meu tesouro.');
+  await ctx.say('weng', 'Pode deixar. Ela é o meu também.');
+  await ctx.say('pai-ro', '...Bom. Isso aqui foi uma conversa de homem. Não conta pra ela que eu fiquei emocionado.');
+  await ctx.say('bella', '(voltando com três copos de mate) Do que vocês tavam falando?');
+  await ctx.say('pai-ro', 'Do preço do mate. Um absurdo.');
+  await ctx.say('weng', '(piscando pra Bella) Do preço do mate.');
+  ctx.hearts('player', 10);
+  ctx.objective(Q, 'sogro');
+  await ctx.narrate('O sol começou a baixar e o cheiro de petisco do quiosque ficou impossível de ignorar.');
+  await proximo(ctx);
 }
 
 const scripts: Record<string, Script> = {
@@ -39,6 +70,11 @@ const scripts: Record<string, Script> = {
     await ctx.narrate('Rio das Ostras. Uma passagem rápida, mas com o mais importante: praia.');
     await ctx.narrate('Sol de rachar, areia quente e o mar azulzinho logo ali.');
     await ctx.say('bella', 'Weng! Olha esse mar! Eu quero ficar aqui o dia inteiro!');
+    await ctx.say('weng', 'Você trouxe protetor?');
+    await ctx.say('bella', 'Eu trouxe chapéu. É a mesma coisa.');
+    await ctx.say('weng', 'Não é a mesma coisa.');
+    await ctx.say('pai-ro', 'Chegaram! Pontuais, gostei. Trouxe tudo: toalha, isopor, fruta lavada, torrada...');
+    await ctx.say('weng', 'Bom dia, sogro! E o guarda-sol?');
     await ctx.say('weng', 'Então bora achar um lugar. De preferência na sombra.');
     await ctx.say('pai-ro', 'Sombra pra quê? Aqui tá ótimo! Estica a toalha aqui mesmo.');
     await ctx.say('bella', 'Pai... aqui é sol puro.');
@@ -60,6 +96,21 @@ const scripts: Record<string, Script> = {
 
   async aluguel(ctx) {
     if (objDone('guardasol')) {
+      if (!ctx.flag('ro-globo')) {
+        await ctx.say('barraqueiro', 'Olha o mate! Olha o Biscoito Globo! Gelado e crocante, casal!');
+        const c = await ctx.choose('weng', '(O combo oficial da praia carioca)', ['Um mate e um Biscoito Globo pra cada', 'Só o biscoito, de sal', 'Agora não, obrigado']);
+        if (c === 2) {
+          await ctx.say('barraqueiro', 'Tranquilo! Tô aqui o dia todo.');
+          return;
+        }
+        ctx.setFlag('ro-globo');
+        ctx.sfx('pickup');
+        await ctx.say('bella', c === 0 ? 'Mate gelado e Biscoito Globo. Agora sim é praia de verdade.' : 'Biscoito de sal! O de doce é pra quem não tem coragem.');
+        await ctx.say('pai-ro', '(de longe) Tem torrada aqui de graça, hein!');
+        await ctx.say('bella', 'PAI.');
+        ctx.hearts('player', 4);
+        return;
+      }
       await ctx.say('barraqueiro', 'Tá tudo certo aí, casal? Qualquer coisa é só chamar!');
       return;
     }
@@ -129,14 +180,13 @@ const scripts: Record<string, Script> = {
     await ctx.narrate('Na última rebatida, a bolinha foi parar na cabeça de um senhor que tava dormindo.');
     await ctx.say('weng', 'DESCULPA, SENHOR!');
     await ctx.say('bella', 'Hahahaha! Corre, Weng!');
-    await ctx.narrate('Depois, os dois correram pro mar, pularam onda e fizeram um castelo de areia meio torto.');
     ctx.hearts('player', 6);
     ctx.objective(Q, 'brincar');
     await proximo(ctx);
   },
 
   async quiosque(ctx) {
-    if (!objDone('brincar') || !objDone('lanche')) {
+    if (!objDone('brincar') || !objDone('lanche') || !objDone('castelo') || !objDone('mar') || !objDone('sogro')) {
       await ctx.say('bella', 'O quiosque. Tá saindo um cheiro de batata frita que eu não aguento.');
       await proximo(ctx);
       return;
@@ -180,7 +230,9 @@ const scripts: Record<string, Script> = {
         'Uma passagem rápida por Rio das Ostras, e o melhor de tudo foi a praia.',
         'O pai dela não quis pagar o guarda-sol, e os dois viraram camarão.',
         'O Weng salvou o dia: sombra, cadeira e um herói de chinelo.',
-        'Frescobol, onda, torrada do pai... e petisco no quiosque até a tempestade chegar.',
+        'Frescobol, castelo de areia meio torto, onda gigante e um chapéu resgatado do mar.',
+        'Uma conversa de sogro sobre "o preço do mate".',
+        'E petisco no quiosque até a tempestade chegar.',
       ],
     });
     ctx.toast('O Capítulo 6 chega em breve');
@@ -188,6 +240,7 @@ const scripts: Record<string, Script> = {
   },
 
   async pai(ctx) {
+    if (objDone('brincar') && objDone('castelo') && objDone('mar') && objActive('sogro')) return conversaSogro(ctx);
     if (!objDone('guardasol')) {
       await ctx.say('pai-ro', 'Tá vendo? Sol de graça! Guarda-sol é coisa de turista.');
       return;
@@ -202,13 +255,91 @@ const scripts: Record<string, Script> = {
     await ctx.say('pai-ro', f[n % f.length]);
   },
   async castelo(ctx) {
-    await ctx.say('bella', 'Um castelo de areia! Alguém caprichou. O nosso vai ficar torto, já aviso.');
+    if (!objDone('lanche') || objDone('castelo')) {
+      await ctx.say('bella', objDone('castelo') ? 'O que sobrou do nosso castelo. A torre do Weng resistiu. A minha, não.' : 'Um castelo de areia! Depois a gente faz o nosso. Primeiro sombra e comida.');
+      return;
+    }
+    await ctx.say('bella', 'Weng. Castelo de areia. Agora. É uma ordem.');
+    await ctx.say('weng', 'Sim, senhora arquiteta. Qual é o projeto?');
+    const tipo = await ctx.choose('bella', '(Ajoelhada na areia molhada)', ['Castelo de princesa, com torres altas', 'Fortaleza, com fosso e muralha', 'Uma réplica da cobertura da tia Tim']);
+    if (tipo === 0) await ctx.say('weng', 'Torres altas. Na areia. Contra a gravidade. Adoro um desafio.');
+    else if (tipo === 1) await ctx.say('weng', 'Fosso! Eu cavo, você decora. Divisão justa de trabalho.');
+    else await ctx.say('weng', 'Com a varanda e tudo? A tia Tim vai querer foto.');
+    await ctx.narrate('Meia hora de baldinho, dedo e paciência. O Weng cavando, a Bella esculpindo.');
+    const enfeite = await ctx.choose('bella', 'E pra enfeitar?', ['Conchinhas na muralha', 'Uma bandeira de palito de picolé', 'Escrever "B + W" na frente']);
+    if (enfeite === 2) {
+      await ctx.say('weng', '"B + W". Com coração em volta?');
+      await ctx.say('bella', 'Óbvio que com coração em volta.');
+      await ctx.emote('weng', 'heart');
+    } else if (enfeite === 1) await ctx.say('bella', 'Pronto: o castelo agora é território nosso. Ninguém entra.');
+    else await ctx.say('bella', 'Conchinha rosa, conchinha branca, conchinha rosa... ficou lindo.');
+    await ctx.say('pai-ro', '(de longe) Tá ficando bom! Lembra quando você fazia castelo aqui com seis anos, filha?');
+    await ctx.say('bella', 'Pai! Não conta essas coisas!');
+    await ctx.narrate('Aí veio uma onda maior que as outras. Direto no castelo.');
+    const d = await ctx.choose('weng', '(A onda vindo!)', ['Defender o castelo com o próprio corpo', 'Cavar o fosso mais fundo, rápido', 'Salvar só a Bella (e deixar o castelo)']);
+    if (d === 0) {
+      await ctx.narrate('O Weng se jogou na frente. A onda passou por cima dele. O castelo... sobreviveu pela metade.');
+      await ctx.say('bella', 'MEU HERÓI! De novo! Você tá todo cheio de areia, hahaha!');
+    } else if (d === 1) {
+      await ctx.narrate('O fosso encheu, a muralha segurou... e só uma torre caiu.');
+      await ctx.say('weng', 'Engenharia, Bella. Engenharia.');
+    } else {
+      await ctx.narrate('O Weng puxou a Bella pra trás. O castelo virou uma montanhinha de areia lisa.');
+      await ctx.say('bella', 'Você escolheu eu em vez do castelo?');
+      await ctx.say('weng', 'Escolho sempre.');
+      await ctx.emote('bella', 'heart');
+    }
+    await ctx.say('bella', 'Foto! Antes que venha outra onda!');
+    await ctx.photo('O castelo (meio torto) de Bella & Weng');
+    ctx.hearts('player', 6);
+    ctx.objective(Q, 'castelo');
+    await proximo(ctx);
   },
   async placa(ctx) {
     await ctx.say('weng', 'Aluguel de guarda-sol e cadeira. O lugar mais importante da praia hoje.');
   },
   async mar(ctx) {
-    await ctx.say('bella', comSombra() ? 'O mar tá quentinho! Depois a gente pula onda, combinado?' : 'O mar tá lindo... mas meu ombro tá ardendo demais pra pensar nisso.');
+    if (!objDone('lanche') || objDone('mar')) {
+      await ctx.say('bella', objDone('mar') ? 'Ainda tem areia no meu cabelo. E no meu ouvido. E em lugares que eu nem sabia.' : comSombra() ? 'O mar tá quentinho! Depois do lanche a gente pula onda, combinado?' : 'O mar tá lindo... mas meu ombro tá ardendo demais pra pensar nisso.');
+      return;
+    }
+    await ctx.say('bella', 'Bora pular onda! Segura minha mão e não solta!');
+    await ctx.say('weng', 'Não solto. E segura o chapéu.');
+    await ctx.narrate('A água batendo na cintura. Lá vem a primeira.');
+    let pontos = 0;
+    const ondas = [
+      ['Onda pequena!', 'Pular junto', 'Furar por baixo', 'Ficar parado'],
+      ['Onda média, com espuma!', 'Pular bem alto', 'Mergulhar de mãos dadas', 'Virar de costas'],
+      ['ONDA GIGANTE!', 'Pular com tudo', 'Furar a onda', 'Correr pra areia'],
+    ];
+    for (let i = 0; i < ondas.length; i++) {
+      const [titulo, ...op] = ondas[i];
+      const c = await ctx.choose('weng', titulo, op);
+      const certo = i === 2 ? c === 1 : c !== 2;
+      if (certo) {
+        pontos++;
+        ctx.sfx('confirm');
+        await ctx.say(i % 2 ? 'weng' : 'bella', ['Passou! Hahaha, de novo!', 'Essa foi linda! A gente é profissional.', 'FURAMOS A GIGANTE! Weng, a gente é surfista agora!'][i]);
+      } else {
+        ctx.sfx('cancel');
+        await ctx.say(i % 2 ? 'bella' : 'weng', ['Engoli água salgada. Muita.', 'A espuma bateu na cara. Meu óculos!', 'A onda levou a gente rolando até a areia!'][i]);
+      }
+    }
+    await ctx.narrate('E aí uma onda levou o chapéu de palha da Bella, boiando mar adentro.');
+    await ctx.say('bella', 'MEU CHAPÉU!');
+    await ctx.say('weng', 'Deixa comigo!');
+    await ctx.narrate('O Weng nadou atrás do chapéu, perdeu, achou, perdeu de novo... e voltou com ele na cabeça, todo encharcado.');
+    const c = await ctx.choose('bella', '(Ele voltando com o chapéu pingando)', ['"Meu herói. Pela terceira vez hoje."', '"Fica melhor em você, sabia?"', 'Dar um beijo salgado nele']);
+    if (c === 0) await ctx.say('weng', 'Três vezes num dia só. Vou pedir aumento.');
+    else if (c === 1) await ctx.say('weng', 'Eu sei. Mas é seu. Toma.');
+    else {
+      await ctx.emote('weng', 'heart');
+      await ctx.say('weng', '...Beijo com gosto de mar. Aprovado.');
+    }
+    if (pontos === 3) await ctx.say('bella', 'Três de três! Ninguém pula onda melhor que a gente.');
+    ctx.hearts('player', pontos >= 2 ? 8 : 5);
+    ctx.objective(Q, 'mar');
+    await proximo(ctx);
   },
   async escada(ctx) {
     if (QuestSystem.isActive(Q)) {
@@ -256,17 +387,17 @@ export const roPraiaMap: MapDef = {
   npcs: [
     { id: 'barraqueiro', sprite: 'barraqueiro', tx: 6.0, ty: 11.3, facing: 'down', interact: 'aluguel' },
     // o Anderson, pai da Bella, do lado do isopor
-    { id: 'pai-ro', sprite: 'pai-ro', tx: 12.6, ty: 13.6, facing: 'right', interact: 'pai' },
+    { id: 'pai-ro', sprite: 'pai-ro', tx: 12.6, ty: 13.6, facing: 'right', interact: 'pai', markerIf: () => objDone('brincar') && objDone('castelo') && objDone('mar') && objActive('sogro') },
   ],
 
   hotspots: [
     { rect: R(60, 420, 300, 560), interact: 'aluguel', label: 'Aluguel', markerIf: () => objDone('sol') && objActive('guardasol') },
     { rect: R(640, 600, 760, 680), interact: 'isopor', label: 'Isopor', markerIf: () => objDone('guardasol') && objActive('lanche') },
-    { rect: R(910, 570, 1010, 640), interact: 'raquetes', label: 'Frescobol', markerIf: () => objDone('guardasol') && objActive('brincar') },
-    { rect: R(1060, 300, 1420, 480), interact: 'quiosque', label: 'Quiosque', marker: { x: 0.5, y: -0.55 }, markerIf: () => objDone('lanche') && objDone('brincar') && objActive('petisco') },
-    { rect: R(390, 690, 480, 760), interact: 'castelo', label: 'Castelo de areia' },
+    { rect: R(910, 570, 1010, 640), interact: 'raquetes', label: 'Frescobol', markerIf: () => objDone('lanche') && objActive('brincar') },
+    { rect: R(1060, 300, 1420, 480), interact: 'quiosque', label: 'Quiosque', marker: { x: 0.5, y: -0.55 }, markerIf: () => objDone('sogro') && objActive('petisco') },
+    { rect: R(390, 690, 480, 760), interact: 'castelo', label: 'Castelo de areia', markerIf: () => objDone('lanche') && objActive('castelo') },
     { rect: R(300, 480, 360, 540), interact: 'placa', label: 'Placa' },
-    { rect: R(500, 760, 1400, 820), interact: 'mar', label: 'Mar' },
+    { rect: R(500, 760, 1400, 820), interact: 'mar', label: 'Mar', marker: { x: 0.3, y: 0 }, markerIf: () => objDone('lanche') && objActive('mar') },
   ],
 
   spawns: {
