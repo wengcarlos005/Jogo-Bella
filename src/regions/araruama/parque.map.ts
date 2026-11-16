@@ -279,7 +279,14 @@ export const parqueMap: MapDef = {
     // (elipse: só o carrossel, sem o chão e a base da roda-gigante dos cantos)
     { x0: 245, y0: 255, x1: 695, y1: 700, base: 700, ellipse: true },
     // o arco do portal: quem passa por baixo fica atrás da parte de cima
-    { x0: 540, y0: 690, x1: 1000, y1: 800, base: 990 },
+    // (só o arco e os pilares, em fatias que seguem a curva: o vão do meio fica livre, senão o chão tapa quem passa)
+    { x0: 540, y0: 712, x1: 652, y1: 968, base: 990 },
+    { x0: 884, y0: 712, x1: 1000, y1: 968, base: 990 },
+    { x0: 652, y0: 700, x1: 702, y1: 820, base: 990 },
+    { x0: 702, y0: 694, x1: 742, y1: 792, base: 990 },
+    { x0: 742, y0: 690, x1: 794, y1: 768, base: 990 },
+    { x0: 794, y0: 694, x1: 834, y1: 792, base: 990 },
+    { x0: 834, y0: 700, x1: 884, y1: 820, base: 990 },
   ],
 
   npcs: [
