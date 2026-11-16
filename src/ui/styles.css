@@ -1610,27 +1610,43 @@ html.title-mode #game, html.title-mode #ui { z-index: 1; }
 @keyframes ldFloat { 50% { transform: translateY(-1.2vmin) rotate(-4deg); } }
 .ld-logo { position: relative; width: min(62vw, 60vmin); image-rendering: auto; filter: drop-shadow(0 1vmin 2.4vmin rgba(0, 0, 0, 0.55)); animation: ldLogo 3.4s ease-in-out infinite; }
 @keyframes ldLogo { 50% { transform: translateY(-1vmin) scale(1.015); } }
-.ld-track { --sz: 11vmin; position: relative; width: min(64vw, 600px); height: calc(var(--sz) + 3vmin); margin-top: 1vmin; }
+.ld-track { --sz: 11vmin; position: relative; width: min(70vw, 640px); height: calc(var(--sz) + 4vmin); margin-top: 1vmin; }
+/* a estrada: fita ameixa com moldura dourada em degraus (pixel), coraçõezinhos que acendem e um brilho que corre */
 .ld-road {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 2.6vmin; border-radius: 99px; overflow: hidden;
-  background: rgba(20, 10, 40, 0.75); border: 0.45vmin solid #ffd75e; box-shadow: 0 0 2vmin rgba(255, 215, 94, 0.35);
+  position: absolute; bottom: 0.6vmin; height: 2.6vmin; border-radius: 0.6vmin;
+  background: linear-gradient(#2a1638, #3a1f4e);
+  box-shadow: 0 0 0 0.4vmin #ffd75e, 0 0 0 0.8vmin #6a2a4a, 0 0.9vmin 0 0.8vmin rgba(20, 8, 30, 0.6), 0 0 3vmin rgba(255, 126, 182, calc(0.15 + var(--p, 0) * 0.35)), inset 0 0.4vmin 0 rgba(0, 0, 0, 0.35);
 }
-.ld-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(90deg, #ff7eb6, #ffb3d6, #ffd75e); transition: width 0.25s; }
-.ld-fill::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 1.6vmin, rgba(255, 255, 255, 0.35) 1.6vmin 2.2vmin); animation: ldStripe 0.8s linear infinite; }
-@keyframes ldStripe { to { background-position: 2.2vmin 0; } }
-.ld-bella, .ld-weng { position: absolute; bottom: 1.2vmin; width: var(--sz); height: var(--sz); background-size: calc(var(--sz) * 4) calc(var(--sz) * 4); image-rendering: pixelated; transform: translateX(-50%); }
+.ld-fill {
+  position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 0.4vmin;
+  background: linear-gradient(90deg, #c94a8a, #ff7eb6 55%, #ffb3d6);
+  box-shadow: inset 0 0.5vmin 0 rgba(255, 255, 255, 0.35), inset 0 -0.4vmin 0 rgba(120, 20, 70, 0.35), 0 0 1.6vmin rgba(255, 126, 182, 0.7);
+  transition: width 0.25s;
+}
+.ld-fill::after { content: ''; position: absolute; right: -0.8vmin; top: 50%; width: 2.2vmin; height: 2.2vmin; transform: translateY(-50%); border-radius: 50%; background: radial-gradient(circle, #fff 0 25%, rgba(255, 235, 150, 0.8) 40%, transparent 70%); animation: ldSpark 0.9s ease-in-out infinite; }
+@keyframes ldSpark { 50% { transform: translateY(-50%) scale(1.35); opacity: 0.7; } }
+.ld-beads { position: absolute; inset: 0; pointer-events: none; }
+.ld-beads i { position: absolute; top: 50%; transform: translate(-50%, -52%); font-style: normal; font-size: 1.7vmin; line-height: 1; color: #5a3a6e; transition: color 0.3s, transform 0.3s, text-shadow 0.3s; }
+.ld-beads i.on { color: #fff2f7; text-shadow: 0 0 0.8vmin #fff, 0 0 1.6vmin #ff7eb6; transform: translate(-50%, -52%) scale(1.15); }
+.ld-cap { position: absolute; bottom: 0; width: 4.4vmin; height: 4.4vmin; transform: translateX(-50%); display: grid; place-items: center; border-radius: 50%; font-size: 2.6vmin; line-height: 1; background: radial-gradient(circle at 40% 35%, #4a2a6a, #2a1638); box-shadow: 0 0 0 0.4vmin #ffd75e, 0 0 0 0.8vmin #6a2a4a, 0 0 2vmin rgba(255, 215, 94, 0.45); z-index: 1; }
+.ld-cap-a { color: #ffd75e; text-shadow: 0 0 1vmin #ffd75e; }
+.ld-cap-b { color: #ff5f9e; text-shadow: 0 0 1vmin #ff7eb6; animation: ldBeat 1.1s ease-in-out infinite; }
+@keyframes ldBeat { 15% { transform: translateX(-50%) scale(1.15); } 30% { transform: translateX(-50%) scale(1); } }
+.ld-bella, .ld-weng { position: absolute; bottom: 2.6vmin; z-index: 2; width: var(--sz); height: var(--sz); background-size: calc(var(--sz) * 4) calc(var(--sz) * 4); image-rendering: pixelated; transform: translateX(-50%); }
 .ld-bella { left: 0; background-position-y: calc(var(--sz) * -2); animation: ldWalk 0.6s steps(4) infinite; transition: left 0.25s linear; }
 @keyframes ldWalk { from { background-position-x: 0; } to { background-position-x: calc(var(--sz) * -4); } }
-.ld-weng { left: 100%; background-position: 0 calc(var(--sz) * -1); transform: translateX(-30%); }
+.ld-weng { left: 94%; background-position: 0 calc(var(--sz) * -1); }
 .ld-trail { position: absolute; inset: 0; pointer-events: none; }
 .ld-trail i { position: absolute; bottom: 4vmin; color: #ff7eb6; font-style: normal; font-size: 2.2vmin; text-shadow: 0 0 1vmin #ff7eb6; animation: ldTrail 1.6s ease-out forwards; }
 @keyframes ldTrail { from { transform: translate(-50%, 0) scale(0.6); opacity: 1; } to { transform: translate(-50%, -6vmin) scale(1.2); opacity: 0; } }
-.ld-love { position: absolute; left: 92%; bottom: calc(var(--sz) + 0.5vmin); transform: translate(-50%, 0) scale(0); color: #ff5f9e; font-size: 6vmin; text-shadow: 0 0 2vmin #ff7eb6; }
+.ld-love { position: absolute; left: 90%; bottom: calc(var(--sz) + 0.5vmin); transform: translate(-50%, 0) scale(0); color: #ff5f9e; font-size: 6vmin; text-shadow: 0 0 2vmin #ff7eb6; }
 #loader.done .ld-bella { animation: none; background-position-x: 0; }
 #loader.done .ld-love { animation: ldLove 0.7s cubic-bezier(.2, 1.8, .4, 1) forwards; }
 @keyframes ldLove { to { transform: translate(-50%, 0) scale(1); } }
 .ld-info { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.6vmin; }
-.ld-pct { font-family: 'Pixelify Sans', system-ui, sans-serif; font-size: 3.4vmin; color: #ffd75e; text-shadow: 0 0.3vmin 0 #6a2a4a; }
+.ld-plaque { display: flex; align-items: baseline; gap: 1.2vmin; padding: 0.5vmin 2.2vmin; border-radius: 99px; background: rgba(42, 22, 56, 0.85); box-shadow: 0 0 0 0.35vmin #ffd75e, 0 0 0 0.7vmin #6a2a4a; margin-top: 1.2vmin; }
+.ld-label { font-family: 'Pixelify Sans', system-ui, sans-serif; font-size: 2.4vmin; color: #fbe3ee; letter-spacing: 0.1em; }
+.ld-pct { font-family: 'Pixelify Sans', system-ui, sans-serif; font-size: 3vmin; color: #ffd75e; text-shadow: 0 0.3vmin 0 #6a2a4a; min-width: 3.4em; text-align: right; }
 .ld-tip { font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; font-size: 2.5vmin; color: #fbf3e2; text-shadow: 0 0.2vmin 0.6vmin rgba(0, 0, 0, 0.7); min-height: 1.4em; }
 .ld-tip.in { animation: ldTip 0.4s ease-out; }
 @keyframes ldTip { from { opacity: 0; transform: translateY(1vmin); } }

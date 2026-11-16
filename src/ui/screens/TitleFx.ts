@@ -23,6 +23,10 @@ let tipTimer = 0;
 let bella: HTMLElement | null = null;
 let trail: HTMLElement | null = null;
 let lastHeart = 0;
+let beads: HTMLElement[] = [];
+/** a estrada vai de ROAD0% a ROAD1% da largura (o Weng espera no fim) */
+const ROAD0 = 4;
+const ROAD1 = 86;
 
 /** Mostra a tela de carregamento (chamado logo no início). */
 export function showLoader(): void {
@@ -38,6 +42,7 @@ export function showLoader(): void {
   }
   const asset = (f: string) => new URL(`assets/${f}`, document.baseURI).href;
   fill = h('div', { class: 'ld-fill' });
+  beads = Array.from({ length: 14 }, (_, i) => h('i', { style: `left:${((i + 0.5) / 14) * 100}%` }, '♥'));
   pct = h('div', { class: 'ld-pct' }, '0%');
   const tip = h('div', { class: 'ld-tip in' }, TIPS[0]);
   let t = 0;
@@ -59,8 +64,18 @@ export function showLoader(): void {
     stars,
     h('div', { class: 'ld-moon' }, h('div', { class: 'ld-moon-glow' }), h('div', { class: 'ld-moon-clip' }, h('div', { class: 'ld-moon-disc' }), h('div', { class: 'ld-moon-shadow' }))),
     h('img', { class: 'ld-logo', src: asset('ui/logo.png'), alt: 'A Lua está Bella' }),
-    h('div', { class: 'ld-track' }, h('div', { class: 'ld-road' }, fill), trail, bella, weng, h('div', { class: 'ld-love' }, '♥')),
-    h('div', { class: 'ld-info' }, pct, tip),
+    h(
+      'div',
+      { class: 'ld-track' },
+      h('div', { class: 'ld-road', style: `left:${ROAD0}%;right:${100 - ROAD1}%` }, fill, h('div', { class: 'ld-beads' }, ...beads)),
+      h('div', { class: 'ld-cap ld-cap-a', style: `left:${ROAD0}%` }, '☾'),
+      h('div', { class: 'ld-cap ld-cap-b', style: `left:${ROAD1}%` }, '♥'),
+      trail,
+      bella,
+      weng,
+      h('div', { class: 'ld-love' }, '♥'),
+    ),
+    h('div', { class: 'ld-info' }, h('div', { class: 'ld-plaque' }, h('span', { class: 'ld-label' }, 'Carregando'), pct), tip),
   );
   document.body.append(loader);
 }
@@ -79,11 +94,13 @@ function render(p: number): void {
   fill.style.width = `${v}%`;
   pct.textContent = `${v}%`;
   loader?.style.setProperty('--p', String(p));
-  if (bella) bella.style.left = `${p * 84}%`;
+  const x = ROAD0 + p * (ROAD1 - ROAD0);
+  if (bella) bella.style.left = `${x}%`;
+  beads.forEach((b, i) => b.classList.toggle('on', p >= (i + 0.5) / beads.length));
   if (trail && v - lastHeart >= 7) {
     lastHeart = v;
     const hrt = h('i', {}, '♥');
-    hrt.style.left = `${p * 84}%`;
+    hrt.style.left = `${x}%`;
     trail.append(hrt);
     setTimeout(() => hrt.remove(), 1600);
   }
