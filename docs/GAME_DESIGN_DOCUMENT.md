@@ -46,21 +46,21 @@ Idle e caminhada em 4 direções (implementado), corrida (implementado via veloc
 
 ## 3. Estrutura da campanha (ordem cronológica obrigatória)
 
+9 capítulos. Lapa e Seropédica saíram do plano (decisão de escopo).
+
 | # | Região | Capítulo | Ano | Papel narrativo | Duração alvo |
 |---|---|---|---|---|---|
-| 0 | Piabetá | Prólogo | O começo | Onde tudo começou | 40 min |
-| 1 | Duque de Caxias | Cap. 1 | Ano 1 | Hub — a convivência | 80 min (60 + revisitas) |
-| 2 | Petrópolis | Cap. 2 | Ano 1 | Primeira viagem | 35 min |
-| 3 | Araruama | Cap. 3 | Ano 1 | Ano-novo com a família do Weng | 35 min |
-| 4 | Rio das Ostras | Cap. 4 | Ano 1 | Férias | 35 min |
-| 5 | Niterói | Cap. 5 | Ano 1 | Passeio e fotos | 30 min |
-| 6 | Lapa | Cap. 6 | Ano 1 | Aniversário | 30 min |
+| 1 | Piabetá | Prólogo | O começo | Onde tudo começou | 40 min |
+| 2 | Duque de Caxias | Cap. 2 | Ano 1 | Hub — a convivência | 80 min (60 + revisitas) |
+| 3 | Petrópolis | Cap. 3 | Ano 1 | O aniversário dela | 35 min |
+| 4 | Araruama | Cap. 4 | Ano 1 | Ano-novo com a família do Weng | 35 min |
+| 5 | Rio das Ostras | Cap. 5 | Ano 1 | Um dia de praia | 35 min |
+| 6 | Niterói | Cap. 6 | Ano 1 | Do outro lado da baía | 30 min |
 | 7 | Cabo Frio | Cap. 7 | Ano 1 | Outro ano-novo | 30 min |
-| 8 | Botafogo | Cap. 8 | Ano 2 | Cidade grande | 25 min |
-| 9 | Seropédica | Cap. 9 | Ano 2 | A formatura do Weng | 40 min |
-| 10 | Curitiba | Cap. 10 | Ano 3 | A melhor viagem | 75 min |
-| 11 | Piabetá (retorno) | Final | — | A carta | 15 min |
-| | | | | **Total campanha** | **≈ 7h50** |
+| 8 | Botafogo | Cap. 8 | Ano 2 | Com o Pão de Açúcar ao fundo | 25 min |
+| 9 | Curitiba | Cap. 9 | Ano 3 | A melhor viagem (capítulo final) | 75 min |
+| — | Piabetá (retorno) | Final | — | A carta | 15 min |
+| | | | | **Total campanha** | **≈ 6h40** |
 
 Conteúdo opcional (missões secundárias, colecionáveis 100%, decoração da casa, coleção gastronômica): **+1h a 1h30**.
 
@@ -76,42 +76,36 @@ Conteúdo opcional (missões secundárias, colecionáveis 100%, decoração da c
 - **M3 — O parque e a chuva**: passeio pelo parque (árvores grandes, bancos, flores, luz natural); o clima muda gradualmente; a chuva começa (partículas + escurecimento + som — sistema já implementado); procurar abrigo; conversa especial; **cena cinematográfica do primeiro beijo** (câmera, música própria, corações, fade). Memória: *O primeiro beijo*.
 - **Secundária — Florzinhas do caminho** *(implementada)*: colher 3 flores para Dona Cida.
 
-### Capítulo 1 — Duque de Caxias (hub, 80 min)
+### Capítulo 2 — Duque de Caxias (hub, 80 min)
 Região maior, revisitada entre viagens. Praças, ruas, casas, restaurantes, comércio, pequeno parque.
 - **Casa do casal personalizável**: móveis desbloqueados em cada viagem (souvenirs viram decoração).
 - **Atividades cotidianas**: mercado (lista de compras), **culinária** (receita em etapas), **jardinagem** (plantar/regar/colher ao longo das visitas), **noite de jogos — jogo da memória**.
 - **Missões secundárias** com moradores; quadro de avisos com tarefas que se renovam a cada capítulo.
 - Ponto de partida das viagens: rodoviária/estação com mapa-múndi.
 
-### Capítulo 2 — Petrópolis (35 min)
+### Capítulo 3 — Petrópolis (35 min)
 Museu Imperial, Palácio de Cristal, Casa de Santos Dumont, centro histórico, ruas de pedra, serra.
 - Principal: **A primeira viagem** — roteiro pelo centro histórico.
 - **Quebra-cabeça histórico** no museu (ordenar uma linha do tempo de objetos).
 - Introdução da **câmera fotográfica** (tirar fotos em pontos marcados → álbum).
 - Coleta de objetos (souvenirs para a casa).
 
-### Capítulo 3 — Araruama (35 min)
+### Capítulo 4 — Araruama (35 min)
 Casa da família do Weng, lagoa, clima de verão, preparativos de ano-novo.
 - Conversar com familiares (NPCs com opiniões e pedidos).
 - **Preparação de festa**: lista de tarefas (buscar ingredientes, decorar, arrumar a mesa).
 - **Contagem regressiva + fogos** (cena com partículas e som).
 
-### Capítulo 4 — Rio das Ostras (35 min)
+### Capítulo 5 — Rio das Ostras (35 min)
 Praia de Costazul, Praça da Baleia, píer, orla, quiosques.
 - **Pesca** no píer (timing de fisgada; peixes colecionáveis).
 - **Coleta de conchas** pela praia.
 - **Caça ao tesouro** com pistas espalhadas pela orla.
 
-### Capítulo 5 — Niterói (30 min)
+### Capítulo 6 — Niterói (30 min)
 MAC, Parque da Cidade, Icaraí, Caminho Niemeyer.
 - **Minigame de fotografia**: enquadrar pontos turísticos (mira + enquadramento + timing de luz).
 - Completar a página "Niterói" do álbum.
-
-### Capítulo 6 — Lapa (30 min)
-Arcos da Lapa, Escadaria Selarón, ruas históricas, bares.
-- Preparar a comemoração de aniversário (encomendas, convites, NPCs).
-- **Mosaico da Selarón**: puzzle de encaixe de azulejos.
-- Cena especial de aniversário.
 
 ### Capítulo 7 — Cabo Frio (30 min)
 Praia do Forte, Forte São Mateus, Passagem, Boulevard Canal.
@@ -124,14 +118,7 @@ Enseada, praia, vista do Pão de Açúcar, região urbana.
 - Restaurante: escolher pratos lembrando o pedido do outro (memória curta).
 - Foto com o Pão de Açúcar ao fundo.
 
-### Capítulo 9 — Seropédica (40 min)
-Representação artística da UFRRJ: prédios, jardins, caminhos, árvores, áreas de convivência.
-- Encontrar colegas (NPCs) pelo campus.
-- **Desafios acadêmicos divertidos** (quiz leve, achar a sala certa, devolver livros).
-- Preparar a cerimônia (beca, convites, lugar na plateia).
-- **Formatura**: cena emocional — Bella acompanha a conquista do Weng.
-
-### Capítulo 10 — Curitiba (75 min)
+### Capítulo 9 — Curitiba (75 min)
 1. **Aeroporto**: arrumar a mala (**puzzle de encaixe**), check-in, portão, embarque, **cena de voo**.
 2. **Hotel**: recepção, quarto, janela com vista, banheiro; pequenas missões internas.
 3. **Jardim Botânico**: estufa de vidro, jardins, espelhos d'água — **coleta de flores** (catálogo de espécies).

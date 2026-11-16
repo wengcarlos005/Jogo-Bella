@@ -7,10 +7,8 @@ export type RegionId =
   | 'araruama'
   | 'rio-das-ostras'
   | 'niteroi'
-  | 'lapa'
   | 'cabo-frio'
   | 'botafogo'
-  | 'seropedica'
   | 'curitiba';
 
 export type ItemCategory =

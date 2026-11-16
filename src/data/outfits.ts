@@ -50,10 +50,8 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     araruama: 'casual', // ano-novo de 2024: "vestimos qualquer coisa"
     'rio-das-ostras': 'praia', // dia de praia
     niteroi: 'festa', // vestido laranja
-    lapa: 'festa', // aniversário
     'cabo-frio': 'linho', // outro réveillon de branco
     botafogo: 'casual',
-    seropedica: 'festa', // formatura
     curitiba: 'inverno', // frio de Curitiba
   },
   weng: {
@@ -63,10 +61,8 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     araruama: 'casual',
     'rio-das-ostras': 'praia',
     niteroi: 'xadrez', // camisa xadrez preta
-    lapa: 'xadrez',
     'cabo-frio': 'reveillon',
     botafogo: 'casual',
-    seropedica: 'social', // formatura
     curitiba: 'xadrez',
   },
 };

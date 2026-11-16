@@ -15,7 +15,7 @@ export interface MemoryDef {
 }
 
 /**
- * Álbum de memórias. Meta: ~50 entradas ao longo do jogo.
+ * Álbum de memórias. Meta: 34 entradas ao longo dos 9 capítulos.
  * Os textos aqui são provisórios e devem ser revisados pelo Weng.
  */
 export const MEMORIES: MemoryDef[] = [
@@ -201,4 +201,5 @@ export const MEMORIES: MemoryDef[] = [
   },
 ];
 
-export const MEMORY_GOAL = 50;
+/** 9 capítulos: 22 lembranças até o Capítulo 5 + 3 em cada um dos 4 que faltam. */
+export const MEMORY_GOAL = 34;
