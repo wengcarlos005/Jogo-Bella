@@ -947,6 +947,15 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
  *  - Onda GIGANTE (espuma vermelha): segure ↓ pra FURAR por baixo.
  * Acertou: pontos + combo. Errou: caixote (perde 1 ♥, são 3). 12 ondas, cada vez mais rápidas.
  */
+/** Onda vista de lado, com a crista enrolando pra esquerda (vem da direita). */
+const WAVE_SVG = `<svg viewBox="0 0 220 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="ow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fe0f0"/><stop offset=".45" stop-color="#2fa0d8"/><stop offset="1" stop-color="#1a5aa8"/></linearGradient></defs>
+  <path d="M0 140 L0 118 C28 116 46 100 62 74 C78 46 104 22 136 18 C160 15 178 26 182 44 C185 58 172 66 160 60 C150 55 154 44 146 42 C132 40 124 62 128 86 C132 108 170 120 220 122 L220 140 Z" fill="url(#ow)"/>
+  <path d="M60 76 C78 46 104 22 136 18 C160 15 178 26 182 44 C185 58 172 66 160 60 C150 55 154 44 146 42 C124 36 104 50 92 66 C82 80 70 84 60 76 Z" fill="#ffffff" opacity=".92"/>
+  <path d="M36 110 C52 104 60 96 66 86" stroke="#e8fbff" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/>
+  <circle cx="176" cy="30" r="5" fill="#fff"/><circle cx="188" cy="40" r="3.5" fill="#fff"/><circle cx="168" cy="20" r="3" fill="#fff"/>
+</svg>`;
+
 export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score: number }> {
   return new Promise((resolve) => {
     const ui = shell(parent, 'on', 'Pular onda');
@@ -963,10 +972,14 @@ export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score:
       { class: 'cs-rules on-rules' },
       h('b', {}, 'Como jogar'),
       h('div', {}, h('span', { class: 'on-ico blue' }), h('span', {}, 'Onda azul: aperte ', h('kbd', {}, 'Espaço'), ' / ', h('kbd', {}, 'E'), ' pra ', h('u', { class: 'g' }, 'pular'), ' quando ela chegar na linha.')),
-      h('div', {}, h('span', { class: 'on-ico red' }), h('span', {}, 'Onda GIGANTE (espuma vermelha): segure ', h('kbd', {}, '↓'), ' pra ', h('u', {}, 'furar por baixo'), '. Pular nela = caixote!')),
+      h('div', {}, h('span', { class: 'on-ico red' }), h('span', {}, 'Onda GIGANTE (com o "!"): segure ', h('kbd', {}, '↓'), ' pra ', h('u', {}, 'furar por baixo'), '. Pular nela = caixote!')),
       h('div', {}, h('span', { class: 'on-ico' }, '♥'), h('span', {}, `${TOTAL} ondas, cada vez mais rápidas. Levou caixote: perde 1 ♥ (são 3).`)),
     );
-    ui.stage.append(h('div', { class: 'on-bg', style: bg ? `background-image:url(${bg})` : '' }), sea, mark, pair, fx, rules);
+    const sky = h('div', { class: 'on-sky' }, h('i', { class: 'on-sun' }), h('i', { class: 'on-cloud c1' }), h('i', { class: 'on-cloud c2' }));
+    const far = h('div', { class: 'on-far' });
+    const front = h('div', { class: 'on-front' });
+    void bg;
+    ui.stage.append(sky, far, sea, mark, pair, front, fx, rules);
 
     const PX = 26;
     let lives = 3;
@@ -1012,7 +1025,7 @@ export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score:
         if (nextIn <= 0 && sent < TOTAL) {
           sent++;
           const big = sent > 2 && Math.random() < 0.35;
-          const el = h('div', { class: `on-wave${big ? ' big' : ''}` }, h('i'));
+          const el = h('div', { class: `on-wave${big ? ' big' : ''}`, html: WAVE_SVG }, big ? h('b', { class: 'on-warn' }, '!') : null);
           sea.append(el);
           const v = 30 + sent * 2.2;
           waves.push({ el, x: 108, big, v, judged: false });
@@ -1091,8 +1104,8 @@ export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score:
     startBtn.addEventListener('click', start);
     ui.actions.append(startBtn);
     window.addEventListener('keydown', onKey);
-    bella.step(0, 0, 0);
-    weng.step(0, 0, 0);
+    bella.step(1, 0, 0);
+    weng.step(1, 0, 0);
     hud();
     ui.say('bella', 'Bora pular onda! A água tá batendo na cintura.');
     raf = requestAnimationFrame(tick);

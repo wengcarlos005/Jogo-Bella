@@ -3407,36 +3407,11 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 /* ---------- Pular onda ---------- */
 .on-title { background: linear-gradient(90deg, #2fb3c8, #2a6ac8) !important; }
 .on-stage { height: min(54vh, calc(var(--u) * 215)) !important; overflow: hidden; }
-.on-bg { position: absolute; inset: 0; background-size: 170% auto; background-position: 60% 92%; image-rendering: pixelated; }
-.on-sea { position: absolute; left: 0; right: 0; top: 52%; bottom: 0; z-index: 2; background: linear-gradient(#5fd0e0cc, #2a8ac8ee 40%, #1a5a9a); }
-.on-sea::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; height: 12px; background: radial-gradient(ellipse 4% 100% at 50% 100%, #fff 60%, transparent 62%) 0 0 / 7% 100% repeat-x; animation: tp-rain 1.2s linear infinite; opacity: .9; }
-.on-mark { position: absolute; left: 28%; top: 44%; bottom: 6%; width: 0; border-left: 3px dashed rgba(255, 255, 255, .8); z-index: 3; }
-.on-pair { position: absolute; left: 26%; top: 40%; width: 15%; transform: translateX(-50%); display: flex; z-index: 4; transition: transform .1s; }
-.on-pair .ro-walker { width: 55%; }
-.on-pair .w { margin-left: -18%; }
-.on-pair::after { content: ''; position: absolute; left: -10%; right: -10%; bottom: 8%; height: 34%; background: linear-gradient(#5fd0e0dd, #2a8ac8); z-index: 2; border-radius: 40% 40% 0 0; }
 .on-hands { position: absolute; left: 44%; top: 40%; font-style: normal; color: #ff6a9a; font-size: clamp(10px, calc(var(--u) * 6), 16px); z-index: 3; text-shadow: 0 0 4px #fff; }
-.on-pair.jump { transform: translateX(-50%) translateY(-38%); transition: transform .18s cubic-bezier(.2, .9, .4, 1); }
-.on-pair.dive { transform: translateX(-50%) translateY(28%); }
-.on-pair.hit { animation: shake .3s 2; filter: brightness(1.4) hue-rotate(-20deg); }
-.on-wave { position: absolute; bottom: 4%; width: 16%; height: 30%; transform: translateX(-50%); z-index: 5; }
-.on-wave i { position: absolute; inset: 0; border-radius: 60% 40% 10% 10% / 90% 70% 10% 10%; background: linear-gradient(110deg, #e8fbff 0 18%, #7fd8ee 30%, #2a8ac8 75%); box-shadow: inset 6px 6px 0 rgba(255, 255, 255, .7); }
-.on-wave.big { width: 22%; height: 52%; }
-.on-wave.big i { background: linear-gradient(110deg, #fff 0 14%, #ffb0a0 20%, #4aa8e0 40%, #1a5a9a 80%); box-shadow: inset 8px 8px 0 rgba(255, 140, 120, .8); }
-.on-wave.pass { opacity: .5; }
 .on-ico { flex: none; width: 40px; height: 40px; border-radius: 50% 50% 10% 10%; display: grid; place-items: center; color: #ff6a9a; font-size: 22px; background: #ffe9b8; }
 .on-ico.blue { background: linear-gradient(110deg, #e8fbff, #2a8ac8); }
 .on-ico.red { background: linear-gradient(110deg, #fff, #ffb0a0 30%, #1a5a9a); }
 /* pular onda: casal maior e as ondas na altura deles */
-.on-sea { top: 56%; }
-.on-pair { top: 36%; width: 24%; }
-.on-pair::after { bottom: 6%; height: 30%; }
-.on-mark { top: 38%; bottom: 10%; }
-.on-wave { bottom: auto; top: 50%; height: 36%; }
-.on-wave.big { top: 34%; height: 54%; }
-.on-wave { top: -26%; height: 78%; }
-.on-wave.big { top: -62%; height: 116%; }
-.on-pair::after { left: 0; right: 0; bottom: 4%; height: 26%; border-radius: 50% 50% 0 0 / 30% 30% 0 0; background: linear-gradient(rgba(127, 216, 238, .55), rgba(42, 138, 200, .9) 60%); box-shadow: 0 -3px 0 rgba(255, 255, 255, .7); }
 
 /* ---------- Niterói: Chuva de chocolate ---------- */
 .ch-title { background: linear-gradient(90deg, #8a4a2a, #ff7aa8) !important; }
@@ -3687,3 +3662,44 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 /* número do placar ao subir: só cresce e brilha o texto (sem fundo amarelo piscando) */
 .so-sb-n.bump, .bk-sb-pos.bump { animation: soBump .5s cubic-bezier(.2, 1.6, .4, 1); display: inline-block; }
 @keyframes soBump { 0% { transform: scale(1); } 40% { transform: scale(1.3); color: #ffe27a; text-shadow: 0 0 8px rgba(255, 226, 122, .8); } 100% { transform: scale(1); } }
+/* durante um minijogo, a barra de itens de baixo some (ela ficava por cima dos botões "Jogar de novo"/continuar) */
+body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui .ht-screen) #hotbar { visibility: hidden; pointer-events: none; }
+.pg-panel { max-height: 96% !important; }
+
+
+/* ---------- Pular onda (v2, vista de lado) ---------- */
+.on-stage { background: #2a8ac8; }
+.on-sky { position: absolute; left: 0; right: 0; top: 0; height: 46%; background: linear-gradient(#5ab8f0, #a8dcf6 70%, #e8f6fb); overflow: hidden; }
+.on-sun { position: absolute; right: 9%; top: 14%; width: 9%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(#fff6c0, #ffd35a 65%, #ffb02e); box-shadow: 0 0 30px 8px rgba(255, 214, 102, .55); }
+.on-cloud { position: absolute; height: 18%; width: 16%; border-radius: 99px; background: #fff; box-shadow: 18px -10px 0 4px #fff, 40px 0 0 0 #fff; opacity: .95; animation: rtScroll 40s linear infinite; }
+.on-cloud.c1 { left: 10%; top: 20%; } .on-cloud.c2 { left: 52%; top: 36%; height: 13%; width: 12%; animation-duration: 55s; }
+.on-far { position: absolute; left: 0; right: 0; top: 44%; height: 12%; background: linear-gradient(#3aa0d8, #2a8ac8); border-top: 3px solid #e8fbff; }
+.on-far::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 6%, rgba(255,255,255,.5) 6% 8%, transparent 8% 14%); mask-image: repeating-linear-gradient(transparent 0 6px, #000 6px 8px); animation: tv-lines 3s linear infinite; }
+.on-sea { position: absolute; left: 0; right: 0; top: 56%; bottom: 0; z-index: 2; background: linear-gradient(#2fa0d8, #1a6ab8 60%, #134e8c); }
+.on-sea::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 100%; background: repeating-linear-gradient(90deg, transparent 0 9%, rgba(255,255,255,.18) 9% 13%, transparent 13% 20%); mask-image: repeating-linear-gradient(transparent 0 10px, #000 10px 13px); animation: tv-lines 2s linear infinite; }
+.on-mark { position: absolute; left: 31%; top: 50%; bottom: 8%; width: 0; border-left: 3px dashed rgba(255, 255, 255, .85); z-index: 3; }
+.on-mark::before { content: 'pula aqui'; position: absolute; left: 6px; top: -4px; font-family: var(--font-body); font-weight: 900; font-size: clamp(9px, calc(var(--u) * 4.4), 12px); color: #fff; text-shadow: 0 1px 0 #000; white-space: nowrap; }
+.on-pair { position: absolute; left: 22%; top: 34%; width: 20%; transform: translateX(-50%); display: flex; z-index: 4; transition: transform .1s; }
+.on-pair .ro-walker { width: 56%; }
+.on-pair .w { margin-left: -22%; }
+.on-pair::after { display: none; }
+.on-hands { position: absolute; left: 46%; top: 52%; font-style: normal; color: #ff6a9a; font-size: clamp(10px, calc(var(--u) * 6), 16px); z-index: 3; text-shadow: 0 0 4px #fff; }
+.on-pair.jump { transform: translateX(-50%) translateY(-42%); transition: transform .18s cubic-bezier(.2, .9, .4, 1); }
+.on-pair.dive { transform: translateX(-50%) translateY(34%); }
+.on-pair.hit { animation: shake .3s 2; filter: brightness(1.3) saturate(.6); }
+/* a água da frente cobre o casal da cintura pra baixo */
+.on-front { position: absolute; left: 0; right: 0; top: 64%; bottom: 0; z-index: 6; background: linear-gradient(rgba(47, 160, 216, .55), rgba(26, 106, 184, .92) 45%, #134e8c); border-top: 3px solid rgba(232, 251, 255, .9); pointer-events: none; }
+.on-front::before { content: ''; position: absolute; left: 0; right: 0; top: -7px; height: 10px; background: radial-gradient(ellipse 3% 100% at 50% 100%, rgba(255,255,255,.9) 60%, transparent 62%) 0 0 / 6% 100% repeat-x; animation: tv-lines 1.4s linear infinite; }
+.on-wave { position: absolute; top: 34%; width: 20%; height: 40%; transform: translateX(-50%); z-index: 5; filter: drop-shadow(0 4px 0 rgba(0, 40, 90, .25)); }
+.on-wave svg { width: 100%; height: 100%; display: block; }
+.on-wave.big { top: 8%; width: 30%; height: 66%; filter: drop-shadow(0 4px 0 rgba(0, 40, 90, .35)) saturate(1.2) brightness(.9); }
+.on-wave.pass { opacity: .45; }
+.on-warn { position: absolute; left: 58%; top: -14%; width: calc(var(--u) * 14); aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; background: #e0302a; color: #fff; font-family: var(--font-pixel); font-weight: 400; border: 2px solid #fff; animation: mgcBeat .5s infinite; }
+.on-ico.red { background: linear-gradient(110deg, #fff, #7fe0f0 30%, #1a5aa8) !important; position: relative; }
+.on-ico.red::after { content: '!'; position: absolute; right: -4px; top: -6px; width: 18px; height: 18px; border-radius: 50%; background: #e0302a; color: #fff; font-size: 12px; display: grid; place-items: center; }
+.on-far::after, .on-sea::before { display: none; }
+.on-sea { background: linear-gradient(#3aa8dc, #1a6ab8 60%, #134e8c); }
+.on-pair { top: 22%; width: 30%; }
+.on-mark { left: 34%; }
+.on-wave { z-index: 7; top: 30%; height: 46%; width: 22%; }
+.on-wave.big { top: 4%; height: 72%; width: 32%; }
