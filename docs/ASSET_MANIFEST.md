@@ -71,6 +71,7 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 | MAP-CF1 | `maps/cf-casa-bg.png` | Casa de praia (Airbnb) em Peró, vazia (original em art-source/maps/cf-casa.webp) | 1024×683 | — | recebido |
 | MAP-CF2 | `maps/cf-pero-bg.png` | Praia do Peró (original em art-source/maps/cf-pero.webp) | 1024×683 | — | recebido |
 | MAP-CF3 | `maps/cf-japones-bg.png` | Praia do Japonês com a ilhota e a faixa de areia (original em art-source/maps/cf-japones.webp) | 1024×683 | — | recebido |
+| MAP-CF4 | `maps/cf-forte-bg.png` | Praia do Forte à noite (original em art-source/maps/cf-forte.webp) | 1024×683 | — | recebido |
 | OBJ-NA | `objects/na-*.png` (sofá, mesinha c/ chocolates, mesa de 8, tapete, luminária, 2 poltronas, cesta) | Objetos do apê em Icaraí (folha em art-source/objects/objects-nt-apto.webp) | — | — | recortados |
 | OBJ-NN | `objects/nn-*.png` (banco, poste, carrinho de coco, palmeira, escultura, pombos) | Objetos do Caminho Niemeyer (folha em art-source/objects/objects-nt-niemeyer.webp) | — | — | recortados |
 | OBJ-NO | `objects/no-*.png` (mesa xadrez, banco estofado, cadeira, balde de molhos, planta no barril) | Objetos do On Fire (folha em art-source/objects/objects-nt-onfire.webp) | — | — | recortados |
@@ -195,6 +196,7 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | NPC-060 | Mãe da Lilian (4×4 andando, camiseta cinza, sacolinha de chocolates) | npcs/mae-lilian-walk.png | ✅ no jogo (+ retrato portraits/mae-lilian.png); entra no Cap. 6 |
 | NPC-061 | Tio (marido da mãe da Lilian; camiseta preta, bermuda cinza) | npcs/tio-nt-walk.png | ✅ no jogo (+ retrato portraits/tio-nt.png); Cap. 6 |
 | NPC-062 | Vinicius (namorado da Lilian; barba, bolsa transversal) | npcs/vinicius-walk.png | ✅ no jogo (+ retrato portraits/vinicius.png); Cap. 6 |
+| NPC-071..074 | Amigos de Cabo Frio, de branco (1: barba e degradê · 2: cacheado de óculos · 3: careca de óculos · 4: cabelo bagunçado e relógio) | npcs/amigo1..4-walk.png | ✅ recortados (+ retratos); falta saber quem é quem e a Vitória |
 | NPC-031 | Lilian, prima (4×4 andando) | npcs/lilian-walk.png | ✅ no jogo (+ retrato portraits/lilian.png) |
 | NPC-032 | Mingau (Miguel), primo de 10 anos (4×4 andando, menor) | npcs/mingau-walk.png | ✅ no jogo (+ retrato) |
 | NPC-033 | Vivian, prima (4×4 andando) | npcs/vivian-walk.png | ✅ no jogo (+ retrato) |
