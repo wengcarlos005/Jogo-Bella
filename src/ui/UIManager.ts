@@ -191,9 +191,8 @@ class UIManagerImpl {
         // no teclado / controle: ← → escolhe entre "Jogar de novo" e continuar
         btn.setAttribute('data-nav', '');
         go.setAttribute('data-nav', '');
-        // perdeu (1 estrela): o cursor já começa em "Jogar de novo"
-        const lost = box.querySelectorAll('.bg-stars .on').length <= 1;
-        (lost ? btn : go).setAttribute('data-nav-default', '');
+        // o cursor começa sempre em continuar; "Jogar de novo" fica do lado (← pra escolher)
+        go.setAttribute('data-nav-default', '');
         btn.addEventListener('click', () => {
           again = true;
           go.click();
