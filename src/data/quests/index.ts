@@ -27,7 +27,8 @@ import { DUQUE_QUESTS } from './duque';
 import { PETROPOLIS_QUESTS } from './petropolis';
 import { ARARUAMA_QUESTS } from './araruama';
 import { RIO_OSTRAS_QUESTS } from './rioDasOstras';
+import { NITEROI_QUESTS } from './niteroi';
 
 export const QUESTS: Record<string, QuestDef> = Object.fromEntries(
-  [...PIABETA_QUESTS, ...DUQUE_QUESTS, ...PETROPOLIS_QUESTS, ...ARARUAMA_QUESTS, ...RIO_OSTRAS_QUESTS].map((q) => [q.id, q]),
+  [...PIABETA_QUESTS, ...DUQUE_QUESTS, ...PETROPOLIS_QUESTS, ...ARARUAMA_QUESTS, ...RIO_OSTRAS_QUESTS, ...NITEROI_QUESTS].map((q) => [q.id, q]),
 );

@@ -68,6 +68,8 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 | MAP-NT1 | `maps/nt-apto-bg.png` | Apê em Icaraí, cenário vazio (original 1536×1024 em art-source/maps/nt-apto.webp) | 1024×683 | — | recebido; mapa entra com os objetos |
 | MAP-NT2 | `maps/nt-niemeyer-bg.png` | Caminho Niemeyer, cenário vazio (original em art-source/maps/nt-niemeyer.webp) | 1024×683 | — | recebido; mapa entra com os objetos |
 | MAP-NT3 | `maps/nt-onfire-bg.png` | On Fire American BBQ por dentro, cenário vazio (original em art-source/maps/nt-onfire.webp) | 1024×683 | — | recebido; mapa entra com os objetos |
+| OBJ-NA | `objects/na-*.png` (sofá, mesinha c/ chocolates, mesa de 8, tapete, luminária, 2 poltronas, cesta) | Objetos do apê em Icaraí (folha em art-source/objects/objects-nt-apto.webp) | — | — | recortados |
+| OBJ-NN | `objects/nn-*.png` (banco, poste, carrinho de coco, palmeira, escultura, pombos) | Objetos do Caminho Niemeyer (folha em art-source/objects/objects-nt-niemeyer.webp) | — | — | recortados |
 | MAP-003 | `maps/piabeta-rua-bg.png` | Cenário (original 1619×971) | 1079×647 | — | **integrado** |
 | MAP-002 | `maps/piabeta-casa-bella-fg.png` | Camada frontal | 704×480 | — | planejado (opcional) |
 | MAP-004 | `maps/piabeta-rua-fg.png` | Camada frontal | 1280×768 | — | planejado (opcional) |

@@ -235,8 +235,41 @@ const scripts: Record<string, Script> = {
         'E petisco no quiosque até a tempestade chegar.',
       ],
     });
-    ctx.toast('O Capítulo 6 chega em breve');
-    await ctx.fadeIn(600);
+    // a família do Weng chama os dois pra Niterói
+    await ctx.narrate('Algumas semanas depois.');
+    await ctx.phone({ contact: 'Lilian', avatar: 'portrait-lilian', clock: '10:24', caption: 'No celular do Weng' }, [
+      { from: 'them', text: 'Weng!! Minha mãe mandou avisar: domingo almoço aqui em Icaraí' },
+      { from: 'them', text: 'E é pra trazer a Bella. Ela já comprou chocolate.' },
+      { from: 'me', text: 'Já comprou?? Faltam 5 dias kkkk' },
+      { from: 'them', text: 'Uma cesta. Uma CESTA, Weng.' },
+      { from: 'them', text: 'Depois a gente dá uma volta no Caminho Niemeyer e meu pai quer levar todo mundo no On Fire' },
+      { from: 'them', text: 'Ah, e o Vinicius vai. Pela primeira vez. Sejam legais com ele' },
+      { from: 'me', text: 'A gente é sempre legal 😇' },
+      { from: 'them', text: 'Você não. A Bella sim.' },
+    ]);
+    await ctx.say('weng', 'Bella, domingo tem almoço em Niterói. Com a família da Lilian.');
+    await ctx.say('bella', 'A família INTEIRA de novo?');
+    await ctx.say('weng', 'Metade. A metade que dá chocolate.');
+    await ctx.say('bella', '...Então eu vou. E vou de vestido laranja.');
+    await ctx.roadTrip(
+      'Rio das Ostras',
+      'Niterói',
+      [
+        { who: 'bella', text: 'Quem vai estar lá, mesmo?' },
+        { who: 'weng', text: 'A mãe da Lilian, meu tio, a Lilian, a Vivian, o Diego e o Mingau. E o Vinicius, que é novo.' },
+        { who: 'bella', text: 'Ótimo. Pela primeira vez eu não vou ser a pessoa nova da família.' },
+        { who: 'weng', text: 'Olha a ponte! Lá embaixo é a baía de Guanabara.' },
+        { who: 'bella', text: 'Dá pra ver o Pão de Açúcar daqui de cima!' },
+        { who: 'weng', text: 'Chegamos em Icaraí. Respira: lá vem a cesta.' },
+      ],
+      ['pr-palmeira', 'nn-palmeira'],
+      { coast: true },
+    );
+    ctx.unlockRegion('niteroi');
+    await ctx.chapterCard('Capítulo 6', 'Niterói', 'Do outro lado da baía.', 'Começar');
+    if (!GameState.data.regionsVisited.includes('niteroi')) GameState.data.regionsVisited.push('niteroi');
+    if (!ctx.questActive('nt-m1') && !QuestSystem.isDone('nt-m1')) ctx.startQuest('nt-m1');
+    await ctx.teleport('nt-apto', 'porta');
   },
 
   async pai(ctx) {

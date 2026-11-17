@@ -20,7 +20,7 @@ export const REGIONS: RegionMeta[] = [
   { id: 'petropolis', name: 'Petrópolis', chapter: 'Capítulo 3', year: 'Ano 1', subtitle: 'O aniversário dela', entryMap: 'pt-quitandinha', entrySpawn: 'entrada', worldPos: { x: 0.40, y: 0.14 } },
   { id: 'araruama', name: 'Araruama', chapter: 'Capítulo 4', year: 'Ano 1', subtitle: 'Ano-novo em família', entryMap: 'ar-cobertura', entrySpawn: 'porta', worldPos: { x: 0.74, y: 0.52 } },
   { id: 'rio-das-ostras', name: 'Rio das Ostras', chapter: 'Capítulo 5', year: 'Ano 1', subtitle: 'Um dia de praia', entryMap: 'ro-praia', entrySpawn: 'chegada', worldPos: { x: 0.90, y: 0.34 } },
-  { id: 'niteroi', name: 'Niterói', chapter: 'Capítulo 6', year: 'Ano 1', subtitle: 'Do outro lado da baía', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.52, y: 0.64 } },
+  { id: 'niteroi', name: 'Niterói', chapter: 'Capítulo 6', year: 'Ano 1', subtitle: 'Do outro lado da baía', entryMap: 'nt-apto', entrySpawn: 'porta', worldPos: { x: 0.52, y: 0.64 } },
   { id: 'cabo-frio', name: 'Cabo Frio', chapter: 'Capítulo 7', year: 'Ano 1', subtitle: 'Mais um ano-novo', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.92, y: 0.62 } },
   { id: 'botafogo', name: 'Botafogo', chapter: 'Capítulo 8', year: 'Ano 2', subtitle: 'Com o Pão de Açúcar ao fundo', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.46, y: 0.80 } },
   { id: 'curitiba', name: 'Curitiba', chapter: 'Capítulo 9', year: 'Ano 3', subtitle: 'A melhor viagem', entryMap: null, entrySpawn: 'start', worldPos: { x: 0.10, y: 0.90 } },
