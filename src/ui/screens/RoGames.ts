@@ -737,8 +737,8 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
         target.classList.toggle('match', bl === toL);
         const k = Math.max(0, Math.min(1, (t - 0.45) / 0.5));
         target.style.setProperty('--k', String(1 - k));
-        target.classList.toggle('perfect', t > 0.9 && t < 0.99);
-        target.classList.toggle('good', t >= 0.82 && t < 1.02);
+        target.classList.toggle('perfect', t > 0.86 && t < 1.0);
+        target.classList.toggle('good', t >= 0.72 && t < 1.06);
       } else target.classList.remove('on', 'good', 'perfect');
     };
     const newShot = () => {
@@ -750,7 +750,7 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
       const pool: Shot[] = rally < 3 ? ['normal'] : rally < 7 ? ['normal', 'normal', 'alta', 'cortada'] : ['normal', 'alta', 'cortada', 'efeito', 'efeito'];
       shot = pool[Math.floor(Math.random() * pool.length)];
       toL = LANES[Math.floor(Math.random() * 3)];
-      const base = Math.max(0.78, 1.4 - rally * 0.04);
+      const base = Math.max(0.95, 1.6 - rally * 0.035);
       dur = shot === 'alta' ? base * 1.45 : shot === 'cortada' ? base * 0.68 : base;
       arc = shot === 'alta' ? 40 : shot === 'cortada' ? 5 : 16 + Math.random() * 10;
       swingAnim(wengEl, 'w');
@@ -779,18 +779,28 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
       hud();
       if (lives <= 0) return finish();
       wait = 1.3;
+      setTimeout(() => !done && showBig('Lá vem outra!', 'm1'), 450);
     };
+    let swingCd = 0;
     const swing = () => {
-      if (!running || swung || wait > 0) return;
-      swung = true;
+      if (!running || swung || wait > 0 || swingCd > 0 || dir > 0) return;
       swingAnim(bellaEl, 'b');
-      if (dir < 0 && t >= 0.8 && t < 1.04) {
-        if (bl !== toL) {
-          // a raquete passou longe
+      if (t < 0.72) {
+        // cedo: só a raquetada no ar, dá pra tentar de novo
+        swingCd = 0.18;
+        pop(BX + 7, laneY(bl) - 8, 'Cedo!', 'meh');
+        return;
+      }
+      swung = true;
+      if (dir < 0 && t >= 0.72 && t < 1.08) {
+        if (Math.abs(bl - toL) > 1) {
           pop(BX + 7, laneY(bl) - 8, 'Longe!', 'meh');
+          swung = false;
+          swingCd = 0.18;
           return;
         }
-        const grade = t > 0.9 && t < 0.99 ? 3 : t >= 0.84 && t < 1.02 ? 2 : 1;
+        const near = bl === toL;
+        const grade = !near ? 1 : t > 0.86 && t < 1.0 ? 3 : t >= 0.78 && t < 1.05 ? 2 : 1;
         rally++;
         best = Math.max(best, rally);
         const gained = grade * mult() * (fire ? 2 : 1);
@@ -821,7 +831,7 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
         t = 0;
         fromL = bl;
         toL = LANES[Math.floor(Math.random() * 3)];
-        dur = Math.max(0.7, 1.25 - rally * 0.035);
+        dur = Math.max(0.85, 1.4 - rally * 0.03);
         arc = 14 + Math.random() * 14;
         shot = 'normal';
       }
@@ -851,6 +861,7 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
           }
         } else {
           t += dt / dur;
+          if (swingCd > 0) swingCd -= dt;
           // o Weng anda até onde a bola vai
           if (dir > 0) wl += (toL - wl) * Math.min(1, dt * 5);
           // efeito: no meio do caminho a bola muda de lado
@@ -863,7 +874,7 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
           if (dir > 0 && t >= 1) {
             wl = toL;
             newShot();
-          } else if (dir < 0 && t >= 1.08) {
+          } else if (dir < 0 && t >= 1.1) {
             miss(swung ? (bl !== toL ? 'Você tava no lugar errado! Olha o círculo.' : 'Bateu cedo demais! Espera ela chegar.') : ['Ih, passou!', 'Cadê a raquete, amor?', 'A bolinha fugiu!'][Math.floor(Math.random() * 3)]);
           }
         }
@@ -1084,6 +1095,174 @@ export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score:
     weng.step(0, 0, 0);
     hud();
     ui.say('bella', 'Bora pular onda! A água tá batendo na cintura.');
+    raf = requestAnimationFrame(tick);
+  });
+}
+
+// ====================================================================== Castelo de areia
+/**
+ * O balde de areia vai e vem em cima do castelo: aperte Espaço / E pra soltar a camada.
+ * O que sair pra fora do andar de baixo cai (o castelo afina). Encaixe perfeito = o andar não afina e brilha.
+ * São 8 andares antes da onda chegar (a barra da onda enche). Se o castelo ficar fino demais, desmorona.
+ */
+export function playCasteloGame(parent: HTMLElement): Promise<MiniResult & { floors: number }> {
+  return new Promise((resolve) => {
+    const ui = shell(parent, 'ca', 'Castelo de areia');
+    const bg = textureURL('map-ro-praia-bg');
+    const FLOORS = 8;
+    const TIME = 30;
+    const tower = h('div', { class: 'ca-tower' });
+    const bucket = h('div', { class: 'ca-bucket' }, h('i', { class: 'ca-sand' }));
+    const wave = h('div', { class: 'ca-wave' });
+    const fx = h('div', { class: 'fr-fx' });
+    const flag = h('div', { class: 'ca-flag' }, '♥');
+    const rules = h(
+      'div',
+      { class: 'cs-rules ca-rules' },
+      h('b', {}, 'Como jogar'),
+      h('div', {}, h('span', { class: 'ca-ico' }), h('span', {}, 'O balde vai e vem. Aperte ', h('kbd', {}, 'Espaço'), ' / ', h('kbd', {}, 'E'), ' pra soltar a areia em cima do andar de baixo.')),
+      h('div', {}, h('span', { class: 'ca-ico thin' }), h('span', {}, 'O que sobrar pra fora cai e o castelo afina. Encaixe ', h('u', { class: 'g' }, 'perfeito'), ' não perde nada!')),
+      h('div', {}, h('span', { class: 'ca-ico wave' }), h('span', {}, `Faça ${FLOORS} andares antes da onda chegar (${TIME} s). Fino demais: desmorona!`)),
+    );
+    ui.stage.append(h('div', { class: 'ca-bg', style: bg ? `background-image:url(${bg})` : '' }), wave, tower, bucket, flag, fx, rules);
+
+    // em % da largura da pista
+    let left = 30;
+    let width = 40;
+    let bx = 0;
+    let dir = 1;
+    let speed = 34;
+    let floors: { el: HTMLElement; l: number; w: number }[] = [];
+    let time = TIME;
+    let perfects = 0;
+    let running = false;
+    let done = false;
+    let last = 0;
+    let raf = 0;
+    const sbF = h('b', { class: 'so-sb-n' }, `0/${FLOORS}`);
+    const sbW = h('i', {});
+    const sbP = h('b', { class: 'so-sb-n' }, '0');
+    ui.hud.replaceChildren(h('div', { class: 'so-sb' }, h('div', { class: 'so-sb-chip' }, h('span', {}, 'Andares'), sbF), h('div', { class: 'so-sb-burn' }, h('span', { class: 'lbl' }, 'Onda'), h('div', { class: 'so-sb-bar' }, sbW)), h('div', { class: 'so-sb-chip' }, h('span', {}, 'Perfeitos'), sbP)));
+    const H = 8.2; // altura de um andar (% da pista)
+    const BASE = 86; // chão
+    const hud = () => {
+      sbF.textContent = `${floors.length}/${FLOORS}`;
+      const k = 1 - Math.max(0, time) / TIME;
+      sbW.style.width = `${k * 100}%`;
+      sbW.className = k > 0.75 ? 'hot' : k > 0.45 ? 'warm' : '';
+      sbP.textContent = String(perfects);
+      wave.style.transform = `translateX(${(1 - k) * 100}%)`;
+    };
+    const addFloor = (l: number, w: number, perfect: boolean) => {
+      const i = floors.length;
+      const el = h('div', { class: 'ca-floor' + (perfect ? ' perfect' : '') + (i % 2 ? ' alt' : ''), style: `left:${l}%;width:${w}%;bottom:${100 - BASE + i * H}%;height:${H}%` }, h('i'));
+      tower.append(el);
+      floors.push({ el, l, w });
+    };
+    const pop = (x: number, y: number, text: string, cls: string) => {
+      const el = h('b', { class: `fr-pop ${cls}`, style: `left:${x}%;top:${y}%` }, text);
+      fx.append(el);
+      setTimeout(() => el.remove(), 900);
+    };
+    const tick = (t: number) => {
+      const dt = last ? Math.min(0.05, (t - last) / 1000) : 0;
+      last = t;
+      if (running) {
+        time -= dt;
+        bx += dir * speed * dt;
+        if (bx + width > 96) (bx = 96 - width), (dir = -1);
+        if (bx < 4) (bx = 4), (dir = 1);
+        bucket.style.left = `${bx}%`;
+        bucket.style.width = `${width}%`;
+        bucket.style.bottom = `${100 - BASE + floors.length * H + H * 0.35}%`;
+        if (time <= 0) return finish(false);
+        hud();
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    const drop = () => {
+      if (!running) return;
+      const prev = floors[floors.length - 1];
+      const l0 = bx;
+      const r0 = bx + width;
+      const l = Math.max(l0, prev.l);
+      const r = Math.min(r0, prev.l + prev.w);
+      const w = r - l;
+      const y = BASE - floors.length * H;
+      if (w <= 3) {
+        AudioSystem.play('cancel');
+        ui.shake();
+        pop(bx + width / 2, y - 8, 'Desmoronou!', 'bad');
+        return finish(false);
+      }
+      const perfect = Math.abs(l0 - prev.l) < 1.6;
+      if (perfect) {
+        perfects++;
+        addFloor(prev.l, prev.w, true);
+        AudioSystem.play('quest');
+        pop(prev.l + prev.w / 2, y - 8, 'PERFEITO!', 'perfect');
+      } else {
+        addFloor(l, w, false);
+        AudioSystem.play('pickup');
+        // a sobra cai
+        const cutL = l0 < prev.l ? l0 : r;
+        const cutW = width - w;
+        const crumb = h('div', { class: 'ca-crumb', style: `left:${cutL}%;width:${cutW}%;bottom:${100 - BASE + (floors.length - 1) * H}%;height:${H}%` });
+        tower.append(crumb);
+        setTimeout(() => crumb.remove(), 700);
+        width = w;
+      }
+      if (floors.length - 1 === 3) ui.say('weng', 'Tá ficando alto! Devagar com esse balde!');
+      if (floors.length - 1 === 6) ui.say('bella', 'Mais um! A onda tá vindo, Weng!');
+      speed = Math.min(70, speed + 4.5);
+      hud();
+      if (floors.length - 1 >= FLOORS) return finish(true);
+    };
+    const finish = (won: boolean) => {
+      if (done) return;
+      done = true;
+      running = false;
+      cancelAnimationFrame(raf);
+      window.removeEventListener('keydown', onKey);
+      bucket.style.display = 'none';
+      hud();
+      const built = floors.length - 1;
+      if (won) {
+        const top = floors[floors.length - 1];
+        flag.style.left = `${top.l + top.w / 2}%`;
+        flag.style.bottom = `${100 - BASE + floors.length * H}%`;
+        flag.classList.add('on');
+      } else {
+        tower.classList.add('fall');
+      }
+      const stars = won ? (perfects >= 4 ? 3 : 2) : built >= 5 ? 2 : 1;
+      ui.say(won ? 'bella' : 'weng', won ? `${built} andares${perfects ? `, ${perfects} perfeitos` : ''}! O castelo mais alto da praia de Rio das Ostras.` : `${built} andares... a areia escorregou. Mas a gente refaz!`);
+      ui.end(stars, 'Enfeitar o castelo', () => resolve({ stars, mistakes: won ? 0 : 1, floors: built }));
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (InputSystem.context !== 'minigame' || e.repeat) return;
+      if (e.code !== 'Space' && e.code !== 'KeyE' && e.code !== 'Enter') return;
+      e.preventDefault();
+      if (!running && !done) return start();
+      drop();
+    };
+    const dropBtn = h('button', { class: 'btn primary ce-serve' }, 'Soltar a areia');
+    dropBtn.addEventListener('click', drop);
+    const start = () => {
+      if (running || done) return;
+      rules.classList.add('off');
+      running = true;
+      ui.actions.replaceChildren(dropBtn);
+      ui.say('weng', 'Eu encho o balde, você solta. Trabalho em equipe!');
+    };
+    const startBtn = h('button', { class: 'btn primary' }, 'Encher o balde');
+    startBtn.addEventListener('click', start);
+    ui.actions.append(startBtn);
+    window.addEventListener('keydown', onKey);
+    addFloor(left, width, false);
+    floors[0].el.classList.add('base');
+    hud();
+    ui.say('bella', 'Um castelo de areia de verdade. Alto. Com torre. E bandeira.');
     raf = requestAnimationFrame(tick);
   });
 }

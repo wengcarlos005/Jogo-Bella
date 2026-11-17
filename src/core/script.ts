@@ -76,6 +76,7 @@ export interface ScriptContext {
   chocolate(): Promise<{ stars: number; mistakes: number; pts: number }>;
   fotoNiemeyer(): Promise<{ stars: number; mistakes: number; score: number }>;
   bandeja(): Promise<{ stars: number; mistakes: number; served: number }>;
+  castelo(): Promise<{ stars: number; mistakes: number; floors: number }>;
   onda(): Promise<{ stars: number; mistakes: number; score: number }>;
   tempestade(): Promise<import('@/ui/screens/PetroGames').MiniResult & { lives: number }>;
   /** Bate-bate no parque de diversões (Araruama). */

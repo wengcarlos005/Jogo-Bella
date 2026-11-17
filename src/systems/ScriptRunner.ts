@@ -264,6 +264,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     bateBate: () => UI.bateBate(),
     sol: () => UI.sol(),
     onda: () => UI.onda(),
+    castelo: () => UI.castelo(),
     chocolate: () => UI.chocolate(),
     gatinho: () => UI.gatinho(),
     travessia: () => UI.travessia(),

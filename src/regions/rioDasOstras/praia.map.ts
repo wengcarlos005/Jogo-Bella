@@ -298,7 +298,9 @@ const scripts: Record<string, Script> = {
     if (tipo === 0) await ctx.say('weng', 'Torres altas. Na areia. Contra a gravidade. Adoro um desafio.');
     else if (tipo === 1) await ctx.say('weng', 'Fosso! Eu cavo, você decora. Divisão justa de trabalho.');
     else await ctx.say('weng', 'Com a varanda e tudo? A tia Tim vai querer foto.');
-    await ctx.narrate('Meia hora de baldinho, dedo e paciência. O Weng cavando, a Bella esculpindo.');
+    const cast = await ctx.castelo();
+    ctx.setFlag('ro-castelo-estrelas', cast.stars);
+    await ctx.narrate(cast.floors >= 8 ? 'Oito andares de areia, um em cima do outro. Turistas pararam pra olhar.' : 'Meio torto, meio caído, mas é NOSSO castelo.');
     const enfeite = await ctx.choose('bella', 'E pra enfeitar?', ['Conchinhas na muralha', 'Uma bandeira de palito de picolé', 'Escrever "B + W" na frente']);
     if (enfeite === 2) {
       await ctx.say('weng', '"B + W". Com coração em volta?');

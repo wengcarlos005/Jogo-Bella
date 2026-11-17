@@ -3631,3 +3631,56 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .al-ball img { width: 100%; height: 100%; animation: frSpin .5s linear infinite; }
 .al-puff { position: absolute; width: 12%; transform: translate(-50%, -50%); animation: bkSplash .7s ease-out forwards; }
 .al-target { margin-top: calc(var(--u) * -14); }
+/* o placar e os botões do fim ("Jogar de novo") nunca ficam cortados: a pista encolhe quando falta altura */
+.pg-panel { display: flex !important; flex-direction: column !important; }
+.pg-panel > .pg-stage { flex: 0 1 auto !important; min-height: 140px !important; }
+.pg-panel > .pg-hud, .pg-panel > .pg-title, .pg-panel > .pg-talk, .pg-panel > .bg-actions { flex: none !important; }
+
+/* ---------- Cortina dos minigames (v2): íris estrelada + faixa ---------- */
+.mg-curtain.v2 .mgc-iris { position: absolute; inset: 0; clip-path: circle(0% at 50% 50%); transition: clip-path .7s cubic-bezier(.6, 0, .3, 1);
+  background: radial-gradient(ellipse at 50% 45%, #5a2a6a, #2a1240 55%, #140a24); }
+.mg-curtain.v2.fast .mgc-iris { transition-duration: .4s; }
+.mg-curtain.v2.closed .mgc-iris { clip-path: circle(80% at 50% 50%); }
+.mg-curtain.v2.opening .mgc-iris { clip-path: circle(0% at 50% 50%); transition-duration: .55s; }
+.mgc-stars { position: absolute; inset: 0; }
+.mgc-stars i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px #fff; animation: txTw 2.2s ease-in-out infinite; }
+.mgc-glow { position: absolute; left: 50%; top: 50%; width: 60%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(255, 122, 168, .28), transparent 65%); }
+.mg-curtain.v2 .mgc-card { gap: calc(var(--u) * 4); }
+.mgc-faces { display: flex; align-items: center; gap: calc(var(--u) * 3); }
+.mgc-faces img { width: clamp(44px, calc(var(--u) * 30), 84px); aspect-ratio: 1; object-fit: cover; object-position: top; border-radius: 50%; border: 3px solid #fff3d6; background: #f2e2ff; image-rendering: pixelated; box-shadow: 0 4px 0 rgba(0, 0, 0, .35); animation: mgcHop .9s ease-in-out infinite; }
+.mgc-faces img:last-child { animation-delay: -.45s; }
+.mgc-faces b { color: #ff7aa8; font-size: clamp(18px, calc(var(--u) * 12), 34px); text-shadow: 0 0 10px rgba(255, 122, 168, .8); animation: mgcBeat .7s ease-in-out infinite; }
+@keyframes mgcHop { 50% { transform: translateY(-14%); } }
+.mgc-ribbon { position: relative; padding: calc(var(--u) * 4) calc(var(--u) * 16); background: linear-gradient(#ff8ab4, #e0507f); border-top: 3px solid #ffd6e6; border-bottom: 3px solid #a02a5a; box-shadow: 0 calc(var(--u) * 3) 0 rgba(0, 0, 0, .35); }
+.mgc-ribbon::before, .mgc-ribbon::after { content: ''; position: absolute; top: 18%; width: calc(var(--u) * 12); height: 100%; background: #c03a6e; z-index: -1; }
+.mgc-ribbon::before { left: calc(var(--u) * -9); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 40% 50%); }
+.mgc-ribbon::after { right: calc(var(--u) * -9); clip-path: polygon(0 0, 100% 0, 60% 50%, 100% 100%, 0 100%); }
+.mg-curtain.v2 .mgc-title { padding: 0; background: none; border: none; box-shadow: none; color: #fff; text-shadow: 0 3px 0 #a02a5a; }
+.mg-curtain.v2 .mgc-sub { color: #ffe27a; text-shadow: 0 2px 0 #2a0c24; }
+
+/* ---------- Castelo de areia ---------- */
+.ca-title { background: linear-gradient(90deg, #e0b060, #ff9a6a) !important; }
+.ca-stage { height: min(56vh, calc(var(--u) * 230)) !important; overflow: hidden; }
+.ca-bg { position: absolute; inset: 0; background-size: 170% auto; background-position: 40% 78%; filter: saturate(1.05); }
+.ca-tower { position: absolute; inset: 0; z-index: 2; }
+.ca-tower.fall .ca-floor { animation: caFall .8s ease-in forwards; }
+.ca-tower.fall .ca-floor:nth-child(2n) { animation-delay: .1s; }
+@keyframes caFall { to { transform: translateY(40%) rotate(8deg); opacity: .3; } }
+.ca-floor { position: absolute; border-radius: 6px 6px 3px 3px; background: linear-gradient(#f2d49a, #d8a860); border: 2px solid #8a5a2a; box-shadow: inset 0 3px 0 rgba(255, 255, 255, .45), inset 0 -4px 0 rgba(120, 70, 20, .3); }
+.ca-floor.alt { background: linear-gradient(#ecc888, #cf9c55); }
+.ca-floor i { position: absolute; left: 0; right: 0; top: -22%; height: 30%; background: repeating-linear-gradient(90deg, #e8c47e 0 14%, transparent 14% 22%); }
+.ca-floor.base { background: linear-gradient(#e0b878, #c08a48); }
+.ca-floor.perfect { box-shadow: inset 0 3px 0 rgba(255, 255, 255, .6), 0 0 10px #ffe27a; }
+.ca-crumb { position: absolute; background: #d8a860; border-radius: 4px; animation: caCrumb .7s ease-in forwards; }
+@keyframes caCrumb { to { transform: translateY(160%) rotate(20deg); opacity: 0; } }
+.ca-bucket { position: absolute; z-index: 3; height: 9%; border-radius: 4px 4px 14px 14px; background: linear-gradient(#ff7aa8, #d0447a); border: 2px solid #6a1a3a; }
+.ca-bucket::before { content: ''; position: absolute; left: 20%; right: 20%; top: -70%; height: 70%; border: 3px solid #6a1a3a; border-bottom: none; border-radius: 50% 50% 0 0; }
+.ca-sand { position: absolute; left: 4%; right: 4%; bottom: -30%; height: 30%; background: #f2d49a; border-radius: 0 0 6px 6px; }
+.ca-wave { position: absolute; right: 0; bottom: 0; width: 100%; height: 20%; z-index: 1; transform: translateX(100%); background: linear-gradient(90deg, rgba(255,255,255,.9) 0 3%, #7fd8ee 3% 12%, #2a8ac8); border-radius: 60% 0 0 0; opacity: .85; }
+.ca-flag { position: absolute; z-index: 4; transform: translate(-50%, 0) scale(0); font-size: clamp(18px, calc(var(--u) * 12), 34px); color: #ff6a9a; text-shadow: 0 0 8px #fff; transition: transform .4s cubic-bezier(.2, 1.6, .4, 1); }
+.ca-flag.on { transform: translate(-50%, 0) scale(1); }
+.ca-ico { flex: none; width: 40px; height: 40px; border-radius: 6px 6px 3px 3px; background: linear-gradient(#f2d49a, #d8a860); border: 2px solid #8a5a2a; }
+.ca-ico.thin { width: 20px; margin: 0 10px; }
+.ca-ico.wave { background: linear-gradient(90deg, #fff 0 10%, #7fd8ee 10% 40%, #2a8ac8); border-color: #1a5a9a; border-radius: 50% 0 0 0; }
+.ca-bg { background-position: 40% 32%; }
+.fr-bg { background-position: 70% 80%; }

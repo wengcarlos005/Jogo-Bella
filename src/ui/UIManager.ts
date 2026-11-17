@@ -13,7 +13,7 @@ import { playFogosGame } from './screens/FogosGame';
 import { playPedrinhaGame } from './screens/PedrinhaGame';
 import { playArgolasGame } from './screens/ArgolasGame';
 import { playBateBateGame } from './screens/BateBateGame';
-import { playSolGame, playTempestadeGame, playFrescobolGame, playOndaGame } from './screens/RoGames';
+import { playSolGame, playTempestadeGame, playFrescobolGame, playOndaGame, playCasteloGame } from './screens/RoGames';
 import { playChocolateGame, playFotoNiemeyerGame, playBandejaGame } from './screens/NtGames';
 import { playGatinhoGame, playTravessiaGame, playAltinhaGame, playCincoKmGame } from './screens/CfGames';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
@@ -280,6 +280,11 @@ class UIManagerImpl {
   bandeja(): Promise<MiniResult & { served: number }> {
     this.dialogue.close();
     return this.replayable(() => playBandejaGame(this.root), undefined, 'Bandeja do churrasco');
+  }
+
+  castelo(): Promise<MiniResult & { floors: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playCasteloGame(this.root), undefined, 'Castelo de areia');
   }
 
   onda(): Promise<MiniResult & { score: number }> {
