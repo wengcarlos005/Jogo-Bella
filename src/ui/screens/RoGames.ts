@@ -996,14 +996,6 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
  *  - Onda GIGANTE (espuma vermelha): segure ↓ pra FURAR por baixo.
  * Acertou: pontos + combo. Errou: caixote (perde 1 ♥, são 3). 12 ondas, cada vez mais rápidas.
  */
-/** Onda vista de lado, com a crista enrolando pra esquerda (vem da direita). */
-const WAVE_SVG = `<svg viewBox="0 0 220 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-  <defs><linearGradient id="ow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fe0f0"/><stop offset=".45" stop-color="#2fa0d8"/><stop offset="1" stop-color="#1a5aa8"/></linearGradient></defs>
-  <path d="M0 140 L0 118 C28 116 46 100 62 74 C78 46 104 22 136 18 C160 15 178 26 182 44 C185 58 172 66 160 60 C150 55 154 44 146 42 C132 40 124 62 128 86 C132 108 170 120 220 122 L220 140 Z" fill="url(#ow)"/>
-  <path d="M60 76 C78 46 104 22 136 18 C160 15 178 26 182 44 C185 58 172 66 160 60 C150 55 154 44 146 42 C124 36 104 50 92 66 C82 80 70 84 60 76 Z" fill="#ffffff" opacity=".92"/>
-  <path d="M36 110 C52 104 60 96 66 86" stroke="#e8fbff" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/>
-  <circle cx="176" cy="30" r="5" fill="#fff"/><circle cx="188" cy="40" r="3.5" fill="#fff"/><circle cx="168" cy="20" r="3" fill="#fff"/>
-</svg>`;
 
 export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score: number }> {
   return new Promise((resolve) => {
@@ -1012,7 +1004,9 @@ export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score:
     const TOTAL = 12;
     const bella = walker('bella-praia', 'b');
     const weng = walker('weng-praia', 'w');
-    const pair = h('div', { class: 'on-pair' }, bella.el, weng.el, h('i', { class: 'on-hands' }, '♥'));
+    const pairImg = h('img', { src: mg('on-c0'), alt: '' }) as HTMLImageElement;
+    const pair = h('div', { class: 'on-pair v2' }, pairImg);
+    let hitT = 0;
     const mark = h('div', { class: 'on-mark' });
     const sea = h('div', { class: 'on-sea' });
     const fx = h('div', { class: 'fr-fx' });
@@ -1026,7 +1020,7 @@ export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score:
     );
     const sky = h('div', { class: 'on-sky' }, h('i', { class: 'on-sun' }), h('i', { class: 'on-cloud c1' }), h('i', { class: 'on-cloud c2' }));
     const far = h('div', { class: 'on-far' });
-    const front = h('div', { class: 'on-front' });
+    const front = h('div', { class: 'on-front' }, h('i', { class: 'on-strip', style: `background-image:url(${mg('on-agua')})` }));
     void bg;
     ui.stage.append(sky, far, sea, mark, pair, front, fx, rules);
 
@@ -1068,13 +1062,16 @@ export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score:
         if (jump > 0) jump -= dt;
         pair.classList.toggle('jump', jump > 0);
         pair.classList.toggle('dive', dive && jump <= 0);
+        if (hitT > 0) hitT -= dt;
+        const pose = hitT > 0 ? 'on-c3' : jump > 0 ? 'on-c1' : dive ? 'on-c2' : 'on-c0';
+        if (!pairImg.src.endsWith(`${pose}.png`)) pairImg.src = mg(pose);
         bella.step(0, 0, dt);
         weng.step(0, 0, dt);
         nextIn -= dt;
         if (nextIn <= 0 && sent < TOTAL) {
           sent++;
           const big = sent > 2 && Math.random() < 0.35;
-          const el = h('div', { class: `on-wave${big ? ' big' : ''}`, html: WAVE_SVG }, big ? h('b', { class: 'on-warn' }, '!') : null);
+          const el = h('div', { class: `on-wave v2${big ? ' big' : ''}` }, h('img', { src: mg(big ? 'on-ondagigante' : 'on-onda'), alt: '' }), big ? h('b', { class: 'on-warn' }, '!') : null);
           ui.stage.append(el);
           const v = 30 + sent * 2.2;
           waves.push({ el, x: 108, big, v, judged: false });
@@ -1103,6 +1100,10 @@ export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score:
               AudioSystem.play('cancel');
               pair.classList.add('hit');
               setTimeout(() => pair.classList.remove('hit'), 600);
+              hitT = 0.7;
+              const sp = h('img', { class: 'on-splash', src: mg('on-splash'), alt: '' });
+              ui.stage.append(sp);
+              setTimeout(() => sp.remove(), 700);
               pop('CAIXOTE!', 'bad');
               ui.say(w.big ? 'weng' : 'bella', w.big ? 'Era pra furar! A gigante levou a gente rolando!' : 'Engoli água salgada. Muita.');
               if (lives <= 0) return finish();
@@ -1174,10 +1175,12 @@ export function playCasteloGame(parent: HTMLElement): Promise<MiniResult & { flo
     const FLOORS = 8;
     const TIME = 30;
     const tower = h('div', { class: 'ca-tower' });
-    const bucket = h('div', { class: 'ca-bucket' }, h('i', { class: 'ca-sand' }));
-    const wave = h('div', { class: 'ca-wave' });
+    const bucketImg = h('img', { class: 'ca-pail', src: mg('ca-balde'), alt: '' }) as HTMLImageElement;
+    const bucket = h('div', { class: 'ca-bucket v2' }, bucketImg, h('div', { class: 'ca-ghost' }));
+    const blockFor = (w: number) => mg(w >= 30 ? 'ca-b1' : w >= 22 ? 'ca-b2' : w >= 15 ? 'ca-b3' : w >= 9 ? 'ca-b4' : 'ca-b5');
+    const wave = h('div', { class: 'ca-wave v2' }, h('img', { src: mg('ca-espuma'), alt: '' }));
     const fx = h('div', { class: 'fr-fx' });
-    const flag = h('div', { class: 'ca-flag' }, '♥');
+    const flag = h('img', { class: 'ca-flag v2', src: mg('ca-torre'), alt: '' });
     const rules = h(
       'div',
       { class: 'cs-rules ca-rules' },
@@ -1205,7 +1208,7 @@ export function playCasteloGame(parent: HTMLElement): Promise<MiniResult & { flo
     const sbW = h('i', {});
     const sbP = h('b', { class: 'so-sb-n' }, '0');
     ui.hud.replaceChildren(h('div', { class: 'so-sb' }, h('div', { class: 'so-sb-chip' }, h('span', {}, 'Andares'), sbF), h('div', { class: 'so-sb-burn' }, h('span', { class: 'lbl' }, 'Onda'), h('div', { class: 'so-sb-bar' }, sbW)), h('div', { class: 'so-sb-chip' }, h('span', {}, 'Perfeitos'), sbP)));
-    const H = 8.2; // altura de um andar (% da pista)
+    const H = 9.5; // altura de um andar (% da pista)
     const BASE = 86; // chão
     const hud = () => {
       sbF.textContent = `${floors.length}/${FLOORS}`;
@@ -1217,7 +1220,7 @@ export function playCasteloGame(parent: HTMLElement): Promise<MiniResult & { flo
     };
     const addFloor = (l: number, w: number, perfect: boolean) => {
       const i = floors.length;
-      const el = h('div', { class: 'ca-floor' + (perfect ? ' perfect' : '') + (i % 2 ? ' alt' : ''), style: `left:${l}%;width:${w}%;bottom:${100 - BASE + i * H}%;height:${H}%` }, h('i'));
+      const el = h('div', { class: 'ca-floor v2' + (perfect ? ' perfect' : ''), style: `left:${l}%;width:${w}%;bottom:${100 - BASE + i * H}%;height:${H}%;background-image:url(${blockFor(w)})` });
       tower.append(el);
       floors.push({ el, l, w });
     };
@@ -1236,6 +1239,7 @@ export function playCasteloGame(parent: HTMLElement): Promise<MiniResult & { flo
         if (bx < 4) (bx = 4), (dir = 1);
         bucket.style.left = `${bx}%`;
         bucket.style.width = `${width}%`;
+        (bucket.querySelector('.ca-ghost') as HTMLElement).style.backgroundImage = `url(${blockFor(width)})`;
         bucket.style.bottom = `${100 - BASE + floors.length * H + H * 0.35}%`;
         if (time <= 0) return finish(false);
         hud();
@@ -1257,6 +1261,8 @@ export function playCasteloGame(parent: HTMLElement): Promise<MiniResult & { flo
         pop(bx + width / 2, y - 8, 'Desmoronou!', 'bad');
         return finish(false);
       }
+      bucketImg.src = mg('ca-baldevira');
+      setTimeout(() => (bucketImg.src = mg('ca-balde')), 260);
       const perfect = Math.abs(l0 - prev.l) < 1.6;
       if (perfect) {
         perfects++;
@@ -1269,7 +1275,7 @@ export function playCasteloGame(parent: HTMLElement): Promise<MiniResult & { flo
         // a sobra cai
         const cutL = l0 < prev.l ? l0 : r;
         const cutW = width - w;
-        const crumb = h('div', { class: 'ca-crumb', style: `left:${cutL}%;width:${cutW}%;bottom:${100 - BASE + (floors.length - 1) * H}%;height:${H}%` });
+        const crumb = h('div', { class: 'ca-crumb v2', style: `background-image:url(${mg('ca-farelo')});left:${cutL}%;width:${cutW}%;bottom:${100 - BASE + (floors.length - 1) * H}%;height:${H}%` });
         tower.append(crumb);
         setTimeout(() => crumb.remove(), 700);
         width = w;
@@ -1292,8 +1298,14 @@ export function playCasteloGame(parent: HTMLElement): Promise<MiniResult & { flo
       if (won) {
         const top = floors[floors.length - 1];
         flag.style.left = `${top.l + top.w / 2}%`;
-        flag.style.bottom = `${100 - BASE + floors.length * H}%`;
+        flag.style.bottom = `${100 - BASE + floors.length * H - 0.5}%`;
         flag.classList.add('on');
+        // enfeites nos andares
+        const deco = ['ca-concha', 'ca-buzio', 'ca-estrela', 'ca-alga'];
+        floors.slice(1).forEach((f, k) => {
+          const d = h('img', { class: 'ca-deco', src: mg(deco[k % deco.length]), alt: '', style: `left:${f.l + f.w * (k % 2 ? 0.72 : 0.3)}%;bottom:${100 - BASE + (k + 1) * H + H * 0.2}%;animation-delay:${k * 0.08}s` });
+          tower.append(d);
+        });
       } else {
         tower.classList.add('fall');
       }

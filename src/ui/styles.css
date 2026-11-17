@@ -3718,3 +3718,29 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 .fr-sets i { width: calc(var(--u) * 4.5); height: calc(var(--u) * 4.5); border-radius: 50%; background: #e8d6f0; border: calc(var(--u) * .8) solid #6a3a8a; }
 .fr-sets i.b { background: #ff6a9a; } .fr-sets i.w { background: #4a8aff; }
 .fr-panel .pg-hud { justify-content: center; }
+
+/* sprites novos: pular onda */
+.on-pair.v2 { top: 26%; width: 26%; display: block; }
+.on-pair.v2 img { width: 100%; display: block; filter: drop-shadow(0 3px 0 rgba(0, 40, 90, .25)); }
+.on-front { top: 60%; background: linear-gradient(rgba(58, 168, 220, .55), rgba(26, 106, 184, .95) 35%, #134e8c); border-top: none; }
+.on-strip { position: absolute; left: 0; right: 0; top: -14px; height: 22px; background: 0 0 / auto 100% repeat-x; animation: onStrip 3s linear infinite; }
+@keyframes onStrip { to { background-position-x: -300px; } }
+.on-wave.v2 { filter: none; top: 18%; height: auto; width: 21%; }
+.on-wave.v2 img { width: 100%; display: block; }
+.on-wave.v2.big { top: -6%; width: 33%; }
+.on-splash { position: absolute; left: 24%; top: 20%; width: 16%; z-index: 8; transform: translate(-50%, 0); animation: bkSplash .7s ease-out forwards; }
+.on-hands { display: none; }
+/* sprites novos: castelo */
+.ca-floor.v2 { background: center / 100% 100% no-repeat; border: none; box-shadow: none; border-radius: 0; filter: drop-shadow(0 3px 0 rgba(90, 50, 10, .25)); }
+.ca-floor.v2.perfect { filter: drop-shadow(0 0 8px #ffe27a) drop-shadow(0 3px 0 rgba(90, 50, 10, .25)); }
+.ca-bucket.v2 { background: none; border: none; height: 9.5%; border-radius: 0; }
+.ca-bucket.v2::before { display: none; }
+.ca-ghost { position: absolute; inset: 0; background: center / 100% 100% no-repeat; opacity: .55; }
+.ca-pail { position: absolute; left: 50%; bottom: 105%; width: 7%; min-width: 34px; transform: translateX(-50%); }
+.ca-crumb.v2 { background-color: transparent; background-position: center; background-size: contain; background-repeat: no-repeat; }
+.ca-wave.v2 { background: none; opacity: 1; border-radius: 0; height: 16%; }
+.ca-wave.v2 img { width: 100%; height: 100%; display: block; }
+.ca-flag.v2 { width: 9%; transform: translate(-50%, 0) scale(0); transform-origin: 50% 100%; }
+.ca-flag.v2.on { transform: translate(-50%, 0) scale(1); }
+.ca-deco { position: absolute; width: 3.4%; transform: translateX(-50%) scale(0); z-index: 3; animation: caDeco .35s cubic-bezier(.2, 1.6, .4, 1) forwards; }
+@keyframes caDeco { to { transform: translateX(-50%) scale(1); } }
