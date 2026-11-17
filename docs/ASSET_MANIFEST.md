@@ -68,6 +68,9 @@ sem moldura. Personagens chibi (cabeça grande, ~2,5 cabeças de altura).
 | MAP-NT1 | `maps/nt-apto-bg.png` | Apê em Icaraí, cenário vazio (original 1536×1024 em art-source/maps/nt-apto.webp) | 1024×683 | — | recebido; mapa entra com os objetos |
 | MAP-NT2 | `maps/nt-niemeyer-bg.png` | Caminho Niemeyer, cenário vazio (original em art-source/maps/nt-niemeyer.webp) | 1024×683 | — | recebido; mapa entra com os objetos |
 | MAP-NT3 | `maps/nt-onfire-bg.png` | On Fire American BBQ por dentro, cenário vazio (original em art-source/maps/nt-onfire.webp) | 1024×683 | — | recebido; mapa entra com os objetos |
+| MAP-CF1 | `maps/cf-casa-bg.png` | Casa de praia (Airbnb) em Peró, vazia (original em art-source/maps/cf-casa.webp) | 1024×683 | — | recebido |
+| MAP-CF2 | `maps/cf-pero-bg.png` | Praia do Peró (original em art-source/maps/cf-pero.webp) | 1024×683 | — | recebido |
+| MAP-CF3 | `maps/cf-japones-bg.png` | Praia do Japonês com a ilhota e a faixa de areia (original em art-source/maps/cf-japones.webp) | 1024×683 | — | recebido |
 | OBJ-NA | `objects/na-*.png` (sofá, mesinha c/ chocolates, mesa de 8, tapete, luminária, 2 poltronas, cesta) | Objetos do apê em Icaraí (folha em art-source/objects/objects-nt-apto.webp) | — | — | recortados |
 | OBJ-NN | `objects/nn-*.png` (banco, poste, carrinho de coco, palmeira, escultura, pombos) | Objetos do Caminho Niemeyer (folha em art-source/objects/objects-nt-niemeyer.webp) | — | — | recortados |
 | OBJ-NO | `objects/no-*.png` (mesa xadrez, banco estofado, cadeira, balde de molhos, planta no barril) | Objetos do On Fire (folha em art-source/objects/objects-nt-onfire.webp) | — | — | recortados |
