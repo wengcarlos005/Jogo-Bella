@@ -49,6 +49,13 @@ export function shell(parent: HTMLElement, cls: string, title: string) {
       h('button', { class: 'btn primary', onclick: close }, label),
     );
     function close() {
+      // com o cursor do teclado em "Jogar de novo", o Espaço é dele (não fecha o jogo por baixo)
+      const replay = actions.querySelector('.mg-replay.kb-sel') as HTMLButtonElement | null;
+      if (replay && !replay.dataset.fired) {
+        replay.dataset.fired = '1';
+        replay.click();
+        return;
+      }
       InputSystem.off('minigame:interact', close);
       InputSystem.pop('minigame');
       screen.remove();

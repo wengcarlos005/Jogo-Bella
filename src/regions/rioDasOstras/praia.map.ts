@@ -305,26 +305,9 @@ const scripts: Record<string, Script> = {
     }
     await ctx.say('bella', 'Bora pular onda! Segura minha mão e não solta!');
     await ctx.say('weng', 'Não solto. E segura o chapéu.');
-    await ctx.narrate('A água batendo na cintura. Lá vem a primeira.');
-    let pontos = 0;
-    const ondas = [
-      ['Onda pequena!', 'Pular junto', 'Furar por baixo', 'Ficar parado'],
-      ['Onda média, com espuma!', 'Pular bem alto', 'Mergulhar de mãos dadas', 'Virar de costas'],
-      ['ONDA GIGANTE!', 'Pular com tudo', 'Furar a onda', 'Correr pra areia'],
-    ];
-    for (let i = 0; i < ondas.length; i++) {
-      const [titulo, ...op] = ondas[i];
-      const c = await ctx.choose('weng', titulo, op);
-      const certo = i === 2 ? c === 1 : c !== 2;
-      if (certo) {
-        pontos++;
-        ctx.sfx('confirm');
-        await ctx.say(i % 2 ? 'weng' : 'bella', ['Passou! Hahaha, de novo!', 'Essa foi linda! A gente é profissional.', 'FURAMOS A GIGANTE! Weng, a gente é surfista agora!'][i]);
-      } else {
-        ctx.sfx('cancel');
-        await ctx.say(i % 2 ? 'bella' : 'weng', ['Engoli água salgada. Muita.', 'A espuma bateu na cara. Meu óculos!', 'A onda levou a gente rolando até a areia!'][i]);
-      }
-    }
+    const ond = await ctx.onda();
+    ctx.setFlag('ro-onda-estrelas', ond.stars);
+    const pontos = ond.stars;
     await ctx.narrate('E aí uma onda levou o chapéu de palha da Bella, boiando mar adentro.');
     await ctx.say('bella', 'MEU CHAPÉU!');
     await ctx.say('weng', 'Deixa comigo!');
@@ -336,7 +319,7 @@ const scripts: Record<string, Script> = {
       await ctx.emote('weng', 'heart');
       await ctx.say('weng', '...Beijo com gosto de mar. Aprovado.');
     }
-    if (pontos === 3) await ctx.say('bella', 'Três de três! Ninguém pula onda melhor que a gente.');
+    if (pontos === 3) await ctx.say('bella', 'Nenhum caixote! Ninguém pula onda melhor que a gente.');
     ctx.hearts('player', pontos >= 2 ? 8 : 5);
     ctx.objective(Q, 'mar');
     await proximo(ctx);

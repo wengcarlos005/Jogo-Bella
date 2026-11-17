@@ -2797,19 +2797,6 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 /* ===== Frescobol (Rio das Ostras) ===== */
 .fr-title { background: linear-gradient(90deg, #ff9a3a, #2fb3c8) !important; }
 .fr-stage { height: min(54vh, calc(var(--u) * 215)) !important; background: #e8c88a; }
-.fr-bg { position: absolute; inset: 0; background-size: 150% auto; background-position: 50% 70%; image-rendering: pixelated; filter: saturate(1.05); }
-.fr-p { position: absolute; bottom: 6%; height: 62%; image-rendering: pixelated; z-index: 3; filter: drop-shadow(0 4px 0 rgba(0, 0, 0, .25)); }
-.fr-bella { left: 6%; }
-.fr-weng { right: 6%; }
-.fr-ball { position: absolute; width: 3.4%; transform: translate(-50%, -50%); z-index: 5; image-rendering: pixelated; }
-.fr-ball.off, .fr-trail.off { visibility: hidden; }
-.fr-trail { position: absolute; width: 7%; z-index: 4; image-rendering: pixelated; opacity: .8; }
-.fr-ring { position: absolute; left: 28%; top: 50%; width: calc(9% + var(--k, 1) * 12%); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; border: 4px solid #ffd23f; opacity: 0; z-index: 4; pointer-events: none; transition: border-color .08s; }
-.fr-ring.on { opacity: .9; }
-.fr-ring.good { border-color: #5fcf7a; box-shadow: 0 0 14px #5fcf7a; }
-.fr-count { position: absolute; left: 50%; top: 8%; transform: translateX(-50%); font-family: var(--font-pixel); font-size: clamp(22px, 4vw, 44px); color: #fff; text-shadow: 0 3px 0 #b0402a; z-index: 6; }
-.fr-count.pop { animation: nv-pop2b .4s; }
-.fr-splash { position: absolute; bottom: 8%; width: 9%; transform: translateX(-50%); z-index: 4; image-rendering: pixelated; animation: so-lotion .9s ease-out forwards; opacity: 1; }
 .fr-rules img { aspect-ratio: 1; background: #ffe9b8; padding: 3px; }
 
 /* ===== Corrida de Pedalinho (kart) ===== */
@@ -3364,3 +3351,89 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .fw-couple i { display: none; }
 
 .bk-stage { height: min(54vh, calc(var(--u) * 215)) !important; }
+
+
+/* ---------- Frescobol (v2) ---------- */
+.fr-stage { height: min(56vh, calc(var(--u) * 225)) !important; overflow: hidden; }
+.fr-bg { position: absolute; inset: 0; background-size: 150% auto; background-position: 50% 62%; image-rendering: pixelated; }
+.fr-stage.fr-flash::after { content: ''; position: absolute; inset: 0; z-index: 40; background: #fff; pointer-events: none; animation: tp-flash .25s; opacity: 0; }
+.fr-lanes { position: absolute; left: 6%; width: 26%; top: 0; bottom: 0; z-index: 1; pointer-events: none; }
+.fr-lanes i { position: absolute; left: 0; right: 0; height: 9%; transform: translateY(-50%); border-radius: 50%; border: 2px dashed rgba(255, 255, 255, .45); }
+.fr-lanes i[data-l="1"] { top: 70%; } .fr-lanes i[data-l="0"] { top: 81%; } .fr-lanes i[data-l="-1"] { top: 92%; }
+.fr-lanes i.on { border-color: #fff; background: rgba(255, 255, 255, .18); }
+.fr-p { position: absolute; height: 50%; image-rendering: pixelated; z-index: 8; filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .25)); transition: bottom .12s ease-out; }
+.fr-bella { left: 4%; }
+.fr-weng { right: 4%; }
+.fr-pshadow { position: absolute; width: 12%; height: 5%; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(ellipse, rgba(60, 30, 10, .4), transparent 70%); z-index: 2; transition: top .12s ease-out; }
+.fr-pshadow.b { left: 12%; } .fr-pshadow.w { left: 88%; }
+.fr-ball { position: absolute; width: 3.6%; aspect-ratio: 1; transform: translate(-50%, -50%); z-index: 12; }
+.fr-ball img { width: 100%; height: 100%; image-rendering: pixelated; animation: frSpin .4s linear infinite; }
+@keyframes frSpin { to { transform: rotate(360deg); } }
+.fr-ball::before { content: ''; position: absolute; inset: -30%; border-radius: 50%; opacity: 0; }
+.fr-ball.alta::before { opacity: 1; background: radial-gradient(circle, rgba(255, 226, 122, .7), transparent 70%); }
+.fr-ball.cortada::before { opacity: 1; background: radial-gradient(circle, rgba(255, 90, 60, .7), transparent 70%); }
+.fr-ball.efeito::before { opacity: 1; background: radial-gradient(circle, rgba(180, 110, 255, .75), transparent 70%); }
+.fr-ball.fire::before { opacity: 1; inset: -70%; background: radial-gradient(circle, #fff 0 15%, #ffd23f 25%, rgba(255, 110, 40, .8) 45%, transparent 70%); animation: mgcBeat .2s infinite; }
+.fr-bshadow { position: absolute; width: 3.6%; height: 1.6%; transform: translate(-50%, -50%) scale(var(--h, 1)); border-radius: 50%; background: rgba(60, 30, 10, .35); z-index: 3; }
+.fr-target { position: absolute; width: 0; height: 0; z-index: 11; opacity: 0; pointer-events: none; --k: 1; }
+.fr-target.on { opacity: 1; }
+.fr-target::before { content: ''; position: absolute; width: calc(var(--u) * 14); height: calc(var(--u) * 14); left: calc(var(--u) * -7); top: calc(var(--u) * -7); border-radius: 50%; border: 3px solid #fff; background: rgba(255, 255, 255, .2); }
+.fr-target.match::before { border-color: #7fe39a; background: rgba(127, 227, 154, .25); }
+.fr-ring { position: absolute; left: 50%; top: 50%; width: calc(var(--u) * (14 + var(--k) * 40)); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; border: 4px solid #ffd23f; box-shadow: 0 0 8px rgba(255, 210, 63, .7); }
+.fr-target.good .fr-ring { border-color: #b8f0c4; }
+.fr-target.perfect .fr-ring { border-color: #5fcf7a; box-shadow: 0 0 16px #5fcf7a; }
+.fr-fx { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
+.fr-pop { position: absolute; transform: translate(-50%, -50%); font-family: var(--font-pixel); font-weight: 400; font-size: clamp(13px, calc(var(--u) * 7.5), 22px); white-space: nowrap; text-shadow: 0 2px 0 #000, 0 0 4px #000; animation: pe-up .9s ease-out forwards; }
+.fr-pop.perfect { color: #7fe39a; font-size: clamp(16px, calc(var(--u) * 10), 28px); }
+.fr-pop.good { color: #fff3d6; } .fr-pop.meh { color: #ffd23f; } .fr-pop.bad { color: #ff7a6a; }
+.fr-spark { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px #ffe27a; animation: frSpark .55s ease-out forwards; }
+.fr-spark.fire { background: #ffd23f; box-shadow: 0 0 8px #ff7a3a; }
+@keyframes frSpark { to { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
+.fr-callout { position: absolute; right: 18%; top: 18%; z-index: 21; font-family: var(--font-pixel); font-size: clamp(14px, calc(var(--u) * 9), 26px); color: #fff; padding: 2px 12px; border-radius: 8px; border: 3px solid #fff; opacity: 0; transform: scale(.6) rotate(-6deg); transition: opacity .15s, transform .2s cubic-bezier(.2, 1.6, .4, 1); pointer-events: none; }
+.fr-callout.on { opacity: 1; transform: scale(1) rotate(-6deg); }
+.fr-callout.alta { background: #e0a020; } .fr-callout.cortada { background: #e0402a; } .fr-callout.efeito { background: #8a4ad8; }
+.fr-big { position: absolute; left: 50%; top: 30%; transform: translate(-50%, -50%) scale(.5); z-index: 30; opacity: 0; pointer-events: none; font-family: var(--font-pixel); font-size: clamp(26px, calc(var(--u) * 22), 64px); white-space: nowrap; color: #fff; text-shadow: 0 4px 0 #b0402a, 0 0 14px rgba(0, 0, 0, .4); }
+.fr-big.on { animation: frBig 1.3s cubic-bezier(.2, 1.4, .4, 1) forwards; }
+.fr-big.m2 { color: #9fd8ff; text-shadow: 0 4px 0 #2a5a9a; } .fr-big.m3 { color: #ffd23f; text-shadow: 0 4px 0 #c8401a, 0 0 18px #ff7a3a; }
+@keyframes frBig { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.4); } 20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -80%) scale(1); } }
+.fr-splash { position: absolute; width: 9%; transform: translate(-50%, -60%); z-index: 4; image-rendering: pixelated; animation: so-lotion .9s ease-out forwards; }
+.fr-gull { position: absolute; top: 10%; left: -10%; width: 5%; height: 2.5%; z-index: 5; opacity: 0; pointer-events: none;
+  background: linear-gradient(160deg, transparent 45%, #fff 46% 60%, transparent 61%) 0 0 / 50% 100% no-repeat, linear-gradient(20deg, transparent 45%, #fff 46% 60%, transparent 61%) 100% 0 / 50% 100% no-repeat; }
+.fr-gull.fly { animation: frGull 5s linear forwards; }
+@keyframes frGull { 0% { left: -10%; opacity: 1; top: 12%; } 50% { top: 6%; } 100% { left: 110%; opacity: 1; top: 14%; } }
+.fr-mult { font-family: var(--font-pixel); font-weight: 400; font-size: clamp(11px, calc(var(--u) * 6), 16px); padding: 0 6px; border-radius: 6px; background: #4a2a4a; color: #fff3d6; }
+.fr-mult.m2 { background: #2a6ac8; } .fr-mult.m3 { background: #e0402a; animation: mgcBeat .5s infinite; }
+
+/* ---------- Pular onda ---------- */
+.on-title { background: linear-gradient(90deg, #2fb3c8, #2a6ac8) !important; }
+.on-stage { height: min(54vh, calc(var(--u) * 215)) !important; overflow: hidden; }
+.on-bg { position: absolute; inset: 0; background-size: 170% auto; background-position: 60% 92%; image-rendering: pixelated; }
+.on-sea { position: absolute; left: 0; right: 0; top: 52%; bottom: 0; z-index: 2; background: linear-gradient(#5fd0e0cc, #2a8ac8ee 40%, #1a5a9a); }
+.on-sea::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; height: 12px; background: radial-gradient(ellipse 4% 100% at 50% 100%, #fff 60%, transparent 62%) 0 0 / 7% 100% repeat-x; animation: tp-rain 1.2s linear infinite; opacity: .9; }
+.on-mark { position: absolute; left: 28%; top: 44%; bottom: 6%; width: 0; border-left: 3px dashed rgba(255, 255, 255, .8); z-index: 3; }
+.on-pair { position: absolute; left: 26%; top: 40%; width: 15%; transform: translateX(-50%); display: flex; z-index: 4; transition: transform .1s; }
+.on-pair .ro-walker { width: 55%; }
+.on-pair .w { margin-left: -18%; }
+.on-pair::after { content: ''; position: absolute; left: -10%; right: -10%; bottom: 8%; height: 34%; background: linear-gradient(#5fd0e0dd, #2a8ac8); z-index: 2; border-radius: 40% 40% 0 0; }
+.on-hands { position: absolute; left: 44%; top: 40%; font-style: normal; color: #ff6a9a; font-size: clamp(10px, calc(var(--u) * 6), 16px); z-index: 3; text-shadow: 0 0 4px #fff; }
+.on-pair.jump { transform: translateX(-50%) translateY(-38%); transition: transform .18s cubic-bezier(.2, .9, .4, 1); }
+.on-pair.dive { transform: translateX(-50%) translateY(28%); }
+.on-pair.hit { animation: shake .3s 2; filter: brightness(1.4) hue-rotate(-20deg); }
+.on-wave { position: absolute; bottom: 4%; width: 16%; height: 30%; transform: translateX(-50%); z-index: 5; }
+.on-wave i { position: absolute; inset: 0; border-radius: 60% 40% 10% 10% / 90% 70% 10% 10%; background: linear-gradient(110deg, #e8fbff 0 18%, #7fd8ee 30%, #2a8ac8 75%); box-shadow: inset 6px 6px 0 rgba(255, 255, 255, .7); }
+.on-wave.big { width: 22%; height: 52%; }
+.on-wave.big i { background: linear-gradient(110deg, #fff 0 14%, #ffb0a0 20%, #4aa8e0 40%, #1a5a9a 80%); box-shadow: inset 8px 8px 0 rgba(255, 140, 120, .8); }
+.on-wave.pass { opacity: .5; }
+.on-ico { flex: none; width: 40px; height: 40px; border-radius: 50% 50% 10% 10%; display: grid; place-items: center; color: #ff6a9a; font-size: 22px; background: #ffe9b8; }
+.on-ico.blue { background: linear-gradient(110deg, #e8fbff, #2a8ac8); }
+.on-ico.red { background: linear-gradient(110deg, #fff, #ffb0a0 30%, #1a5a9a); }
+/* pular onda: casal maior e as ondas na altura deles */
+.on-sea { top: 56%; }
+.on-pair { top: 36%; width: 24%; }
+.on-pair::after { bottom: 6%; height: 30%; }
+.on-mark { top: 38%; bottom: 10%; }
+.on-wave { bottom: auto; top: 50%; height: 36%; }
+.on-wave.big { top: 34%; height: 54%; }
+.on-wave { top: -26%; height: 78%; }
+.on-wave.big { top: -62%; height: 116%; }
+.on-pair::after { left: 0; right: 0; bottom: 4%; height: 26%; border-radius: 50% 50% 0 0 / 30% 30% 0 0; background: linear-gradient(rgba(127, 216, 238, .55), rgba(42, 138, 200, .9) 60%); box-shadow: 0 -3px 0 rgba(255, 255, 255, .7); }

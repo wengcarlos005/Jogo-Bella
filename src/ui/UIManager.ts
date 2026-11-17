@@ -13,7 +13,7 @@ import { playFogosGame } from './screens/FogosGame';
 import { playPedrinhaGame } from './screens/PedrinhaGame';
 import { playArgolasGame } from './screens/ArgolasGame';
 import { playBateBateGame } from './screens/BateBateGame';
-import { playSolGame, playTempestadeGame, playFrescobolGame } from './screens/RoGames';
+import { playSolGame, playTempestadeGame, playFrescobolGame, playOndaGame } from './screens/RoGames';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -189,7 +189,9 @@ class UIManagerImpl {
         // no teclado / controle: ← → escolhe entre "Jogar de novo" e continuar
         btn.setAttribute('data-nav', '');
         go.setAttribute('data-nav', '');
-        go.setAttribute('data-nav-default', '');
+        // perdeu (1 estrela): o cursor já começa em "Jogar de novo"
+        const lost = box.querySelectorAll('.bg-stars .on').length <= 1;
+        (lost ? btn : go).setAttribute('data-nav-default', '');
         btn.addEventListener('click', () => {
           again = true;
           go.click();
@@ -241,6 +243,11 @@ class UIManagerImpl {
   frescobol(): Promise<MiniResult & { best: number }> {
     this.dialogue.close();
     return this.replayable(() => playFrescobolGame(this.root), undefined, 'Frescobol');
+  }
+
+  onda(): Promise<MiniResult & { score: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playOndaGame(this.root), undefined, 'Pular onda');
   }
 
   tempestade(): Promise<MiniResult & { lives: number }> {
