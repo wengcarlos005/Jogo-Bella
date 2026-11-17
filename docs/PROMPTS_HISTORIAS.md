@@ -822,7 +822,7 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 
 ### O que aconteceu (contado pelo Weng)
 
-- Viagem com os amigos: **Natan e Vitória**, **Puggian**, **Felipe** e **Ruan**.
+- Viagem com os amigos: **Nathan e Vitória** (namorados), **Puggian**, **Felipe** e **Ruan**.
 - Ficaram num **Airbnb, uma casa de praia em Peró**.
 - **Dia 1:** Praia do Peró e, de noite, pizza.
 - **Dia 2 (31/12):** Praia do Japonês com churrasco; de noite, jogo de cartas de gatinho explosivo.

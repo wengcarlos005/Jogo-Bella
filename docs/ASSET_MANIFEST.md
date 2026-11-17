@@ -196,7 +196,7 @@ Da janela do apartamento se vê o Teatro Raul Cortez de cima (Praça do Pacifica
 | NPC-060 | Mãe da Lilian (4×4 andando, camiseta cinza, sacolinha de chocolates) | npcs/mae-lilian-walk.png | ✅ no jogo (+ retrato portraits/mae-lilian.png); entra no Cap. 6 |
 | NPC-061 | Tio (marido da mãe da Lilian; camiseta preta, bermuda cinza) | npcs/tio-nt-walk.png | ✅ no jogo (+ retrato portraits/tio-nt.png); Cap. 6 |
 | NPC-062 | Vinicius (namorado da Lilian; barba, bolsa transversal) | npcs/vinicius-walk.png | ✅ no jogo (+ retrato portraits/vinicius.png); Cap. 6 |
-| NPC-071..074 | Amigos de Cabo Frio, de branco (1: barba e degradê · 2: cacheado de óculos · 3: careca de óculos · 4: cabelo bagunçado e relógio) | npcs/amigo1..4-walk.png | ✅ recortados (+ retratos); falta saber quem é quem e a Vitória |
+| NPC-071..075 | Amigos de Cabo Frio, de branco: Felipe (barba e degradê), Ruan (cacheado de óculos), Nathan (careca de óculos), Puggian (cabelo bagunçado e relógio) e Vitória (namorada do Nathan, cabelo longo) | npcs/felipe, ruan, nathan, puggian, vitoria-walk.png | ✅ no jogo (+ retratos); Cap. 7 |
 | NPC-031 | Lilian, prima (4×4 andando) | npcs/lilian-walk.png | ✅ no jogo (+ retrato portraits/lilian.png) |
 | NPC-032 | Mingau (Miguel), primo de 10 anos (4×4 andando, menor) | npcs/mingau-walk.png | ✅ no jogo (+ retrato) |
 | NPC-033 | Vivian, prima (4×4 andando) | npcs/vivian-walk.png | ✅ no jogo (+ retrato) |
