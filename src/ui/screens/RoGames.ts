@@ -141,7 +141,7 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
       sbBurnTxt.textContent = `${Math.round(burn)}%`;
       if (sbBottles.textContent !== String(bottles)) (sbBottles.textContent = String(bottles)), bump(sbBottles);
       const p = String(Math.floor(points));
-      if (sbPts.textContent !== p) (sbPts.textContent = p), bump(sbPts);
+      if (sbPts.textContent !== p) sbPts.textContent = p;
     };
     const pop = (px: number, text: string, kind = 'good') => {
       const el = h('b', { class: `so-pop ${kind}`, style: `left:${px}%` }, text);
