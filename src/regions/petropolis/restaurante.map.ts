@@ -17,7 +17,7 @@ const scripts: Record<string, Script> = {
     ctx.setFlag('pt-rest-1');
     // entram pela porta uns passos (ficam acima da caixa de diálogo) e o garçom vem receber
     ctx.follow('weng', false);
-    await Promise.all([ctx.move('player', 15.0, 16.0, 45), ctx.move('weng', 16.6, 16.0, 45)]);
+    await Promise.all([ctx.move('player', 15.0, 14.6, 45), ctx.move('weng', 16.6, 14.6, 45)]);
     ctx.face('player', 'up');
     ctx.face('weng', 'up');
     await ctx.narrate('O dia do aniversário. Um almoço chique pra comemorar.');
@@ -181,7 +181,7 @@ export const restauranteMap: MapDef = {
     R(0, 885, 620, 1024), // parede de baixo (porta em x 620–910)
     R(910, 885, 1536, 1024),
     R(430, 800, 590, 1024), // púlpito da recepção
-    R(620, 975, 910, 1024),
+    R(620, 792, 910, 1024), // a porta em si (a moldura sobe até y 775; ninguém fica em cima dela)
     // objetos: só a base
     R(680, 520, 860, 565), // mesa da rosa (com as cadeiras dos lados)
     R(310, 560, 495, 615), // mesas de quatro
@@ -234,9 +234,11 @@ export const restauranteMap: MapDef = {
   npcs: [{ id: 'garcom', sprite: 'garcom', tx: 12.3, ty: 15.4, facing: 'down', interact: 'garcom', behavior: 'wander', wanderRadius: 1.2, wanderAxis: 'x' }],
 
   spawns: {
-    porta: { tx: 15.5, ty: 18.2, facing: 'up' },
+    // nascem já dentro do salão, um passo acima da porta (nunca "em cima" dela)
+    porta: { tx: 15.5, ty: 14.9, facing: 'up' },
   },
-  triggers: [{ id: 'saida', rect: R(660, 950, 870, 975), script: 'saida' }],
+  // a saída dispara logo no batente: ninguém fica parado em cima da porta
+  triggers: [{ id: 'saida', rect: R(660, 768, 870, 790), script: 'saida' }],
   scripts,
   onEnter: 'chegada',
 };

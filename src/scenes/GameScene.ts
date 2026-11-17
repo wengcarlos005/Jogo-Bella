@@ -878,6 +878,29 @@ export class GameScene extends Phaser.Scene {
     await UI.memory(id);
   }
 
+  /** Durante um script: solta a Bella pra andar (ex.: se posicionar pra foto) até apertar Espaço / E / Enter. */
+  roaming = false;
+  async roam(hint: string): Promise<void> {
+    UI.dialogue.close();
+    UI.toasts.show(hint);
+    InputSystem.pop('script');
+    this.roaming = true;
+    await new Promise<void>((resolve) => {
+      const on = (e: KeyboardEvent) => {
+        if (e.repeat || !['Space', 'KeyE', 'Enter'].includes(e.code)) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        window.removeEventListener('keydown', on, true);
+        resolve();
+      };
+      // dá um instante pra soltar a tecla da escolha anterior
+      setTimeout(() => window.addEventListener('keydown', on, true), 250);
+    });
+    this.roaming = false;
+    InputSystem.push('script');
+    (this.player.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+  }
+
   get busy(): boolean {
     return this.scriptRunning || this.transitioning;
   }
@@ -952,7 +975,7 @@ export class GameScene extends Phaser.Scene {
     }
     // o Weng nunca fica "dentro" da Bella: se encavalar, ele vai pro lado livre mais próximo
     const wg = this.npcs.get('weng')?.npc;
-    if (wg && wg.visible && wg.behavior === 'follow' && !this.busy) {
+    if (wg && wg.visible && wg.behavior === 'follow' && (!this.busy || this.roaming)) {
       const dx = Math.abs(wg.x - this.player.x);
       const dy = Math.abs(wg.y - this.player.y);
       this.wengOverlapMs = dx < 13 && dy < 9 ? this.wengOverlapMs + delta : 0;

@@ -3271,3 +3271,15 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .ld-inbar .ld-pct { font-size: 2.7vmin; min-width: 3em; text-align: left; color: #ffe27a; text-shadow: 0 0.25vmin 0 #4a1a3a, 0 0 0.8vmin rgba(42, 12, 36, .9); }
 .ld-info { margin-top: 3.2vmin; }
 .ld-tip { font-size: 2.4vmin; letter-spacing: .02em; }
+
+/* placares dos minijogos: respiro entre título, placar e pista */
+.pg-panel .pg-hud { margin: calc(var(--u) * 3) 0 calc(var(--u) * 5); }
+.pe-sb, .bb-sb { gap: calc(var(--u) * 10); align-items: center; }
+.pe-sb-side, .bb-sb-side { gap: calc(var(--u) * 6); padding: calc(var(--u) * 3) calc(var(--u) * 9); }
+.pe-sb-mid { min-width: calc(var(--u) * 64); gap: calc(var(--u) * 2.5); }
+.pe-sb-x { font-size: clamp(14px, calc(var(--u) * 8), 24px); }
+.pe-sb-round { font-size: clamp(11px, calc(var(--u) * 5.4), 15px); }
+.pe-sb-pips { gap: calc(var(--u) * 2.5); }
+.pe-sb.lead-bella .pe-sb-side.bella .pe-sb-name::after, .pe-sb.lead-weng .pe-sb-side.weng .pe-sb-name::before { margin: 0 .45em; }
+.so-sb { gap: calc(var(--u) * 5); }
+.so-sb-chip, .so-sb-burn { gap: calc(var(--u) * 4); padding: calc(var(--u) * 2.5) calc(var(--u) * 7); }

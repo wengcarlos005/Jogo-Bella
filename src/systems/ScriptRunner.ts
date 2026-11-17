@@ -409,7 +409,9 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         await UI.photo(caption);
         const c = await ctx.choose('bella', tries ? 'E essa, ficou boa?' : 'Ficou boa?', ['Ficou ótima!', 'Tirar de novo']);
         if (c === 0) return;
-        await ctx.say('weng', ['Tá, mais uma. Sorri!', 'De novo? ...Tá bom. Diz "xis"!', 'Essa é a última. (Não é.)'][tries % 3]);
+        await ctx.say('weng', ['Tá, mais uma. Escolhe o lugar!', 'De novo? ...Tá bom. Onde você quer agora?', 'Essa é a última. (Não é.) Se ajeita aí.'][tries % 3]);
+        // a Bella anda até o lugar que quiser e aperta pra bater a foto
+        await scene.roam('Ande pra se posicionar e aperte Espaço / E pra tirar a foto');
       }
     },
     backdrop: (key, rainy) => UI.backdrop(key, rainy),
