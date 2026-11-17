@@ -815,3 +815,167 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 ```
 Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Inside a warm American barbecue restaurant with brick walls, a big black smoker with fire glow and Edison bulbs. At a wooden table with checkered paper, the attached girl and boy share a huge tray of smoked brisket, glazed ribs, pulled pork, mac and cheese and fries, both with barbecue sauce on their faces, laughing. Around the big table, the boy's family: his aunt, his uncle, two young women cousins, a young man cousin, the boyfriend of one cousin and a 10-year-old boy, all laughing and passing plates. No text, no logos, no UI, no watermark.
 ```
+
+---
+
+## 5. Capítulo 7 — Cabo Frio: "A virada a pé"
+
+### O que aconteceu (contado pelo Weng)
+
+- Viagem com os amigos: **Natan e Vitória**, **Puggian**, **Felipe** e **Ruan**.
+- Ficaram num **Airbnb, uma casa de praia em Peró**.
+- **Dia 1:** Praia do Peró e, de noite, pizza.
+- **Dia 2 (31/12):** Praia do Japonês com churrasco; de noite, jogo de cartas de gatinho explosivo.
+- Faltando 2 horas pra virada: **nenhum Uber aceitava**. Foram **a pé até a Praia do Forte (5 km)**; no **km 3 conseguiram uma carona** e viram a virada lá.
+
+### Roteiro
+
+1. **Chegada na casa de praia** (Peró): a turma escolhendo quarto, a Bella e o Weng com o melhor (ou o pior).
+2. **Praia do Peró**: minijogo **Altinha** (manter a bola no alto passando entre os amigos, sem deixar cair).
+3. **Noite da pizza**: escolher os sabores pra agradar a turma inteira.
+4. **Praia do Japonês**: churrasco na areia (reaproveita a churrasqueira) e água calminha.
+5. **Gatinho-Bomba**: jogo de cartas de "sorte e coragem" com a turma (compra carta, foge do gatinho-bomba, usa a carta de desarmar).
+6. **Nenhum Uber aceita**: a tela do app recusando, recusando...
+7. **5 km até a virada** (minijogo): a turma andando de branco pela estrada de noite, o relógio correndo pra meia-noite; no km 3, a carona.
+8. **Praia do Forte**: a contagem e os fogos (minijogo de fogos com a turma).
+
+### 5A. Cenários vazios
+
+**Casa de praia (Airbnb) em Peró.** Anexe `art-source/maps/ar-cobertura.webp`.
+
+```
+Pixel art top-down 3/4 view of a simple, cozy rented beach house in Cabo Frio, Brazil, seen from above with the walls cut away. Same art style, outline thickness, colors and camera angle as the attached reference image. Canvas 1536x1024 pixels, landscape.
+
+Layout: white tiled floor; a living room with a big open area in the center; a small open kitchen with a fridge and stove at the top right; three bedroom doors along the top wall; the front door on the left; at the bottom, sliding glass doors opening to a covered porch (varanda) with a hammock hook and a small garden with a coconut palm and a low white wall, a sandy path outside. Details: beach-style decor, a surfboard leaning on a wall, a shell decoration, a ceiling fan, string lights on the porch.
+
+DO NOT draw: tables, chairs, sofas, beds, rugs, people or animals. Clean continuous floor where they would be.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Praia do Peró (dia).** Anexe `art-source/maps/ro-praia.webp`.
+
+```
+Pixel art top-down 3/4 view of Praia do Peró in Cabo Frio, Brazil, on a bright sunny day. Same art style, outline thickness, colors and camera angle as the attached reference image. Canvas 1536x1024 pixels, landscape.
+
+Layout: at the top, low green dunes with restinga vegetation and a wooden walkway coming down to the sand; a very wide strip of white fine sand in the middle; at the bottom, clear turquoise sea with gentle white waves; a rocky point with green hill on the right edge. Wide open, natural, few buildings.
+
+DO NOT draw: people, animals, umbrellas, chairs, towels or anything standing on the sand.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Praia do Japonês (dia).** Anexe `art-source/maps/ro-praia.webp`.
+
+```
+Pixel art top-down 3/4 view of Praia do Japonês in Cabo Frio, Brazil: a small calm cove with crystal-clear shallow turquoise water like a natural pool, surrounded by rocks and green hills. Same art style, outline thickness, colors and camera angle as the attached reference image. Canvas 1536x1024 pixels, landscape.
+
+Layout: green hills and rocks across the top and the left edge; a small curved strip of white sand in the middle left; the calm transparent water filling the right and bottom, with visible sand and small rocks under the water; a small sandbar connecting to a little island on the bottom right.
+
+DO NOT draw: people, animals, umbrellas, grills, chairs, coolers or anything on the sand.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+**Praia do Forte (noite de réveillon).** Anexe `art-source/maps/ar-praia.webp`.
+
+```
+Pixel art top-down 3/4 view of Praia do Forte in Cabo Frio, Brazil, on New Year's Eve at night. Same art style, outline thickness, colors and camera angle as the attached reference image. Canvas 1536x1024 pixels, landscape.
+
+Layout: across the top, the lit seaside avenue with palm trees, warm street lamps and buildings with lit windows; a wide strip of sand in the middle, lit by the city; at the bottom, the dark sea with soft moonlight reflections; on the right edge, the old stone fort (Forte São Mateus) on the rocks, softly lit. Festive mood: string lights along the promenade.
+
+DO NOT draw: people, fireworks, umbrellas or anything on the sand.
+
+Crisp pixel art, clean dark outlines, no text, no UI, no watermark.
+```
+
+### 5B. Os amigos (um prompt pra cada). Anexe `public/assets/npcs/atendente-walk.png` e uma foto da pessoa.
+
+```
+Pixel art walking sprite sheet of a character, using EXACTLY the same art style, outline, proportions, size and LAYOUT as the attached sprite sheet, but a DIFFERENT person, based on the attached photo (keep the face shape, hair and expression, in the same cute chibi pixel style): [descrição: idade, cabelo, barba/óculos], wearing all-white New Year's Eve clothes [roupa branca: ex. white linen shirt and white shorts].
+
+Background: ONE flat solid magenta color (#FF00FF) everywhere. No gradient, no floor, no shadows on the background.
+
+STRICT GRID of 4 rows and 4 columns, same as the attached sheet:
+Row 1: walking toward the viewer (facing down), 4 frames.
+Row 2: walking to the left, 4 frames.
+Row 3: walking to the right, 4 frames.
+Row 4: walking away from the viewer (facing up), 4 frames.
+
+The character must look identical in every frame. No text, no labels, no numbers, no watermark.
+```
+
+### 5C. Objetos (anexe a casa de praia e as praias novas)
+
+```
+Pixel art sprite sheet of props for the beach house and beaches shown in the attached images. EXACTLY the same art style, outline, colors, lighting and top-down 3/4 camera angle, same scale: a standing adult is about 140 pixels tall.
+Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, no floor, no shadows on the background. Each object complete and separate, at least 60 px of magenta between objects, nothing touching the edge:
+1. A simple wooden dining table for 8 with three open pizza boxes on top (about 300x140 px).
+2. A colorful fabric sofa (about 240x120 px) and a hammock hanging, seen from above (about 200x80 px).
+3. A low coffee table with a card game in progress: scattered cards, a draw pile and snacks (about 160x90 px).
+4. A portable charcoal beach grill with skewers and smoke (about 110x110 px).
+5. A big red cooler box and a stack of plastic cups (about 100x80 px).
+6. Three beach umbrellas of different colors, open (about 170x170 px each).
+7. A soccer ball on the sand (about 40x40 px) and a pile of flip-flops (about 70x40 px).
+8. A white plastic table with farofa, bread and grilled meat (about 120x100 px).
+```
+
+### 5D. Minijogos
+
+**Gatinho-Bomba (jogo de cartas)** — original, NÃO copiar o visual de nenhum jogo existente:
+
+```
+Pixel art sprite sheet of ORIGINAL playing cards for a silly card game, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each card separate with 60 px of magenta around it, each card about 140x200 px, rounded corners, cream background with a thick colored border, NO text on the cards, only drawings:
+1. BOMB CAT: a cartoon orange cat holding a round black bomb with a lit fuse, panicked face (red border).
+2. DEFUSE: a hand cutting a bomb wire with scissors (green border).
+3. SKIP: a cat sleeping in a hammock (blue border).
+4. PEEK: a cat with a big magnifying glass (purple border).
+5. SHUFFLE: a cat juggling cards (yellow border).
+6. STEAL: a sneaky cat in a mask grabbing a card (grey border).
+7. Two silly filler cards: a cat eating pizza, a cat in sunglasses on the beach (pink border).
+8. The back of the card: a pink paw print on a dark purple pattern.
+9. A cartoon explosion puff with confetti (about 220x200 px).
+No text, no logos, no UI, no watermark.
+```
+
+**5 km até a virada** (anexe `bella-linho.png` e `weng-reveillon.png`):
+
+```
+Pixel art sprite sheet for a side-scrolling walking game at night, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it:
+1. The attached girl and boy (all-white New Year's Eve clothes) walking side by side, seen from the side facing right, holding hands, 4 walking frames (about 200x220 px each).
+2. The same two out of breath, bent over with hands on knees, 1 frame (about 200x200 px).
+3. Obstacles on a sidewalk, each about 80-120 px: a puddle, a traffic cone, a sleeping street dog, a pothole, a loose flip-flop.
+4. A white compact car with headlights on, side view, the window open with a friendly driver waving (about 300x150 px).
+5. A road kilometer marker sign without numbers (about 50x90 px) and a street lamp (about 40x180 px).
+No text, no UI, no watermark.
+```
+
+**Altinha** (anexe `bella-praia.png`):
+
+```
+Pixel art sprite sheet for a beach keepy-uppy game, same art style as the attached reference, canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, each item separate with 60 px of magenta around it:
+1. The attached girl in beach clothes kicking a ball up with her knee, 3 frames: ready, kicking, after the kick (about 160x220 px each).
+2. A colorful soccer ball (about 50x50 px), with a motion blur trail (about 120x50 px).
+3. A sand puff where the ball lands (about 90x50 px).
+No text, no UI, no watermark.
+```
+
+### 5E. Lembranças (1672x941, anexe `pascoa.png` + `bella-praia`/`weng-praia` ou `bella-linho`/`weng-reveillon`)
+
+**A turma na casa de praia** (`memory-cf-01`):
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Night in a simple beach house in Cabo Frio: a group of seven young friends around a wooden table full of open pizza boxes, laughing, string lights on the porch behind them. In the center, the attached girl and boy share a slice of pizza that stretches with cheese between them. No text, no UI, no watermark.
+```
+
+**Gatinho-Bomba** (`memory-cf-02`):
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. The same group of friends sitting on the floor of the beach house around a low table playing a silly card game, everyone screaming and laughing as the attached girl draws a card with a cartoon cat holding a bomb, the attached boy covering his face in fake horror. Cards and snacks everywhere. No text, no UI, no watermark.
+```
+
+**A virada a pé** (`memory-cf-03`):
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Midnight on Praia do Forte in Cabo Frio: a sky full of colorful fireworks over the sea, the old stone fort lit on the right. The attached girl and boy, dressed in white, sweaty and out of breath after walking kilometers, hug and kiss on the sand with their friends cheering around them, flip-flops in their hands. No text, no UI, no watermark.
+```
