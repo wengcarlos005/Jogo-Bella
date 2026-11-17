@@ -258,13 +258,17 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     clouds: () => UI.clouds(),
     market: () => UI.market(),
     ceia: () => UI.ceia(),
-    fogos: () => UI.fogos(),
+    fogos: (opts) => UI.fogos(opts),
     pedrinha: () => UI.pedrinha(),
     argolas: () => UI.argolas(),
     bateBate: () => UI.bateBate(),
     sol: () => UI.sol(),
     onda: () => UI.onda(),
     chocolate: () => UI.chocolate(),
+    gatinho: () => UI.gatinho(),
+    travessia: () => UI.travessia(),
+    altinha: () => UI.altinha(),
+    cincoKm: () => UI.cincoKm(),
     fotoNiemeyer: () => UI.fotoNiemeyer(),
     bandeja: () => UI.bandeja(),
     tempestade: () => UI.tempestade(),
@@ -639,8 +643,9 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       else scene.scriptHidden.add(a);
     },
 
-    outfit(id) {
+    outfit(id, both) {
       GameState.data.regionOutfits[scene.def.region] = id;
+      if (both) (GameState.data.regionOutfits as Record<string, string>)[`weng@${scene.def.region}`] = id;
       scene.dressPlayer();
     },
 

@@ -41,6 +41,7 @@ export const ASSETS: AssetEntry[] = [
   char('CHAR-013', 'bella-festa', 'characters/bella-festa.png', 136),
   char('CHAR-014', 'bella-inverno', 'characters/bella-inverno.png', 136),
   char('CHAR-017', 'bella-praia', 'characters/bella-praia.png', 136),
+  char('CHAR-018', 'bella-branco', 'characters/bella-branco.png', 136),
   // Sentados (2 quadros: olhos abertos / fechados)
   { id: 'CHAR-031', key: 'bella-sit', file: 'assets/characters/bella-sit.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 136 },
   { id: 'CHAR-032', key: 'weng-sit', file: 'assets/characters/weng-sit.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 136 },
@@ -50,6 +51,7 @@ export const ASSETS: AssetEntry[] = [
   char('CHAR-023', 'weng-xadrez', 'characters/weng-xadrez.png', 136),
   char('CHAR-024', 'weng-reveillon', 'characters/weng-reveillon.png', 136),
   char('CHAR-025', 'weng-praia', 'characters/weng-praia.png', 136),
+  char('CHAR-029', 'weng-branco', 'characters/weng-branco.png', 136),
   char('NPC-001', 'mae-bella', 'npcs/mae-bella-walk.png', 136),
   char('NPC-002', 'pai-bella', 'npcs/pai-bella-walk.png', 136),
   char('NPC-003', 'vizinha', 'npcs/vizinha-walk.png', 136),
@@ -95,7 +97,7 @@ export const ASSETS: AssetEntry[] = [
 
   // Casal sentado no banco (4 quadros 200x150: normal, piscando, expressão, normal)
   // Mexicano v2 (dentro e fachada) e quintal: objetos recortados das folhas
-  ...['mx-mesa', 'mx-banqueta', 'mx-cacto', 'mx-cactoflor', 'mx-planta', 'mx-cabideiro', 'mxf-mesa', 'mxf-guardasol', 'mxf-cacto', 'mxf-flores', 'mxf-lousa', 'mxf-poste', 'mxf-banco', 'qt-mesa', 'qt-isopor', 'qt-varal', 'qt-abacateiro', 'qt-vaso', 'qt-floreira', 'qt-moita', 'ap-sofa', 'ap-mesinha', 'ap-mesa', 'ap-tv', 'ap-abajur', 'ap-arranhador', 'ap-cesto', 'ap-planta', 'ap-vasinho', 'cn-cordao', 'cn-poste', 'cn-antifurto', 'cn-sofa', 'cn-poltrona', 'cn-mesinha', 'cn-floreira', 'cn-planta', 'rb-poste', 'rb-carro', 'rb-arvore', 'rb-banco', 'rb-lixeira', 'rb-hortensia', 'rb-flores', 'dr-poste', 'dr-arvore', 'dr-arvore-solta', 'dr-ipe-solta', 'dr-arvoregrande', 'dr-arvorefina', 'dr-postedupla', 'dr-postebola', 'dr-cercaviva', 'dr-arbusto', 'dr-arbustoflor', 'dr-arbustomuro', 'dr-ipe', 'dr-banco', 'dr-lixeira', 'dr-floreira', 'dr-ponto', 'dr-vaso', 'ac-mesa', 'ac-banqueta', 'ac-planta', 'ac-floreira', 'ac-antifurto', 'ac-lixeira', 'hf-poste', 'hf-banco', 'hf-lixeira', 'hf-placa', 'hf-araucaria', 'hf-pinheiro', 'hf-hortazul', 'hf-hortrosa', 'hq-cama', 'hq-criado', 'hq-poltrona', 'hq-mesinha', 'hq-guardaroupa', 'hq-malas', 'hq-planta', 'hq-bolo', 'rs-mesa2', 'rs-mesa4', 'rs-piano', 'rs-palmeira', 'rs-carrinho', 'rs-pedestal', 'qd-araucaria', 'qd-arvore', 'qd-poste', 'qd-cisne', 'qd-banco', 'qd-vaso', 'qd-lixeira', 'qd-carrinho', 'pq-toalha', 'pq-cesta', 'pq-prato', 'pq-arvore', 'pq-araucaria', 'pq-pedra', 'pq-arbusto', 'pq-baloes', 'mt-rack', 'mt-estante', 'mt-balas', 'mt-cestas', 'mt-caixa', 'mt-planta', 'mt-banco', 'cb-mesa', 'cb-cadeira', 'cb-sofa', 'cb-mesinha', 'cb-cooler', 'cb-planta', 'cb-ventilador', 'cb-brinquedos', 'vr-mesa', 'vr-cadeira', 'vr-rede', 'vr-espreguicadeira', 'vr-cooler', 'vr-mesinha', 'pr-palmeira', 'pr-guardasol', 'pr-barco', 'pr-cadeira', 'pr-poste', 'pr-lixeira', 'pr-castelo', 'pr-coco', 'pq-pipoca', 'pq-algodao', 'pq-churros', 'pq-lixeira', 'pq-baloes', 'pq-bilheteria', 'pq-argolas', 'ro-guardasol', 'ro-fechado', 'ro-cadeira', 'ro-toalha', 'ro-isopor', 'ro-mesa', 'ro-raquetes', 'ro-castelo', 'ro-protetor', 'ro-placa', 'na-sofa', 'na-mesinha', 'na-mesa', 'na-tapete', 'na-luminaria', 'na-poltrona', 'na-poltrona2', 'na-cesta', 'nn-banco', 'nn-poste', 'nn-carrinho', 'nn-palmeira', 'nn-escultura', 'nn-pombos', 'no-mesa', 'no-banco', 'no-cadeira', 'no-balde', 'no-planta'].map(
+  ...['mx-mesa', 'mx-banqueta', 'mx-cacto', 'mx-cactoflor', 'mx-planta', 'mx-cabideiro', 'mxf-mesa', 'mxf-guardasol', 'mxf-cacto', 'mxf-flores', 'mxf-lousa', 'mxf-poste', 'mxf-banco', 'qt-mesa', 'qt-isopor', 'qt-varal', 'qt-abacateiro', 'qt-vaso', 'qt-floreira', 'qt-moita', 'ap-sofa', 'ap-mesinha', 'ap-mesa', 'ap-tv', 'ap-abajur', 'ap-arranhador', 'ap-cesto', 'ap-planta', 'ap-vasinho', 'cn-cordao', 'cn-poste', 'cn-antifurto', 'cn-sofa', 'cn-poltrona', 'cn-mesinha', 'cn-floreira', 'cn-planta', 'rb-poste', 'rb-carro', 'rb-arvore', 'rb-banco', 'rb-lixeira', 'rb-hortensia', 'rb-flores', 'dr-poste', 'dr-arvore', 'dr-arvore-solta', 'dr-ipe-solta', 'dr-arvoregrande', 'dr-arvorefina', 'dr-postedupla', 'dr-postebola', 'dr-cercaviva', 'dr-arbusto', 'dr-arbustoflor', 'dr-arbustomuro', 'dr-ipe', 'dr-banco', 'dr-lixeira', 'dr-floreira', 'dr-ponto', 'dr-vaso', 'ac-mesa', 'ac-banqueta', 'ac-planta', 'ac-floreira', 'ac-antifurto', 'ac-lixeira', 'hf-poste', 'hf-banco', 'hf-lixeira', 'hf-placa', 'hf-araucaria', 'hf-pinheiro', 'hf-hortazul', 'hf-hortrosa', 'hq-cama', 'hq-criado', 'hq-poltrona', 'hq-mesinha', 'hq-guardaroupa', 'hq-malas', 'hq-planta', 'hq-bolo', 'rs-mesa2', 'rs-mesa4', 'rs-piano', 'rs-palmeira', 'rs-carrinho', 'rs-pedestal', 'qd-araucaria', 'qd-arvore', 'qd-poste', 'qd-cisne', 'qd-banco', 'qd-vaso', 'qd-lixeira', 'qd-carrinho', 'pq-toalha', 'pq-cesta', 'pq-prato', 'pq-arvore', 'pq-araucaria', 'pq-pedra', 'pq-arbusto', 'pq-baloes', 'mt-rack', 'mt-estante', 'mt-balas', 'mt-cestas', 'mt-caixa', 'mt-planta', 'mt-banco', 'cb-mesa', 'cb-cadeira', 'cb-sofa', 'cb-mesinha', 'cb-cooler', 'cb-planta', 'cb-ventilador', 'cb-brinquedos', 'vr-mesa', 'vr-cadeira', 'vr-rede', 'vr-espreguicadeira', 'vr-cooler', 'vr-mesinha', 'pr-palmeira', 'pr-guardasol', 'pr-barco', 'pr-cadeira', 'pr-poste', 'pr-lixeira', 'pr-castelo', 'pr-coco', 'pq-pipoca', 'pq-algodao', 'pq-churros', 'pq-lixeira', 'pq-baloes', 'pq-bilheteria', 'pq-argolas', 'ro-guardasol', 'ro-fechado', 'ro-cadeira', 'ro-toalha', 'ro-isopor', 'ro-mesa', 'ro-raquetes', 'ro-castelo', 'ro-protetor', 'ro-placa', 'na-sofa', 'na-mesinha', 'na-mesa', 'na-tapete', 'na-luminaria', 'na-poltrona', 'na-poltrona2', 'na-cesta', 'nn-banco', 'nn-poste', 'nn-carrinho', 'nn-palmeira', 'nn-escultura', 'nn-pombos', 'no-mesa', 'no-banco', 'no-cadeira', 'no-balde', 'no-planta', 'cf-mesa', 'cf-sofa', 'cf-rede', 'cf-mesinha', 'cf-churrasqueira', 'cf-isopor', 'cf-mesaplastico', 'cf-guardasol1', 'cf-guardasol2', 'cf-guardasol3', 'cf-bola', 'cf-chinelos'].map(
     (n, i): AssetEntry => ({ id: `OBJ-MXQ-${i}`, key: n, file: `assets/objects/${n}.png`, kind: 'image' }),
   ),
   // Casa da Bella v2: objetos recortados da folha
@@ -128,10 +130,10 @@ export const ASSETS: AssetEntry[] = [
   // Retratos de diálogo (96x96)
   { id: 'PORT-001', key: 'portrait-bella', file: 'assets/portraits/bella-neutral.png', kind: 'image' },
   // Retrato por roupa (a caixa de falas usa o da roupa atual)
-  ...['casual', 'floral', 'linho', 'festa', 'inverno', 'pijama', 'pijama-oculos', 'praia'].map(
+  ...['casual', 'floral', 'linho', 'festa', 'inverno', 'pijama', 'pijama-oculos', 'praia', 'branco'].map(
     (n, i): AssetEntry => ({ id: `PORT-B${i}`, key: `portrait-bella-${n}`, file: `assets/portraits/bella-${n}.png`, kind: 'image' }),
   ),
-  ...['casual', 'basica', 'social', 'xadrez', 'reveillon', 'praia'].map(
+  ...['casual', 'basica', 'social', 'xadrez', 'reveillon', 'praia', 'branco'].map(
     (n, i): AssetEntry => ({ id: `PORT-W${i}`, key: `portrait-weng-${n}`, file: `assets/portraits/weng-${n}.png`, kind: 'image' }),
   ),
   { id: 'PORT-002', key: 'portrait-weng', file: 'assets/portraits/weng-neutral.png', kind: 'image' },
@@ -247,6 +249,9 @@ export const ASSETS: AssetEntry[] = [
   { id: 'MEM-013', key: 'memory-ar-01', file: 'assets/cinematics/memory-ar-01.png', kind: 'image' },
   { id: 'MEM-015', key: 'memory-ro-01', file: 'assets/cinematics/memory-ro-01.png', kind: 'image' },
   { id: 'MEM-016', key: 'memory-ro-02', file: 'assets/cinematics/memory-ro-02.png', kind: 'image' },
+  { id: 'MEM-CF1', key: 'memory-cf-01', file: 'assets/cinematics/memory-cf-01.png', kind: 'image' },
+  { id: 'MEM-CF2', key: 'memory-cf-02', file: 'assets/cinematics/memory-cf-02.png', kind: 'image' },
+  { id: 'MEM-CF3', key: 'memory-cf-03', file: 'assets/cinematics/memory-cf-03.png', kind: 'image' },
   { id: 'MEM-NT1', key: 'memory-nt-01', file: 'assets/cinematics/memory-nt-01.png', kind: 'image' },
   { id: 'MEM-NT2', key: 'memory-nt-02', file: 'assets/cinematics/memory-nt-02.png', kind: 'image' },
   { id: 'MEM-NT3', key: 'memory-nt-03', file: 'assets/cinematics/memory-nt-03.png', kind: 'image' },

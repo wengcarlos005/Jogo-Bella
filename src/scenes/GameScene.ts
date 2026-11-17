@@ -278,7 +278,8 @@ export class GameScene extends Phaser.Scene {
       return k;
     }
     const region = this.def.region;
-    const override = key === 'bella' ? GameState.data.regionOutfits[region] : undefined;
+    const outfits = GameState.data.regionOutfits as Record<string, string | undefined>;
+    const override = key === 'bella' ? outfits[region] : outfits[`weng@${region}`];
     const id = override ?? REGION_OUTFIT[key][region];
     const tex = OUTFITS[key][id]?.texture;
     if (tex && this.textures.exists(tex)) return tex;
@@ -291,6 +292,13 @@ export class GameScene extends Phaser.Scene {
     const facing = this.player.facing;
     this.player.applySheet(this.leadTexture());
     this.player.face(facing);
+    // o Weng (acompanhante) também troca de roupa quando a roupa da região muda
+    const wg = this.npcs.get('weng')?.npc;
+    if (wg && !this.wengLeads) {
+      const f = wg.facing;
+      wg.applySheet(this.spriteFor('weng'));
+      wg.face(f);
+    }
   }
 
   // ------------------------------------------------------------ NPCs / props

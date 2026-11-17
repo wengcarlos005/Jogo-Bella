@@ -5,12 +5,13 @@ import { PETROPOLIS_MAPS } from './petropolis';
 import { ARARUAMA_MAPS } from './araruama';
 import { RIO_OSTRAS_MAPS } from './rioDasOstras';
 import { NITEROI_MAPS } from './niteroi';
+import { CABO_FRIO_MAPS } from './caboFrio';
 
 /**
  * Registro de todos os mapas jogáveis.
  * Para adicionar uma cidade: crie src/regions/<cidade>/ e inclua aqui.
  */
-const ALL: MapDef[] = [...PIABETA_MAPS, ...DUQUE_MAPS, ...PETROPOLIS_MAPS, ...ARARUAMA_MAPS, ...RIO_OSTRAS_MAPS, ...NITEROI_MAPS];
+const ALL: MapDef[] = [...PIABETA_MAPS, ...DUQUE_MAPS, ...PETROPOLIS_MAPS, ...ARARUAMA_MAPS, ...RIO_OSTRAS_MAPS, ...NITEROI_MAPS, ...CABO_FRIO_MAPS];
 
 export const MAPS: Record<string, MapDef> = Object.fromEntries(ALL.map((m) => [m.id, m]));
 

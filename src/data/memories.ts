@@ -223,6 +223,30 @@ export const MEMORIES: MemoryDef[] = [
     text: 'A mesa grande, a família inteira rindo, molho barbecue na bochecha e costela que desmanchava. O Vinicius passou no teste.',
     image: 'memory-nt-03',
   },
+  {
+    id: 'mem-cf-01',
+    region: 'cabo-frio',
+    title: 'Noite da pizza',
+    year: 'Ano 2',
+    text: 'Uma casa de praia em Peró, a turma inteira e três caixas de pizza. A última fatia a gente dividiu, com o queijo esticando entre nós dois.',
+    image: 'memory-cf-01',
+  },
+  {
+    id: 'mem-cf-02',
+    region: 'cabo-frio',
+    title: 'Gatinho-Bomba',
+    year: 'Ano 2',
+    text: 'Jogo de cartas no chão da sala, todo mundo gritando a cada carta comprada. O gatinho explodiu quase todo mundo.',
+    image: 'memory-cf-02',
+  },
+  {
+    id: 'mem-cf-03',
+    region: 'cabo-frio',
+    title: 'A virada a pé',
+    year: 'Ano 2',
+    text: 'Nenhum Uber aceitou. A gente andou três quilômetros de branco, pegou uma carona e chegou na Praia do Forte a tempo dos fogos.',
+    image: 'memory-cf-03',
+  },
 ];
 
 /** 9 capítulos: 22 lembranças até o Capítulo 5 + 3 em cada um dos 4 que faltam. */

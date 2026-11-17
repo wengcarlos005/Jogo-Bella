@@ -24,6 +24,7 @@ export const OUTFITS: Record<'bella' | 'weng', Wardrobe> = {
     ['festa', 'Vestido laranja', 'Pra brilhar. Talvez demais pra uma hamburgueria?'],
     ['inverno', 'Jaqueta preta', 'Quentinha pra noite de chuva.'],
     ['praia', 'Roupa de praia', 'Maiô coral, camisa aberta, short e chapéu de palha.'],
+    ['branco', 'Branco de réveillon', 'Cropped branco, calça cargo branca e tênis. Pronta pra virada.'],
   ]),
   weng: wardrobe('weng', [
     ['casual', 'Camiseta preta com estampa'],
@@ -32,6 +33,7 @@ export const OUTFITS: Record<'bella' | 'weng', Wardrobe> = {
     ['xadrez', 'Camisa xadrez preta'],
     ['reveillon', 'Camisa branca'],
     ['praia', 'Camisa de coqueirinho e bermuda'],
+    ['branco', 'Branco de réveillon'],
   ]),
 };
 
@@ -50,7 +52,7 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     araruama: 'casual', // ano-novo de 2024: "vestimos qualquer coisa"
     'rio-das-ostras': 'praia', // dia de praia
     niteroi: 'festa', // vestido laranja
-    'cabo-frio': 'linho', // outro réveillon de branco
+    'cabo-frio': 'branco', // réveillon de branco com os amigos
     botafogo: 'casual',
     curitiba: 'inverno', // frio de Curitiba
     proximo: 'casual',
@@ -62,7 +64,7 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     araruama: 'casual',
     'rio-das-ostras': 'praia',
     niteroi: 'xadrez', // camisa xadrez preta
-    'cabo-frio': 'reveillon',
+    'cabo-frio': 'branco',
     botafogo: 'casual',
     curitiba: 'xadrez',
     proximo: 'casual',

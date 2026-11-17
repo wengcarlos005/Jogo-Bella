@@ -46,7 +46,7 @@ export interface ScriptContext {
   /** Posiciona instantaneamente um NPC (ou 'player'). */
   place(who: string, tx: number, ty: number, facing?: Direction): void;
   /** Troca a roupa da Bella nesta região (ids em data/outfits.ts). */
-  outfit(id: string): void;
+  outfit(id: string, both?: boolean): void;
   /** Minigame do hambúrguer. */
   burger(opts: import('@/ui/screens/BurgerGame').BurgerOptions): Promise<import('@/ui/screens/BurgerGame').BurgerResult>;
   /** Câmera de cinema: foca no tile (tx, ty) com zoom relativo (1 = normal). */
@@ -69,6 +69,10 @@ export interface ScriptContext {
   /** Frescobol (Rio das Ostras). */
   frescobol(): Promise<import('@/ui/screens/PetroGames').MiniResult & { best: number }>;
   /** A tempestade (Rio das Ostras). */
+  gatinho(): Promise<{ stars: number; mistakes: number; place: number }>;
+  travessia(): Promise<{ stars: number; mistakes: number; lives: number }>;
+  altinha(): Promise<{ stars: number; mistakes: number; best: number }>;
+  cincoKm(): Promise<{ stars: number; mistakes: number; left: number }>;
   chocolate(): Promise<{ stars: number; mistakes: number; pts: number }>;
   fotoNiemeyer(): Promise<{ stars: number; mistakes: number; score: number }>;
   bandeja(): Promise<{ stars: number; mistakes: number; served: number }>;
@@ -79,7 +83,7 @@ export interface ScriptContext {
   /** Argolas no parque de diversões (Araruama). */
   argolas(): Promise<import('@/ui/screens/PetroGames').MiniResult & { prize: boolean }>;
   /** Foto dos fogos: a virada de 2024 na varanda (Araruama). */
-  fogos(): Promise<import('@/ui/screens/PetroGames').MiniResult & { photos: number }>;
+  fogos(opts?: { year?: string; bg?: string; water?: string }): Promise<import('@/ui/screens/PetroGames').MiniResult & { photos: number }>;
   clouds(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
   boatRace(): Promise<import('@/ui/screens/PetroGames').MiniResult>;
   breakfast(): Promise<import('@/ui/screens/PetroGames').MiniResult>;

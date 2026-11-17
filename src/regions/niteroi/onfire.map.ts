@@ -2,6 +2,7 @@ import { T } from '@/world/tiles';
 import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
 import { QuestSystem } from '@/systems/QuestSystem';
+import { GameState } from '@/core/GameState';
 
 const Q = 'nt-m1';
 const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
@@ -65,8 +66,41 @@ const scripts: Record<string, Script> = {
         'E o churrasco no On Fire: nove bandejas, molho na bochecha e o Vinicius aprovado.',
       ],
     });
-    ctx.toast('O Capítulo 7 chega em breve');
-    await ctx.fadeIn(600);
+    // a turma chama pro réveillon em Cabo Frio
+    await ctx.narrate('Fim de dezembro.');
+    await ctx.phone({ contact: 'Réveillon Cabo Frio', clock: '20:13', caption: 'Grupo no celular do Weng' }, [
+      { from: 'them', text: 'Nathan: GALERA. Casa de praia em Peró pro réveillon. Tô fechando.' },
+      { from: 'them', text: 'Vitória: Três quartos, rede, coqueiro e piscina natural perto!' },
+      { from: 'them', text: 'Ruan: Quanto fica pra cada?' },
+      { from: 'them', text: 'Puggian: Eu levo a churrasqueira portátil' },
+      { from: 'them', text: 'Felipe: Eu levo a bola de altinha' },
+      { from: 'me', text: 'Eu e a Bella tamo dentro!! 🧡' },
+      { from: 'them', text: 'Nathan: E na virada a gente vai pra Praia do Forte. De Uber. Fácil.' },
+      { from: 'them', text: 'Vitória: Todo mundo de BRANCO, hein!' },
+    ]);
+    await ctx.say('weng', 'Bella! Réveillon em Cabo Frio com a turma. Casa de praia em Peró!');
+    await ctx.say('bella', 'Com o Nathan, a Vitória, o Ruan, o Felipe e o Puggian? Todo mundo junto?');
+    await ctx.say('weng', 'Todo mundo. E o Nathan disse que a gente vai de Uber pra virada. Fácil.');
+    await ctx.say('bella', 'Quando o Nathan fala "fácil" eu fico preocupada.');
+    await ctx.roadTrip(
+      'Niterói',
+      'Cabo Frio',
+      [
+        { who: 'bella', text: 'Eu trouxe roupa branca, protetor, chapéu e um baralho.' },
+        { who: 'weng', text: 'Baralho? Pra quê?' },
+        { who: 'bella', text: 'A Vitória disse que tem um jogo de gatinho que todo mundo grita. Eu quero aprender.' },
+        { who: 'weng', text: 'Olha as salinas! Cabo Frio tá chegando.' },
+        { who: 'bella', text: 'Dois dias de praia com a turma e virada na areia. Melhor fim de ano.' },
+        { who: 'weng', text: 'Chegamos em Peró. Lá tá a casa!' },
+      ],
+      ['pr-palmeira', 'rs-palmeira'],
+      { coast: true, sunset: false },
+    );
+    ctx.unlockRegion('cabo-frio');
+    await ctx.chapterCard('Capítulo 7', 'Cabo Frio', 'A virada a pé.', 'Começar');
+    if (!GameState.data.regionsVisited.includes('cabo-frio')) GameState.data.regionsVisited.push('cabo-frio');
+    if (!ctx.questActive('cf-m1') && !QuestSystem.isDone('cf-m1')) ctx.startQuest('cf-m1');
+    await ctx.teleport('cf-casa', 'porta');
   },
   async defumador(ctx) {
     await ctx.say('diego', 'Esse é o defumador. A gente podia morar aqui dentro.');

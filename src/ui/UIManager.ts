@@ -15,6 +15,7 @@ import { playArgolasGame } from './screens/ArgolasGame';
 import { playBateBateGame } from './screens/BateBateGame';
 import { playSolGame, playTempestadeGame, playFrescobolGame, playOndaGame } from './screens/RoGames';
 import { playChocolateGame, playFotoNiemeyerGame, playBandejaGame } from './screens/NtGames';
+import { playGatinhoGame, playTravessiaGame, playAltinhaGame, playCincoKmGame } from './screens/CfGames';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -246,6 +247,26 @@ class UIManagerImpl {
     return this.replayable(() => playFrescobolGame(this.root), undefined, 'Frescobol');
   }
 
+  gatinho(): Promise<MiniResult & { place: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playGatinhoGame(this.root), undefined, 'Gatinho-Bomba');
+  }
+
+  travessia(): Promise<MiniResult & { lives: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playTravessiaGame(this.root), undefined, 'Travessia até a ilha');
+  }
+
+  altinha(): Promise<MiniResult & { best: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playAltinhaGame(this.root), undefined, 'Altinha no Peró');
+  }
+
+  cincoKm(): Promise<MiniResult & { left: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playCincoKmGame(this.root), undefined, '5 km até a virada');
+  }
+
   chocolate(): Promise<MiniResult & { pts: number }> {
     this.dialogue.close();
     return this.replayable(() => playChocolateGame(this.root), undefined, 'Chuva de chocolate');
@@ -281,9 +302,9 @@ class UIManagerImpl {
     return this.replayable(() => playArgolasGame(this.root), undefined, 'Jogo das argolas');
   }
 
-  fogos(): Promise<MiniResult & { photos: number }> {
+  fogos(opts?: { year?: string; bg?: string; water?: string }): Promise<MiniResult & { photos: number }> {
     this.dialogue.close();
-    return this.replayable(() => playFogosGame(this.root), undefined, 'Fogos da virada');
+    return this.replayable(() => playFogosGame(this.root, opts), undefined, 'Fogos da virada');
   }
 
   market(): Promise<MiniResult & { pacoca: boolean }> {

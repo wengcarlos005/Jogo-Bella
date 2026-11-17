@@ -17,10 +17,11 @@ const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI)
 
 type Rocket = { el: HTMLElement; x: number; y: number; top: number; kind: string; t: number; phase: 'up' | 'boom' | 'gone'; shot: boolean };
 
-export function playFogosGame(parent: HTMLElement): Promise<MiniResult & { photos: number }> {
+export function playFogosGame(parent: HTMLElement, opts: { year?: string; bg?: string; water?: string } = {}): Promise<MiniResult & { photos: number }> {
+  const YEAR = opts.year ?? '2024';
   return new Promise((resolve) => {
     const ui = shell(parent, 'fg', 'Foto dos fogos');
-    const lagoa = textureURL('map-ar-varanda-bg');
+    const lagoa = textureURL(opts.bg ?? 'map-ar-varanda-bg');
     const sky = h('div', { class: 'fg-sky' });
     const cam = h('div', { class: 'fg-cam' }, h('i', { class: 'tl' }), h('i', { class: 'tr' }), h('i', { class: 'bl' }), h('i', { class: 'br' }), h('b'));
     const count = h('div', { class: 'fg-count off' });
@@ -97,7 +98,7 @@ export function playFogosGame(parent: HTMLElement): Promise<MiniResult & { photo
         strip.append(h('img', { src: mg(`fg-${hit.kind}`), alt: '' }));
         hud();
         if (hit.kind === 'coracao') ui.say('bella', 'UM CORAÇÃO! Weng, o céu tá apaixonado também!');
-        else if (photos === 3) ui.say('bella', 'Essa ficou linda! Olha o reflexo na lagoa!');
+        else if (photos === 3) ui.say('bella', `Essa ficou linda! Olha o reflexo ${opts.water ?? 'na lagoa'}!`);
         return;
       }
       lives--;
@@ -155,7 +156,7 @@ export function playFogosGame(parent: HTMLElement): Promise<MiniResult & { photo
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('keyup', onKeyUp);
       const stars = lives <= 0 ? 1 : photos >= 9 ? 3 : photos >= 6 ? 2 : 1;
-      ui.say('bella', lives <= 0 ? 'Saiu tudo tremido... mas a melhor parte dessa virada eu nem precisei fotografar.' : `${photos} fotos dos fogos! A galeria do celular agora é só 2024.`);
+      ui.say('bella', lives <= 0 ? 'Saiu tudo tremido... mas a melhor parte dessa virada eu nem precisei fotografar.' : `${photos} fotos dos fogos! A galeria do celular agora é só ${YEAR}.`);
       ui.end(stars, 'Feliz ano-novo', () => resolve({ stars, mistakes, photos }));
     };
     const countdown = async () => {
@@ -170,7 +171,7 @@ export function playFogosGame(parent: HTMLElement): Promise<MiniResult & { photo
         if (n === 3) ui.say('bella', 'TRÊS! DOIS! UM!');
         await new Promise((r) => setTimeout(r, 650));
       }
-      count.textContent = 'FELIZ 2024!';
+      count.textContent = `FELIZ ${YEAR}!`;
       count.classList.add('big');
       AudioSystem.play('quest');
       await new Promise((r) => setTimeout(r, 1300));

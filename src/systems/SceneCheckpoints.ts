@@ -40,7 +40,7 @@ interface Preset {
   flags?: Record<string, boolean | string>;
   outfits?: Partial<Record<RegionId, string>>;
 }
-const STORY = ['pia-m1', 'pia-m2', 'pia-m3', 'dq-e2', 'dq-e3', 'dq-m1', 'dq-m2', 'dq-m3', 'dq-m4', 'dq-m5', 'pt-q1', 'pt-m1', 'ar-m1', 'ar-m2', 'ro-m1', 'nt-m1'];
+const STORY = ['pia-m1', 'pia-m2', 'pia-m3', 'dq-e2', 'dq-e3', 'dq-m1', 'dq-m2', 'dq-m3', 'dq-m4', 'dq-m5', 'pt-q1', 'pt-m1', 'ar-m1', 'ar-m2', 'ro-m1', 'nt-m1', 'cf-m1'];
 const PRESETS: Preset[] = [
   { quest: 'pia-m1', mapId: 'piabeta-casa-bella', spawn: 'start' },
   { quest: 'pia-m2', mapId: 'piabeta-rua', spawn: 'from-casa', active: true, flags: { 'weng-segue': true, 'weng-entrou': true, 'look-escolhido': 'casual' }, outfits: { piabeta: 'casual' } },
@@ -68,6 +68,9 @@ const PRESETS: Preset[] = [
   { quest: 'nt-m1', mapId: 'nt-apto', spawn: 'porta', active: true, flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia', niteroi: 'festa' } },
   { quest: 'nt-m1', sub: 'niemeyer', title: 'O Caminho Niemeyer', mapId: 'nt-niemeyer', spawn: 'chegada', active: true, doneObjs: ['chegar', 'oi', 'chocolates', 'varanda'], flags: { 'weng-segue': true, 'nt-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia', niteroi: 'festa' } },
   { quest: 'nt-m1', sub: 'onfire', title: 'Churrasco no On Fire', mapId: 'nt-onfire', spawn: 'porta', active: true, doneObjs: ['chegar', 'oi', 'chocolates', 'varanda', 'niemeyer', 'foto'], flags: { 'weng-segue': true, 'nt-chegou': true, 'nt-nie-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia', niteroi: 'festa' } },
+  { quest: 'cf-m1', mapId: 'cf-casa', spawn: 'porta', active: true, flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia', niteroi: 'festa', 'cabo-frio': 'praia', 'weng@cabo-frio': 'praia' } as never },
+  { quest: 'cf-m1', sub: 'japones', title: 'Praia do Japonês e a travessia', mapId: 'cf-japones', spawn: 'chegada', active: true, doneObjs: ['chegar', 'pero', 'pizza'], flags: { 'weng-segue': true, 'cf-chegou': true, 'cf-dia2': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia', niteroi: 'festa', 'cabo-frio': 'praia', 'weng@cabo-frio': 'praia' } as never },
+  { quest: 'cf-m1', sub: 'cartas', title: 'Gatinho-Bomba e os 5 km', mapId: 'cf-casa', spawn: 'porta', active: true, doneObjs: ['chegar', 'pero', 'pizza', 'japones', 'ilha'], flags: { 'weng-segue': true, 'cf-chegou': true, 'cf-dia2': true, 'cf-noite2': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia', niteroi: 'festa', 'cabo-frio': 'branco', 'weng@cabo-frio': 'branco' } as never },
 ];
 
 function presetData(pr: Preset): SaveData {
@@ -90,6 +93,7 @@ function presetData(pr: Preset): SaveData {
   if (idx >= STORY.indexOf('ar-m1')) reg.push('araruama');
   if (idx >= STORY.indexOf('ro-m1')) reg.push('rio-das-ostras');
   if (idx >= STORY.indexOf('nt-m1')) reg.push('niteroi');
+  if (idx >= STORY.indexOf('cf-m1')) reg.push('cabo-frio');
   d.regionsUnlocked = reg;
   d.regionsVisited = [...reg]; // sem o cartão de abertura da região ao pular pra cena
   d.mapId = pr.mapId;
