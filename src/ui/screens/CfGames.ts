@@ -476,8 +476,9 @@ export function playAltinhaGame(parent: HTMLElement): Promise<MiniResult & { bes
     ];
     const ME = { x: 50, y: 78 };
     const pals = ring.map((id, i) => h('div', { class: 'al-pal', style: `left:${POS[i].x}%;top:${POS[i].y}%` }, h('img', { src: face(id), alt: '' }), h('b', {}, NAME[id]), h('i', { class: 'al-call' }, 'Aqui!')));
-    const me = h('div', { class: 'al-pal me', style: `left:${ME.x}%;top:${ME.y}%` }, h('img', { src: textureURL('portrait-bella-praia') ?? face('bella'), alt: '' }), h('b', {}, 'Bella'));
-    const ball = h('div', { class: 'al-ball' }, h('i', {}));
+    const meImg = h('img', { class: 'al-bella', src: mg('al-b2'), alt: '' }) as HTMLImageElement;
+    const me = h('div', { class: 'al-pal me', style: `left:${ME.x}%;top:${ME.y}%` }, meImg);
+    const ball = h('div', { class: 'al-ball' }, h('img', { src: mg('al-bola'), alt: '' }));
     const shadow = h('i', { class: 'al-shadow' });
     const target = h('div', { class: 'al-target', style: `left:${ME.x}%;top:${ME.y - 6}%` }, h('i', {}));
     const aimLine = h('div', { class: 'al-aim' });
@@ -576,6 +577,9 @@ export function playAltinhaGame(parent: HTMLElement): Promise<MiniResult & { bes
             ui.shake();
             AudioSystem.play('cancel');
             pop(ME.x, ME.y - 10, 'Caiu!', 'bad');
+            const sp = h('img', { class: 'al-puff', src: mg('al-areia'), alt: '', style: `left:${ME.x + 4}%;top:${ME.y + 6}%` });
+            fx.append(sp);
+            setTimeout(() => sp.remove(), 800);
             ui.say(ring[Math.floor(Math.random() * ring.length)], ['Ihh, caiu! Recomeça!', 'Bella, a bola é redonda, não precisa ter medo!', 'Tudo bem, tudo bem. De novo!'][Math.floor(Math.random() * 3)]);
             touches = 0;
             ball.style.visibility = 'hidden';
@@ -611,8 +615,9 @@ export function playAltinhaGame(parent: HTMLElement): Promise<MiniResult & { bes
         best = Math.max(best, touches);
         AudioSystem.play(perfect ? 'quest' : 'pickup');
         pop(ME.x, ME.y - 12, `${perfect ? 'PERFEITO' : 'Boa'}${dbl ? ' · pro ' + NAME[ring[aim]] + '!' : ''} +${g}`, perfect ? 'perfect' : 'good');
-        me.classList.add('kick');
-        setTimeout(() => me.classList.remove('kick'), 250);
+        meImg.src = mg('al-b1');
+        setTimeout(() => (meImg.src = mg('al-b2')), 180);
+        setTimeout(() => (meImg.src = mg('al-b2')), 600);
         if (touches === 10) ui.say('weng', 'DEZ! A roda tá pegando fogo!');
         launch(ME, POS[aim], Math.max(0.6, 1.0 - touches * 0.015), false);
         hud();

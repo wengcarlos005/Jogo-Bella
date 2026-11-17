@@ -3626,3 +3626,8 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .gb-played { left: 64%; top: 46%; width: 9%; }
 .gb-seat.s1 { top: 1%; }
 .gb-tip { bottom: 31%; }
+.al-pal.me { transform: translate(-50%, -78%); }
+.al-bella { width: auto !important; height: calc(var(--u) * 62) !important; aspect-ratio: auto !important; border: none !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; image-rendering: auto !important; filter: drop-shadow(0 4px 0 rgba(0,0,0,.25)); }
+.al-ball img { width: 100%; height: 100%; animation: frSpin .5s linear infinite; }
+.al-puff { position: absolute; width: 12%; transform: translate(-50%, -50%); animation: bkSplash .7s ease-out forwards; }
+.al-target { margin-top: calc(var(--u) * -14); }
