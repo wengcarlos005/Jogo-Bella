@@ -35,8 +35,8 @@ function carSVG(color: string): string {
   <rect x="16" y="16" width="68" height="80" rx="22" fill="${c1}"/>
   <rect x="24" y="20" width="52" height="10" rx="5" fill="#ffffff" opacity=".45"/>
   <circle cx="30" cy="24" r="5" fill="#fff6c0"/><circle cx="70" cy="24" r="5" fill="#fff6c0"/>
-  <rect x="26" y="52" width="48" height="44" rx="12" fill="#1d1a26" opacity=".85"/>
-  <rect x="36" y="38" width="28" height="7" rx="3" fill="#1d1a26"/>
+  <rect x="25" y="38" width="50" height="46" rx="14" fill="#1d1a26" opacity=".85"/>
+  <rect x="36" y="30" width="28" height="6" rx="3" fill="#1d1a26"/>
   <circle cx="50" cy="104" r="6" fill="#c9c2d6" stroke="#1d1a26" stroke-width="3"/>
 </svg>`;
 }
@@ -133,7 +133,13 @@ export function playBateBateGame(parent: HTMLElement): Promise<MiniResult & { hi
         c.el.classList.toggle('stun', c.stun > 0);
         c.el.classList.toggle('fast', sp >= FAST && c.stun <= 0);
       });
+    let lastPop = 0;
     const pop = (x: number, y: number, text: string, kind: string) => {
+      // um aviso por vez (antes os textos encavalavam)
+      const now = performance.now();
+      if (kind === 'meh' && now - lastPop < 900) return;
+      lastPop = now;
+      arena.querySelectorAll('.bb-pop').forEach((p) => p.remove());
       const el = h('b', { class: `bb-pop ${kind}`, style: `left:${x}%;top:${y}%` }, text);
       arena.append(el);
       setTimeout(() => el.remove(), 1000);

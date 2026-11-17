@@ -114,6 +114,8 @@ export interface ScriptContext {
   backdrop(key: string | null, rainy?: boolean): Promise<void>;
   /** Roda-gigante animada: 'spin' girando, 'top' para a cabine do casal no alto, null esconde. */
   ferris(mode: 'spin' | 'top' | null): Promise<void>;
+  /** Foto pronta (ilustração) mostrada como polaroid, com flash. */
+  selfie(imageKey: string, caption: string): Promise<void>;
   /** Ilustração em tela cheia com legendas (avança com interagir). */
   illustration(key: string, lines: string[]): Promise<void>;
   /** Foto de verdade da cena (polaroid com legenda). */

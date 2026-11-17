@@ -130,6 +130,10 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', '...Pode parar a roda aqui pra sempre.');
     }
     ctx.hearts('player', 12);
+    await ctx.say('bella', 'Espera! Selfie! Aqui em cima, com a lagoa atrás. Encosta, encosta.');
+    await ctx.say('weng', 'Segura o ursinho que ele tem que sair também.');
+    await ctx.selfie('memory-ar-02', 'Lá no alto da roda-gigante · Araruama, 1º de janeiro');
+    await ctx.say('bella', 'Ficou perfeita. Essa vai pro fundo de tela.');
     await ctx.ferris(null);
     await ctx.memory('mem-ar-02');
     ctx.objective(Q, 'roda');
@@ -278,6 +282,7 @@ export const parqueMap: MapDef = {
     R(575, 0, 770, 60), // fundo
     R(770, 0, 1536, 385), // pista do bate-bate e cerca
     R(245, 505, 690, 700), // base do carrossel
+    R(262, 300, 675, 505), // atrás do carrossel (ninguém some atrás da cobertura)
     R(1085, 385, 1536, 830), // barracas da direita
     R(1380, 300, 1536, 620), // árvores (dir.)
     R(1380, 800, 1536, 1024),
@@ -295,6 +300,7 @@ export const parqueMap: MapDef = {
     R(1070, 505, 1098, 525),
     // objetos soltos: só a base
     R(800, 455, 1080, 505), // barraca das argolas
+    R(795, 385, 1085, 455), // atrás da barraca (ninguém some atrás dela)
     R(150, 755, 250, 790), // pipoca
     R(1010, 800, 1110, 832), // algodão-doce (na grama, perto das barracas)
     R(425, 820, 520, 852), // bilheteria (ao lado do portal)
@@ -330,15 +336,16 @@ export const parqueMap: MapDef = {
     // a Laylinha perto do algodão-doce (antes ficava em cima do arco)
     { id: 'laylinha', sprite: 'laylinha', tx: 1040 / 48, ty: 768 / 48, facing: 'down', interact: 'carrossel' },
     // Mingau e Diego na grade do bate-bate (fora do caminho principal)
-    { id: 'mingau', sprite: 'mingau', tx: 845 / 48, ty: 408 / 48, facing: 'up', interact: 'mingauTalk' },
+    { id: 'mingau', sprite: 'mingau', tx: 640 / 48, ty: 410 / 48, facing: 'right', interact: 'mingauTalk' },
     { id: 'vivian', sprite: 'vivian', tx: 15.6, ty: 11.2, facing: 'down', interact: 'argolas' },
     { id: 'julinha', sprite: 'julinha', tx: 270 / 48, ty: 800 / 48, facing: 'left', interact: 'pipoca' },
-    { id: 'diego', sprite: 'diego', tx: 1048 / 48, ty: 425 / 48, facing: 'left', interact: 'diegoTalk' },
+    { id: 'diego', sprite: 'diego', tx: 720 / 48, ty: 560 / 48, facing: 'up', interact: 'diegoTalk' },
   ],
 
   hotspots: [
     { rect: R(245, 470, 690, 715), interact: 'carrossel', label: 'Carrossel', markerIf: () => objActive('carrossel') },
-    { rect: R(790, 330, 1090, 440), interact: 'bate', label: 'Bate-bate', marker: { x: 0.5, y: 0.42 }, markerIf: () => objActive('bate') },
+    // a entrada da pista é na quina da grade, à esquerda da barraca das argolas (antes a seta ficava em cima da barraca)
+    { rect: R(690, 330, 795, 425), interact: 'bate', label: 'Bate-bate', markerIf: () => objActive('bate') },
     { rect: R(800, 400, 1080, 515), interact: 'argolas', label: 'Argolas', markerIf: () => objActive('argolas') },
     { rect: R(100, 200, 460, 315), interact: 'roda', label: 'Roda-gigante', markerIf: () => objActive('roda') && brinquedosFeitos() },
     { rect: R(150, 700, 250, 800), interact: 'pipoca', label: 'Pipoca' },

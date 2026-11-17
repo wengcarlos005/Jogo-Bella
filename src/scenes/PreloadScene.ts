@@ -38,6 +38,12 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   create(): void {
+    // personagens e objetos são folhas HD mostradas bem menores: com filtro "nearest" o jogo pulava
+    // pixels do contorno (ficava falhado e apagado). Filtro suave só neles; o cenário continua nítido.
+    for (const a of ASSETS) {
+      if (!/assets\/(characters|npcs|objects)\//.test(a.file) || !this.textures.exists(a.key)) continue;
+      this.textures.get(a.key).setFilter(Phaser.Textures.FilterMode.LINEAR);
+    }
     new PlaceholderFactory(this).generateAll();
     this.scene.start('Menu');
   }

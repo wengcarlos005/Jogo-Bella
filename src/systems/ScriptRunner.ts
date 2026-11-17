@@ -416,6 +416,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     },
     backdrop: (key, rainy) => UI.backdrop(key, rainy),
     ferris: (mode) => UI.ferris(mode),
+    selfie: (key, caption) => UI.photo(caption, key),
 
     nerves(value, message) {
       const v = Math.max(0, Math.min(100, Math.round(value)));

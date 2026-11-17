@@ -66,7 +66,7 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
   return new Promise((resolve) => {
     const ui = shell(parent, 'so', 'Sol de rachar');
     const bg = textureURL('map-ro-praia-bg');
-    const TIME = 35;
+    const TIME = 40;
     const sun = h('img', { class: 'so-sun', src: mg('so-sol'), alt: '' });
     const sky = h('div', { class: 'so-sky' });
     const ground = h('div', { class: 'so-ground' });
@@ -149,13 +149,13 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
       setTimeout(() => el.remove(), 1000);
     };
     const addCloud = () => {
-      const w = 20 + Math.random() * 9;
+      const w = 15 + Math.random() * 7;
       const el = h('img', { class: 'so-cloud', src: mg('so-nuvem'), alt: '', style: `width:${w}%` });
       const sh = h('i', { class: 'so-shadow', style: `width:${w * 0.9}%` });
       sky.append(el);
       ground.append(sh);
       const fromLeft = Math.random() < 0.5;
-      clouds.push({ el, sh, x: fromLeft ? -w : 100 + w, v: (fromLeft ? 1 : -1) * (7 + Math.random() * 5 + (TIME - time) * 0.18), w });
+      clouds.push({ el, sh, x: fromLeft ? -w : 100 + w, v: (fromLeft ? 1 : -1) * (10 + Math.random() * 6 + (TIME - time) * 0.25), w });
     };
     const say = (who: string, t: string) => {
       if (performance.now() - lastLine < 2600) return;
@@ -176,7 +176,7 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
         spawnCloud -= dt;
         if (spawnCloud <= 0) {
           addCloud();
-          spawnCloud = 2.4 + Math.random() * 2 + (TIME - time) * 0.05;
+          spawnCloud = 3.4 + Math.random() * 2.2 + (TIME - time) * 0.06;
         }
         let shade = false;
         for (let i = clouds.length - 1; i >= 0; i--) {
@@ -198,7 +198,7 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
           const el = h('img', { class: 'so-item bottle', src: mg('so-protetor'), alt: '', style: `left:${bx}%` });
           ui.stage.append(el);
           items.push({ el, x: bx, kind: 'bottle', v: 0 });
-          spawnBottle = 5 + Math.random() * 3;
+          spawnBottle = 7 + Math.random() * 4;
         }
         spawnPop -= dt;
         if (spawnPop <= 0) {
@@ -244,23 +244,23 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
           ui.stage.append(el);
           beams.push({ el, x: bx, w, t: 0, fired: false });
           sun.classList.add('charge');
-          beamIn = Math.max(2.2, 4.2 - (TIME - time) * 0.06) + Math.random() * 1.2;
+          beamIn = Math.max(1.2, 2.8 - (TIME - time) * 0.05) + Math.random() * 0.8;
         }
         for (let i = beams.length - 1; i >= 0; i--) {
           const b = beams[i];
           b.t += dt;
-          if (!b.fired && b.t > 1.3) {
+          if (!b.fired && b.t > 1.1) {
             b.fired = true;
             b.el.classList.add('fire');
             sun.classList.remove('charge');
             ui.shake();
             AudioSystem.play('cancel');
-            if (Math.abs(b.x - x) < b.w / 2 && !shade) {
+            if (Math.abs(b.x - x) < b.w / 2) {
               if (protect > 0) {
                 pop(x, 'Escudo!', 'meh');
               } else {
-                burn = Math.min(100, burn + 22);
-                pop(x, 'AI! +22%', 'bad');
+                burn = Math.min(100, burn + 26);
+                pop(x, 'AI! +26%', 'bad');
                 say('bella', 'AAAI! O sol mirou na gente! Ele tá de MAL com a gente!');
               }
             } else pop(b.x, 'Errou!', 'meh');
@@ -278,7 +278,7 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
           if (!wasShade) pop(x, 'Ahh, sombra!', 'cool');
         } else shadeRun = 0;
         wasShade = shade;
-        const rate = shade ? -12 : protect > 0 ? 1 : 5.5 + (TIME - time) * 0.13;
+        const rate = shade ? -8 : protect > 0 ? 2 : 8 + (TIME - time) * 0.2;
         burn = Math.max(0, Math.min(100, burn + rate * dt));
         maxBurn = Math.max(maxBurn, burn);
         pair.classList.toggle('shade', shade);
@@ -296,8 +296,8 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
     const useLotion = () => {
       if (!running || bottles <= 0 || protect > 0) return;
       bottles--;
-      protect = 6;
-      burn = Math.max(0, burn - 12);
+      protect = 4;
+      burn = Math.max(0, burn - 10);
       points += 5;
       AudioSystem.play('confirm');
       lotion.style.left = `${x}%`;
@@ -316,7 +316,7 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
       window.removeEventListener('keydown', onKey);
       hud();
       const queimou = burn >= 100;
-      const stars = queimou ? 1 : maxBurn < 60 && points >= 60 ? 3 : maxBurn < 85 ? 2 : 1;
+      const stars = queimou ? 1 : maxBurn < 70 && points >= 70 ? 3 : maxBurn < 90 ? 2 : 1;
       ui.stage.append(h('img', { class: 'so-end', src: mg('so-casal'), alt: '' }));
       ui.say('bella', queimou ? 'Virei camarão. Oficialmente. Weng, a gente precisa de um guarda-sol AGORA.' : `${Math.floor(points)} pontos de sombra... e mesmo assim meu ombro tá rosa. O seu nariz tá vermelho.`);
       ui.end(stars, 'Procurar um guarda-sol', () => resolve({ stars, mistakes: queimou ? 1 : 0, burn: Math.round(maxBurn) }));

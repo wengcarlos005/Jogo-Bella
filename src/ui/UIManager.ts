@@ -427,10 +427,12 @@ class UIManagerImpl {
 
   /** Ilustração em tela cheia com legendas; cada legenda avança com interagir/toque. */
   /** Tira uma "foto" da tela do jogo (flash + polaroid com legenda); clique ou espaço pra guardar. */
-  photo(caption: string): Promise<void> {
+  photo(caption: string, imageKey?: string): Promise<void> {
     this.dialogue.close();
     return new Promise((resolve) => {
-      this.game.renderer.snapshot((img) => {
+      const url = imageKey ? textureURL(imageKey) : null;
+      const shoot = (cb: (img: HTMLImageElement) => void) => (url ? cb(h('img', { src: url, alt: '' }) as HTMLImageElement) : this.game.renderer.snapshot((i) => cb(i as HTMLImageElement)));
+      shoot((img) => {
         const pic = img as HTMLImageElement;
         const flash = h('div', { class: 'ph-flash' });
         const card = h('div', { class: 'polaroid' }, h('div', { class: 'pol-img' }, pic), h('div', { class: 'pol-cap' }, caption));

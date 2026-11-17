@@ -1,4 +1,5 @@
 import { h } from '@/utils/dom';
+import { textureURL } from '../textures';
 
 /**
  * Cena animada da roda-gigante à noite (Araruama): a roda gira de verdade, as cabines ficam
@@ -38,6 +39,13 @@ function wheelSVG(): string {
   </svg>`;
 }
 
+/** O casal na janela da cabine: os rostos de verdade (retratos), um encostado no outro. */
+function couple(): HTMLElement {
+  const b = textureURL('portrait-bella-casual') ?? textureURL('portrait-bella');
+  const w = textureURL('portrait-weng-casual') ?? textureURL('portrait-weng');
+  return h('div', { class: 'fw-couple' }, b ? h('img', { src: b, alt: 'Bella' }) : null, w ? h('img', { src: w, alt: 'Weng' }) : null);
+}
+
 function cabin(i: number): HTMLElement {
   const ours = i === 0;
   const color = ours ? '#ff6a9a' : COLORS[i % COLORS.length];
@@ -45,7 +53,7 @@ function cabin(i: number): HTMLElement {
     'div',
     { class: 'fw-cabin' + (ours ? ' ours' : '') },
     h('i', { class: 'fw-hook' }),
-    h('div', { class: 'fw-box', style: `--c:${color}` }, ours ? h('div', { class: 'fw-couple' }, h('i', { class: 'b' }), h('i', { class: 'w' })) : null, ours ? h('b', { class: 'fw-heart' }, '♥') : null),
+    h('div', { class: 'fw-box', style: `--c:${color}` }, ours ? couple() : null, ours ? h('b', { class: 'fw-heart' }, '♥') : null),
   );
 }
 
