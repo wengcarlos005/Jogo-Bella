@@ -603,7 +603,7 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
   return new Promise((resolve) => {
     const ui = shell(parent, 'fr', 'Frescobol');
     const bg = textureURL('map-ro-praia-bg');
-    const GOAL = 15;
+    const SET_PTS = 3; // pontos por set; melhor de 3 sets
     const LANES = [-1, 0, 1]; // trás, meio, frente
     const bellaEl = h('img', { class: 'fr-p fr-bella', src: mg('fr-b0'), alt: '' }) as HTMLImageElement;
     const wengEl = h('img', { class: 'fr-p fr-weng', src: mg('fr-w0'), alt: '' }) as HTMLImageElement;
@@ -622,8 +622,8 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
       { class: 'cs-rules fr-rules' },
       h('b', {}, 'Como jogar'),
       h('div', {}, h('img', { src: mg('fr-b1'), alt: '' }), h('span', {}, 'Ande com ', h('kbd', {}, '↑'), ' ', h('kbd', {}, '↓'), ' até o ', h('u', { class: 'g' }, 'círculo'), ' onde a bolinha vai cair e aperte ', h('kbd', {}, 'Espaço'), ' / ', h('kbd', {}, 'E'), ' pra rebater.')),
-      h('div', {}, h('img', { src: mg('fr-bola'), alt: '' }), h('span', {}, 'O anel fecha: bata quando ele ficar ', h('u', { class: 'g' }, 'verde'), ' = PERFEITO! O Weng manda bola alta, cortada e com efeito.')),
-      h('div', {}, h('img', { src: mg('fr-areia'), alt: '' }), h('span', {}, `Seguidas dão multiplicador (x2, x3 e bola de fogo!). Deixou cair: perde 1 ♥ (são 3). Meta: ${GOAL} seguidas!`)),
+      h('div', {}, h('img', { src: mg('fr-bola'), alt: '' }), h('span', {}, 'A bolinha muda de lugar: ', h('u', {}, 'tem que estar no círculo'), ' pra rebater. Bata quando o anel ficar ', h('u', { class: 'g' }, 'verde'), ' = PERFEITO!')),
+      h('div', {}, h('img', { src: mg('fr-areia'), alt: '' }), h('span', {}, `Melhor de 3 sets contra o Weng! Quem deixar cair perde o ponto; ${SET_PTS} pontos fecham o set. Bata PERFEITO pra ele ter mais chance de errar.`)),
     );
     ui.stage.append(h('div', { class: 'fr-bg', style: bg ? `background-image:url(${bg})` : '' }), lanesEl, bellaShadow, wengShadow, target, bellaEl, wengEl, ballShadow, ball, fx, callout, gull, big, rules);
 
@@ -634,10 +634,15 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
     const footY = (l: number) => 92 - l * 11;
     let bl = 0; // posição da Bella
     let wl = 0;
-    let lives = 3;
+    let setB = 0;
+    let setW = 0;
+    let ptB = 0;
+    let ptW = 0;
+    let lastGrade = 1;
     let rally = 0;
     let best = 0;
     let points = 0;
+    const setLog: string[] = [];
     let dir = 1;
     let t = 0;
     let dur = 1.4;
@@ -657,19 +662,18 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
 
     // placar
     const sbRally = h('b', { class: 'so-sb-n' }, '0');
-    const sbPts = h('b', { class: 'so-sb-n' }, '0');
     const sbMult = h('b', { class: 'fr-mult' }, 'x1');
-    const sbLives = h('div', { class: 'tp-sb-lives' });
-    ui.hud.replaceChildren(
-      h(
-        'div',
-        { class: 'so-sb' },
-        h('div', { class: 'so-sb-chip' }, h('span', {}, 'Seguidas'), sbRally, sbMult),
-        h('div', { class: 'so-sb-chip' }, h('span', {}, 'Pontos'), sbPts),
-        h('div', { class: 'so-sb-chip' }, h('span', {}, 'Recorde'), h('b', { class: 'so-sb-n rec' }, '0')),
-        h('div', { class: 'so-sb-chip' }, sbLives),
-      ),
+    const sbB = h('span', { class: 'pe-sb-n' }, '0');
+    const sbW = h('span', { class: 'pe-sb-n' }, '0');
+    const sbSets = h('div', { class: 'fr-sets' });
+    const sbBox = h(
+      'div',
+      { class: 'pe-sb' },
+      h('div', { class: 'pe-sb-side bella' }, h('span', { class: 'pe-sb-name' }, 'Bella'), sbB),
+      h('div', { class: 'pe-sb-mid' }, h('span', { class: 'pe-sb-x' }, '×'), sbSets, h('span', { class: 'pe-sb-round' }, h('span', {}, 'Seguidas '), sbRally, ' ', sbMult)),
+      h('div', { class: 'pe-sb-side weng' }, h('span', { class: 'pe-sb-name' }, 'Weng'), sbW),
     );
+    ui.hud.replaceChildren(sbBox);
     const mult = () => (rally >= 10 ? 3 : rally >= 5 ? 2 : 1);
     const bump = (el: HTMLElement) => {
       el.classList.remove('bump');
@@ -677,12 +681,17 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
       el.classList.add('bump');
     };
     const hud = () => {
-      if (sbRally.textContent !== String(rally)) (sbRally.textContent = String(rally)), bump(sbRally);
-      if (sbPts.textContent !== String(points)) (sbPts.textContent = String(points)), bump(sbPts);
+      sbRally.textContent = String(rally);
       sbMult.textContent = `x${mult()}`;
       sbMult.className = `fr-mult m${mult()}`;
-      (ui.hud.querySelector('.rec') as HTMLElement).textContent = String(best);
-      sbLives.replaceChildren(...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥')));
+      if (sbB.textContent !== String(ptB)) (sbB.textContent = String(ptB)), bump(sbB);
+      if (sbW.textContent !== String(ptW)) (sbW.textContent = String(ptW)), bump(sbW);
+      sbBox.classList.toggle('lead-bella', setB > setW);
+      sbBox.classList.toggle('lead-weng', setW > setB);
+      sbSets.replaceChildren(h('b', {}, 'Sets'), ...[0, 1, 2].map((k) => h('i', { class: k < setB + setW ? (k < setB ? 'b' : 'w') : '' })));
+      // pinta os sets na ordem em que foram ganhos
+      const order = setLog;
+      sbSets.querySelectorAll('i').forEach((el, k) => (el.className = order[k] ?? ''));
     };
     const pose = (el: HTMLImageElement, who: 'b' | 'w', f: number) => (el.src = mg(`fr-${who}${f}`));
     const swingAnim = (el: HTMLImageElement, who: 'b' | 'w') => {
@@ -749,7 +758,9 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
       fromL = wl;
       const pool: Shot[] = rally < 3 ? ['normal'] : rally < 7 ? ['normal', 'normal', 'alta', 'cortada'] : ['normal', 'alta', 'cortada', 'efeito', 'efeito'];
       shot = pool[Math.floor(Math.random() * pool.length)];
-      toL = LANES[Math.floor(Math.random() * 3)];
+      // quase sempre muda de lugar: a Bella tem que andar
+      const others = LANES.filter((l) => l !== bl);
+      toL = Math.random() < 0.8 ? others[Math.floor(Math.random() * others.length)] : bl;
       const base = Math.max(0.95, 1.6 - rally * 0.035);
       dur = shot === 'alta' ? base * 1.45 : shot === 'cortada' ? base * 0.68 : base;
       arc = shot === 'alta' ? 40 : shot === 'cortada' ? 5 : 16 + Math.random() * 10;
@@ -762,8 +773,45 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
         setTimeout(() => callout.classList.remove('on'), 900);
       }
     };
+    /** Fim do ponto: quem ganhou o ponto (b = Bella, w = Weng). */
+    const scorePoint = (who: 'b' | 'w') => {
+      if (who === 'b') ptB++;
+      else ptW++;
+      if (ptB >= SET_PTS || ptW >= SET_PTS) {
+        const w = ptB > ptW ? 'b' : 'w';
+        if (w === 'b') setB++;
+        else setW++;
+        setLog.push(w);
+        ptB = 0;
+        ptW = 0;
+        hud();
+        if (setB >= 2 || setW >= 2) {
+          finish();
+          return true;
+        }
+        setTimeout(() => !done && showBig(`${w === 'b' ? 'Set da Bella!' : 'Set do Weng!'} ${setB} × ${setW}`, w === 'b' ? 'm3' : 'm2'), 300);
+        ui.say(w === 'b' ? 'bella' : 'weng', w === 'b' ? 'SET MEU! Quem paga o açaí agora, hein?' : 'Set meu! Mas foi sorte, eu admito.');
+      }
+      hud();
+      return false;
+    };
+    const wengMiss = () => {
+      rally = 0;
+      fire = false;
+      AudioSystem.play('pickup');
+      swingAnim(wengEl, 'w');
+      const sp = h('img', { class: 'fr-splash', src: mg('fr-areia'), alt: '', style: `left:${WX + 6}%;top:${laneY(toL) + 22}%` });
+      ui.stage.append(sp);
+      setTimeout(() => sp.remove(), 900);
+      ball.style.visibility = 'hidden';
+      ballShadow.style.visibility = 'hidden';
+      pop(WX, laneY(toL) - 10, 'O Weng errou! +1', 'perfect');
+      ui.say('weng', ['NÃO! Essa veio muito forte!', 'Ela tava com efeito, eu juro!', 'O sol bateu no meu olho. Sério.'][Math.floor(Math.random() * 3)]);
+      if (scorePoint('b')) return;
+      wait = 1.3;
+      setTimeout(() => !done && showBig('Saque do Weng!', 'm1'), 450);
+    };
     const miss = (line: string) => {
-      lives--;
       rally = 0;
       fire = false;
       AudioSystem.play('cancel');
@@ -774,10 +822,9 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
       setTimeout(() => sp.remove(), 900);
       ball.style.visibility = 'hidden';
       ballShadow.style.visibility = 'hidden';
-      pop(x, gy - 10, 'Caiu!', 'bad');
+      pop(x, gy - 10, 'Caiu! Ponto do Weng', 'bad');
       ui.say('weng', line);
-      hud();
-      if (lives <= 0) return finish();
+      if (scorePoint('w')) return;
       wait = 1.3;
       setTimeout(() => !done && showBig('Lá vem outra!', 'm1'), 450);
     };
@@ -793,14 +840,14 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
       }
       swung = true;
       if (dir < 0 && t >= 0.72 && t < 1.08) {
-        if (Math.abs(bl - toL) > 1) {
-          pop(BX + 7, laneY(bl) - 8, 'Longe!', 'meh');
+        if (bl !== toL) {
+          pop(BX + 7, laneY(bl) - 8, 'Longe! Vai pro círculo!', 'meh');
           swung = false;
           swingCd = 0.18;
           return;
         }
-        const near = bl === toL;
-        const grade = !near ? 1 : t > 0.86 && t < 1.0 ? 3 : t >= 0.78 && t < 1.05 ? 2 : 1;
+        const grade = t > 0.86 && t < 1.0 ? 3 : t >= 0.78 && t < 1.05 ? 2 : 1;
+        lastGrade = grade;
         rally++;
         best = Math.max(best, rally);
         const gained = grade * mult() * (fire ? 2 : 1);
@@ -826,7 +873,6 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
           ui.say('weng', 'DEZ! A praia inteira tá olhando! A bola tá pegando fogo!');
         } else if (rally === 5) ui.say('bella', 'Cinco! Tá pegando o ritmo, hein!');
         hud();
-        if (rally >= GOAL) return finish();
         dir = 1;
         t = 0;
         fromL = bl;
@@ -873,7 +919,9 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
           }
           if (dir > 0 && t >= 1) {
             wl = toL;
-            newShot();
+            const chance = (lastGrade === 3 ? 0.3 : lastGrade === 2 ? 0.13 : 0.04) + Math.min(0.15, rally * 0.012);
+            if (Math.random() < chance) wengMiss();
+            else newShot();
           } else if (dir < 0 && t >= 1.1) {
             miss(swung ? (bl !== toL ? 'Você tava no lugar errado! Olha o círculo.' : 'Bateu cedo demais! Espera ela chegar.') : ['Ih, passou!', 'Cadê a raquete, amor?', 'A bolinha fugiu!'][Math.floor(Math.random() * 3)]);
           }
@@ -891,10 +939,11 @@ export function playFrescobolGame(parent: HTMLElement): Promise<MiniResult & { b
       window.removeEventListener('keydown', onKey);
       target.classList.remove('on');
       hud();
-      const stars = best >= GOAL ? 3 : best >= 8 ? 2 : 1;
-      showBig(best >= GOAL ? `${best} SEGUIDAS!` : `Recorde: ${best}`, best >= GOAL ? 'm3' : 'm1');
-      ui.say(stars === 3 ? 'bella' : 'weng', stars === 3 ? `${best} seguidas e ${points} pontos! A gente é a dupla de frescobol mais linda dessa praia.` : `Recorde: ${best}, ${points} pontos. E a bolinha acertou a cabeça de um senhor dormindo... DESCULPA, SENHOR!`);
-      ui.end(stars, 'Correr pro mar', () => resolve({ stars, mistakes: 3 - lives, best }));
+      const won = setB > setW;
+      const stars = won ? (setW === 0 ? 3 : 2) : 1;
+      showBig(won ? `VITÓRIA ${setB} × ${setW}!` : `Weng venceu ${setW} × ${setB}`, won ? 'm3' : 'm1');
+      ui.say(won ? 'bella' : 'weng', won ? `${setB} a ${setW}! O Weng paga o açaí. E a bolinha ainda acertou um senhor dormindo... DESCULPA, SENHOR!` : `${setW} a ${setB} pra mim! ...Tá, o açaí eu pago mesmo assim.`);
+      ui.end(stars, 'Correr pro mar', () => resolve({ stars, mistakes: setW, best }));
     };
     const onKey = (e: KeyboardEvent) => {
       if (InputSystem.context !== 'minigame') return;

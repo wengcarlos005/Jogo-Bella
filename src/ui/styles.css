@@ -3713,3 +3713,8 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 .on-pair { top: 14%; }
 .on-wave { top: 12%; height: 50%; }
 .on-wave.big { top: -16%; height: 80%; }
+.fr-sets { display: flex; align-items: center; gap: calc(var(--u) * 1.5); }
+.fr-sets b { font-family: var(--font-body); font-weight: 800; font-size: clamp(9px, calc(var(--u) * 4.4), 12px); color: #6a3a8a; margin-right: 2px; }
+.fr-sets i { width: calc(var(--u) * 4.5); height: calc(var(--u) * 4.5); border-radius: 50%; background: #e8d6f0; border: calc(var(--u) * .8) solid #6a3a8a; }
+.fr-sets i.b { background: #ff6a9a; } .fr-sets i.w { background: #4a8aff; }
+.fr-panel .pg-hud { justify-content: center; }
