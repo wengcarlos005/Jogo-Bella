@@ -126,6 +126,9 @@ Só a roupa casual da Bella tem os óculos rosados.
 | MEM-013 | `cinematics/memory-ar-01.png` | A mesa giratória (ceia chinesa em família) | **integrado** |
 | MEM-014 | `cinematics/memory-ar-03.png` | Feliz 2024 (beijo na varanda com os fogos) | **integrado** |
 | MEM-017 | `cinematics/memory-ar-02.png` | Lá no alto da roda-gigante (ursinho, parque e a lagoa à noite) | **integrado** |
+| MEM-NT1 | `cinematics/memory-nt-01.png` | Os chocolates da mãe da Lilian | **integrado** |
+| MEM-NT2 | `cinematics/memory-nt-02.png` | Selfie no Caminho Niemeyer | **integrado** |
+| MEM-NT3 | `cinematics/memory-nt-03.png` | Churrasco no On Fire com a família | **integrado** |
 | MAP-040 | `maps/ar-cobertura-bg.png` (fonte: `art-source/maps/ar-cobertura.webp`) | Araruama: cobertura dos tios (vazia) + objetos `objects/cb-*` | **integrado** |
 | MAP-041 | `maps/ar-varanda-bg.png` (fonte: `art-source/maps/ar-varanda.webp`) | Araruama: varanda da cobertura à noite + objetos `objects/vr-*` | **integrado** |
 | MAP-042 | `maps/ar-praia-bg.png` (fonte: `art-source/maps/ar-praia.webp`) | Araruama: orla da lagoa (tarde) + objetos `objects/pr-*` | **integrado** |
