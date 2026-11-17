@@ -3703,3 +3703,13 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 .on-mark { left: 34%; }
 .on-wave { z-index: 7; top: 30%; height: 46%; width: 22%; }
 .on-wave.big { top: 4%; height: 72%; width: 32%; }
+.on-front { top: 54%; background: linear-gradient(rgba(58, 168, 220, .7), rgba(26, 106, 184, .95) 40%, #134e8c); }
+.on-front::before { display: none; }
+.on-pair { top: 24%; }
+.on-mark { top: 40%; }
+.on-wave { z-index: 5; }
+.on-front { z-index: 6; background: linear-gradient(rgba(58, 168, 220, .85), rgba(26, 106, 184, .97) 30%, #134e8c); }
+.on-stage .fr-fx { z-index: 9; }
+.on-pair { top: 14%; }
+.on-wave { top: 12%; height: 50%; }
+.on-wave.big { top: -16%; height: 80%; }

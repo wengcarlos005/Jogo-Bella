@@ -1026,7 +1026,7 @@ export function playOndaGame(parent: HTMLElement): Promise<MiniResult & { score:
           sent++;
           const big = sent > 2 && Math.random() < 0.35;
           const el = h('div', { class: `on-wave${big ? ' big' : ''}`, html: WAVE_SVG }, big ? h('b', { class: 'on-warn' }, '!') : null);
-          sea.append(el);
+          ui.stage.append(el);
           const v = 30 + sent * 2.2;
           waves.push({ el, x: 108, big, v, judged: false });
           nextIn = Math.max(1.1, 2.3 - sent * 0.09) + Math.random() * 0.6;
