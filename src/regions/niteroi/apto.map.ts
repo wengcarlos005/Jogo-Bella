@@ -195,23 +195,11 @@ async function chocolates(ctx: ScriptContext): Promise<void> {
   await ctx.say('mae-lilian', 'Bella! Vem cá. Isso aqui é pra você.');
   await ctx.say('bella', 'Pra mim? A cesta inteira?!');
   await ctx.say('mae-lilian', 'A cesta é o começo. Toma: bombom de morango, de coco, trufa, barra ao leite...');
-  let n = 6;
-  const respostas = [
-    ['"Tia, não precisa, sério!"', 'Aceitar sorrindo', '"Eu vou dividir com o Weng."'],
-    ['"Tia, já tá ótimo!"', 'Abrir a bolsa', '"O Mingau tá olhando..."'],
-    ['"Tia... eu não tenho mais mão."', 'Pedir uma sacola', 'Rir e desistir'],
-  ];
-  const falas = [
-    ['Precisa sim! Toma mais esse, de avelã.', 'Isso! Gosto de quem aceita. Toma mais um.', 'Não, não. O Weng tem os dele. Esses são SEUS.'],
-    ['Ótimo não, tá pouco. Toma esse ovinho.', 'Isso, guarda na bolsa. E mais esses três.', 'O Mingau já ganhou o dele. Duas vezes.'],
-    ['Então eu arrumo uma sacola! Espera.', 'Toma, uma sacolinha rosa. Cheia, já.', 'Pode rir, mas leva tudo, hein!'],
-  ];
-  for (let i = 0; i < respostas.length; i++) {
-    const c = await ctx.choose('bella', `(Já são ${n} chocolates no colo dela)`, respostas[i]);
-    await ctx.say('mae-lilian', falas[i][c]);
-    n += 4 + i * 3;
-    ctx.sfx('pickup');
-  }
+  await ctx.say('bella', 'Tia, não precisa, sério!');
+  await ctx.say('mae-lilian', 'Precisa sim! Abre essa sacola que eu vou jogando!');
+  const r = await ctx.chocolate();
+  ctx.setFlag('nt-chocolate-estrelas', r.stars);
+  const n = 12 + r.pts;
   await ctx.narrate(`No fim, ${n} chocolates. A Bella mal conseguia segurar.`);
   await ctx.say('mingau', '(aparecendo do nada) Precisa de ajuda pra carregar?');
   await ctx.say('bella', 'Não. Mas toma um, pela coragem.');
@@ -219,6 +207,7 @@ async function chocolates(ctx: ScriptContext): Promise<void> {
   await ctx.say('bella', 'WENG!');
   await ctx.say('mae-lilian', 'Deixa ele! Tem mais na cesta. Sempre tem mais.');
   ctx.hearts('player', 8);
+  if (ctx.hasArt('memory-nt-01')) await ctx.memory('mem-nt-01');
   ctx.objective(Q, 'chocolates');
   ctx.follow('weng', true);
   ctx.toast('Agora a vista: a varanda fica embaixo, nas portas de vidro');

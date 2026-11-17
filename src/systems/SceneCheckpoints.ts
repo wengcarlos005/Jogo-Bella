@@ -67,6 +67,7 @@ const PRESETS: Preset[] = [
   { quest: 'ro-m1', mapId: 'ro-praia', spawn: 'chegada', active: true, flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia' } },
   { quest: 'nt-m1', mapId: 'nt-apto', spawn: 'porta', active: true, flags: { 'weng-segue': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia', niteroi: 'festa' } },
   { quest: 'nt-m1', sub: 'niemeyer', title: 'O Caminho Niemeyer', mapId: 'nt-niemeyer', spawn: 'chegada', active: true, doneObjs: ['chegar', 'oi', 'chocolates', 'varanda'], flags: { 'weng-segue': true, 'nt-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia', niteroi: 'festa' } },
+  { quest: 'nt-m1', sub: 'onfire', title: 'Churrasco no On Fire', mapId: 'nt-onfire', spawn: 'porta', active: true, doneObjs: ['chegar', 'oi', 'chocolates', 'varanda', 'niemeyer', 'foto'], flags: { 'weng-segue': true, 'nt-chegou': true, 'nt-nie-chegou': true }, outfits: { piabeta: 'casual', petropolis: 'floral', araruama: 'casual', 'rio-das-ostras': 'praia', niteroi: 'festa' } },
 ];
 
 function presetData(pr: Preset): SaveData {

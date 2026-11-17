@@ -833,7 +833,7 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 1. **Chegada na casa de praia** (Peró): a turma escolhendo quarto, a Bella e o Weng com o melhor (ou o pior).
 2. **Praia do Peró**: minijogo **Altinha** (manter a bola no alto passando entre os amigos, sem deixar cair).
 3. **Noite da pizza**: escolher os sabores pra agradar a turma inteira.
-4. **Praia do Japonês**: churrasco na areia (reaproveita a churrasqueira) e água calminha.
+4. **Praia do Japonês**: churrasco na areia e água calminha. A turma **atravessa a pé até a ilha** pela faixa de areia na água; a Bella morrendo de medo (fundo? concha? bicho?). Minijogo **Travessia até a ilha** (escolher onde pisar: areia clarinha é seguro, água escura pode ser fundo, concha e siri beliscam; o Weng segura a mão). **Ficam um tempo na ilha** antes de voltar.
 5. **Gatinho-Bomba**: jogo de cartas de "sorte e coragem" com a turma (compra carta, foge do gatinho-bomba, usa a carta de desarmar).
 6. **Nenhum Uber aceita**: a tela do app recusando, recusando...
 7. **5 km até a virada** (minijogo): a turma andando de branco pela estrada de noite, o relógio correndo pra meia-noite; no km 3, a carona.

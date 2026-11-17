@@ -69,6 +69,9 @@ export interface ScriptContext {
   /** Frescobol (Rio das Ostras). */
   frescobol(): Promise<import('@/ui/screens/PetroGames').MiniResult & { best: number }>;
   /** A tempestade (Rio das Ostras). */
+  chocolate(): Promise<{ stars: number; mistakes: number; pts: number }>;
+  fotoNiemeyer(): Promise<{ stars: number; mistakes: number; score: number }>;
+  bandeja(): Promise<{ stars: number; mistakes: number; served: number }>;
   onda(): Promise<{ stars: number; mistakes: number; score: number }>;
   tempestade(): Promise<import('@/ui/screens/PetroGames').MiniResult & { lives: number }>;
   /** Bate-bate no parque de diversões (Araruama). */

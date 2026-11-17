@@ -33,7 +33,7 @@ function walker(sheet: string, cls: string) {
 }
 
 /** Teclas seguradas (setas / WASD). */
-function heldKeys() {
+export function heldKeys() {
   const k = { l: false, r: false, u: false, d: false };
   const map = (c: string) => (c === 'ArrowLeft' || c === 'KeyA' ? 'l' : c === 'ArrowRight' || c === 'KeyD' ? 'r' : c === 'ArrowUp' || c === 'KeyW' ? 'u' : c === 'ArrowDown' || c === 'KeyS' ? 'd' : null);
   const down = (e: KeyboardEvent) => {

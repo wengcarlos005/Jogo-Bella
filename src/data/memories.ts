@@ -199,6 +199,30 @@ export const MEMORIES: MemoryDef[] = [
     text: 'Torrada do meu pai, frescobol, onda... e no fim, petisco no quiosque até o céu desabar. A gente correu rindo, queimado e molhado.',
     image: 'memory-ro-02',
   },
+  {
+    id: 'mem-nt-01',
+    region: 'niteroi',
+    title: 'Os chocolates da mãe da Lilian',
+    year: 'Ano 1',
+    text: 'Em Icaraí, com o mar na janela, a mãe da Lilian me encheu de chocolate até eu não ter mais mão. O Weng roubou um. Ou três.',
+    image: 'memory-nt-01',
+  },
+  {
+    id: 'mem-nt-02',
+    region: 'niteroi',
+    title: 'Selfie no Niemeyer',
+    year: 'Ano 1',
+    text: 'O Caminho Niemeyer no fim de tarde, bochecha com bochecha, e o Rio inteiro do outro lado da baía.',
+    image: 'memory-nt-02',
+  },
+  {
+    id: 'mem-nt-03',
+    region: 'niteroi',
+    title: 'Churrasco no On Fire',
+    year: 'Ano 1',
+    text: 'A mesa grande, a família inteira rindo, molho barbecue na bochecha e costela que desmanchava. O Vinicius passou no teste.',
+    image: 'memory-nt-03',
+  },
 ];
 
 /** 9 capítulos: 22 lembranças até o Capítulo 5 + 3 em cada um dos 4 que faltam. */

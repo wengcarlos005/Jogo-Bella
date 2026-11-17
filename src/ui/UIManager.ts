@@ -14,6 +14,7 @@ import { playPedrinhaGame } from './screens/PedrinhaGame';
 import { playArgolasGame } from './screens/ArgolasGame';
 import { playBateBateGame } from './screens/BateBateGame';
 import { playSolGame, playTempestadeGame, playFrescobolGame, playOndaGame } from './screens/RoGames';
+import { playChocolateGame, playFotoNiemeyerGame, playBandejaGame } from './screens/NtGames';
 import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
@@ -243,6 +244,21 @@ class UIManagerImpl {
   frescobol(): Promise<MiniResult & { best: number }> {
     this.dialogue.close();
     return this.replayable(() => playFrescobolGame(this.root), undefined, 'Frescobol');
+  }
+
+  chocolate(): Promise<MiniResult & { pts: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playChocolateGame(this.root), undefined, 'Chuva de chocolate');
+  }
+
+  fotoNiemeyer(): Promise<MiniResult & { score: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playFotoNiemeyerGame(this.root), undefined, 'Foto no Niemeyer');
+  }
+
+  bandeja(): Promise<MiniResult & { served: number }> {
+    this.dialogue.close();
+    return this.replayable(() => playBandejaGame(this.root), undefined, 'Bandeja do churrasco');
   }
 
   onda(): Promise<MiniResult & { score: number }> {

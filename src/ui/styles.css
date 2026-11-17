@@ -3437,3 +3437,74 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .on-wave { top: -26%; height: 78%; }
 .on-wave.big { top: -62%; height: 116%; }
 .on-pair::after { left: 0; right: 0; bottom: 4%; height: 26%; border-radius: 50% 50% 0 0 / 30% 30% 0 0; background: linear-gradient(rgba(127, 216, 238, .55), rgba(42, 138, 200, .9) 60%); box-shadow: 0 -3px 0 rgba(255, 255, 255, .7); }
+
+/* ---------- Niterói: Chuva de chocolate ---------- */
+.ch-title { background: linear-gradient(90deg, #8a4a2a, #ff7aa8) !important; }
+.ch-stage, .ft-stage, .bq-stage { height: min(58vh, calc(var(--u) * 235)) !important; overflow: hidden; }
+.ch-panel, .ft-panel, .bq-panel { width: min(97%, calc(var(--u) * 460)) !important; }
+.ch-bg { position: absolute; inset: 0; background-size: cover; background-position: 50% 40%; filter: brightness(.75) saturate(1.1) blur(1px); }
+.ch-aunt { position: absolute; top: 1%; width: 9%; aspect-ratio: 1; transform: translateX(-50%); background-size: 400% 400%; image-rendering: pixelated; z-index: 3; filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .3)); }
+.ch-field { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.ch-item { position: absolute; width: 5.5%; transform: translate(-50%, -50%); filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .3)); }
+.ch-item.gold { width: 7.5%; filter: drop-shadow(0 0 8px #ffd23f) drop-shadow(0 3px 0 rgba(0, 0, 0, .3)); }
+.ch-item.bad { width: 5%; }
+.ch-bella { position: absolute; bottom: 2%; height: 52%; transform: translateX(-50%); z-index: 5; filter: drop-shadow(0 4px 0 rgba(0, 0, 0, .3)); transition: transform .1s; }
+.ch-spark { position: absolute; top: 52%; width: 9%; transform: translate(-50%, -50%); animation: bkSplash .5s ease-out forwards; }
+.ch-rules img, .ft-rules img, .bq-rules img { aspect-ratio: 1; object-fit: contain; background: #ffe9b8; padding: 3px; }
+/* ---------- Foto no Niemeyer ---------- */
+.ft-title { background: linear-gradient(90deg, #ff9a6a, #6a8ad8) !important; }
+.ft-scene { position: absolute; inset: 0; overflow: hidden; background: #f0c890; }
+.ft-bg { position: absolute; left: 0; top: 0; width: 100%; }
+.ft-couple { position: absolute; left: 56%; top: 58%; height: 54%; transform: translate(-50%, -50%); filter: drop-shadow(0 6px 0 rgba(0, 0, 0, .2)); }
+.ft-gull { position: absolute; width: 8%; transform: translate(-50%, -50%); z-index: 3; }
+.ft-finder { position: absolute; z-index: 6; pointer-events: none; outline: 2000px solid rgba(10, 10, 30, .4); transition: box-shadow .2s; }
+.ft-finder .c { position: absolute; width: 14%; height: 18%; border: 4px solid #fff; }
+.ft-finder .tl { left: 0; top: 0; border-right: 0; border-bottom: 0; }
+.ft-finder .tr { right: 0; top: 0; border-left: 0; border-bottom: 0; }
+.ft-finder .bl { left: 0; bottom: 0; border-right: 0; border-top: 0; }
+.ft-finder .br { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+.ft-focus { position: absolute; left: 50%; top: 50%; width: 22%; height: 26%; transform: translate(-50%, -50%); border: 3px dashed #fff; }
+.ft-finder.good .c { border-color: #7fe39a; }
+.ft-finder.good .ft-focus { border-color: #7fe39a; border-style: solid; box-shadow: 0 0 10px #7fe39a; }
+.ft-finder.loaf::after { content: '⛰ Pão de Açúcar'; position: absolute; right: 4%; top: 4%; font-family: var(--font-body); font-weight: 900; font-size: clamp(10px, calc(var(--u) * 5), 13px); color: #fff; background: rgba(42, 106, 200, .85); padding: 1px 8px; border-radius: 99px; }
+.ft-rec { position: absolute; left: 4%; top: 4%; font-family: var(--font-pixel); font-weight: 400; color: #ff5a5a; font-size: clamp(10px, calc(var(--u) * 5), 14px); text-shadow: 0 1px 0 #000; animation: mgcBeat 1s infinite; }
+.ft-flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 30; pointer-events: none; }
+.ft-flash.on { animation: tp-flash .4s; }
+.ft-pose { position: absolute; left: 50%; bottom: 3%; transform: translateX(-50%); z-index: 8; font-family: var(--font-pixel); font-size: clamp(12px, calc(var(--u) * 6.5), 18px); color: #fff; background: rgba(42, 12, 36, .85); border: 2px solid #f2c14e; padding: 2px 14px; border-radius: 99px; white-space: nowrap; }
+.ft-pose:empty { display: none; }
+.ft-strip { position: absolute; right: 2%; top: 3%; z-index: 9; display: flex; flex-direction: column; gap: 6px; }
+.ft-thumb { position: relative; width: calc(var(--u) * 44); padding: 4px 4px 2px; background: #fff; border-radius: 3px; box-shadow: 0 3px 6px rgba(0, 0, 0, .35); transform: rotate(-4deg); animation: nv-pop2b .4s; display: grid; justify-items: center; }
+.ft-thumb:nth-child(2) { transform: rotate(3deg); }
+.ft-thumb img { width: 100%; aspect-ratio: 1.1; object-fit: contain; background: #f6e2c4; }
+.ft-thumb span { font-family: var(--font-body); font-weight: 900; font-size: clamp(8px, calc(var(--u) * 4), 11px); color: #2a0c24; }
+.ft-thumb.best { box-shadow: 0 0 0 3px #ffd23f, 0 3px 6px rgba(0, 0, 0, .35); }
+.ft-thumb-gull { position: absolute; left: 50%; top: 10%; width: 40% !important; aspect-ratio: auto !important; background: none !important; }
+.ft-ico { flex: none; width: 40px; height: 40px; display: grid; place-items: center; font-size: 22px; background: #ffe9b8; border-radius: 8px; }
+.ft-q i.warm { background: linear-gradient(90deg, #ffb02e, #ffd23f) !important; }
+.ft-q i.hot { background: linear-gradient(90deg, #e0303a, #ff7a3a) !important; }
+.ft-q i { background: linear-gradient(90deg, #5fcf7a, #b8f0c4) !important; transition: width .1s; }
+/* ---------- Bandeja do churrasco ---------- */
+.bq-title { background: linear-gradient(90deg, #8a2a1a, #ff8a3a) !important; }
+.bq-bg { position: absolute; inset: 0; background-size: cover; background-position: 50% 20%; filter: brightness(.55) saturate(1.1); }
+.bq-order { position: absolute; left: 3%; right: 3%; top: 3%; z-index: 3; display: flex; align-items: center; gap: 12px; padding: 6px 12px; border-radius: 12px; background: #fff8e8; border: 3px solid #8a2a1a; box-shadow: 0 4px 0 rgba(0, 0, 0, .3); }
+.bq-order.in { animation: nv-pop2b .35s; }
+.bq-face { width: calc(var(--u) * 24); aspect-ratio: 1; object-fit: cover; object-position: top; border-radius: 8px; border: 2px solid #8a2a1a; image-rendering: pixelated; background: #f2e2ff; }
+.bq-order-txt { flex: 1; display: grid; color: #2a0c24; }
+.bq-order-txt b { font-family: var(--font-pixel); font-weight: 400; color: #c03a1a; font-size: clamp(12px, calc(var(--u) * 6.5), 18px); }
+.bq-order-txt span { font-weight: 700; font-size: clamp(11px, calc(var(--u) * 5.2), 15px); }
+.bq-want { display: flex; gap: 6px; }
+.bq-want-i { width: calc(var(--u) * 22); aspect-ratio: 1; border-radius: 8px; border: 2px dashed #c8a080; background: #f6e2c4; display: grid; place-items: center; }
+.bq-want-i img { width: 88%; height: 88%; object-fit: contain; filter: grayscale(.2); }
+.bq-want-i.ok { border: 2px solid #3a9a52; background: #d8f6dc; position: relative; }
+.bq-want-i.ok::after { content: '✓'; position: absolute; right: -4px; top: -6px; width: 16px; height: 16px; border-radius: 50%; background: #3a9a52; color: #fff; font-size: 11px; font-weight: 900; display: grid; place-items: center; }
+.bq-grid { position: absolute; left: 3%; width: 60%; top: 30%; bottom: 4%; z-index: 3; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: 1fr 1fr; gap: 6px; }
+.bq-cell { display: grid; grid-template-rows: 1fr auto; justify-items: center; align-items: center; padding: 4px; border-radius: 10px; background: rgba(42, 20, 12, .75); border: 2px solid #6a3a1a; cursor: pointer; transition: transform .1s; }
+.bq-cell img { max-width: 92%; max-height: 100%; object-fit: contain; min-height: 0; }
+.bq-cell span { font-weight: 900; font-size: clamp(9px, calc(var(--u) * 4.4), 12px); color: #fff3d6; white-space: nowrap; }
+.bq-cell.sel { border-color: #ffd23f; background: rgba(120, 60, 20, .85); transform: scale(1.06); box-shadow: 0 0 12px #ffd23f; }
+.bq-cell.no { animation: shake .3s; border-color: #ff5a5a; }
+.bq-tray { position: absolute; right: 3%; width: 32%; top: 34%; z-index: 3; transition: transform .5s ease-in, opacity .5s; }
+.bq-tray > img { width: 100%; filter: drop-shadow(0 4px 0 rgba(0, 0, 0, .35)); }
+.bq-tray.go { transform: translateX(120%) rotate(8deg); opacity: 0; }
+.bq-tray-items { position: absolute; inset: 14% 10%; }
+.bq-tray-items img { position: absolute; width: 46%; animation: nv-pop2b .3s; filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .3)); }

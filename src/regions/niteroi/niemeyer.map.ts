@@ -88,16 +88,23 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', 'O Rio do outro lado e a gente aqui. Gosto mais daqui.');
       return;
     }
-    await ctx.say('bella', 'Aqui! Com a água e o Pão de Açúcar atrás. Encosta a bochecha.');
-    await ctx.say('weng', 'Bochecha encostada. Três, dois...');
-    await ctx.photo('Caminho Niemeyer, com o Rio do outro lado da baía');
+    await ctx.say('bella', 'Aqui! Com a água e o Pão de Açúcar atrás.');
+    await ctx.say('tio-nt', 'Deixa que eu tiro a de vocês dois! Me dá o celular.');
+    await ctx.say('weng', '(cochichando) Ele treme. Muito.');
+    const r = await ctx.fotoNiemeyer();
+    ctx.setFlag('nt-foto-estrelas', r.stars);
+    await ctx.say('bella', 'Agora uma selfie nossa. Só nós dois. Bochecha com bochecha.');
+    if (ctx.hasArt('memory-nt-02')) await ctx.selfie('memory-nt-02', 'Caminho Niemeyer, com o Rio do outro lado da baía');
+    else await ctx.photo('Caminho Niemeyer, com o Rio do outro lado da baía');
     await ctx.say('bella', 'Ficou perfeita. A luz do fim de tarde ajudou.');
     await ctx.say('weng', 'A luz ajudou um pouco. Você ajudou o resto.');
     ctx.hearts('player', 8);
     ctx.objective(Q, 'foto');
     await ctx.say('tio-nt', '(de longe) Casal! Bora? O On Fire tá esperando, eu reservei pra todo mundo!');
     await ctx.say('diego', 'Doze horas de defumação, Bella. DOZE.');
-    ctx.toast('Em breve: o churrasco no On Fire (Capítulo 6 continua)');
+    await ctx.fadeOut(500);
+    await ctx.narrate('Um pulinho de carro até São Francisco, o bairro do lado.');
+    await ctx.teleport('nt-onfire', 'porta');
   },
   async tioTalk(ctx) {
     await ctx.say('tio-nt', objDone('foto') ? 'Bora comer! Reservei a mesa grande.' : 'Vão lá, aproveitem. A gente fica aqui na sombra.');
