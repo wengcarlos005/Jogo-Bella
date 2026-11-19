@@ -273,6 +273,14 @@ export const parqueMap: MapDef = {
   music: 'parque',
   background: '#1a1430',
   art: 'native',
+  lighting: {
+    darkness: 0.14,
+    color: 0x1a1040,
+    lights: [
+      { x: 470, y: 470, r: 280 }, { x: 770, y: 760, r: 220 }, { x: 1150, y: 150, r: 300, color: 0xff7ad0 }, { x: 280, y: 130, r: 260, color: 0xffa0e0 },
+      { x: 1306, y: 560, r: 240 }, { x: 614, y: 81, r: 100 }, { x: 760, y: 542, r: 100 }, { x: 1175, y: 665, r: 100 }, { x: 18, y: 404, r: 90 }, { x: 1083, y: 396, r: 100 },
+    ],
+  },
   ambient: 'fireflies',
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),

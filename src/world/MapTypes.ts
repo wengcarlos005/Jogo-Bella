@@ -175,6 +175,12 @@ export interface MapDef {
   rainWindows?: { rects: TileRect[]; when: () => boolean; /** false: a arte já tem o vidro chuvoso, só cai a chuva. */ glass?: boolean; /** dia de sol: pinta céu azul por cima do vidro chuvoso da arte */ sunny?: () => boolean };
   /** Vapor subindo (chapas, panelas, xícaras): pontos em px do cenário ORIGINAL. */
   steam?: { x: number; y: number }[];
+  /** Brilhos de sol piscando na água (retângulos em tiles, use R() com px da arte). */
+  glints?: TileRect[];
+  /** Gaivotas cruzando o céu/mar de vez em quando (faixa y em px da arte original). */
+  birds?: { y0: number; y1: number };
+  /** Fumaça de churrasqueira com brasinhas (px da arte original). */
+  smoke?: { x: number; y: number }[];
   /** Partículas de ambiente: poeira de luz, vaga-lumes, pétalas. */
   ambient?: 'dust' | 'fireflies' | 'petals';
   /** Se verdadeiro, Bella e Weng começam invisíveis (ex.: ainda dentro do carro). */

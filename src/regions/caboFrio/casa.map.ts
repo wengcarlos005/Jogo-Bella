@@ -200,6 +200,15 @@ export const cfCasaMap: MapDef = {
   music: 'casa',
   background: '#2a1e2e',
   art: 'native',
+  lighting: {
+    darkness: 0.08,
+    color: 0x3a2040,
+    lights: [
+      { x: 456, y: 93, r: 120 }, { x: 629, y: 93, r: 120 }, { x: 844, y: 93, r: 120 }, { x: 69, y: 467, r: 120 },
+      { x: 751, y: 380, r: 200, color: 0xffd080 }, { x: 1227, y: 125, r: 140 },
+      { x: 140, y: 673, r: 75 }, { x: 235, y: 673, r: 75 }, { x: 330, y: 673, r: 75 }, { x: 425, y: 673, r: 75 }, { x: 520, y: 673, r: 75 }, { x: 615, y: 673, r: 75 }, { x: 710, y: 673, r: 75 }, { x: 805, y: 673, r: 75 }, { x: 900, y: 673, r: 75 }, { x: 995, y: 673, r: 75 }, { x: 1090, y: 673, r: 75 }, { x: 1185, y: 673, r: 75 },
+    ],
+  },
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 

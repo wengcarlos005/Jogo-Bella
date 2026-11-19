@@ -128,6 +128,9 @@ export class GameScene extends Phaser.Scene {
     this.weather = new WeatherSystem(this);
     this.addAmbient(def.ambient ?? (def.indoor ? 'dust' : undefined));
     this.addSteam();
+    this.addGlints();
+    this.addBirds();
+    this.addSmoke();
     this.addRainWindows();
     this.addLighting();
     this.addBlackout();
@@ -589,6 +592,119 @@ export class GameScene extends Phaser.Scene {
           alpha: { start: 0.55, end: 0 },
         })
         .setDepth(p.y / 3 - 1);
+    }
+  }
+
+  /** Brilhos de sol na água: estrelinhas que acendem e apagam em pontos aleatórios. */
+  private addGlints(): void {
+    const rects = this.def.glints;
+    if (!rects?.length) return;
+    if (!this.textures.exists('fx-glint')) {
+      const g = this.make.graphics({}, false);
+      g.fillStyle(0xffffff, 0.55).fillRect(0, 3, 7, 1).fillRect(3, 0, 1, 7);
+      g.fillStyle(0xffffff, 1).fillRect(2, 2, 3, 3);
+      g.generateTexture('fx-glint', 7, 7);
+      g.destroy();
+    }
+    for (const r of rects) {
+      const zone = new Phaser.Geom.Rectangle(r.x * 16, r.y * 16, r.w * 16, r.h * 16);
+      const area = zone.width * zone.height;
+      this.add
+        .particles(0, 0, 'fx-glint', {
+          emitZone: { type: 'random', source: zone } as never,
+          lifespan: { min: 700, max: 1300 },
+          frequency: Math.max(40, 5200000 / Math.max(area, 1) / 18),
+          scale: { values: [0.2, 0.9, 0.2] } as never,
+          alpha: { values: [0, 0.95, 0] } as never,
+          speedX: { min: -1.5, max: 1.5 },
+          blendMode: 'ADD',
+        })
+        .setDepth(-4);
+    }
+  }
+
+  /** Gaivotas: passam em bando pequeno de um lado pro outro, batendo asa. */
+  private addBirds(): void {
+    const b = this.def.birds;
+    if (!b) return;
+    if (!this.textures.exists('fx-gull-sheet')) {
+      const g = this.make.graphics({}, false);
+      // frame 0: asas pra cima / frame 1: asas abertas (lado a lado na textura)
+      g.fillStyle(0x3a3346, 1);
+      g.fillRect(1, 1, 2, 1).fillRect(3, 2, 1, 1).fillRect(4, 3, 1, 1).fillRect(5, 2, 1, 1).fillRect(6, 1, 2, 1);
+      g.fillStyle(0xffffff, 1).fillRect(4, 2, 1, 1);
+      g.fillStyle(0x3a3346, 1);
+      g.fillRect(9, 3, 3, 1).fillRect(12, 3, 1, 1).fillRect(13, 3, 3, 1).fillStyle(0xffffff, 1).fillRect(12, 2, 1, 1);
+      g.generateTexture('fx-gull-sheet', 17, 5);
+      g.destroy();
+      const tex = this.textures.get('fx-gull-sheet');
+      tex.add(0, 0, 0, 0, 9, 5);
+      tex.add(1, 0, 8, 0, 9, 5);
+    }
+    const W = this.built.widthPx;
+    const flock = () => {
+      if (!this.scene.isActive()) return;
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      const y = Phaser.Math.Between(b.y0, b.y1) / 3;
+      const n = Phaser.Math.Between(1, 3);
+      for (let i = 0; i < n; i++) {
+        const bird = this.add.sprite(dir > 0 ? -12 - i * 14 : W + 12 + i * 14, y + Phaser.Math.Between(-8, 8), 'fx-gull-sheet', 0).setDepth(160_000).setScale(1.3);
+        bird.setFlipX(dir < 0);
+        let f = 0;
+        const flap = this.time.addEvent({ delay: 170 + i * 20, loop: true, callback: () => bird.setFrame((f = 1 - f)) });
+        this.tweens.add({
+          targets: bird,
+          x: dir > 0 ? W + 20 : -20,
+          y: bird.y + Phaser.Math.Between(-14, 14),
+          duration: Phaser.Math.Between(9000, 13000),
+          ease: 'Sine.easeInOut',
+          onComplete: () => {
+            flap.remove();
+            bird.destroy();
+          },
+        });
+      }
+    };
+    this.time.delayedCall(1200, flock);
+    this.time.addEvent({ delay: 9000, loop: true, callback: () => Math.random() < 0.75 && flock() });
+  }
+
+  /** Fumaça de churrasqueira (cinza, sobe e espalha) com brasinhas laranjas. */
+  private addSmoke(): void {
+    const pts = this.def.smoke;
+    if (!pts?.length) return;
+    if (!this.textures.exists('fx-puff')) {
+      const g = this.make.graphics({}, false);
+      g.fillStyle(0xffffff, 0.5).fillCircle(6, 6, 6).fillStyle(0xffffff, 0.8).fillCircle(5, 5, 3.5);
+      g.generateTexture('fx-puff', 12, 12);
+      g.destroy();
+    }
+    for (const p of pts) {
+      this.add
+        .particles(p.x / 3, p.y / 3, 'fx-puff', {
+          x: { min: -5, max: 5 },
+          speedY: { min: -16, max: -9 },
+          speedX: { min: 2, max: 7 },
+          lifespan: { min: 2200, max: 3200 },
+          frequency: 180,
+          scale: { start: 0.35, end: 1.6 },
+          alpha: { start: 0.45, end: 0 },
+          tint: [0xd8d2cc, 0xbfb8b2, 0xeae4de],
+        })
+        .setDepth(150_000);
+      this.add
+        .particles(p.x / 3, p.y / 3, 'fx-spark', {
+          x: { min: -6, max: 6 },
+          speedY: { min: -26, max: -12 },
+          speedX: { min: -5, max: 5 },
+          lifespan: { min: 500, max: 900 },
+          frequency: 220,
+          scale: { min: 0.4, max: 0.8 },
+          alpha: { start: 1, end: 0 },
+          tint: [0xffa040, 0xffd060, 0xff6a20],
+          blendMode: 'ADD',
+        })
+        .setDepth(150_001);
     }
   }
 

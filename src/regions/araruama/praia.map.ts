@@ -106,6 +106,8 @@ export const praiaMap: MapDef = {
   music: 'parque',
   background: '#2a6a9a',
   art: 'native',
+  glints: [R(0, 810, 1536, 1024)],
+  birds: { y0: 830, y1: 1000 },
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 

@@ -61,6 +61,8 @@ export const cfPeroMap: MapDef = {
   music: 'parque',
   background: '#2a8ac8',
   art: 'native',
+  glints: [R(0, 860, 1536, 1024), R(500, 690, 1536, 860), R(1120, 560, 1536, 690)],
+  birds: { y0: 50, y1: 260 },
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
   blocks: [
@@ -181,6 +183,9 @@ export const cfJaponesMap: MapDef = {
   music: 'parque',
   background: '#2fb3c8',
   art: 'native',
+  glints: [R(580, 380, 1250, 700), R(1260, 260, 1536, 700), R(740, 880, 1536, 1024)],
+  birds: { y0: 40, y1: 220 },
+  smoke: [{ x: 200, y: 505 }],
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
   blocks: [
@@ -270,6 +275,17 @@ export const cfForteMap: MapDef = {
   music: 'parque',
   background: '#0e1838',
   art: 'native',
+  lighting: {
+    darkness: 0.12,
+    color: 0x101848,
+    lights: [
+      { x: 280, y: 173, r: 140 }, { x: 757, y: 153, r: 140 }, { x: 971, y: 167, r: 130 }, { x: 1273, y: 173, r: 120 }, { x: 1380, y: 180, r: 110 },
+      { x: 60, y: 240, r: 90 }, { x: 200, y: 245, r: 90 }, { x: 340, y: 238, r: 90 }, { x: 480, y: 230, r: 90 }, { x: 620, y: 222, r: 90 },
+      { x: 1240, y: 467, r: 110 }, { x: 1383, y: 517, r: 110 }, { x: 1507, y: 509, r: 100 },
+      { x: 1367, y: 40, r: 180, color: 0xbfd8ff },
+    ],
+  },
+  glints: [R(300, 640, 1500, 1024), R(700, 520, 1180, 640)],
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
   blocks: [...edgeBlocks(() => 335, (x) => (x < 1100 ? forteWater(x) : null)), R(1100, 250, 1536, 1024)],

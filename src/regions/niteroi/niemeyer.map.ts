@@ -131,6 +131,8 @@ export const ntNiemeyerMap: MapDef = {
   music: 'parque',
   background: '#2a6ab8',
   art: 'native',
+  glints: [R(150, 885, 1536, 1024), R(720, 835, 1536, 885), R(740, 135, 1536, 200)],
+  birds: { y0: 40, y1: 300 },
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 

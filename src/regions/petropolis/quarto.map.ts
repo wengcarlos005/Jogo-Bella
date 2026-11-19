@@ -237,6 +237,7 @@ export const quartoMap: MapDef = {
     { key: 'hq-planta', x: 1420, y: 858, w: 95, shadow: 0.6 },
   ],
 
+  steam: [{ x: 1188, y: 690 }, { x: 1214, y: 688 }],
   lighting: {
     darkness: 0.28,
     color: 0x2a1840,

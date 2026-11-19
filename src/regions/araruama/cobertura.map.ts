@@ -289,6 +289,17 @@ export const coberturaMap: MapDef = {
   music: 'casa',
   background: '#2a1e2e',
   art: 'native',
+  lighting: {
+    darkness: 0.1,
+    color: 0x2a1840,
+    lights: [
+      { x: 277, y: 52, r: 140 }, { x: 407, y: 52, r: 140 }, { x: 533, y: 52, r: 140 }, { x: 647, y: 52, r: 140 },
+      { x: 500, y: 205, r: 70 }, { x: 592, y: 205, r: 70 }, { x: 684, y: 205, r: 70 }, { x: 776, y: 205, r: 70 }, { x: 868, y: 205, r: 70 }, { x: 960, y: 205, r: 70 },
+      { x: 583, y: 387, r: 110 }, { x: 424, y: 376, r: 100 }, { x: 133, y: 413, r: 110 }, { x: 1393, y: 376, r: 110 },
+      { x: 1407, y: 613, r: 120 }, { x: 1473, y: 600, r: 100 }, { x: 1080, y: 187, r: 120 }, { x: 1267, y: 180, r: 120 },
+      { x: 160, y: 873, r: 80 }, { x: 282, y: 873, r: 80 }, { x: 404, y: 873, r: 80 }, { x: 526, y: 873, r: 80 }, { x: 648, y: 873, r: 80 }, { x: 770, y: 873, r: 80 }, { x: 892, y: 873, r: 80 }, { x: 1014, y: 873, r: 80 }, { x: 1136, y: 873, r: 80 }, { x: 1258, y: 873, r: 80 }, { x: 1380, y: 873, r: 80 },
+    ],
+  },
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
@@ -341,8 +352,8 @@ export const coberturaMap: MapDef = {
 
   npcs: [
     // cozinha: a tia Tim no fogão e a Anne ajudando
-    { id: 'tia-tim', sprite: 'tia-tim', tx: 1110 / 48, ty: 398 / 48, facing: 'up', interact: 'tiaTim', markerIf: () => precisaOi('ar-oi-tim'), behavior: 'wander', wanderRadius: 0.8, wanderAxis: 'x' },
-    { id: 'anne', sprite: 'anne', tx: 1048 / 48, ty: 405 / 48, facing: 'right', interact: 'anne', markerIf: () => precisaOi('ar-oi-anne') },
+    { id: 'tia-tim', sprite: 'tia-tim', tx: 1150 / 48, ty: 398 / 48, facing: 'up', interact: 'tiaTim', markerIf: () => precisaOi('ar-oi-tim'), behavior: 'wander', wanderRadius: 0.5, wanderAxis: 'x' },
+    { id: 'anne', sprite: 'anne', tx: 1020 / 48, ty: 410 / 48, facing: 'right', interact: 'anne', markerIf: () => precisaOi('ar-oi-anne') },
     // entre o sofá e a mesa
     { id: 'lilian', sprite: 'lilian', tx: 800 / 48, ty: 812 / 48, facing: 'down', interact: 'lilian', markerIf: () => precisaOi('ar-oi-lilian') },
     // perto da TV

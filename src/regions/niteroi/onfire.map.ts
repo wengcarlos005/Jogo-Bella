@@ -145,6 +145,19 @@ export const ntOnFireMap: MapDef = {
   music: 'casa',
   background: '#1a0c08',
   art: 'native',
+  lighting: {
+    darkness: 0.14,
+    color: 0x1a0c08,
+    lights: [
+      { x: 197, y: 73, r: 130 }, { x: 283, y: 113, r: 120 }, { x: 480, y: 113, r: 120 }, { x: 776, y: 100, r: 120 }, { x: 840, y: 87, r: 110 },
+      { x: 920, y: 87, r: 110 }, { x: 973, y: 100, r: 120 }, { x: 1144, y: 100, r: 120 }, { x: 1243, y: 113, r: 120 },
+      { x: 80, y: 171, r: 120 }, { x: 64, y: 420, r: 120 }, { x: 47, y: 540, r: 120 }, { x: 1467, y: 420, r: 120 }, { x: 1489, y: 540, r: 120 },
+      { x: 660, y: 840, r: 110 }, { x: 891, y: 840, r: 110 }, { x: 27, y: 840, r: 100 }, { x: 1504, y: 840, r: 100 },
+      { x: 627, y: 80, r: 150, color: 0xff3a2a, neon: true }, { x: 1373, y: 93, r: 140, color: 0xff7a2a, neon: true },
+      { x: 1053, y: 213, r: 190, color: 0xff5a1a }, { x: 640, y: 250, r: 160, color: 0xff5a1a },
+    ],
+  },
+  smoke: [{ x: 1000, y: 205 }, { x: 1100, y: 205 }, { x: 727, y: 122 }],
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 

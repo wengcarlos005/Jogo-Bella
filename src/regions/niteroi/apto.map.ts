@@ -222,6 +222,17 @@ export const ntAptoMap: MapDef = {
   music: 'casa',
   background: '#2a1e2e',
   art: 'native',
+  lighting: {
+    darkness: 0.08,
+    color: 0x4a2050,
+    lights: [
+      { x: 180, y: 60, r: 110 }, { x: 296, y: 60, r: 110 }, { x: 276, y: 240, r: 120 }, { x: 560, y: 240, r: 120 },
+      { x: 163, y: 333, r: 110 }, { x: 993, y: 67, r: 110 }, { x: 27, y: 660, r: 110 }, { x: 1504, y: 660, r: 110 },
+      { x: 1200, y: 330, r: 220, color: 0xffc070 }, { x: 760, y: 690, r: 300, color: 0xff9a50 },
+    ],
+  },
+  glints: [R(510, 935, 1536, 1024)],
+  birds: { y0: 880, y1: 990 },
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 

@@ -376,6 +376,8 @@ export const roPraiaMap: MapDef = {
   music: 'parque',
   background: '#2a7ab8',
   art: 'native',
+  glints: [R(0, 940, 1536, 1024), R(620, 830, 1536, 940), R(1120, 710, 1536, 830)],
+  birds: { y0: 760, y1: 1000 },
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 

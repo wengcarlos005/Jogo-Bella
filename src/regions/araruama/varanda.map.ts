@@ -151,6 +151,17 @@ export const varandaMap: MapDef = {
   music: 'casa',
   background: '#0e1430',
   art: 'native',
+  lighting: {
+    darkness: 0.16,
+    color: 0x101848,
+    lights: [
+      { x: 170, y: 62, r: 80 }, { x: 276, y: 62, r: 80 }, { x: 382, y: 62, r: 80 }, { x: 488, y: 62, r: 80 }, { x: 594, y: 62, r: 80 }, { x: 700, y: 62, r: 80 }, { x: 806, y: 62, r: 80 }, { x: 912, y: 62, r: 80 }, { x: 1018, y: 62, r: 80 }, { x: 1124, y: 62, r: 80 }, { x: 1230, y: 62, r: 80 }, { x: 1336, y: 62, r: 80 },
+      { x: 287, y: 82, r: 130 }, { x: 1360, y: 95, r: 130 }, { x: 44, y: 300, r: 120 }, { x: 1484, y: 300, r: 120 },
+      { x: 140, y: 272, r: 150, color: 0xff7a2a },
+    ],
+  },
+  smoke: [{ x: 140, y: 262 }],
+  glints: [R(0, 870, 1536, 960)],
   ambient: 'fireflies',
   legend: { '.': T.WOOD },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
