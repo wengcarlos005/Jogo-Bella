@@ -64,7 +64,15 @@ export function playMarketGame(parent: HTMLElement): Promise<MiniResult & { paco
     const renderList = () =>
       list.replaceChildren(h('b', {}, 'Lista da Vó'), ...LIST.map((i) => h('div', { class: got.has(i.id) ? 'ok' : '' }, h('img', { src: mg(i.file), alt: '' }), i.name)));
     const hud = () =>
-      ui.hud.replaceChildren(h('span', {}, `Tempo: ${Math.max(0, Math.ceil(time))}s`), h('span', {}, `${got.size}/${LIST.length}`), h('span', { class: 'pg-err' }, mistakes ? `Erros: ${mistakes}` : ''));
+      ui.hud.replaceChildren(
+        h(
+          'div',
+          { class: 'so-sb' },
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Tempo'), h('b', { class: 'so-sb-n' }, String(Math.max(0, Math.ceil(time))))),
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Lista'), h('b', { class: 'so-sb-n' }, `${got.size}/${LIST.length}`)),
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Erros'), h('b', { class: 'so-sb-n' }, String(mistakes))),
+        ),
+      );
     renderList();
     hud();
 

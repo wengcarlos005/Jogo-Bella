@@ -60,8 +60,12 @@ export function playFogosGame(parent: HTMLElement, opts: { year?: string; bg?: s
 
     const hud = () =>
       ui.hud.replaceChildren(
-        h('span', {}, `Fotos: ${photos}/${total}`),
-        h('span', { class: 'nv-lives' }, ...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥'))),
+        h(
+          'div',
+          { class: 'so-sb' },
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Fotos'), h('b', { class: 'so-sb-n' }, `${photos}/${total}`)),
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Vidas'), h('span', { class: 'tp-sb-lives' }, ...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥')))),
+        ),
       );
     const placeCam = () => (cam.style.left = `${camX}%`);
     placeCam();

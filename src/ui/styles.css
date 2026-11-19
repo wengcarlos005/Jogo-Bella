@@ -3763,3 +3763,27 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 .bk-banner.ck { top: 24%; }
 .bk-posbig.ck { padding: 2px 14px 6px; border-radius: 14px; background: rgba(26, 16, 40, .82); border: 3px solid #ff9ac0; box-shadow: 0 4px 0 rgba(0, 0, 0, .3); }
 .bk-posbig.ck.p1 { border-color: #ffd23f; }
+.ag-sb-pips { display: flex; gap: 3px; }
+.ag-sb-pips i { width: clamp(8px, calc(var(--u) * 4), 12px); height: clamp(8px, calc(var(--u) * 4), 12px); border-radius: 50%; border: 2px solid #f2c14e; background: transparent; }
+.ag-sb-pips i.on { background: #ff6a9a; box-shadow: 0 0 6px #ff9ac0; }
+
+/* Travessia: pedras viram "manchas" na água rasa, integradas ao mar */
+.tv2-board { gap: 6px 8px; padding: 10px 14px; border-radius: 28px; background: linear-gradient(180deg, rgba(64, 200, 210, .38), rgba(40, 170, 200, .5)); box-shadow: 0 0 0 3px rgba(255, 255, 255, .35), 0 0 30px rgba(120, 230, 240, .45), inset 0 0 24px rgba(255, 255, 255, .25); backdrop-filter: saturate(1.2); }
+.tv2-cell { border: none; border-radius: 46% 54% 50% 50% / 55% 50% 50% 45%; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .12), 0 0 0 2px rgba(255, 255, 255, .28); overflow: visible; }
+.tv2-cell.areia, .tv2-cell.concha, .tv2-cell.siri { background: radial-gradient(ellipse at 45% 40%, rgba(255, 246, 214, .96), rgba(236, 210, 156, .9) 62%, rgba(236, 210, 156, .35) 100%); }
+.tv2-cell.fundo { background: radial-gradient(ellipse at 50% 55%, rgba(8, 40, 92, .95), rgba(18, 78, 140, .85) 55%, rgba(30, 120, 170, .35) 100%); }
+.tv2-cell.fundo::after { content: ''; position: absolute; inset: 18%; border-radius: 50%; border: 2px solid rgba(160, 220, 255, .35); animation: tvRipple 2.4s ease-out infinite; }
+.tv2-cell.areia::before, .tv2-cell.concha::before, .tv2-cell.siri::before { content: ''; position: absolute; left: 22%; top: 24%; width: 30%; height: 14%; border-radius: 50%; background: rgba(255, 255, 255, .7); filter: blur(1px); }
+@keyframes tvRipple { from { transform: scale(.5); opacity: .9; } to { transform: scale(1.25); opacity: 0; } }
+.tv2-cell.aim { transform: scale(1.12); box-shadow: 0 0 0 3px #ffd23f, 0 0 18px #ffd23f; }
+.tv2-island, .tv2-beach { box-shadow: 0 3px 0 rgba(0, 0, 0, .3); border: 2px solid rgba(255, 255, 255, .7); }
+.ag-backdrop { position: absolute; inset: -10px; background-size: cover; background-position: 75% 35%; filter: blur(3px) brightness(.55) saturate(1.2); }
+.ag-lights { position: absolute; inset: 0; pointer-events: none; }
+.ag-lights i { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #ffd23f; box-shadow: 0 0 10px 3px rgba(255, 210, 63, .7); animation: agBulb 1s ease-in-out infinite alternate; }
+.ag-lights i:nth-child(3n) { background: #ff7ad0; box-shadow: 0 0 10px 3px rgba(255, 122, 208, .7); }
+.ag-lights i:nth-child(3n+1) { background: #7ad8ff; box-shadow: 0 0 10px 3px rgba(122, 216, 255, .7); }
+@keyframes agBulb { from { opacity: .45; } to { opacity: 1; } }
+.ag-booth { filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .55)); }
+.km-sky::after { content: ''; position: absolute; right: 9%; top: 8%; width: clamp(28px, 7%, 60px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 40%, #fffbe8, #f2e6b0 60%, #d8c890); box-shadow: 0 0 30px 10px rgba(255, 246, 200, .35); }
+.km-sky::before { content: ''; position: absolute; inset: 0 0 55% 0; background: radial-gradient(1.5px 1.5px at 18% 30%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 42% 12%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 67% 26%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 90% 40%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 5% 42%, #fff 50%, transparent 51%); animation: agBulb 1.6s ease-in-out infinite alternate; }
+.km-lamps img { filter: drop-shadow(0 0 14px rgba(255, 210, 110, .55)); }

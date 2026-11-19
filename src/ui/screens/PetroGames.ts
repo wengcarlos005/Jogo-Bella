@@ -106,9 +106,13 @@ export function playCloudGame(parent: HTMLElement): Promise<MiniResult> {
 
     const hud = () =>
       ui.hud.replaceChildren(
-        h('span', {}, `Nuvem ${Math.min(round + 1, ROUNDS)}/${ROUNDS}`),
-        badge,
-        h('span', { class: 'nv-lives' }, ...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥'))),
+        h(
+          'div',
+          { class: 'so-sb' },
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Nuvem'), h('b', { class: 'so-sb-n' }, `${Math.min(round + 1, ROUNDS)}/${ROUNDS}`)),
+          h('div', { class: 'so-sb-chip' }, badge),
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Vidas'), h('span', { class: 'tp-sb-lives' }, ...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥')))),
+        ),
       );
     const visible = () => live.filter((c) => c.x > -8 && c.x < 102).sort((p, q) => p.x - q.x);
     const paintSel = () => live.forEach((c, i) => c.el.classList.toggle('sel', i === sel));
@@ -284,7 +288,17 @@ export function playBreakfastGame(parent: HTMLElement): Promise<MiniResult> {
       }),
     );
     ui.stage.append(note, shelf, trayEl);
-    const hud = () => ui.hud.replaceChildren(h('span', {}, phase === 'memo' ? 'Decore!' : `Bandeja: ${tray.length}`), h('span', { class: 'pg-err' }, mistakes ? `Erros: ${mistakes}` : ''));
+    const hud = () =>
+      ui.hud.replaceChildren(
+        h(
+          'div',
+          { class: 'so-sb' },
+          phase === 'memo'
+            ? h('div', { class: 'so-sb-chip' }, h('span', {}, 'Decore a lista!'))
+            : h('div', { class: 'so-sb-chip' }, h('span', {}, 'Bandeja'), h('b', { class: 'so-sb-n' }, `${tray.length}/${loves.length}`)),
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Erros'), h('b', { class: 'so-sb-n' }, String(mistakes))),
+        ),
+      );
     const renderTray = () =>
       (trayEl.querySelector('.cf-tray-items') as HTMLElement).replaceChildren(...tray.map((id) => h('img', { src: mg(`cf-${id}`), alt: '' })));
     const add = (id: string, b: HTMLButtonElement) => {

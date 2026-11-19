@@ -33,7 +33,9 @@ export function playArgolasGame(parent: HTMLElement): Promise<MiniResult & { pri
       h('div', {}, h('span', { class: 'ag-ico' }), h('span', {}, 'A argola corre de um lado pro outro. Aperte ', h('kbd', {}, 'Espaço'), ' ou ', h('kbd', {}, 'E'), ' quando ela estiver em cima da garrafa que brilha.')),
       h('div', {}, h('span', { class: 'ag-ico' }), h('span', {}, `São ${RINGS} argolas. Acerte ${NEED} e o Weng ganha uma pelúcia pra Bella.`)),
     );
-    ui.stage.append(booth, left, rules);
+    const backdrop = h('div', { class: 'ag-backdrop', style: `background-image:url(${new URL('assets/maps/ar-parque-bg.png', document.baseURI).href})` });
+    const lights = h('div', { class: 'ag-lights' }, ...Array.from({ length: 16 }, (_, i) => h('i', { style: `left:${3 + i * 6.2}%;top:${8 + Math.sin(i / 2.4) * 6}%;animation-delay:${(i % 4) * 0.25}s` })));
+    ui.stage.append(backdrop, lights, booth, left, rules);
 
     let thrown = 0;
     let hits = 0;
@@ -44,7 +46,14 @@ export function playArgolasGame(parent: HTMLElement): Promise<MiniResult & { pri
     let x = BOTTLES[0];
 
     const hud = () => {
-      ui.hud.replaceChildren(h('span', {}, `Acertos: ${hits}/${NEED}`), h('span', {}, `Argolas: ${RINGS - thrown}`));
+      ui.hud.replaceChildren(
+        h(
+          'div',
+          { class: 'so-sb ag-sb' },
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Acertos'), h('b', { class: 'so-sb-n' }, `${hits}/${NEED}`), h('i', { class: 'ag-sb-pips' }, ...Array.from({ length: NEED }, (_, i) => h('i', { class: i < hits ? 'on' : '' })))),
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Argolas'), h('b', { class: 'so-sb-n' }, String(RINGS - thrown))),
+        ),
+      );
       left.replaceChildren(...Array.from({ length: RINGS - thrown }, () => h('i', { class: 'ag-ring' })));
     };
     const pickTarget = () => {

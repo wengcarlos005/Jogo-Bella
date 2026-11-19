@@ -106,8 +106,12 @@ export function playCeiaGame(parent: HTMLElement): Promise<MiniResult> {
 
     const hud = () =>
       ui.hud.replaceChildren(
-        h('span', {}, `Pedido ${Math.min(round + 1, ROUNDS.length)}/${ROUNDS.length}`),
-        h('span', { class: 'nv-lives' }, ...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥'))),
+        h(
+          'div',
+          { class: 'so-sb' },
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Pedido'), h('b', { class: 'so-sb-n' }, `${Math.min(round + 1, ROUNDS.length)}/${ROUNDS.length}`)),
+          h('div', { class: 'so-sb-chip' }, h('span', {}, 'Vidas'), h('span', { class: 'tp-sb-lives' }, ...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥')))),
+        ),
       );
     const paint = () => {
       disc.style.transform = `rotate(${rot}deg)`;
