@@ -2,6 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { shell, type MiniResult } from './PetroGames';
+import { textureURL } from '../textures';
 
 /**
  * Minigame — Mesa Giratória (ceia de ano-novo na cobertura dos tios do Weng, Araruama).
@@ -42,6 +43,8 @@ const ROUNDS: { who: string; seat: string; dish: string; line: string; push?: st
   { who: 'anne', seat: 'anne', dish: 'rolinho', line: 'Bella, me passa o rolinho? Por favor!', push: 'O Mingau deu um empurrão no vidro!' },
   { who: 'tia-tim', seat: 'tim', dish: 'pato', line: 'Agora devolve o pato pra mim que eu vou servir o resto!', push: 'A Laylinha girou com tudo!' },
 ];
+/** Retrato de cada lugar (id do personagem). */
+const PORTRAIT: Record<string, string> = { tim: 'tia-tim', layla: 'laylinha' };
 const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
 const norm = (a: number) => ((a % 360) + 540) % 360 - 180; // -180..180
 
@@ -72,7 +75,8 @@ export function playCeiaGame(parent: HTMLElement): Promise<MiniResult> {
       const r = 51;
       const x = 50 + r * Math.sin((s.a * Math.PI) / 180);
       const y = 50 - r * Math.cos((s.a * Math.PI) / 180);
-      return h('div', { class: `ce-seat${s.id === 'bella' ? ' me' : ''}`, style: `left:${x}%;top:${y}%` }, s.name);
+      const face = textureURL(`portrait-${PORTRAIT[s.id] ?? s.id}`);
+      return h('div', { class: `ce-seat${s.id === 'bella' ? ' me' : ''}`, style: `left:${x}%;top:${y}%` }, face ? h('img', { src: face, alt: '' }) : h('i', {}, s.name[0]), h('span', {}, s.name));
     });
     const ask = h('div', { class: 'ce-ask off' }, h('img', { class: 'ce-ask-bg', src: mg('mg-balao'), alt: '' }), h('img', { class: 'ce-ask-dish', alt: '' }));
     const table = h('div', { class: 'ce-table' }, h('img', { class: 'ce-top', src: mg('mg-mesa'), alt: '' }), disc, ...seatEls, ask);
@@ -96,7 +100,8 @@ export function playCeiaGame(parent: HTMLElement): Promise<MiniResult> {
       h('div', {}, h('img', { src: mg('mg-balao'), alt: '' }), h('span', {}, 'Aí aperte ', h('kbd', {}, 'Espaço'), ' ou ', h('kbd', {}, 'E'), ' pra servir. O balão mostra quem pediu e o quê.')),
       h('div', {}, h('img', { src: mg('mg-hashi'), alt: '' }), h('span', {}, 'Prato errado, pessoa errada ou demorar demais: ', h('u', {}, 'perde 1 ♥'), ' (são 3). Cuidado com as crianças girando a mesa!')),
     );
-    ui.stage.append(legend, table, order, rules);
+    const backdrop = h('div', { class: 'ce-backdrop', style: `background-image:url(${new URL('assets/maps/ar-cobertura-bg.png', document.baseURI).href})` });
+    ui.stage.append(backdrop, legend, table, order, rules);
 
     const left = h('button', { class: 'btn pd-steer', 'aria-label': 'Girar pra esquerda' }, '⟲');
     const serveBtn = h('button', { class: 'btn primary ce-serve' }, 'SERVIR');

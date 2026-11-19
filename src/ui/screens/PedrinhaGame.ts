@@ -61,7 +61,14 @@ export function playPedrinhaGame(parent: HTMLElement): Promise<MiniResult & { sk
       h('div', {}, h('span', { class: 'pe-ico' }), h('span', {}, 'Aperte ', h('kbd', {}, 'Espaço'), ' / ', h('kbd', {}, 'E'), ' com o ponteiro no ', h('u', { class: 'g' }, 'verde'), '. O vento muda a cada jogada e empurra o verde.')),
       h('div', {}, h('img', { src: mg('pd-vitoria'), alt: '' }), h('span', {}, 'Quique numa vitória-régia: +1. Chegar na boia lá no fundo: +3. A 3ª pedra é a pedra-coração: vale o dobro!')),
     );
-    ui.stage.append(water, pads, boia, ducks, layer, thrower, h('div', { class: 'pe-bar' }, h('div', { class: 'pe-bar-top' }, angleEl, windEl, special), meter), score, rules);
+    const chr = (f: string) => new URL(`assets/characters/${f}.png`, document.baseURI).href;
+    const couple = h(
+      'div',
+      { class: 'pe-couple' },
+      h('i', { class: 'pe-chr bella', style: `background-image:url(${chr('bella-casual')})` }),
+      h('i', { class: 'pe-chr weng', style: `background-image:url(${chr('weng-casual')})` }),
+    );
+    ui.stage.append(water, pads, boia, ducks, layer, couple, thrower, h('div', { class: 'pe-bar' }, h('div', { class: 'pe-bar-top' }, angleEl, windEl, special), meter), score, rules);
 
     let round = 0;
     let bella = 0;
@@ -235,7 +242,11 @@ export function playPedrinhaGame(parent: HTMLElement): Promise<MiniResult & { sk
       const c = goodCenter();
       ui.say('bella', p < c - 0.23 ? 'Ih... fraquinha demais.' : p > c + 0.23 ? 'Forte demais! Ela voou!' : q >= 7 ? 'PERFEITA! Conta, conta!' : 'Vai, vai, vai...');
       thrower.classList.add('throw');
-      setTimeout(() => thrower.classList.remove('throw'), 300);
+      couple.classList.add('throw');
+      setTimeout(() => {
+        thrower.classList.remove('throw');
+        couple.classList.remove('throw');
+      }, 400);
       const r = await throwStone(hops, reach, 'bella', heart);
       let pts = hops + r.bonus;
       if (heart) pts *= 2;
