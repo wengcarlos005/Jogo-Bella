@@ -319,17 +319,26 @@ export const parqueMap: MapDef = {
 
   overlays: [
     // a cobertura do carrossel passa na frente de quem anda atrás dele
-    // (elipse: só o carrossel, sem o chão e a base da roda-gigante dos cantos)
-    { x0: 245, y0: 255, x1: 695, y1: 700, base: 700, ellipse: true },
+    // (contorno exato do carrossel: telhado, colunas e plataforma, sem o chão em volta)
+    {
+      x0: 240, y0: 248, x1: 700, y1: 706, base: 700,
+      poly: [
+        [467, 250], [482, 250], [496, 294], [500, 309], [550, 316], [625, 333], [667, 344], [693, 368], [697, 392], [683, 446], [652, 478],
+        [649, 520], [680, 540], [688, 565], [687, 632], [676, 661], [600, 694], [475, 704], [350, 699], [250, 662], [241, 630], [244, 565],
+        [255, 530], [286, 500], [281, 470], [249, 432], [245, 395], [258, 363], [300, 343], [350, 326], [397, 315], [437, 294],
+      ],
+    },
     // o arco do portal: quem passa por baixo fica atrás da parte de cima
-    // (só o arco e os pilares, em fatias que seguem a curva: o vão do meio fica livre, senão o chão tapa quem passa)
-    { x0: 540, y0: 712, x1: 652, y1: 968, base: 990 },
-    { x0: 884, y0: 712, x1: 1000, y1: 968, base: 990 },
-    { x0: 652, y0: 700, x1: 702, y1: 820, base: 990 },
-    { x0: 702, y0: 694, x1: 742, y1: 792, base: 990 },
-    { x0: 742, y0: 690, x1: 794, y1: 768, base: 990 },
-    { x0: 794, y0: 694, x1: 834, y1: 792, base: 990 },
-    { x0: 834, y0: 700, x1: 884, y1: 820, base: 990 },
+    // (contorno exato do arco e dos pilares; o vão do meio fica livre, senão o chão tapa quem passa)
+    {
+      x0: 536, y0: 690, x1: 998, y1: 968, base: 990,
+      poly: [
+        [540, 964], [540, 816], [556, 789], [580, 789], [578, 757], [590, 738], [605, 723], [626, 728], [631, 752], [655, 718],
+        [705, 700], [765, 695], [830, 705], [880, 728], [904, 748], [914, 725], [941, 725], [957, 756], [957, 786], [981, 790],
+        [994, 814], [994, 962], [896, 967], [884, 914], [884, 826], [890, 810], [855, 779], [765, 765], [680, 775], [650, 804],
+        [651, 826], [651, 914], [651, 962],
+      ],
+    },
   ],
 
   npcs: [

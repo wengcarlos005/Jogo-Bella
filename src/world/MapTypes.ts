@@ -120,6 +120,8 @@ export interface MapDef {
     y1: number;
     base: number;
     ellipse?: boolean;
+    /** Contorno exato do objeto (pontos em px da arte original): só o que está dentro vai pra frente. */
+    poly?: [number, number][];
     fade?: boolean;
     /** 'foliage': mantém só folhas, flores e contornos (tira chão, asfalto, pedra). */
     cut?: 'foliage' | 'furniture' | 'lamp' | 'dark' | 'booth' | 'column' | 'outline';

@@ -126,7 +126,16 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
       if (!scene.textures.exists(key)) {
         const tex = scene.textures.createCanvas(key, cw, ch)!;
         const ctx = tex.getContext();
-        ctx.drawImage(src, cx, cy, cw, ch, 0, 0, cw, ch);
+        if (o.poly) {
+          // recorte exato no contorno do objeto (pontos em px da arte original): o chão em volta não vem junto
+          ctx.save();
+          ctx.beginPath();
+          o.poly.forEach(([px, py], i) => (i ? ctx.lineTo(toTex(px) - cx, toTex(py) - cy) : ctx.moveTo(toTex(px) - cx, toTex(py) - cy)));
+          ctx.closePath();
+          ctx.clip();
+          ctx.drawImage(src, cx, cy, cw, ch, 0, 0, cw, ch);
+          ctx.restore();
+        } else ctx.drawImage(src, cx, cy, cw, ch, 0, 0, cw, ch);
         const data = ctx.getImageData(0, 0, cw, ch);
         const d = data.data;
         // 'column' (postes): em cada linha, mantém só o trecho entre o contorno escuro da esquerda e o da direita
