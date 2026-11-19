@@ -344,7 +344,7 @@ export const coberturaMap: MapDef = {
     { id: 'tia-tim', sprite: 'tia-tim', tx: 1110 / 48, ty: 398 / 48, facing: 'up', interact: 'tiaTim', markerIf: () => precisaOi('ar-oi-tim'), behavior: 'wander', wanderRadius: 0.8, wanderAxis: 'x' },
     { id: 'anne', sprite: 'anne', tx: 1048 / 48, ty: 405 / 48, facing: 'right', interact: 'anne', markerIf: () => precisaOi('ar-oi-anne') },
     // entre o sofá e a mesa
-    { id: 'lilian', sprite: 'lilian', tx: 808 / 48, ty: 650 / 48, facing: 'down', interact: 'lilian', markerIf: () => precisaOi('ar-oi-lilian') },
+    { id: 'lilian', sprite: 'lilian', tx: 800 / 48, ty: 812 / 48, facing: 'down', interact: 'lilian', markerIf: () => precisaOi('ar-oi-lilian') },
     // perto da TV
     { id: 'vivian', sprite: 'vivian', tx: 1282 / 48, ty: 727 / 48, facing: 'left', interact: 'vivian', markerIf: () => precisaOi('ar-oi-vivian') },
     // na frente, perto da porta da varanda

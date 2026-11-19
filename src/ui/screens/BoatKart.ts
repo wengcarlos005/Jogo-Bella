@@ -1,47 +1,22 @@
 import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
+import { textureURL } from '../textures';
 import { shell, type MiniResult } from './PetroGames';
 
 /**
- * Cisne Kart — corrida de pedalinho no lago do Quitandinha, 4 barcos, 3 voltas.
+ * Cisne Kart (pseudo-3D, câmera atrás do pedalinho, como num kart de verdade).
+ * Pista de água no lago do Quitandinha, com o palácio no horizonte, 3 voltas contra
+ * o cisne rosa, o cisne azul e o patinho amarelo.
  *  - ← → : pilotar (o casal pedala sozinho) · Espaço / E : usar o item
- *  - Na largada, aperte Espaço / E bem no "VAI!" pra sair com turbo.
- * Caixas "?" sorteiam um item (roleta): Pimenta (turbo), Pão pros patos (os patinhos cercam quem
- * está na frente), Onda (projétil pra frente) e Coração (escudo contra a próxima batida).
- * Quem está mais atrás ganha itens melhores. Os rivais também usam itens.
- * Faixas amarelas na água dão turbo; vitória-régia e patinhos fazem rodar.
+ *  - Na largada, aperte bem no "VAI!" pra sair com turbo.
+ * Caixas "?" sorteiam: Pimenta (turbo), Pão (os patinhos cercam quem tá logo na frente),
+ * Onda (projétil pra frente) e Coração (escudo). Faixas amarelas na água dão turbo;
+ * vitória-régia e patinhos fazem rodar; as boias da margem seguram (e freiam) o barco.
  */
-type Kind = 'vitoria' | 'patos' | 'item' | 'pad';
-type Thing = { kind: Kind; d: number; x: number; el: HTMLElement | null; gone: number };
 type Item = 'pimenta' | 'pao' | 'onda' | 'coracao';
-type Racer = {
-  id: string;
-  name: string;
-  me: boolean;
-  el: HTMLElement;
-  img: HTMLImageElement;
-  d: number;
-  x: number;
-  vx: number;
-  spd: number;
-  base: number;
-  boost: number;
-  spin: number;
-  shield: number;
-  itemIn: number;
-  lane: number;
-  color: string;
-  done: number; // tempo de chegada (0 = correndo)
-};
 const ITEM_NAME: Record<Item, string> = { pimenta: 'Pimenta turbo', pao: 'Pão pros patos', onda: 'Onda', coracao: 'Coração escudo' };
 const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
-
-const LAP = 340;
-const LAPS = 3;
-const TOTAL = LAP * LAPS;
-const VIEW = 90;
-const PY = 72;
 
 /** Ícones dos itens (desenhados, pixel). */
 function itemSVG(it: Item | 'box'): string {
@@ -60,74 +35,122 @@ function itemSVG(it: Item | 'box'): string {
   }
 }
 
+// ---------------------------------------------------------------- mundo
+const W = 960;
+const H = 540;
+const SEG = 200;
+const ROAD = 2000; // meia-largura da pista
+const CAM_H = 1000;
+const DEPTH = 1 / Math.tan(((100 / 2) * Math.PI) / 180);
+const DRAW = 170;
+const PLAYER_Z = CAM_H * DEPTH;
+const MAX = 7200;
+const LAPS = 3;
+
+type Spr = { img: string; x: number; w: number; kind?: 'vitoria' | 'patos' | 'box' | 'boia'; gone?: number; filter?: string };
+type Seg = { i: number; curve: number; sprites: Spr[]; pad: number | null; start: boolean };
+type Racer = { id: string; name: string; me: boolean; z: number; x: number; spd: number; base: number; boost: number; spin: number; shield: number; itemIn: number; color: string; filter: string; done: number; lane: number };
+
+function buildTrack(): Seg[] {
+  const segs: Seg[] = [];
+  const add = (curve: number) => segs.push({ i: segs.length, curve, sprites: [], pad: null, start: false });
+  const ease = (a: number, b: number, p: number) => a + (b - a) * ((-Math.cos(p * Math.PI) / 2) + 0.5);
+  const road = (enter: number, hold: number, leave: number, curve: number) => {
+    for (let n = 0; n < enter; n++) add(ease(0, curve, n / enter));
+    for (let n = 0; n < hold; n++) add(curve);
+    for (let n = 0; n < leave; n++) add(ease(curve, 0, n / leave));
+  };
+  road(0, 30, 0, 0);
+  road(15, 30, 15, 2.5);
+  road(0, 20, 0, 0);
+  road(12, 25, 12, -4);
+  road(10, 12, 10, 3);
+  road(10, 12, 10, -3);
+  road(0, 35, 0, 0);
+  road(15, 40, 15, 5);
+  road(0, 20, 0, 0);
+  road(15, 45, 15, -3);
+  road(10, 15, 10, 2);
+  road(0, 30, 0, 0);
+  return segs;
+}
+
 export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
   return new Promise((resolve) => {
     const ui = shell(parent, 'bk', 'Cisne Kart');
-    const water = h('div', { class: 'bk-water' });
-    const bankL = h('div', { class: 'bk-bank l' });
-    const bankR = h('div', { class: 'bk-bank r' });
-    const world = h('div', { class: 'bk-world' });
-    const fx = h('div', { class: 'bk-fx' });
+    const cv = h('canvas', { class: 'ck-canvas', width: W, height: H }) as HTMLCanvasElement;
+    const ctx = cv.getContext('2d')!;
     const banner = h('div', { class: 'bk-banner' });
-    const speedLines = h('div', { class: 'bk-speed' });
-    const arrows = h('div', { class: 'bk-arrows' });
-    // slot do item, em cima à esquerda, com a roleta
     const slotIcon = h('div', { class: 'bk-slot-ico' });
     const slotName = h('span', {}, 'Sem item');
-    const slot = h('div', { class: 'bk-slot' }, h('b', {}, 'Item'), slotIcon, slotName);
-    // posição grande em cima à direita
-    const posBig = h('div', { class: 'bk-posbig' }, h('b', {}, '1º'), h('span', {}, '/4'));
+    const slot = h('div', { class: 'bk-slot ck' }, h('b', {}, 'Item'), slotIcon, slotName);
+    const posBig = h('div', { class: 'bk-posbig ck' }, h('b', {}, '4º'), h('span', {}, '/4'));
+    const lapBox = h('div', { class: 'ck-lap' }, h('span', {}, 'VOLTA'), h('b', {}, `1/${LAPS}`));
+    const mini = h('canvas', { class: 'ck-mini', width: 150, height: 110 }) as HTMLCanvasElement;
+    const mctx = mini.getContext('2d')!;
+    const speedo = h('div', { class: 'ck-speed' }, h('i', {}), h('b', {}, '0'), h('span', {}, 'km/h'));
     const rules = h(
       'div',
       { class: 'cs-rules pd-rules' },
       h('b', {}, 'Como jogar'),
-      h('div', {}, h('img', { src: mg('pd-barco2'), alt: '' }), h('span', {}, 'O casal pedala sozinho: você pilota com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), `. ${LAPS} voltas contra o cisne rosa, o cisne azul e o patinho amarelo!`)),
-      h('div', {}, h('span', { class: 'bk-rule-ico', html: itemSVG('box') }), h('span', {}, 'Passe nas caixas ', h('b', {}, '?'), ' pra sortear um item e use com ', h('kbd', {}, 'Espaço'), ' / ', h('kbd', {}, 'E'), '. Quem tá atrás ganha item melhor!')),
-      h('div', {}, h('span', { class: 'bk-rule-ico', html: itemSVG('pimenta') }), h('span', {}, 'Pimenta = turbo · Pão = patinhos cercam quem tá na frente · Onda = acerta quem tá na frente · Coração = escudo. Faixas amarelas na água dão turbo!')),
+      h('div', {}, h('img', { src: mg('pd-barco2'), alt: '' }), h('span', {}, 'O casal pedala sozinho: pilote com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), `. ${LAPS} voltas no lago do Quitandinha contra o cisne rosa, o cisne azul e o patinho!`)),
+      h('div', {}, h('span', { class: 'bk-rule-ico', html: itemSVG('box') }), h('span', {}, 'Passe nas caixas ', h('b', {}, '?'), ' e use o item com ', h('kbd', {}, 'Espaço'), ' / ', h('kbd', {}, 'E'), '. Quem tá atrás ganha item melhor!')),
+      h('div', {}, h('span', { class: 'bk-rule-ico', html: itemSVG('pimenta') }), h('span', {}, 'Pimenta = turbo · Pão = patinhos cercam quem tá na frente · Onda = acerta quem tá na frente · Coração = escudo. Faixas amarelas dão turbo; vitória-régia e patos fazem rodar.')),
     );
-    ui.stage.append(water, bankL, bankR, world, fx, speedLines, arrows, slot, posBig, banner, rules);
+    ui.stage.append(cv, lapBox, slot, posBig, mini, speedo, banner, rules);
+
+    // ---------------------------------------------------------------- imagens
+    const imgs: Record<string, HTMLImageElement> = {};
+    const img = (key: string, src: string | null) => {
+      if (!src) return;
+      const im = new Image();
+      im.src = src;
+      imgs[key] = im;
+    };
+    img('palacio', mg('ck-palacio'));
+    for (const k of ['pd-barco', 'pd-barco2', 'pd-rosa', 'pd-vitoria', 'pd-patos', 'pd-boia']) img(k, mg(k));
+    for (const k of ['qd-araucaria', 'qd-poste', 'qd-arvore', 'qd-vaso', 'pq-araucaria', 'pq-arbusto', 'qd-banco']) img(k, textureURL(k));
+    const svgImg = (key: string, svg: string) => img(key, `data:image/svg+xml;utf8,${encodeURIComponent(svg.replace('<svg ', '<svg width="128" height="128" '))}`);
+    svgImg('box', itemSVG('box'));
+    svgImg('onda', itemSVG('onda'));
+    svgImg('coracao', itemSVG('coracao'));
 
     // ---------------------------------------------------------------- pista
-    const things: Thing[] = [];
-    const add = (kind: Kind, d: number, x: number) => things.push({ kind, d, x, el: null, gone: 0 });
-    for (let lap = 0; lap < LAPS; lap++) {
-      const o = lap * LAP;
-      for (let d = 34; d < LAP - 14; d += 20 + Math.random() * 10) {
-        const r = Math.random();
-        if (r < 0.3) add('vitoria', o + d, 18 + Math.random() * 64);
-        else if (r < 0.46) add('patos', o + d, 18 + Math.random() * 64);
-        else if (r < 0.64) add('pad', o + d, 18 + Math.random() * 64);
-      }
-      for (const dd of [62, 168, 262]) for (const x of [26, 50, 74]) add('item', o + dd, x);
+    const segs = buildTrack();
+    const N = segs.length;
+    const TRACK = N * SEG;
+    const TOTAL = TRACK * LAPS;
+    for (const s of segs) {
+      if (s.i < 3) s.start = true;
+      // margem: boias, araucárias, postes, árvores, vasos
+      if (s.i % 4 === 0) s.sprites.push({ img: 'pd-boia', x: -1.12, w: 260, kind: 'boia' }, { img: 'pd-boia', x: 1.12, w: 260, kind: 'boia' });
+      if (s.i % 6 === 2) s.sprites.push({ img: Math.random() < 0.6 ? 'qd-araucaria' : 'pq-araucaria', x: -(2 + Math.random() * 1.6), w: 1300 + Math.random() * 400 });
+      if (s.i % 6 === 5) s.sprites.push({ img: Math.random() < 0.6 ? 'qd-araucaria' : 'qd-arvore', x: 2 + Math.random() * 1.6, w: 1300 + Math.random() * 400 });
+      if (s.i % 12 === 0) s.sprites.push({ img: 'qd-poste', x: -1.45, w: 330 }, { img: 'qd-poste', x: 1.45, w: 330 });
+      if (s.i % 18 === 9) s.sprites.push({ img: 'qd-vaso', x: 1.6, w: 420 });
+      if (s.i % 22 === 15) s.sprites.push({ img: 'pq-arbusto', x: -1.7, w: 600 });
+      if (s.i % 40 === 30) s.sprites.push({ img: 'qd-banco', x: 1.75, w: 650 });
     }
-    // linhas de chegada / volta
-    const lines: { d: number; el: HTMLElement; label: string }[] = [];
-    for (let lap = 1; lap <= LAPS; lap++) lines.push({ d: lap * LAP, el: h('div', { class: 'bk-line' + (lap === LAPS ? ' finish' : '') }, h('span', {}, lap === LAPS ? 'CHEGADA' : `VOLTA ${lap + 1}`)), label: '' });
-    lines.forEach((l) => world.append(l.el));
-    // boias nas margens
-    const buoys: { d: number; side: number; el: HTMLElement }[] = [];
-    for (let d = 0; d < TOTAL + VIEW; d += 26) for (const side of [0, 1]) buoys.push({ d, side, el: h('i', { class: 'bk-buoy' }) });
-    buoys.forEach((b) => world.append(b.el));
+    // obstáculos e itens na água
+    for (let i = 40; i < N - 6; i++) {
+      const r = Math.random();
+      if (i % 9 === 0 && r < 0.6) segs[i].sprites.push({ img: Math.random() < 0.65 ? 'pd-vitoria' : 'pd-patos', x: -0.7 + Math.random() * 1.4, w: 520, kind: Math.random() < 0.65 ? 'vitoria' : 'patos' });
+    }
+    for (const s of segs) for (const sp of s.sprites) if (sp.kind === 'vitoria' || sp.kind === 'patos') sp.img = sp.kind === 'vitoria' ? 'pd-vitoria' : 'pd-patos';
+    for (const at of [Math.floor(N * 0.1), Math.floor(N * 0.3), Math.floor(N * 0.5), Math.floor(N * 0.7), Math.floor(N * 0.88)]) for (const x of [-0.6, -0.2, 0.2, 0.6]) segs[at].sprites.push({ img: 'box', x, w: 300, kind: 'box' });
+    for (const at of [Math.floor(N * 0.3), Math.floor(N * 0.42), Math.floor(N * 0.66), Math.floor(N * 0.92)]) for (let k = 0; k < 6; k++) segs[at + k].pad = at % 2 ? -0.45 : 0.45;
+    const segAt = (z: number) => segs[Math.floor((((z % TRACK) + TRACK) % TRACK) / SEG) % N];
 
-    // ---------------------------------------------------------------- barcos
-    const mkRacer = (id: string, name: string, me: boolean, src: string, color: string, x: number, base: number, lane: number): Racer => {
-      const img = h('img', { src, alt: '' }) as HTMLImageElement;
-      const el = h('div', { class: `bk-boat ${id}${me ? ' me' : ''}` }, h('i', { class: 'bk-wake' }), h('i', { class: 'bk-shield' }), img, h('b', { class: 'bk-tag' }, me ? 'VOCÊS' : name));
-      world.append(el);
-      return { id, name, me, el, img, d: 0, x, vx: 0, spd: 0, base, boost: 0, spin: 0, shield: 0, itemIn: 5 + Math.random() * 4, lane, color, done: 0 };
-    };
-    const me = mkRacer('me', 'Vocês', true, mg('pd-barco'), '#ffd23f', 40, 38, 0);
-    const rosa = mkRacer('rosa', 'Cisne rosa', false, mg('pd-rosa'), '#ff6a9a', 60, 38.6, 0.2);
-    const azul = mkRacer('azul', 'Cisne azul', false, mg('pd-rosa'), '#5a9aff', 22, 37.4, 1.7);
-    const pato = mkRacer('pato', 'Patinho', false, mg('pd-rosa'), '#ffd84a', 78, 36.8, 3.1);
-    // largada em fila: dois na frente, dois atrás
-    rosa.d = 4;
-    azul.d = 0;
-    pato.d = 4;
-    me.d = 0;
+    // ---------------------------------------------------------------- corredores
+    const mk = (id: string, name: string, me: boolean, color: string, filter: string, x: number, z: number, base: number, lane: number): Racer => ({ id, name, me, z, x, spd: 0, base, boost: 0, spin: 0, shield: 0, itemIn: 5 + Math.random() * 4, color, filter, done: 0, lane });
+    const me = mk('me', 'Vocês', true, '#ffd23f', 'none', 0.35, 0, MAX, 0);
+    const rosa = mk('rosa', 'Cisne rosa', false, '#ff6a9a', 'none', -0.35, SEG * 2.5, MAX * 1.01, 0.3);
+    const azul = mk('azul', 'Cisne azul', false, '#5a9aff', 'hue-rotate(-115deg) saturate(1.3)', 0.35, SEG * 5, MAX * 0.985, 1.9);
+    const pato = mk('pato', 'Patinho', false, '#ffd84a', 'hue-rotate(70deg) saturate(1.6) brightness(1.15)', -0.35, SEG * 7.5, MAX * 0.97, 3.4);
     const racers = [me, rosa, azul, pato];
+    const waves: { z: number; x: number; v: number; owner: Racer }[] = [];
+    const keys = { l: false, r: false };
 
-    // ---------------------------------------------------------------- estado
     let item: Item | null = null;
     let rolling = 0;
     let phase: 'rules' | 'count' | 'race' | 'done' = 'rules';
@@ -140,50 +163,43 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
     let bannerT = 0;
     let lastPos = 4;
     let elapsed = 0;
-    const waves: { el: HTMLElement; d: number; x: number; v: number; owner: Racer }[] = [];
-    const keys = { l: false, r: false };
+    let skyOff = 0;
+    let steerTilt = 0;
 
     const showBanner = (text: string, cls = '', dur = 1.3) => {
       banner.textContent = text;
-      banner.className = `bk-banner on ${cls}`;
+      banner.className = `bk-banner ck on ${cls}`;
       bannerT = dur;
     };
-    const lapOf = (d: number) => Math.min(LAPS, Math.floor(d / LAP) + 1);
-    const order = () => [...racers].sort((a, b) => (a.done && b.done ? a.done - b.done : a.done ? -1 : b.done ? 1 : b.d - a.d));
+    const lapOf = (z: number) => Math.min(LAPS, Math.floor(z / TRACK) + 1);
+    const order = () => [...racers].sort((a, b) => (a.done && b.done ? a.done - b.done : a.done ? -1 : b.done ? 1 : b.z - a.z));
     const posOf = (r: Racer) => order().indexOf(r) + 1;
-    const screenY = (d: number) => PY - ((d - me.d) / VIEW) * 100;
-    const puff = (x: number, y: number, cls: string, text = '') => {
-      const el = h('i', { class: `bk-puff ${cls}`, style: `left:${x}%;top:${y}%` }, text);
-      fx.append(el);
-      setTimeout(() => el.remove(), 900);
-    };
+    const say = (who: string, t: string) => ui.say(who, t);
 
-    // placar: posição, volta, mapa da corrida com os 4 barcos
-    const sbPos = h('b', { class: 'bk-sb-pos' }, '1º');
+    // placar
+    const sbPos = h('b', { class: 'bk-sb-pos' }, '4º');
     const sbLap = h('b', { class: 'bk-sb-n' }, `1/${LAPS}`);
     const sbDots = racers.map((r) => h('i', { class: `bk-dot ${r.id}`, style: `--c:${r.color}` }));
     const sbTrack = h('div', { class: 'bk-sb-track' }, h('i', { class: 'bk-sb-flag' }), ...sbDots);
-    ui.hud.replaceChildren(
-      h(
-        'div',
-        { class: 'so-sb bk-sb' },
-        h('div', { class: 'so-sb-chip' }, h('span', {}, 'Posição'), sbPos),
-        h('div', { class: 'so-sb-chip' }, h('span', {}, 'Volta'), sbLap),
-        h('div', { class: 'so-sb-chip wide' }, sbTrack),
-      ),
-    );
+    ui.hud.replaceChildren(h('div', { class: 'so-sb bk-sb' }, h('div', { class: 'so-sb-chip' }, h('span', {}, 'Posição'), sbPos), h('div', { class: 'so-sb-chip' }, h('span', {}, 'Volta'), sbLap), h('div', { class: 'so-sb-chip wide' }, sbTrack)));
     const hud = () => {
       const p = posOf(me);
       const ps = `${p}º`;
       if (sbPos.textContent !== ps) {
         sbPos.textContent = ps;
-        sbPos.className = `bk-sb-pos p${p} bump`;
+        sbPos.className = `bk-sb-pos p${p}`;
         (posBig.firstChild as HTMLElement).textContent = ps;
-        posBig.className = `bk-posbig p${p} bump`;
+        posBig.className = `bk-posbig ck p${p} bump`;
         setTimeout(() => posBig.classList.remove('bump'), 500);
       }
-      sbLap.textContent = `${lapOf(me.d)}/${LAPS}`;
-      racers.forEach((r, i) => (sbDots[i].style.left = `${Math.min(1, r.d / TOTAL) * 100}%`));
+      const lap = `${lapOf(me.z)}/${LAPS}`;
+      sbLap.textContent = lap;
+      (lapBox.lastChild as HTMLElement).textContent = lap;
+      racers.forEach((r, i) => (sbDots[i].style.left = `${Math.min(1, r.z / TOTAL) * 100}%`));
+      const kmh = Math.round((me.spd / MAX) * 42);
+      (speedo.children[1] as HTMLElement).textContent = String(kmh);
+      (speedo.children[0] as HTMLElement).style.width = `${Math.min(100, (me.spd / (MAX * 1.5)) * 100)}%`;
+      speedo.classList.toggle('boost', me.boost > 0);
     };
     const setItem = (it: Item | null) => {
       item = it;
@@ -191,7 +207,6 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       slotName.textContent = it ? ITEM_NAME[it] : 'Sem item';
       slot.classList.toggle('has', !!it);
     };
-    // roleta: gira os ícones e para no item sorteado
     const roll = (got: Item) => {
       rolling = 1;
       slot.classList.add('rolling');
@@ -216,52 +231,49 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       const pool: Item[] = p === 1 ? ['coracao', 'onda', 'pao', 'coracao'] : p === 2 ? ['onda', 'pao', 'pimenta', 'coracao'] : ['pimenta', 'pimenta', 'pao', 'onda'];
       return pool[Math.floor(Math.random() * pool.length)];
     };
+    let flashT = 0;
     const hitRacer = (r: Racer, how: string, dur = 1.2) => {
       if (r.shield > 0) {
         r.shield = 0;
-        r.el.classList.remove('shielded');
-        puff(r.x, screenY(r.d), 'pop', 'Escudo!');
-        AudioSystem.play('confirm');
+        if (r.me) {
+          AudioSystem.play('confirm');
+          showBanner('Escudo!', 'go', 0.6);
+        }
         return false;
       }
       r.spin = dur;
-      puff(r.x, screenY(r.d), 'splash');
       if (r.me) {
         hits++;
+        flashT = 0.25;
         ui.shake();
         AudioSystem.play('cancel');
-        ui.say('bella', how);
+        say('bella', how);
       }
       return true;
     };
     const fire = (r: Racer, it: Item) => {
       if (it === 'pimenta') {
-        r.boost = 2.2;
+        r.boost = 2.4;
         if (r.me) {
           AudioSystem.play('confirm');
-          ui.say('weng', 'PIMENTA! PEDALA, BELLA!');
+          say('weng', 'PIMENTA! PEDALA, BELLA!');
           showBanner('TURBO!', 'go', 0.8);
         }
       } else if (it === 'coracao') {
-        r.shield = 8;
-        r.el.classList.add('shielded');
-        if (r.me) ui.say('bella', 'Escudo de coração! Agora ninguém encosta na gente.');
+        r.shield = 9;
+        if (r.me) say('bella', 'Escudo de coração! Ninguém encosta na gente.');
       } else if (it === 'pao') {
-        // os patinhos cercam o barco logo à frente
-        const ahead = racers.filter((o) => o !== r && !o.done && o.d > r.d && o.d - r.d < 160).sort((a, b) => a.d - b.d)[0];
+        const ahead = racers.filter((o) => o !== r && !o.done && o.z > r.z && o.z - r.z < TRACK * 0.4).sort((a, b) => a.z - b.z)[0];
         if (ahead && hitRacer(ahead, 'Os patinhos cercaram a gente!', 1.8)) {
-          for (let i = 0; i < 3; i++) puff(ahead.x + (i - 1) * 5, screenY(ahead.d) + 4, 'duck');
-          if (r.me) ui.say('bella', `Os patinhos cercaram o ${ahead.name.toLowerCase()}! Toma pão, patinhos!`);
-          else if (ahead.me) ui.say('weng', `O ${r.name.toLowerCase()} jogou pão! Os patos tão em cima da gente!`);
-        } else if (r.me) ui.say('weng', 'Não tinha ninguém na frente... os patinhos agradecem o lanche.');
+          if (r.me) say('bella', `Os patinhos cercaram o ${ahead.name.toLowerCase()}! Toma pão!`);
+          else if (ahead.me) say('weng', `O ${r.name.toLowerCase()} jogou pão! Os patos tão em cima da gente!`);
+        } else if (r.me) say('weng', 'Não tinha ninguém na frente... os patinhos agradecem o lanche.');
         if (r.me) AudioSystem.play('pickup');
       } else {
-        const el = h('div', { class: 'bk-wave' + (r.me ? '' : ' rv'), html: itemSVG('onda') });
-        world.append(el);
-        waves.push({ el, d: r.d + 6, x: r.x, v: 95, owner: r });
+        waves.push({ z: r.z + SEG, x: r.x, v: MAX * 1.6, owner: r });
         if (r.me) {
           AudioSystem.play('blip');
-          ui.say('bella', 'Lá vai a onda!');
+          say('bella', 'Lá vai a onda!');
         }
       }
     };
@@ -272,6 +284,263 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       fire(me, it);
     };
 
+    // ---------------------------------------------------------------- render
+    const project = (worldX: number, relZ: number, camX: number) => {
+      const scale = DEPTH / relZ;
+      return { x: W / 2 + (scale * (worldX - camX) * W) / 2, y: H / 2 + (scale * CAM_H * H) / 2, w: (scale * ROAD * W) / 2, scale };
+    };
+    const quad = (x1: number, y1: number, w1: number, x2: number, y2: number, w2: number, color: string) => {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(x1 - w1, y1);
+      ctx.lineTo(x2 - w2, y2);
+      ctx.lineTo(x2 + w2, y2);
+      ctx.lineTo(x1 + w1, y1);
+      ctx.closePath();
+      ctx.fill();
+    };
+    const drawBackground = () => {
+      const g = ctx.createLinearGradient(0, 0, 0, H / 2);
+      g.addColorStop(0, '#5aa8e8');
+      g.addColorStop(1, '#cfe9f7');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H / 2 + 2);
+      const pal = imgs.palacio;
+      if (pal?.complete && pal.naturalWidth) {
+        const pw = W * 1.7;
+        const ph = (pw * pal.naturalHeight) / pal.naturalWidth;
+        // a paisagem gira com as curvas; as cópias dos lados são espelhadas pra não ter emenda
+        const span = pw * 2;
+        const off = ((((W / 2 - pw / 2 - skyOff * 0.6) % span) + span) % span) - span;
+        const py = H / 2 - ph + 4;
+        for (let px = off; px < W; px += span) {
+          ctx.drawImage(pal, px, py, pw, ph);
+          ctx.save();
+          ctx.translate(px + pw * 2, py);
+          ctx.scale(-1, 1);
+          ctx.drawImage(pal, 0, 0, pw, ph);
+          ctx.restore();
+        }
+      }
+      // margem de grama no horizonte
+      ctx.fillStyle = '#4e8a2c';
+      ctx.fillRect(0, H / 2, W, H / 2);
+    };
+    const render = (t: number) => {
+      drawBackground();
+      const base = segAt(me.z - PLAYER_Z < 0 ? me.z - PLAYER_Z + TRACK : me.z - PLAYER_Z);
+      const camZ = me.z - PLAYER_Z;
+      const basePercent = ((((camZ % SEG) + SEG) % SEG) / SEG);
+      let dx = -(base.curve * basePercent);
+      let x = 0;
+      let maxy = H;
+      const camX = me.x * ROAD;
+      const drawn: { seg: Seg; p1: ReturnType<typeof project>; clip: number; n: number }[] = [];
+      const shimmer = Math.floor(t / 220) % 2;
+      for (let n = 0; n < DRAW; n++) {
+        const seg = segs[(base.i + n) % N];
+        const rel1 = n * SEG - basePercent * SEG;
+        const rel2 = rel1 + SEG;
+        const x1 = x;
+        const x2 = x + dx;
+        x += dx;
+        dx += seg.curve;
+        if (rel1 <= DEPTH * 2) continue;
+        const p1 = project(-x1, rel1, camX);
+        const p2 = project(-x2, rel2, camX);
+        if (p2.y >= maxy) continue;
+        const stripe = Math.floor(seg.i / 3) % 2;
+        // grama, calçada de pedra, corda de boias, água
+        ctx.fillStyle = stripe ? '#5fa236' : '#58982f';
+        ctx.fillRect(0, p2.y, W, p1.y - p2.y + 1);
+        quad(p1.x, p1.y, p1.w * 1.38, p2.x, p2.y, p2.w * 1.38, stripe ? '#dcc196' : '#cdb084');
+        quad(p1.x, p1.y, p1.w * 1.12, p2.x, p2.y, p2.w * 1.12, stripe ? '#ff7aa8' : '#fff3f7');
+        quad(p1.x, p1.y, p1.w, p2.x, p2.y, p2.w, stripe ? '#2f86d6' : '#3592df');
+        // reflexo de luz na água
+        if ((seg.i + shimmer) % 5 === 0) quad(p1.x - p1.w * 0.35, p1.y, p1.w * 0.05, p2.x - p2.w * 0.35, p2.y, p2.w * 0.05, 'rgba(255,255,255,.35)');
+        if ((seg.i + shimmer) % 7 === 3) quad(p1.x + p1.w * 0.4, p1.y, p1.w * 0.04, p2.x + p2.w * 0.4, p2.y, p2.w * 0.04, 'rgba(255,255,255,.3)');
+        // faixas da pista (espuma)
+        if (stripe) {
+          quad(p1.x - p1.w / 3, p1.y, p1.w * 0.012, p2.x - p2.w / 3, p2.y, p2.w * 0.012, 'rgba(255,255,255,.55)');
+          quad(p1.x + p1.w / 3, p1.y, p1.w * 0.012, p2.x + p2.w / 3, p2.y, p2.w * 0.012, 'rgba(255,255,255,.55)');
+        }
+        // largada quadriculada
+        if (seg.start) {
+          const cells = 12;
+          for (let c = 0; c < cells; c++) {
+            const a = -1 + (2 * c) / cells;
+            const b = a + 2 / cells;
+            ctx.fillStyle = (c + seg.i) % 2 ? '#fff' : '#1a1428';
+            ctx.beginPath();
+            ctx.moveTo(p1.x + p1.w * a, p1.y);
+            ctx.lineTo(p2.x + p2.w * a, p2.y);
+            ctx.lineTo(p2.x + p2.w * b, p2.y);
+            ctx.lineTo(p1.x + p1.w * b, p1.y);
+            ctx.fill();
+          }
+        }
+        // turbo: setas amarelas piscando
+        if (seg.pad !== null) {
+          const c1 = p1.x + p1.w * seg.pad;
+          const c2 = p2.x + p2.w * seg.pad;
+          quad(c1, p1.y, p1.w * 0.17, c2, p2.y, p2.w * 0.17, (seg.i + Math.floor(t / 90)) % 2 ? '#ffd23f' : '#ff9a2e');
+          if (seg.i % 2 === 0) {
+            ctx.fillStyle = '#fff6c0';
+            ctx.beginPath();
+            ctx.moveTo(c1 - p1.w * 0.12, p1.y);
+            ctx.lineTo(c2, p2.y);
+            ctx.lineTo(c1 + p1.w * 0.12, p1.y);
+            ctx.closePath();
+            ctx.fill();
+          }
+        }
+        drawn.push({ seg, p1, clip: maxy, n });
+        maxy = p2.y;
+      }
+      // sprites (de trás pra frente)
+      const racerAt = new Map<number, Racer[]>();
+      for (const r of racers) {
+        if (r.me) continue;
+        const rel = r.z - camZ;
+        const rr = (((rel % TRACK) + TRACK) % TRACK);
+        // atrás da câmera ou colado nela: não desenha (ficaria gigante na tela)
+        if (rr > DRAW * SEG || rr < PLAYER_Z * 0.97) continue;
+        const k = Math.floor(rr / SEG);
+        if (!racerAt.has(k)) racerAt.set(k, []);
+        racerAt.get(k)!.push(r);
+      }
+      const waveAt = new Map<number, typeof waves>();
+      for (const w of waves) {
+        const rr = w.z - camZ;
+        if (rr < 0 || rr > DRAW * SEG) continue;
+        const k = Math.floor(rr / SEG);
+        if (!waveAt.has(k)) waveAt.set(k, []);
+        waveAt.get(k)!.push(w);
+      }
+      for (let d = drawn.length - 1; d >= 0; d--) {
+        const { seg, p1, clip, n } = drawn[d];
+        const drawSpr = (key: string, sx: number, w: number, filter = 'none', spin = 0, alpha = 1) => {
+          const im = imgs[key];
+          if (!im?.complete || !im.naturalWidth) return;
+          const dw = (w * p1.scale * W) / 2;
+          const dh = (dw * im.naturalHeight) / im.naturalWidth;
+          const dx2 = p1.x + (p1.scale * sx * ROAD * W) / 2 - dw / 2;
+          const dy2 = p1.y - dh;
+          const clipH = Math.max(0, clip - dy2);
+          if (clipH <= 0 || dw < 1) return;
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          if (filter !== 'none') ctx.filter = filter;
+          ctx.beginPath();
+          ctx.rect(dx2 - dw, dy2 - dh, dw * 3, Math.min(dh * 2, clipH + dh));
+          ctx.clip();
+          if (spin) {
+            ctx.translate(dx2 + dw / 2, dy2 + dh / 2);
+            ctx.rotate(spin);
+            ctx.drawImage(im, -dw / 2, -dh / 2, dw, dh);
+          } else ctx.drawImage(im, dx2, dy2, dw, dh);
+          ctx.restore();
+        };
+        for (const sp of seg.sprites) {
+          if (sp.gone && sp.gone > 0) continue;
+          drawSpr(sp.img, sp.x, sp.w);
+        }
+        for (const w of waveAt.get(n) ?? []) drawSpr('onda', w.x, 380, w.owner.me ? 'none' : 'hue-rotate(140deg)');
+        for (const r of racerAt.get(n) ?? []) {
+          drawSpr('pd-rosa', r.x, Math.min(560, 300 / Math.max(0.001, (p1.scale * W) / 2)), r.filter, r.spin > 0 ? r.spin * 12 : 0);
+          if (r.shield > 0) drawSpr('coracao', r.x, 220, 'none', 0, 0.7);
+          // nome em cima
+          const sx = p1.x + (p1.scale * r.x * ROAD * W) / 2;
+          const dw = (560 * p1.scale * W) / 2;
+          if (dw > 26 && p1.y < clip + 4) {
+            ctx.font = `bold ${Math.max(11, Math.min(18, dw * 0.16))}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#1a1428';
+            ctx.strokeText(r.name, sx, p1.y - dw * 1.85);
+            ctx.fillStyle = r.color;
+            ctx.fillText(r.name, sx, p1.y - dw * 1.85);
+          }
+        }
+      }
+      // o casal
+      const boat = imgs[phase === 'race' && Math.floor(t / 160) % 2 ? 'pd-barco2' : 'pd-barco'];
+      if (boat?.complete && boat.naturalWidth) {
+        const bw = 205;
+        const bh = (bw * boat.naturalHeight) / boat.naturalWidth;
+        const bob = Math.sin(t / 140) * 3;
+        ctx.save();
+        ctx.translate(W / 2, H - bh / 2 - 14 + bob);
+        ctx.rotate(me.spin > 0 ? me.spin * 12 : steerTilt);
+        // rastro
+        if (phase === 'race') {
+          ctx.fillStyle = me.boost > 0 ? 'rgba(255,230,140,.65)' : 'rgba(255,255,255,.45)';
+          ctx.beginPath();
+          ctx.moveTo(-bw * 0.28, bh * 0.42);
+          ctx.lineTo(-bw * 0.62, bh * 0.62);
+          ctx.lineTo(bw * 0.62, bh * 0.62);
+          ctx.lineTo(bw * 0.28, bh * 0.42);
+          ctx.fill();
+        }
+        if (me.boost > 0) ctx.filter = 'drop-shadow(0 0 12px #ffd23f)';
+        ctx.drawImage(boat, -bw / 2, -bh / 2, bw, bh);
+        ctx.restore();
+        if (me.shield > 0) {
+          ctx.strokeStyle = 'rgba(255,154,192,.85)';
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.ellipse(W / 2, H - bh / 2 - 14, bw * 0.62, bh * 0.58, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+      // linhas de velocidade
+      if (me.boost > 0 || me.spd > MAX * 1.05) {
+        ctx.strokeStyle = 'rgba(255,255,255,.55)';
+        ctx.lineWidth = 3;
+        for (let k = 0; k < 14; k++) {
+          const a = (k / 14) * Math.PI * 2 + t / 300;
+          const r1 = 260 + ((t / 2 + k * 37) % 120);
+          ctx.beginPath();
+          ctx.moveTo(W / 2 + Math.cos(a) * r1, H * 0.55 + Math.sin(a) * r1 * 0.55);
+          ctx.lineTo(W / 2 + Math.cos(a) * (r1 + 70), H * 0.55 + Math.sin(a) * (r1 + 70) * 0.55);
+          ctx.stroke();
+        }
+      }
+      if (flashT > 0) {
+        ctx.fillStyle = `rgba(255,255,255,${flashT * 2})`;
+        ctx.fillRect(0, 0, W, H);
+      }
+    };
+    // mapinha: o lago em oval com os 4 barcos
+    const drawMini = () => {
+      mctx.clearRect(0, 0, 150, 110);
+      mctx.fillStyle = 'rgba(26,16,40,.75)';
+      mctx.beginPath();
+      mctx.roundRect(0, 0, 150, 110, 12);
+      mctx.fill();
+      mctx.strokeStyle = '#7fd8ee';
+      mctx.lineWidth = 10;
+      mctx.beginPath();
+      mctx.ellipse(75, 57, 56, 36, 0, 0, Math.PI * 2);
+      mctx.stroke();
+      mctx.strokeStyle = '#2f86d6';
+      mctx.lineWidth = 6;
+      mctx.stroke();
+      mctx.fillStyle = '#fff';
+      mctx.fillRect(73, 15, 4, 12);
+      for (const r of [...racers].reverse()) {
+        const a = -Math.PI / 2 + ((r.z % TRACK) / TRACK) * Math.PI * 2;
+        mctx.fillStyle = r.color;
+        mctx.strokeStyle = r.me ? '#fff' : '#1a1428';
+        mctx.lineWidth = 2;
+        mctx.beginPath();
+        mctx.arc(75 + Math.cos(a) * 56, 57 + Math.sin(a) * 36, r.me ? 7 : 5, 0, Math.PI * 2);
+        mctx.fill();
+        mctx.stroke();
+      }
+    };
+
+    // ---------------------------------------------------------------- simulação
     const tick = (t: number) => {
       const dt = last ? Math.min(0.05, (t - last) / 1000) : 0;
       last = t;
@@ -279,6 +548,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
         bannerT -= dt;
         if (bannerT <= 0) banner.classList.remove('on');
       }
+      if (flashT > 0) flashT -= dt;
       if (phase === 'count') {
         countT -= dt;
         const n = Math.ceil(countT);
@@ -296,187 +566,119 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       }
       if (phase === 'race') {
         elapsed += dt;
-        // ---- vocês
-        const dx = (keys.r ? 1 : 0) - (keys.l ? 1 : 0);
-        me.vx += (dx * 150 - me.vx) * Math.min(1, dt * 8);
-        // ---- os rivais: seguem a raia, desviam, usam item, e não deixam a corrida ficar sem graça
+        const seg = segAt(me.z);
+        const pct = me.spd / MAX;
+        // pilotar + força da curva
+        const steer = (keys.r ? 1 : 0) - (keys.l ? 1 : 0);
+        if (me.spin <= 0) me.x += steer * dt * 2.1 * Math.max(0.4, pct);
+        me.x -= dt * pct * seg.curve * 0.28;
+        steerTilt += ((steer * 0.12) - steerTilt) * Math.min(1, dt * 10);
+        skyOff += seg.curve * pct * dt * 60;
+        // corredores
         for (const r of racers) {
-          if (r.me) continue;
-          const ahead = things.find((o) => !o.gone && (o.kind === 'vitoria' || o.kind === 'patos') && o.d > r.d && o.d - r.d < 24 && Math.abs(o.x - r.x) < 12);
-          const box = things.find((o) => !o.gone && (o.kind === 'item' || o.kind === 'pad') && o.d > r.d && o.d - r.d < 30);
-          const wantX = ahead ? (ahead.x > 50 ? ahead.x - 24 : ahead.x + 24) : box && Math.random() < 0.6 ? box.x : 30 + 40 * (0.5 + 0.5 * Math.sin(r.d / 37 + r.lane));
-          r.vx += ((wantX - r.x) * 2.2 - r.vx) * Math.min(1, dt * 3);
-          r.itemIn -= dt;
-          if (r.itemIn <= 0 && !r.done) {
-            r.itemIn = 6 + Math.random() * 6;
-            const it = pickFor(r);
-            // o cisne rosa adora mirar em vocês
-            if ((it === 'onda' || it === 'pao') && !(me.d > r.d && me.d - r.d < 100) && r.id === 'rosa') r.boost = 1.4;
-            else fire(r, it);
+          if (!r.me && !r.done) {
+            const rs = segAt(r.z);
+            const ahead = [0, 1, 2, 3].map((k) => segAt(r.z + k * SEG)).flatMap((s) => s.sprites.filter((sp) => (sp.kind === 'vitoria' || sp.kind === 'patos') && Math.abs(sp.x - r.x) < 0.3));
+            const box = [1, 2, 3, 4, 5].map((k) => segAt(r.z + k * SEG)).flatMap((s) => s.sprites.filter((sp) => sp.kind === 'box'))[0];
+            let want = Math.sin(r.z / 9000 + r.lane) * 0.55;
+            if (box) want = box.x;
+            if (ahead.length) want = ahead[0].x > 0 ? ahead[0].x - 0.5 : ahead[0].x + 0.5;
+            want -= rs.curve * 0.05;
+            if (r.spin <= 0) r.x += Math.max(-1, Math.min(1, (want - r.x) * 3)) * dt;
+            r.itemIn -= dt;
+            if (r.itemIn <= 0) {
+              r.itemIn = 6 + Math.random() * 6;
+              const it = pickFor(r);
+              if ((it === 'onda' || it === 'pao') && !(me.z > r.z && me.z - r.z < TRACK * 0.3) && r.id === 'rosa') r.boost = 1.4;
+              else fire(r, it);
+            }
           }
-        }
-        for (const r of racers) {
-          if (r.spin > 0) {
-            r.spin -= dt;
-            r.vx *= 0.3;
+          if (r.spin > 0) r.spin -= dt;
+          let target = r.spin > 0 ? MAX * 0.15 : r.boost > 0 ? MAX * 1.5 : r.base;
+          if (!r.me && !r.done) target *= 1 + Math.max(-0.22, Math.min(0.16, (me.z - r.z) / (TRACK * 0.6)));
+          // fora da água (nas boias): freia
+          if (Math.abs(r.x) > 0.95) {
+            r.x = Math.sign(r.x) * 0.95;
+            target *= 0.55;
+            if (r.me && Math.random() < dt * 2) AudioSystem.play('blip');
           }
-          r.x = Math.max(9, Math.min(91, r.x + r.vx * dt));
-          let target = r.spin > 0 ? 6 : r.boost > 0 ? 60 : r.base;
-          if (!r.me && !r.done) target *= 1 + Math.max(-0.24, Math.min(0.16, (me.d - r.d) / 150)); // elástico: pelotão junto (a corrida fica disputada)
-          if (r.done) target = 22;
-          r.spd += (target - r.spd) * Math.min(1, dt * (r.boost > 0 ? 5 : 2));
+          if (r.done) target = MAX * 0.4;
+          r.spd += (target - r.spd) * Math.min(1, dt * (r.boost > 0 ? 3 : 1.2));
           if (r.boost > 0) r.boost -= dt;
-          if (r.shield > 0) {
-            r.shield -= dt;
-            if (r.shield <= 0) r.el.classList.remove('shielded');
-          }
-          r.d += r.spd * dt;
-          if (!r.done && r.d >= TOTAL) r.done = elapsed;
+          if (r.shield > 0) r.shield -= dt;
+          r.z += r.spd * dt;
+          if (!r.done && r.z >= TOTAL) r.done = elapsed;
         }
-        // empurrões entre os barcos
+        // empurrões entre barcos
         for (let i = 0; i < racers.length; i++)
           for (let j = i + 1; j < racers.length; j++) {
             const a = racers[i];
             const b = racers[j];
-            if (Math.abs(a.d - b.d) < 7 && Math.abs(a.x - b.x) < 10) {
+            if (Math.abs(a.z - b.z) < SEG * 1.2 && Math.abs(a.x - b.x) < 0.28) {
               const push = b.x > a.x ? 1 : -1;
-              a.x = Math.max(9, Math.min(91, a.x - push * 34 * dt));
-              b.x = Math.max(9, Math.min(91, b.x + push * 34 * dt));
-              if ((a.me || b.me) && Math.random() < dt * 1.2) ui.say('bella', ['Ei! Sai da frente!', 'Encostou! Isso é bate-bate agora?', 'Cuidado com a pintura!'][Math.floor(Math.random() * 3)]);
+              a.x -= push * dt * 1.4;
+              b.x += push * dt * 1.4;
+              if ((a.me || b.me) && Math.random() < dt * 1.5) say('bella', ['Ei! Sai da frente!', 'Encostou! Isso é bate-bate agora?', 'Cuidado com a pintura!'][Math.floor(Math.random() * 3)]);
             }
           }
-        // ---- objetos na pista
-        for (const o of things) {
-          if (o.gone > 0) {
-            o.gone -= dt;
-            if (o.gone <= 0 && o.el) o.el.classList.remove('got');
-          }
-          const sy = screenY(o.d);
-          if (sy < -15 || sy > 115) {
-            if (o.el) {
-              o.el.remove();
-              o.el = null;
+        // objetos na água
+        for (const s of segs) for (const sp of s.sprites) if (sp.gone && sp.gone > 0) sp.gone -= dt;
+        for (const r of racers) {
+          const s = segAt(r.z);
+          for (const sp of s.sprites) {
+            if (sp.gone && sp.gone > 0) continue;
+            if (sp.kind === 'box' && Math.abs(sp.x - r.x) < 0.22) {
+              sp.gone = 2.5;
+              if (r.me && !item && rolling <= 0) roll(pickFor(me));
+            } else if ((sp.kind === 'vitoria' || sp.kind === 'patos') && Math.abs(sp.x - r.x) < 0.24 && r.spin <= 0) {
+              if (!r.me && Math.random() < 0.5) continue;
+              sp.gone = 99;
+              hitRacer(r, sp.kind === 'patos' ? 'DESCULPA, FAMÍLIA PATO!' : 'Enroscou na vitória-régia! Rodamos!', 1.1);
+              if (!r.me && Math.abs(r.z - me.z) < TRACK * 0.2) say('bella', `O ${r.name.toLowerCase()} rodou! AGORA!`);
             }
-            continue;
           }
-          if (!o.el) {
-            o.el =
-              o.kind === 'item'
-                ? h('div', { class: 'bk-box', html: itemSVG('box') })
-                : o.kind === 'pad'
-                  ? h('div', { class: 'bk-pad' }, h('i'), h('i'), h('i'))
-                  : h('img', { class: `bk-obj ${o.kind}`, src: mg(o.kind === 'vitoria' ? 'pd-vitoria' : 'pd-patos'), alt: '' });
-            if (o.gone > 0) o.el.classList.add('got');
-            world.append(o.el);
-          }
-          o.el.style.left = `${o.x}%`;
-          o.el.style.top = `${sy}%`;
-          if (o.gone > 0) continue;
-          for (const r of racers) {
-            if (Math.abs(o.d - r.d) >= 4 || Math.abs(o.x - r.x) >= (o.kind === 'item' ? 9 : 9.5)) continue;
-            if (o.kind === 'item') {
-              if (o.kind === 'item') {
-                o.gone = 3;
-                o.el.classList.add('got');
-                if (r.me) {
-                  puff(o.x, sy, 'pop', '?');
-                  if (!item && rolling <= 0) roll(pickFor(me));
-                }
-              }
-            } else if (o.kind === 'pad') {
-              if (r.me && r.boost <= 0.3) {
-                AudioSystem.play('confirm');
-                puff(r.x, screenY(r.d), 'zoom');
-              }
-              r.boost = Math.max(r.boost, 1.2);
-            } else if (r.spin <= 0) {
-              if (!r.me && Math.random() < 0.5) continue; // os rivais às vezes escapam por pouco
-              o.gone = 99;
-              o.el.classList.add('hit');
-              hitRacer(r, o.kind === 'patos' ? 'DESCULPA, FAMÍLIA PATO!' : 'Enroscou na vitória-régia! Rodamos!', 1.1);
-              if (!r.me && Math.abs(r.d - me.d) < 60) ui.say('bella', `O ${r.name.toLowerCase()} rodou! AGORA!`);
+          if (s.pad !== null && Math.abs(s.pad - r.x) < 0.22) {
+            if (r.me && r.boost <= 0.3) {
+              AudioSystem.play('confirm');
+              showBanner('TURBO!', 'go', 0.5);
             }
+            r.boost = Math.max(r.boost, 1.2);
           }
         }
-        // ---- ondas
+        // ondas
         for (let i = waves.length - 1; i >= 0; i--) {
           const w = waves[i];
-          w.d += w.v * dt;
-          const sy = screenY(w.d);
-          w.el.style.left = `${w.x}%`;
-          w.el.style.top = `${sy}%`;
+          w.z += w.v * dt;
           let hit = false;
           for (const r of racers) {
-            if (r === w.owner || r.spin > 0 || Math.abs(w.d - r.d) >= 5 || Math.abs(w.x - r.x) >= 13) continue;
+            if (r === w.owner || r.spin > 0 || Math.abs(w.z - r.z) > SEG || Math.abs(w.x - r.x) > 0.3) continue;
             hit = true;
-            if (hitRacer(r, 'Tomamos uma onda! Que cisne malvado!', 1.5) && w.owner.me) ui.say('bella', `ACERTOU! O ${r.name.toLowerCase()} tomou um banho!`);
+            if (hitRacer(r, 'Tomamos uma onda! Que cisne malvado!', 1.5) && w.owner.me) say('bella', `ACERTOU! O ${r.name.toLowerCase()} tomou um banho!`);
             break;
           }
-          if (hit || sy < -20 || w.d - w.owner.d > 170) {
-            w.el.remove();
-            waves.splice(i, 1);
-          }
+          if (hit || w.z - w.owner.z > TRACK * 0.35) waves.splice(i, 1);
         }
-        // ---- voltas e posições
-        const lap = lapOf(me.d);
+        // voltas e posições
+        const lap = lapOf(me.z);
         if (lap !== lapShown && !me.done) {
           lapShown = lap;
           showBanner(lap === LAPS ? 'ÚLTIMA VOLTA!' : `VOLTA ${lap}`, lap === LAPS ? 'last' : '');
           AudioSystem.play('quest');
-          if (lap === LAPS) ui.say('weng', posOf(me) === 1 ? 'Última volta! Segura a liderança!' : 'Última volta! Ainda dá! Usa tudo!');
+          if (lap === LAPS) say('weng', posOf(me) === 1 ? 'Última volta! Segura a liderança!' : 'Última volta! Ainda dá! Usa tudo!');
         }
         const p = posOf(me);
         if (elapsed > 2 && p !== lastPos) {
           if (p < lastPos) {
             showBanner(p === 1 ? 'PRIMEIRO LUGAR!' : 'ULTRAPASSOU!', 'go', 0.9);
             AudioSystem.play('pickup');
-          } else {
-            showBanner('Fomos passados!', 'last', 0.8);
-          }
+          } else showBanner('Fomos passados!', 'last', 0.8);
           lastPos = p;
         }
         if (me.done) return finish();
         hud();
       }
-      // ---- desenho
-      const scroll = me.d * 6;
-      water.style.backgroundPositionY = `${scroll}px`;
-      bankL.style.backgroundPositionY = `${scroll}px`;
-      bankR.style.backgroundPositionY = `${scroll}px`;
-      for (const l of lines) {
-        const sy = screenY(l.d);
-        l.el.style.top = `${sy}%`;
-        l.el.style.display = sy < -10 || sy > 110 ? 'none' : '';
-      }
-      for (const b of buoys) {
-        const sy = screenY(b.d);
-        const on = sy > -8 && sy < 108;
-        b.el.style.display = on ? '' : 'none';
-        if (on) {
-          b.el.style.top = `${sy}%`;
-          b.el.style.left = b.side ? '95.5%' : '4.5%';
-        }
-      }
-      arrows.replaceChildren();
-      let nUp = 0;
-      let nDown = 0;
-      for (const r of racers) {
-        const sy = r.me ? PY : screenY(r.d);
-        r.el.style.left = `${r.x}%`;
-        r.el.style.top = `${Math.max(-14, Math.min(114, sy))}%`;
-        r.el.style.zIndex = String(10 + Math.round(sy));
-        r.el.style.setProperty('--rot', `${r.spin > 0 ? r.spin * 720 : r.vx * 0.08}deg`);
-        r.el.classList.toggle('boost', r.boost > 0);
-        r.el.classList.toggle('moving', phase === 'race');
-        if (r.me) r.img.src = mg(phase === 'race' && Math.floor(t / 180) % 2 ? 'pd-barco2' : 'pd-barco');
-        if (!r.me && (sy < 2 || sy > 98)) {
-          const up = sy < 2;
-          const k = up ? nUp++ : nDown++;
-          arrows.append(h('b', { class: `bk-arrow ${up ? 'up' : 'down'}`, style: `left:${Math.max(16, Math.min(84, r.x))}%;--c:${r.color};${up ? 'top' : 'bottom'}:${2 + k * 8}%` }, `${up ? '▲' : '▼'} ${r.name} ${Math.round(Math.abs(r.d - me.d))}m`));
-        }
-      }
-      speedLines.classList.toggle('on', me.boost > 0);
-      ui.stage.classList.toggle('bk-fast', me.boost > 0);
+      render(t);
+      drawMini();
       raf = requestAnimationFrame(tick);
     };
 
@@ -488,8 +690,8 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       window.removeEventListener('keyup', onKeyUp);
       const pos = posOf(me);
       hud();
+      render(performance.now());
       showBanner(pos === 1 ? 'VITÓRIA!' : `${pos}º lugar`, pos === 1 ? 'go' : '', 99);
-      // pódio
       const table = h(
         'div',
         { class: 'bk-podium' },
@@ -497,7 +699,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
         ...order().map((r, i) => h('div', { class: r.me ? 'me' : '' }, h('span', { class: 'n' }, `${i + 1}º`), h('i', { style: `background:${r.color}` }), h('span', {}, r.me ? 'Bella & Weng' : r.name))),
       );
       ui.stage.append(table);
-      ui.say(pos === 1 ? 'bella' : 'weng', pos === 1 ? 'GANHAMOS! O cisne rosa ficou de bico aberto! Minhas pernas...' : pos === 2 ? 'Segundo lugar! Por um bico de cisne... revanche já!' : 'Não deu dessa vez... mas a gente chegou juntinho. Isso vale mais.');
+      say(pos === 1 ? 'bella' : 'weng', pos === 1 ? 'GANHAMOS! O cisne rosa ficou de bico aberto! Minhas pernas...' : pos === 2 ? 'Segundo lugar! Por um bico de cisne... revanche já!' : 'Não deu dessa vez... mas a gente chegou juntinho. Isso vale mais.');
       const stars = pos === 1 ? (hits <= 1 ? 3 : 2) : pos === 2 ? 2 : 1;
       ui.end(stars, 'Descer no píer', () => resolve({ stars, mistakes: hits }));
     };
@@ -513,12 +715,12 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
         else if (phase === 'count') {
           if (countT < 0.35) {
             me.boost = 1.8;
-            ui.say('weng', 'LARGADA PERFEITA!');
+            say('weng', 'LARGADA PERFEITA!');
           } else me.spin = 0.8;
         } else if (phase === 'race') {
           if (performance.now() - goAt < 350 && me.boost <= 0) {
             me.boost = 1.8;
-            ui.say('weng', 'LARGADA PERFEITA!');
+            say('weng', 'LARGADA PERFEITA!');
           } else useItem();
         }
       }
@@ -541,7 +743,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       phase = 'count';
       countT = 3;
       ui.actions.replaceChildren(pad('◀', 'l'), itemBtn, pad('▶', 'r'));
-      ui.say('bella', 'Três... dois... um...');
+      say('bella', 'Três... dois... um...');
     };
     const startBtn = h('button', { class: 'btn primary' }, 'Para a largada!');
     startBtn.addEventListener('click', start);
@@ -550,7 +752,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
     window.addEventListener('keyup', onKeyUp);
     setItem(null);
     hud();
-    ui.say('weng', 'O cisne rosa chamou os amigos: cisne azul e patinho amarelo. Três voltas no lago!');
+    say('weng', 'O cisne rosa chamou os amigos: cisne azul e patinho amarelo. Três voltas no lago!');
     raf = requestAnimationFrame(tick);
   });
 }
