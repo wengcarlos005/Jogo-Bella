@@ -3820,3 +3820,27 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 .fg-bg { height: 46%; }
 .pm-show { margin-top: calc(var(--u) * 4); align-self: center; }
 #hotbar.picking .sb-item.sel { outline: 3px solid #ffd23f; outline-offset: 2px; transform: translateY(-4px) scale(1.08); box-shadow: 0 0 14px #ffd23f; }
+
+/* ---------- Revisão caps 3-7: todos os minigames no painel largo ---------- */
+.nv-panel, .cf-panel, .so-panel, .tp-panel, .fr-panel, .on-panel, .ca-panel, .ch-panel, .ft-panel, .bq-panel { width: min(97%, calc(var(--u) * 470)) !important; }
+.nv-stage, .cf-stage, .so-stage, .tp-stage, .fr-stage, .on-stage, .ca-stage, .ch-stage, .ft-stage, .bq-stage { height: min(60vh, calc(var(--u) * 240)) !important; }
+/* cortina: ao abrir, a íris some num brilho (antes encolhia e deixava uma bola roxa no meio) */
+.mg-curtain.v2.opening .mgc-iris { clip-path: circle(80% at 50% 50%); opacity: 0; transform: scale(1.12); transition: opacity .45s ease, transform .45s ease; }
+/* nuvens: o alvo dentro do chip escuro do placar */
+.so-sb-chip .nv-target { background: none; border: none; box-shadow: none; padding: 0; color: #fff3d6; }
+.so-sb-chip .nv-target b { color: #ffd23f; }
+/* café da manhã: o quarto do hotel ao fundo, itens e bandeja maiores */
+.cf-stage { background: #3a2018; overflow: hidden; }
+.cf-room { position: absolute; inset: -12px; background-size: cover; background-position: 50% 60%; filter: blur(4px) brightness(.6) saturate(1.1); }
+.cf-shelf { position: relative; z-index: 1; gap: 8px; padding: 10px; border-radius: 14px; background: rgba(255, 248, 236, .9); box-shadow: 0 6px 16px rgba(0, 0, 0, .35); }
+.cf-item { font-size: clamp(9px, calc(var(--u) * 4.2), 13px); }
+.cf-item img { width: 78%; }
+.cf-tray { z-index: 1; flex-basis: 38%; filter: drop-shadow(0 10px 14px rgba(0, 0, 0, .5)); }
+/* sol: o casal maior e mais legível */
+.so-pair { width: 26%; }
+.on-mark { border-left-color: #ffd23f; }
+.on-mark::before { content: 'PULA AQUI!'; top: -26px; left: -4px; padding: 2px 8px; border-radius: 99px; background: #ffd23f; color: #5a2a10; text-shadow: none; font-size: clamp(10px, calc(var(--u) * 4.8), 14px); box-shadow: 0 2px 0 rgba(0, 0, 0, .25); }
+.cf-note { inset: 8% 26%; justify-content: center; gap: 8px; font-size: clamp(13px, calc(var(--u) * 7), 22px); box-shadow: 0 8px 20px rgba(0, 0, 0, .4); }
+.cf-note b { font-family: var(--font-pixel); font-weight: 400; color: #d0457a; font-size: clamp(14px, calc(var(--u) * 7.5), 24px); text-align: center; }
+.cf-note div { display: flex; align-items: center; gap: 10px; }
+.cf-note img { width: clamp(24px, calc(var(--u) * 12), 40px) !important; height: auto; }

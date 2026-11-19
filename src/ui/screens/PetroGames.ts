@@ -110,7 +110,7 @@ export function playCloudGame(parent: HTMLElement): Promise<MiniResult> {
           'div',
           { class: 'so-sb' },
           h('div', { class: 'so-sb-chip' }, h('span', {}, 'Nuvem'), h('b', { class: 'so-sb-n' }, `${Math.min(round + 1, ROUNDS)}/${ROUNDS}`)),
-          h('div', { class: 'so-sb-chip' }, badge),
+          badge.classList.contains('off') ? h('span') : h('div', { class: 'so-sb-chip' }, badge),
           h('div', { class: 'so-sb-chip' }, h('span', {}, 'Vidas'), h('span', { class: 'tp-sb-lives' }, ...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥')))),
         ),
       );
@@ -137,9 +137,9 @@ export function playCloudGame(parent: HTMLElement): Promise<MiniResult> {
       target = order[round % order.length].id;
       const name = CLOUDS.find((c) => c.id === target)!.name;
       lock = false;
-      hud();
       badge.replaceChildren('Procure: ', h('b', {}, name.toUpperCase()));
       badge.classList.remove('off', 'pop');
+      hud();
       void badge.offsetWidth;
       badge.classList.add('pop');
       ui.say(round % 2 ? 'weng' : 'bella', `${round % 2 ? 'E aquela ali...' : 'Olha!'} Acha a nuvem de ${name}!`);
@@ -287,7 +287,8 @@ export function playBreakfastGame(parent: HTMLElement): Promise<MiniResult> {
         return b;
       }),
     );
-    ui.stage.append(note, shelf, trayEl);
+    const room = h('div', { class: 'cf-room', style: `background-image:url(${new URL('assets/maps/pt-quarto-bg.png', document.baseURI).href})` });
+    ui.stage.append(room, note, shelf, trayEl);
     const hud = () =>
       ui.hud.replaceChildren(
         h(
