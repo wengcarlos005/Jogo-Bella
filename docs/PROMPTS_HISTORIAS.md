@@ -979,3 +979,51 @@ Cozy pixel art illustration, same art style, colors and framing as the attached 
 ```
 Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. Midnight on Praia do Forte in Cabo Frio: a sky full of colorful fireworks over the sea, the old stone fort lit on the right. The attached girl and boy, dressed in white, sweaty and out of breath after walking kilometers, hug and kiss on the sand with their friends cheering around them, flip-flops in their hands. No text, no UI, no watermark.
 ```
+
+---
+
+## 6. Itens da mochila (sprites)
+
+Ícones dos itens do inventário, desenhados (substituem os quadradinhos gerados por código).
+Anexe uma folha de objetos já usada no jogo (ex.: `cf-` ou `pq-`) como referência de estilo.
+Grade fixa 4×3, em ordem de leitura (esquerda→direita, cima→baixo) — é assim que o recorte numera.
+
+### 6A. Itens dos capítulos 3 a 7
+
+```
+Pixel art sprite sheet of 11 small inventory item icons for a cozy RPG, EXACTLY the same art style, outline thickness and colors as the attached reference sheet. Each item drawn front-facing like an inventory icon (not top-down), centered, about 150x150 px, with a soft highlight. Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, items arranged in a clean grid of 4 columns x 3 rows, reading order left to right, top to bottom, at least 80 px of magenta between items, nothing touching the edge, the last cell (row 3, column 4) left empty:
+1. A pink cotton candy on a wooden stick, fluffy.
+2. An old brass hotel room key with a red leather tag (no number written).
+3. Three yellow amusement-park tokens/tickets stacked, with a red star in the middle.
+4. A smooth grey lake pebble in the exact shape of a heart.
+5. A small orange teddy bear plush with a pink bow.
+6. A tiny pink plush keychain with a golden ring.
+7. A pink and cream scallop seashell with sand grains.
+8. A wicker basket full of wrapped chocolates and bonbons with a red ribbon.
+9. A white spiral seashell with a lilac shine.
+10. A small deck of cards with a dark purple back and a pink paw print, slightly fanned.
+11. A single lost rubber flip-flop, blue and yellow.
+No text, no numbers, no letters, no UI, no watermark.
+```
+
+Arquivo: `itens-cap3-7.png`
+
+### 6B. Itens dos capítulos 1 e 2 (refazer os antigos)
+
+```
+Pixel art sprite sheet of 11 small inventory item icons for a cozy RPG, EXACTLY the same art style, outline thickness and colors as the attached reference sheet. Each item drawn front-facing like an inventory icon (not top-down), centered, about 150x150 px, with a soft highlight. Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, items arranged in a clean grid of 4 columns x 3 rows, reading order left to right, top to bottom, at least 80 px of magenta between items, nothing touching the edge, the last cell (row 3, column 4) left empty:
+1. A thin gold necklace with a small pink heart pendant.
+2. Round glasses with a pink/rose tinted frame.
+3. A modern smartphone with a pink case, the screen showing a chat bubble with a heart.
+4. A small wild flower picked from a backyard, white and yellow, with a short stem.
+5. A single pink rose with leaves, wrapped in kraft paper with a ribbon.
+6. Two handmade paper coupons with a red heart drawn on each, tied with string.
+7. A gift box of chocolates with a red ribbon, lid half open showing bonbons.
+8. A crumpled white paper napkin with a small red sauce stain and a burger doodle.
+9. A small folded paper note sealed with a red heart sticker.
+10. A small foil pouch of cat food with a fish drawing.
+11. A ball of blue wool yarn with a loose thread.
+No text, no numbers, no letters, no UI, no watermark.
+```
+
+Arquivo: `itens-cap1-2.png`
