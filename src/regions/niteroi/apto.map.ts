@@ -206,6 +206,7 @@ async function chocolates(ctx: ScriptContext): Promise<void> {
   await ctx.say('weng', '(pegando um escondido) E esse é pelo motorista.');
   await ctx.say('bella', 'WENG!');
   await ctx.say('mae-lilian', 'Deixa ele! Tem mais na cesta. Sempre tem mais.');
+  if (!ctx.has('cesta-chocolates')) await ctx.give('cesta-chocolates', 1, false, 'A mãe da Lilian te deu');
   ctx.hearts('player', 8);
   if (ctx.hasArt('memory-nt-01')) await ctx.memory('mem-nt-01');
   ctx.objective(Q, 'chocolates');

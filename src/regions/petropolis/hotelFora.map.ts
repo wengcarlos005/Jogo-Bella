@@ -84,6 +84,7 @@ const scripts: Record<string, Script> = {
     if (objActive('checkin')) {
       ctx.objective(Q, 'checkin');
       await ctx.say('recepcionista', 'Boa noite! Quarto 12, com lareira. E chocolate quente de boas-vindas pros dois.');
+      if (!ctx.has('chave-quarto-12')) await ctx.give('chave-quarto-12', 1, false, 'O recepcionista te deu');
       await ctx.say('bella', 'LAREIRA?! Weng, você pensou em tudo.');
       await ctx.say('weng', 'Pensei. Inclusive no chocolate.');
       await ctx.say('weng', 'Bora subir? Eu tô congelando.');

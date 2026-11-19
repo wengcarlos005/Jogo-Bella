@@ -152,6 +152,16 @@ export class GameScene extends Phaser.Scene {
       UI.toasts.show(`${q.kind === 'principal' ? 'Nova missão' : 'Missão secundária'}: ${q.title}`);
     });
     this.listen('flag:changed', () => this.refreshVisibility());
+    // Mochila → "Mostrar pro Weng": a conversinha do item, se nada estiver acontecendo
+    this.listen('item:show', (id) => {
+      const def = ITEMS[id as string];
+      if (!def?.talk || this.scriptRunning || this.transitioning) return;
+      void this.runInline(async (ctx) => {
+        await ctx.showItem(def.id, 'Você mostrou', def.name, def.description);
+        for (const [who, line] of def.talk!) await ctx.say(who, line);
+        ctx.hearts('player', 3);
+      });
+    });
 
     InputSystem.on('game:interact', this.onInteract, this);
     InputSystem.on('game:menu', this.onMenu, this);
@@ -963,6 +973,11 @@ export class GameScene extends Phaser.Scene {
       console.warn(`[${this.def.id}] script ausente: ${name}`);
       return;
     }
+    return this.runInline(script, name);
+  }
+
+  /** Roda um script avulso (ex.: conversa ao mostrar um item da mochila). */
+  async runInline(script: Script, name = 'inline'): Promise<void> {
     if (this.scriptRunning) return;
     const gen = this.gen;
     this.scriptRunning = true;

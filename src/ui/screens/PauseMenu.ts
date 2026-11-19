@@ -6,6 +6,7 @@ import { MemoryAlbumSystem } from '@/systems/MemoryAlbumSystem';
 import { SaveSystem, SettingsStore } from '@/systems/SaveSystem';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
+import { EventBus } from '@/core/EventBus';
 import { CATEGORY_LABEL } from '@/data/items';
 import { MEMORY_GOAL } from '@/data/memories';
 import { REGIONS } from '@/data/regions';
@@ -194,11 +195,27 @@ export class PauseMenu {
       }
       this.invSel = e.def.id;
       const url = textureURL(e.def.icon);
+      const show = e.def.talk
+        ? h(
+            'button',
+            {
+              class: 'btn small primary pm-show',
+              onclick: () => {
+                AudioSystem.play('confirm');
+                const id = e.def.id;
+                this.close();
+                EventBus.emit('item:show', id);
+              },
+            },
+            '💬 Mostrar pro Weng',
+          )
+        : h('span');
       detail.replaceChildren(
         h('div', { class: 'pm-detail-art' }, h('div', { class: 'rays' }), url ? h('img', { src: url, alt: '' }) : null),
         h('div', { class: 'pm-detail-name' }, e.def.name),
         h('div', { class: 'pm-detail-cat' }, `${CATEGORY_LABEL[e.def.category]}${e.qty > 1 ? ` · ×${e.qty}` : ''}`),
         h('div', { class: 'pm-detail-desc' }, e.def.description),
+        show,
       );
       detail.classList.remove('pop');
       void detail.offsetWidth;

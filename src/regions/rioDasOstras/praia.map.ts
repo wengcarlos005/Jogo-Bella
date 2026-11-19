@@ -308,6 +308,7 @@ const scripts: Record<string, Script> = {
       await ctx.emote('weng', 'heart');
     } else if (enfeite === 1) await ctx.say('bella', 'Pronto: o castelo agora é território nosso. Ninguém entra.');
     else await ctx.say('bella', 'Conchinha rosa, conchinha branca, conchinha rosa... ficou lindo.');
+    if (!ctx.has('concha-castelo')) await ctx.give('concha-castelo', 1, false, 'Você guardou do castelo');
     await ctx.say('pai-ro', '(de longe) Tá ficando bom! Lembra quando você fazia castelo aqui com seis anos, filha?');
     await ctx.say('bella', 'Pai! Não conta essas coisas!');
     await ctx.narrate('Aí veio uma onda maior que as outras. Direto no castelo.');

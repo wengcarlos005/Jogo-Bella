@@ -3,6 +3,7 @@ import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script, ScriptContext } from '@/core/script';
 import { QuestSystem } from '@/systems/QuestSystem';
 import { GameState } from '@/core/GameState';
+import { InventorySystem } from '@/systems/InventorySystem';
 
 const Q = 'ar-m2';
 const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
@@ -20,6 +21,38 @@ async function falta(ctx: ScriptContext): Promise<void> {
     await ctx.say('weng', 'Só falta uma coisa. A roda-gigante. Deixei por último de propósito.');
     ctx.toast('A roda-gigante fica no alto, à esquerda');
   }
+}
+
+/** Cada brinquedo gasta uma ficha da mochila; sem ficha, a Bella lembra da bilheteria. */
+async function pagar(ctx: ScriptContext, brinquedo: string): Promise<boolean> {
+  if (!ctx.flag('ar-fichas')) {
+    await ctx.say('weng', `Pro ${brinquedo} precisa de ficha. A tia Tim deixou as nossas na bilheteria, do lado do portão.`);
+    return false;
+  }
+  if (!ctx.has('fichas-parque')) {
+    await ctx.say('bella', 'Ih, acabaram as fichas. Vou na bilheteria comprar mais uma.');
+    return false;
+  }
+  // a Bella entrega a ficha: escolher na barra de itens (outro item = o moço estranha)
+  const ESTRANHO: Record<string, string> = {
+    'pedra-coracao': 'Moça, isso é uma pedra. Bonita, mas é uma pedra.',
+    'urso-araruama': 'O ursinho não paga brinquedo não, moça.',
+    chaveirinho: 'Chaveirinho não vale como ficha, desculpa!',
+  };
+  for (let tries = 0; tries < 3; tries++) {
+    const id = await ctx.pickItem(`Entregue 1 ficha pro moço do ${brinquedo}`);
+    if (id === 'fichas-parque') {
+      ctx.take('fichas-parque');
+      ctx.sfx('blip');
+      ctx.toast(`Usou 1 ficha · sobraram ${ctx.count('fichas-parque')}`);
+      return true;
+    }
+    await ctx.say('bella', ESTRANHO[id] ?? 'Ops, isso não é ficha. Cadê a ficha amarela?');
+  }
+  await ctx.say('weng', '(rindo) Deixa que eu entrego. É a amarela, amor.');
+  ctx.take('fichas-parque');
+  ctx.sfx('blip');
+  return true;
 }
 
 const scripts: Record<string, Script> = {
@@ -40,6 +73,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', 'Os cavalinhos ainda tão girando. A Laylinha foi umas cinco vezes.');
       return;
     }
+    if (!(await pagar(ctx, 'carrossel'))) return;
     await ctx.fadeOut(400);
     await ctx.narrate('Música de caixinha, luzinhas piscando e os cavalinhos subindo e descendo.');
     await ctx.fadeIn(400);
@@ -57,6 +91,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Meu pescoço ainda tá doendo da batida do Mingau.');
       return;
     }
+    if (!(await pagar(ctx, 'bate-bate'))) return;
     await ctx.say('mingau', 'Bate-bate! Weng, Bella, vocês vão perder. Eu sou o melhor da família.');
     await ctx.say('diego', 'Ele diz isso todo ano. E todo ano fica preso na parede.');
     await ctx.say('mingau', 'Quem fica preso na parede é VOCÊ, Diego.');
@@ -82,6 +117,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', GameState.is('ar-pelucia') ? 'O ursinho laranja tá aqui comigo. Ele vai morar na minha cama.' : 'O chaveirinho de consolação. Eu amei mesmo assim.');
       return;
     }
+    if (!(await pagar(ctx, 'jogo das argolas'))) return;
     await ctx.say('vivian', 'Weng, você vai tentar as argolas? Você nunca ganhou NADA nesse parque.');
     await ctx.say('weng', 'Hoje é diferente. Hoje eu tenho motivação.');
     const r = await ctx.argolas();
@@ -90,9 +126,11 @@ const scripts: Record<string, Script> = {
       ctx.setFlag('ar-pelucia');
       await ctx.say('vivian', 'Não acredito! Ele ganhou! Bella, você é amuleto da sorte!');
       await ctx.say('bella', '(abraçando o ursinho) Ele vai se chamar Araruama.');
+      await ctx.give('urso-araruama', 1, false, 'O Weng ganhou pra você');
     } else {
       await ctx.say('vivian', 'Tradição mantida: o Weng nunca ganha nada nas argolas.');
       await ctx.say('bella', 'Mas o chaveirinho é muito fofo. Vou colocar na minha bolsa.');
+      await ctx.give('chaveirinho', 1, false, 'Prêmio de consolação');
     }
     ctx.hearts('player', 6);
     ctx.objective(Q, 'argolas');
@@ -109,6 +147,7 @@ const scripts: Record<string, Script> = {
       await falta(ctx);
       return;
     }
+    if (!(await pagar(ctx, 'roda-gigante'))) return;
     await ctx.say('weng', 'Agora sim. Só eu e você.');
     await ctx.fadeOut(600);
     await ctx.ferris('spin');
@@ -227,7 +266,21 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Churros de doce de leite. Depois da roda-gigante, pra não passar mal.');
   },
   async bilheteria(ctx) {
-    await ctx.say('bella', 'A bilheteria. A tia Tim comprou ficha pra todo mundo antes de a gente chegar.');
+    if (!ctx.flag('ar-fichas')) {
+      ctx.setFlag('ar-fichas');
+      await ctx.say('bella', 'A bilheteria. A tia Tim comprou ficha pra todo mundo antes de a gente chegar.');
+      await ctx.say('vivian', 'As de vocês tão aqui! Quatro: carrossel, bate-bate, argolas... e a roda-gigante.');
+      await ctx.give('fichas-parque', 4, false, 'A Vivian te deu');
+      await ctx.say('weng', 'A última é da roda-gigante. Não gasta ela à toa, hein?');
+      ctx.toast('Cada brinquedo gasta 1 ficha · veja na Mochila');
+      return;
+    }
+    if (!ctx.has('fichas-parque') && !objDone('roda')) {
+      await ctx.say('bella', 'Acabaram as fichas... Moço, mais uma, por favor!');
+      await ctx.give('fichas-parque', 1, false, 'Você comprou');
+      return;
+    }
+    await ctx.say('bella', ctx.count('fichas-parque') ? `Ainda tenho ${ctx.count('fichas-parque')} ficha${ctx.count('fichas-parque') > 1 ? 's' : ''}. Bora gastar!` : 'Bilheteria fechando. A noite foi perfeita.');
   },
   async baloes(ctx) {
     if (ctx.flag('ar-balao')) {
@@ -368,7 +421,13 @@ export const parqueMap: MapDef = {
     { rect: R(150, 700, 250, 800), interact: 'pipoca', label: 'Pipoca' },
     { rect: R(1005, 740, 1115, 840), interact: 'algodao', label: 'Algodão-doce' },
     { rect: R(580, 170, 680, 260), interact: 'churros', label: 'Churros' },
-    { rect: R(425, 760, 520, 860), interact: 'bilheteria', label: 'Bilheteria' },
+    {
+      rect: R(425, 760, 520, 860),
+      interact: 'bilheteria',
+      label: 'Bilheteria',
+      // a primeira parada: pegar as fichas (e de novo se acabarem antes da roda-gigante)
+      markerIf: () => (objActive('carrossel') || objActive('bate') || objActive('argolas') || objActive('roda')) && (!GameState.is('ar-fichas') || !InventorySystem.has('fichas-parque')),
+    },
     { rect: R(345, 770, 395, 855), interact: 'baloes', label: 'Balões' },
   ],
 

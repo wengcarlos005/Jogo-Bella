@@ -9,6 +9,8 @@ export function bindTextures(g: Phaser.Game): void {
 
 /** Converte uma textura do Phaser (real ou placeholder) em data URL para a UI DOM. */
 export function textureURL(key: string | undefined): string | null {
+  // arte dos minigames (não é textura do Phaser): 'mg:<arquivo>'
+  if (key?.startsWith('mg:')) return new URL(`assets/minigames/${key.slice(3)}.png`, document.baseURI).href;
   if (!key || !game || !game.textures.exists(key)) return null;
   let url = cache.get(key);
   if (!url) {

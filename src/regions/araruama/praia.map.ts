@@ -46,6 +46,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Segundo eu. Bora ver?');
     const r = await ctx.pedrinha();
     ctx.setFlag('ar-pedrinha-estrelas', r.stars);
+    if (!ctx.has('pedra-coracao')) {
+      await ctx.say('bella', 'Essa terceira pedra... tem formato de coração. Não vou jogar essa não.');
+      await ctx.give('pedra-coracao', 1, false, 'Você guardou');
+    }
     await ctx.narrate('Os dois sentaram na areia, com o pé na água morna, vendo o sol descer atrás da lagoa.');
     await ctx.say('bella', 'Weng... e se a sua família achar que eu não sou boa o suficiente pra você?');
     await ctx.say('weng', 'Bella. A tia Tim já te deu comida quatro vezes. A Vivian contou pra todo mundo que eu só falo de você.');

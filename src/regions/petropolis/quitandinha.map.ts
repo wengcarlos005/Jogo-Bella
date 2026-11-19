@@ -109,6 +109,7 @@ const scripts: Record<string, Script> = {
     ctx.sfx('pickup');
     await ctx.say('weng', 'Me dá um pedaço?');
     await ctx.say('bella', c === 0 ? 'Um pedacinho. Bem pequeno.' : 'Pega. Mas só porque eu te amo.');
+    if (c !== 1 && !ctx.has('algodao-rosa')) await ctx.give('algodao-rosa', 1, false, 'Você ganhou');
     ctx.hearts('player', 4);
     ctx.objective(Q, 'algodao');
   },

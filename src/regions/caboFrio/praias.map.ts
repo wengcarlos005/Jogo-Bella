@@ -145,6 +145,10 @@ const japScripts: Record<string, Script> = {
     await ctx.say('bella', 'Valeu a pena. Valeu MUITO a pena.');
     await ctx.say('weng', 'Eu falei que era rasinho.');
     await ctx.say('bella', 'Tinha um siri. Ele olhou pra mim.');
+    if (!ctx.has('concha-ilha')) {
+      await ctx.say('weng', 'Olha o que eu achei na pedra. Pra você, corajosa.');
+      await ctx.give('concha-ilha', 1, false, 'O Weng te deu');
+    }
     const c = await ctx.choose('bella', '(Sentados na pedra da ilha, a turma boiando lá embaixo)', ['Ficar mais um pouco, só os dois', 'Gritar pra turma vir também', 'Tirar uma foto da enseada']);
     if (c === 0) {
       await ctx.narrate('Ficaram um tempão ali, sem falar nada, vendo a água mudar de cor com o sol.');

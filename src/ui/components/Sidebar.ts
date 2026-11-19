@@ -38,8 +38,32 @@ export class Sidebar {
     // durante a escolha, os itens de missão (presentes, etc.) também aparecem na barra
     this.refresh(true);
     this.left.classList.add('picking');
-    this.pickTip.textContent = prompt;
+    this.pickTip.textContent = `${prompt}  ·  ← → escolher, Espaço entregar`;
     document.body.append(this.pickTip);
+    // teclado / controle: ← → escolhe, Espaço / E / Enter entrega
+    let sel = 0;
+    const items = () => Array.from(this.bag.querySelectorAll<HTMLButtonElement>('.sb-item[data-id]'));
+    const paint = () => items().forEach((b, i) => b.classList.toggle('sel', i === sel));
+    const onKey = (e: KeyboardEvent) => {
+      if (!this.pickResolve) return;
+      const list = items();
+      if (!list.length) return;
+      if (e.code === 'ArrowLeft' || e.code === 'KeyA') sel = (sel - 1 + list.length) % list.length;
+      else if (e.code === 'ArrowRight' || e.code === 'KeyD') sel = (sel + 1) % list.length;
+      else if (e.code === 'Space' || e.code === 'KeyE' || e.code === 'Enter') {
+        if (e.repeat) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        list[sel]?.click();
+        return;
+      } else return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      paint();
+    };
+    window.addEventListener('keydown', onKey, true);
+    void done.then(() => window.removeEventListener('keydown', onKey, true));
+    requestAnimationFrame(paint);
     return done;
   }
   private right = h('aside', { id: 'rightbar', class: 'idle' });

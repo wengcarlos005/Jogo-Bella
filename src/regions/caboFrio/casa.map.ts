@@ -71,6 +71,7 @@ async function cartas(ctx: ScriptContext): Promise<void> {
   const r = await ctx.gatinho();
   ctx.setFlag('cf-gatinho-estrelas', r.stars);
   await ctx.say('felipe', r.place === 1 ? 'A Bella ganhou na primeira partida. Que roubo.' : 'O gatinho explodiu metade da mesa. Rodada histórica.');
+  if (!ctx.has('baralho-gatinho')) await ctx.give('baralho-gatinho', 1, false, 'A turma deixou com você');
   if (ctx.hasArt('memory-cf-02')) await ctx.memory('mem-cf-02');
   ctx.objective(Q, 'cartas');
   await ctx.say('vitoria', 'GENTE. São dez da noite! Faltam DUAS HORAS pra virada!');
@@ -96,6 +97,11 @@ async function cartas(ctx: ScriptContext): Promise<void> {
   else await ctx.say('weng', 'Carrego. Mas só depois do quilômetro quatro.');
   const k = await ctx.cincoKm();
   ctx.setFlag('cf-km-estrelas', k.stars);
+  if (!ctx.has('chinelo-misterioso')) {
+    await ctx.say('bella', 'Gente... eu ainda tô segurando aquele chinelo perdido do caminho.');
+    await ctx.say('ruan', 'Leva. Vira o mascote da virada.');
+    await ctx.give('chinelo-misterioso', 1, false, 'Você levou');
+  }
   ctx.objective(Q, 'caminhada');
   await ctx.teleport('cf-forte', 'chegada');
 }
