@@ -3986,3 +3986,4 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 .ck-mini { width: clamp(80px, 12%, 130px); opacity: .9; }
 /* sol: a sombra da nuvem no chão, exatamente onde ela protege (nos pés do casal) */
 .so-shadow { top: 76%; height: 15%; background: radial-gradient(ellipse at 50% 50%, rgba(30, 40, 80, .42) 0 55%, rgba(30, 40, 80, .2) 68%, rgba(30, 40, 80, 0) 72%); }
+.bk-stage.ck-pre .ck-lap, .bk-stage.ck-pre .bk-slot, .bk-stage.ck-pre .bk-posbig, .bk-stage.ck-pre .ck-mini, .bk-stage.ck-pre .ck-speed { opacity: 0 !important; }

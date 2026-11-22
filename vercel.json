@@ -30,5 +30,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/assets/:dir/:name.png",
+      "destination": "/assets/:dir/:name.webp"
+    }
   ]
 }
