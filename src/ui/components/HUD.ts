@@ -4,6 +4,7 @@ import { GameState } from '@/core/GameState';
 import { QuestSystem } from '@/systems/QuestSystem';
 import { ICON } from '../icons';
 import { textureURL } from '../textures';
+import { isPadMode } from '@/systems/Gamepad';
 
 export interface HUDActions {
   openMenu(tab?: string): void;
@@ -119,7 +120,7 @@ export class HUD {
       this.prompt.classList.add('hidden');
       return;
     }
-    this.prompt.innerHTML = touch ? label : `<b>E</b> ${label}`;
+    this.prompt.innerHTML = touch ? label : `<b>${isPadMode() ? '✕' : 'E'}</b> ${label}`;
     const x = Math.max(30, Math.min(450, gx));
     const y = Math.max(52, Math.min(200, gy));
     this.prompt.style.left = `calc(var(--u) * ${x})`;

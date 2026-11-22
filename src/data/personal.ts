@@ -54,7 +54,8 @@ export const PERSONAL = {
   dates: {
     firstDate: '',
     firstKiss: '',
-    anniversary: '',
+    /** O pedido de namoro. */
+    anniversary: '25 de novembro de 2023',
   },
 
   /** Lugares reais da história. */

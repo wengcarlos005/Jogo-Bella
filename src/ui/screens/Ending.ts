@@ -165,6 +165,7 @@ export function playEnding(root: HTMLElement): Promise<'title' | 'stay'> {
         { class: 'end-fim' },
         h('div', { class: 'end-fim-t' }, 'Fim'),
         h('div', { class: 'end-fim-s' }, 'A Lua está Bella'),
+        h('div', { class: 'end-fim-d' }, '25/11/2023 → 25/11/2026 · 3 anos'),
         h(
           'div',
           { class: 'end-stats' },

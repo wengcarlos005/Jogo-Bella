@@ -67,7 +67,7 @@ const scripts: Record<string, Script> = {
     await ctx.memory('mem-dq-05');
     // troca de capítulo: tela preta por trás (o mapa não aparece entre os cartões)
     await ctx.fadeOut(600);
-    await ctx.chapterCard('Fim do Capítulo 1', 'Piabetá', 'Namorando!', 'Continuar', {
+    await ctx.chapterCard('Fim do Capítulo 1', 'Piabetá', `Namorando! · ${PERSONAL.dates.anniversary}`, 'Continuar', {
       title: 'Dois encontros e um pedido',
       photos: ['cena-churrasco-mesa', 'memory-dq-04', 'cena-pedido'],
       lines: [

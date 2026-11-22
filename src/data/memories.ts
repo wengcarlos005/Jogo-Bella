@@ -92,6 +92,7 @@ export const MEMORIES: MemoryDef[] = [
     region: 'piabeta',
     title: 'O pedido',
     year: 'O começo',
+    date: PERSONAL.dates.anniversary,
     text: 'Cinema no Caxias Shopping, a ligação da minha mãe e eu voltando emburrada pra casa. No quarto: luzinhas, nossas fotos, origamis, a cartinha e chocolates. Ele apareceu atrás de mim com um buquê e me pediu em namoro. Eu disse "aceito" rápido demais. E a gente disse "te amo" pela primeira vez.',
     image: 'cena-pedido',
   },

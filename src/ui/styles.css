@@ -4014,3 +4014,4 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 /* Jantar a dois: receita legível */
 .ck-list { font-size: clamp(12px, calc(var(--u) * 5.4), 16px) !important; padding: 10px 12px; line-height: 1.5; }
 .ck-list b { font-size: 1.15em; }
+.end-fim-d { color: #ffd23f; font-weight: 800; letter-spacing: .06em; font-size: clamp(12px, 1.5vw, 18px); margin-top: -1vh; }

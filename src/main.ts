@@ -20,6 +20,7 @@ import { SaveSystem, SettingsStore } from './systems/SaveSystem';
 import { AudioSystem } from './systems/AudioSystem';
 import { UI } from './ui/UIManager';
 import type { SaveData } from './core/types';
+import { initGamepad } from '@/systems/Gamepad';
 
 SettingsStore.load();
 InputSystem.init();
@@ -90,6 +91,9 @@ UI.init(
     },
   },
 );
+
+// Controle de videogame (PlayStation / Xbox): cada botão aperta a tecla equivalente.
+initGamepad(() => UI.toasts.show('🎮 Controle conectado: ✕ confirma · ◯ volta · □ corre · OPTIONS menu'));
 
 // Salva ao fechar/ocultar a aba (celular).
 document.addEventListener('visibilitychange', () => {
