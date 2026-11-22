@@ -38,34 +38,34 @@ export function playCardGame(parent: HTMLElement, opts: { title?: string; rounds
     const timers: number[] = [];
     const later = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
 
-    const word = h('div', { class: 'cg-word' }, 'Pronta?');
-    const who = h('div', { class: 'cg-who' });
-    const pileImg = h('img', { class: 'cg-card', alt: '', src: textureURL('carta-verso') ?? '' });
-    const pile = h('button', { class: 'cg-pile', 'aria-label': 'Bater no monte' }, pileImg, h('div', { class: 'cg-hand' }, 'BATE!'));
-    const msg = h('div', { class: 'cg-msg' }, 'Quando a carta for igual à palavra, BATE no monte!');
+    const word = h('div', { class: 'bt-word' }, 'Pronta?');
+    const who = h('div', { class: 'bt-who' });
+    const pileImg = h('img', { class: 'bt-card', alt: '', src: textureURL('carta-verso') ?? '' });
+    const pile = h('button', { class: 'bt-pile', 'aria-label': 'Bater no monte' }, pileImg, h('div', { class: 'bt-hand' }, 'BATE!'));
+    const msg = h('div', { class: 'bt-msg' }, 'Quando a carta for igual à palavra, BATE no monte!');
     const sb = h('b', {}, '0');
     const sw = h('b', {}, '0');
-    const left = h('div', { class: 'cg-left' }, `Cartas: ${rounds}`);
+    const left = h('div', { class: 'bt-left' }, `Cartas: ${rounds}`);
     const pB = textureURL('portrait-bella');
     const pW = textureURL('portrait-weng');
     const startBtn = h('button', { class: 'btn primary' }, 'Começar');
     const actions = h('div', { class: 'bg-actions' }, startBtn);
     const panel = h(
       'div',
-      { class: 'bg-panel panel cg-panel' },
-      h('div', { class: 'bg-title cg-title' }, opts.title ?? 'Bate-Gato'),
+      { class: 'bg-panel panel bt-panel' },
+      h('div', { class: 'bg-title bt-title' }, opts.title ?? 'Bate-Gato'),
       h(
         'div',
-        { class: 'cg-table' },
-        h('div', { class: 'cg-player' }, pB ? h('img', { src: pB, alt: '' }) : null, h('span', {}, 'Bella'), sb),
-        h('div', { class: 'cg-center' }, word, who, pile, left),
-        h('div', { class: 'cg-player' }, pW ? h('img', { src: pW, alt: '' }) : null, h('span', {}, 'Weng'), sw),
+        { class: 'bt-table' },
+        h('div', { class: 'bt-player' }, pB ? h('img', { src: pB, alt: '' }) : null, h('span', {}, 'Bella'), sb),
+        h('div', { class: 'bt-center' }, word, who, pile, left),
+        h('div', { class: 'bt-player' }, pW ? h('img', { src: pW, alt: '' }) : null, h('span', {}, 'Weng'), sw),
       ),
       msg,
-      h('div', { class: 'cg-rules' }, 'Sequência: Meli → Pombo → Lala → Açaí → Coração  ·  novelo: bate sempre  ·  bater errado: −1'),
+      h('div', { class: 'bt-rules' }, 'Sequência: Meli → Pombo → Lala → Açaí → Coração  ·  novelo: bate sempre  ·  bater errado: −1'),
       actions,
     );
-    const screen = h('div', { class: 'screen bg-screen cg-screen' }, panel);
+    const screen = h('div', { class: 'screen bg-screen bt-screen' }, panel);
     parent.append(screen);
     InputSystem.push('minigame');
     InputSystem.releaseAll();
@@ -97,11 +97,11 @@ export function playCardGame(parent: HTMLElement, opts: { title?: string; rounds
       const w = WORDS[turn % WORDS.length];
       word.textContent = `${LABEL[w]}!`;
       who.textContent = turn % 2 === 0 ? 'Bella vira...' : 'Weng vira...';
-      pop(word, 'cg-say');
+      pop(word, 'bt-say');
       current = draw();
       const url = textureURL(`carta-${current}`);
       if (url) pileImg.src = url;
-      pop(pileImg, 'cg-flip');
+      pop(pileImg, 'bt-flip');
       AudioSystem.play('blip');
       slapped = false;
       open = true;
@@ -117,7 +117,7 @@ export function playCardGame(parent: HTMLElement, opts: { title?: string; rounds
           weng++;
           score();
           AudioSystem.play('cancel');
-          pop(pile, 'cg-slap-w');
+          pop(pile, 'bt-slap-w');
           msg.textContent = pickW();
           later(700, step);
         });
@@ -150,7 +150,7 @@ export function playCardGame(parent: HTMLElement, opts: { title?: string; rounds
         bella++;
         score();
         AudioSystem.play('pickup');
-        pop(pile, 'cg-slap-b');
+        pop(pile, 'bt-slap-b');
         msg.textContent = current === 'novelo' ? 'Novelo embolado! Bella foi mais rápida!' : pickB();
         timers.forEach((t) => clearTimeout(t));
         timers.length = 0;
@@ -159,7 +159,7 @@ export function playCardGame(parent: HTMLElement, opts: { title?: string; rounds
         bella = Math.max(0, bella - 1);
         score();
         AudioSystem.play('cancel');
-        pop(pile, 'cg-wrong');
+        pop(pile, 'bt-wrong');
         msg.textContent = 'Bateu errado! −1. O Weng tá rindo da sua cara.';
       }
     };

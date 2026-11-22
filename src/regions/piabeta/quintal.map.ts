@@ -262,6 +262,10 @@ export const quintalMap: MapDef = {
   charScale: 1.3,
   background: '#3a2a1e',
   art: 'native',
+  // fumaça e brasinhas saindo da churrasqueira de tijolo
+  smoke: [{ x: 210, y: 380 }],
+  steam: [{ x: 340, y: 290 }],
+  ambient: 'dust',
   legend: { '.': T.GRASS },
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
