@@ -96,5 +96,18 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden' && game.scene.isActive('Game')) void SaveSystem.autosave();
 });
 
+// Rede de segurança: se uma imagem .png não existir (virou .webp), tenta o .webp antes de desistir.
+window.addEventListener(
+  'error',
+  (e) => {
+    const img = e.target as HTMLImageElement | null;
+    if (img?.tagName === 'IMG' && /\.png(\?|$)/.test(img.src) && !img.dataset.webp) {
+      img.dataset.webp = '1';
+      img.src = img.src.replace(/\.png(\?|$)/, '.webp$1');
+    }
+  },
+  true,
+);
+
 // Acesso de depuração no console: window.bw
 (window as unknown as { bw: unknown }).bw = { game, GameState, SaveSystem, UI, InputSystem };

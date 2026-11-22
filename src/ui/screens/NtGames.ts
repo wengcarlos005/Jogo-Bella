@@ -128,7 +128,7 @@ export function playChocolateGame(parent: HTMLElement): Promise<MiniResult & { p
           it.el.style.top = `${it.y}%`;
           it.el.style.transform = `translate(-50%, -50%) rotate(${it.rot}deg)`;
           // a sacola fica na altura da cabeça da Bella (≈ 60% da tela)
-          if (it.y > 56 && it.y < 70 && Math.abs(it.x - x) < 8) {
+          if (it.y > 63 && it.y < 77 && Math.abs(it.x - x) < 7) {
             it.el.remove();
             items.splice(i, 1);
             if (it.pts < 0) {

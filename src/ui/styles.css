@@ -3987,3 +3987,13 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 /* sol: a sombra da nuvem no chão, exatamente onde ela protege (nos pés do casal) */
 .so-shadow { top: 76%; height: 15%; background: radial-gradient(ellipse at 50% 50%, rgba(30, 40, 80, .42) 0 55%, rgba(30, 40, 80, .2) 68%, rgba(30, 40, 80, 0) 72%); }
 .bk-stage.ck-pre .ck-lap, .bk-stage.ck-pre .bk-slot, .bk-stage.ck-pre .bk-posbig, .bk-stage.ck-pre .ck-mini, .bk-stage.ck-pre .ck-speed { opacity: 0 !important; }
+/* tempestade: fundo enquadrado no calçadão (o quiosque amarelo aparece) e a chegada em cima dele */
+.tp-bg { background-position: 50% 0%; }
+.tp-kiosk { left: 66%; right: 1.5%; width: auto; top: 6%; height: 40%; border: 3px dashed transparent; background: none; border-radius: 14px; }
+.tp-kiosk.on { border-color: #ffd23f; background: rgba(255, 210, 63, .18); box-shadow: 0 0 22px rgba(255, 210, 63, .55); }
+.tp-kiosk .tp-runhere { position: absolute; left: 50%; bottom: -14px; transform: translate(-50%, 100%); white-space: nowrap; padding: 3px 10px; border-radius: 99px; background: #ffd23f; color: #3a1a10; text-shadow: none; box-shadow: 0 2px 0 rgba(0, 0, 0, .3); }
+/* castelo: blocos repetidos na proporção certa (nada de esticar) */
+.ca-floor.v2 { background-size: auto 112%; background-repeat: round no-repeat; background-position: center bottom; }
+.ca-ghost { background-size: auto 112% !important; background-repeat: round no-repeat !important; background-position: center bottom !important; }
+/* chocolate: Bella no tamanho certo pro cenário */
+.ch-bella { height: 40%; }

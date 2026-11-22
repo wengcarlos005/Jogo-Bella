@@ -168,9 +168,9 @@ export const ntOnFireMap: MapDef = {
     R(60, 60, 400, 415), // cantinho das crianças (elevado)
     R(0, 0, 62, 1024), // parede da esquerda
     R(1478, 0, 1536, 1024), // parede da direita
-    R(0, 785, 645, 1024), // vitrine (esq.)
-    R(905, 785, 1536, 1024), // vitrine (dir.)
-    R(645, 800, 905, 1024), // porta de vidro (só pra interagir)
+    R(0, 780, 645, 1024), // vitrine (esq.)
+    R(905, 780, 1536, 1024), // vitrine (dir.)
+    R(612, 738, 938, 1024), // porta de vidro e a moldura (ninguém fica em cima dela)
     R(30, 700, 130, 780), // planta (esq.)
     R(1405, 700, 1505, 780), // planta (dir.)
     // objetos: só a base
@@ -203,11 +203,11 @@ export const ntOnFireMap: MapDef = {
     { rect: R(520, 230, 820, 300), interact: 'defumador', label: 'Defumador' },
     { rect: R(100, 380, 400, 440), interact: 'escorrega', label: 'Escorregador' },
     { rect: R(560, 230, 700, 260), interact: 'neon', label: 'Neon' },
-    { rect: R(645, 770, 905, 800), interact: 'porta', label: 'Porta' },
+    { rect: R(620, 712, 930, 745), interact: 'porta', label: 'Porta' },
   ],
 
   spawns: {
-    porta: { tx: 775 / 48, ty: 735 / 48, facing: 'up' },
+    porta: { tx: 775 / 48, ty: 690 / 48, facing: 'up' },
   },
   scripts,
   onEnter: 'chegada',

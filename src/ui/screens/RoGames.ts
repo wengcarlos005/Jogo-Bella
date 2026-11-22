@@ -391,7 +391,8 @@ export function playTempestadeGame(parent: HTMLElement): Promise<MiniResult & { 
     const dark = h('div', { class: 'tp-dark' });
     const rain = h('div', { class: 'tp-rain' });
     const rain2 = h('div', { class: 'tp-rain far' });
-    const kiosk = h('div', { class: 'tp-kiosk' }, h('div', { class: 'tp-awning' }), h('b', {}, 'Quiosque'), h('span', { class: 'tp-runhere' }, 'CORRE PRA CÁ!'));
+    // a chegada fica em cima do quiosque de toldo amarelo do próprio cenário (lá no alto, à direita)
+    const kiosk = h('div', { class: 'tp-kiosk' }, h('span', { class: 'tp-runhere' }, '▼ CORRE PRO QUIOSQUE!'));
     const bella = walker('bella-praia', 'b');
     const me = h('div', { class: 'tp-me' }, h('i', { class: 'tp-meshadow' }), bella.el, h('i', { class: 'tp-zap' }));
     const flash = h('div', { class: 'tp-flash' });
@@ -412,12 +413,12 @@ export function playTempestadeGame(parent: HTMLElement): Promise<MiniResult & { 
       h('b', {}, 'Como jogar'),
       h('div', {}, h('img', { src: mg('tp-isopor'), alt: '' }), h('span', {}, 'O céu fechou! Ande com as ', h('kbd', {}, 'setas'), ' e passe por cima das 6 coisas na areia pra juntar tudo.')),
       h('div', {}, h('img', { src: mg('tp-raio'), alt: '' }), h('span', {}, 'Onde o chão ', h('u', {}, 'começar a faiscar'), ', vai cair um raio: saia de perto! Cada raio que pega tira 1 ♥ (são 3).')),
-      h('div', {}, h('img', { src: mg('tp-casal'), alt: '' }), h('span', {}, `Juntou tudo? Corra pro QUIOSQUE (em cima, à direita). Vocês têm ${TIME} segundos.`)),
+      h('div', {}, h('img', { src: mg('tp-casal'), alt: '' }), h('span', {}, `Juntou tudo? Corra pro QUIOSQUE de toldo amarelo (lá em cima, à direita). Vocês têm ${TIME} segundos.`)),
     );
     ui.stage.append(h('div', { class: 'tp-bg', style: bg ? `background-image:url(${bg})` : '' }), dark, kiosk, field, me, rain2, bolts, rain, clouds, banner, flash, rules);
 
     // a areia vai até a beira do mar (o mar sobe na diagonal à direita)
-    const sandMaxY = (x: number) => (x < 28 ? 90 : 90 - (x - 28) * 0.42);
+    const sandMaxY = (_x: number) => 92;
     let px = 8;
     let py = 66;
     let time = TIME;
@@ -495,18 +496,18 @@ export function playTempestadeGame(parent: HTMLElement): Promise<MiniResult & { 
         if (boltIn <= 0) {
           const k = TIME - time;
           spawnStrike(Math.max(5, Math.min(95, px + (Math.random() * 2 - 1) * 14)), Math.max(42, Math.min(sandMaxY(px) - 2, py + (Math.random() * 2 - 1) * 16)));
-          const extra = Math.random() < 0.22 + k * 0.008 ? 1 : 0;
+          const extra = Math.random() < 0.3 + k * 0.009 ? 1 : 0;
           for (let e = 0; e < extra; e++) {
             const ex = 6 + Math.random() * 88;
             spawnStrike(ex, 42 + Math.random() * (sandMaxY(ex) - 46));
           }
-          boltIn = Math.max(0.75, 1.4 - k * 0.012) + Math.random() * 0.4;
+          boltIn = Math.max(0.62, 1.2 - k * 0.012) + Math.random() * 0.35;
         }
         for (let i = strikes.length - 1; i >= 0; i--) {
           const s = strikes[i];
           s.t += dt;
-          s.el.style.setProperty('--k', String(Math.min(1, s.t / 1.35)));
-          if (!s.hit && s.t > 1.35) {
+          s.el.style.setProperty('--k', String(Math.min(1, s.t / 1.2)));
+          if (!s.hit && s.t > 1.2) {
             s.hit = true;
             s.el.classList.add('strike');
             const bolt = h('div', { class: 'tp-bolt', html: boltSVG(s.x, s.y) });
@@ -1178,7 +1179,8 @@ export function playCasteloGame(parent: HTMLElement): Promise<MiniResult & { flo
     const tower = h('div', { class: 'ca-tower' });
     const bucketImg = h('img', { class: 'ca-pail', src: mg('ca-balde'), alt: '' }) as HTMLImageElement;
     const bucket = h('div', { class: 'ca-bucket v2' }, bucketImg, h('div', { class: 'ca-ghost' }));
-    const blockFor = (w: number) => mg(w >= 30 ? 'ca-b1' : w >= 22 ? 'ca-b2' : w >= 15 ? 'ca-b3' : w >= 9 ? 'ca-b4' : 'ca-b5');
+    // cada andar é uma fileira de blocos de areia lado a lado (sem esticar a arte): blocos menores nos andares estreitos
+    const blockFor = (w: number) => mg(w >= 22 ? 'ca-b3' : w >= 12 ? 'ca-b4' : 'ca-b5');
     const wave = h('div', { class: 'ca-wave v2' }, h('img', { src: mg('ca-espuma'), alt: '' }));
     const fx = h('div', { class: 'fr-fx' });
     const flag = h('img', { class: 'ca-flag v2', src: mg('ca-torre'), alt: '' });

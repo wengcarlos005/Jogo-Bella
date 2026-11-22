@@ -33,8 +33,8 @@
   ],
   "rewrites": [
     {
-      "source": "/assets/:dir/:name.png",
-      "destination": "/assets/:dir/:name.webp"
+      "source": "/assets/(.*)\\.png",
+      "destination": "/assets/$1.webp"
     }
   ]
 }
