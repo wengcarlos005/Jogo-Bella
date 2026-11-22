@@ -177,7 +177,7 @@ export const casaBellaMap: MapDef = {
   ],
   spawns: {
     start: { tx: 6.8, ty: 7.6, facing: 'down' },
-    'from-rua': { tx: 15, ty: 17.5, facing: 'up' },
+    'from-rua': { tx: 15, ty: 16.3, facing: 'up' },
     'from-quintal': { tx: 14.6, ty: 15.6, facing: 'up' },
   },
   exits: [

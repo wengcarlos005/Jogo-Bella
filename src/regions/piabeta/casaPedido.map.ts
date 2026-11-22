@@ -145,7 +145,7 @@ export const casaPedidoMap: MapDef = {
   npcs: [{ id: 'pombo', sprite: 'pombo', tx: 21.5, ty: 17.0, facing: 'down', interact: 'pombo', pose: { key: 'pombo-poses', frame: 1 } }],
 
   spawns: {
-    porta: { tx: 15.0, ty: 17.6, facing: 'up' },
+    porta: { tx: 15.0, ty: 16.3, facing: 'up' }, // um passo pra dentro (não em cima da porta)
   },
   triggers: [{ id: 'quarto', rect: R(155, 300, 840, 482), script: 'quarto', enabledIf: () => QuestSystem.isActive(Q) && !objDone('quarto') }],
   scripts,
