@@ -53,9 +53,6 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     'rio-das-ostras': 'praia', // dia de praia
     niteroi: 'festa', // vestido laranja
     'cabo-frio': 'branco', // réveillon de branco com os amigos
-    botafogo: 'casual',
-    curitiba: 'inverno', // frio de Curitiba
-    proximo: 'casual',
   },
   weng: {
     piabeta: 'casual',
@@ -65,8 +62,5 @@ export const REGION_OUTFIT: Record<'bella' | 'weng', Record<RegionId, string>> =
     'rio-das-ostras': 'praia',
     niteroi: 'xadrez', // camisa xadrez preta
     'cabo-frio': 'branco',
-    botafogo: 'casual',
-    curitiba: 'xadrez',
-    proximo: 'casual',
   },
 };

@@ -7,10 +7,7 @@ export type RegionId =
   | 'araruama'
   | 'rio-das-ostras'
   | 'niteroi'
-  | 'cabo-frio'
-  | 'botafogo'
-  | 'curitiba'
-  | 'proximo';
+  | 'cabo-frio';
 
 export type ItemCategory =
   | 'fotografias'

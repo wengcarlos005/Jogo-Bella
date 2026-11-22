@@ -254,7 +254,7 @@ const forteScripts: Record<string, Script> = {
     if (ctx.hasArt('memory-cf-03')) await ctx.memory('mem-cf-03');
     ctx.objective(Q, 'virada');
     await ctx.fadeOut(800);
-    await ctx.chapterCard('Fim do Capítulo 7', 'Cabo Frio', 'A virada a pé.', 'Continuar', {
+    await ctx.chapterCard('Último capítulo', 'Cabo Frio', 'A virada a pé.', 'Continuar', {
       title: 'A virada a pé',
       photos: ['memory-cf-01', 'memory-cf-02', 'memory-cf-03'].filter((k) => ctx.hasArt(k)),
       lines: [
@@ -264,7 +264,8 @@ const forteScripts: Record<string, Script> = {
         'Nenhum Uber aceitou. Três quilômetros a pé, uma carona e a virada na Praia do Forte.',
       ],
     });
-    ctx.toast('O Capítulo 8 chega em breve');
+    ctx.setFlag('jogo-zerado');
+    await ctx.ending();
     await ctx.fadeIn(600);
   },
   async talk(ctx) {

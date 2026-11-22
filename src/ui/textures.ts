@@ -11,6 +11,8 @@ export function bindTextures(g: Phaser.Game): void {
 export function textureURL(key: string | undefined): string | null {
   // arte dos minigames (não é textura do Phaser): 'mg:<arquivo>'
   if (key?.startsWith('mg:')) return new URL(`assets/minigames/${key.slice(3)}.png`, document.baseURI).href;
+  // ícones desenhados dos itens da mochila: 'it:<id>' → assets/items/it-<id>.png
+  if (key?.startsWith('it:')) return new URL(`assets/items/it-${key.slice(3)}.png`, document.baseURI).href;
   if (!key || !game || !game.textures.exists(key)) return null;
   let url = cache.get(key);
   if (!url) {

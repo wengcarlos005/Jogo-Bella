@@ -250,4 +250,4 @@ export const MEMORIES: MemoryDef[] = [
 ];
 
 /** 9 capítulos: 22 lembranças até o Capítulo 5 + 3 em cada um dos 4 que faltam. */
-export const MEMORY_GOAL = 34;
+export const MEMORY_GOAL = MEMORIES.length;

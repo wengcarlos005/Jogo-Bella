@@ -359,6 +359,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     travel: (label, icon, ms) => UI.travel(label, icon, ms),
     roadTrip: (from, to, lines, trees, opts) => UI.roadTrip(from, to, lines, trees, opts),
     chapterCard: (k, t, s, b, r) => UI.chapterCard(k, t, s, b, r),
+    ending: () => UI.ending(),
     unlockRegion(id) {
       if (!GameState.data.regionsUnlocked.includes(id)) GameState.data.regionsUnlocked.push(id);
     },

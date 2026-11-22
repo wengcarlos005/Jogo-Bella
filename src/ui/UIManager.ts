@@ -20,6 +20,7 @@ import { playCinemaGame, type CinemaResult } from './screens/CinemaGame';
 import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
 import { showHowTo, HOWTO } from './screens/HowTo';
+import { playEnding } from './screens/Ending';
 import { curtainClose } from './screens/Curtain';
 import { playRoadTrip, type TripLine } from './screens/RoadTrip';
 import { ferrisShow, ferrisTop, ferrisHide } from './screens/FerrisScene';
@@ -56,8 +57,11 @@ class UIManagerImpl {
   private fadeEl = h('div', { class: 'fade' });
   private game!: Phaser.Game;
 
+  private pauseActions!: PauseActions;
+
   init(game: Phaser.Game, pauseActions: PauseActions, titleActions: TitleActions): void {
     this.game = game;
+    this.pauseActions = pauseActions;
     bindTextures(game);
     document.body.append(h('div', { id: 'frame' }), h('div', { id: 'sky' }));
     this.root = document.getElementById('ui')!;
@@ -655,6 +659,14 @@ class UIManagerImpl {
         ready = true;
       })();
     });
+  }
+
+  /** O final do jogo: retrospectiva, carta, fechamento e "Fim". */
+  async ending(): Promise<void> {
+    this.showGameplayUI(false);
+    const r = await playEnding(this.root);
+    if (r === 'title') await this.pauseActions.quitToTitle();
+    else this.showGameplayUI(true);
   }
 
   showGameplayUI(on: boolean): void {
