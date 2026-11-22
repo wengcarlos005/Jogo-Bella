@@ -76,7 +76,7 @@ export const PERSONAL = {
     'É difícil colocar em palavras tudo o que você significa para mim. São tantos momentos, tantas risadas, passeios, descobertas, desafios e pequenas coisas do dia a dia que, quando juntas, formam uma das partes mais especiais da minha vida: a nossa história.',
     'Sou muito feliz por ter você ao meu lado. Por poder compartilhar minhas conquistas, meus sonhos, minhas preocupações e até as coisas mais bobas do cotidiano. Você tornou tantos momentos mais especiais simplesmente por estar presente.',
     'Sei que nem todos os dias são perfeitos, mas acho que uma das coisas mais bonitas do nosso relacionamento é justamente isso: continuarmos escolhendo um ao outro, aprendendo juntos, crescendo e construindo algo que é só nosso.',
-    'Espero que esses três anos sejam apenas o começo de uma história muito maior. Ainda quero conhecer tantos lugares com você, conhecer a Disney, viajar para a China, Coréia, Japão, Ter um passeio romântico na Itália... colecionar novas memórias e descobrir milhares de motivos para me apaixonar ainda mais.',
+    'Espero que esses três anos sejam apenas o começo de uma história muito maior. Ainda quero conhecer tantos lugares com você, conhecer a Disney, viajar para a China, Coreia, Japão, ter um passeio romântico na Itália... colecionar novas memórias e descobrir milhares de motivos para me apaixonar ainda mais.',
     'Obrigado por ser minha companheira, minha parceira e por fazer parte da minha vida de uma maneira tão especial.',
     'Feliz 3 anos de namoro, meu amor!',
     'Eu te amo, Bella. Hoje, amanhã e em todos os capítulos que ainda vamos escrever juntos. ❤️',

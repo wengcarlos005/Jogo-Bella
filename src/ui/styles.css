@@ -3952,3 +3952,4 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 .end-quest p.done b::after { content: ' ✔'; color: #7fe39a; }
 .end-quest p.next { border-color: #ff9ac0; box-shadow: 0 0 24px rgba(255, 154, 192, .35); }
 .end-quest p.next b { color: #fff; }
+.end-art { position: absolute; inset: 0; background-size: cover; background-position: center; filter: brightness(.45) saturate(1.1); animation: endLine 1.6s both; }

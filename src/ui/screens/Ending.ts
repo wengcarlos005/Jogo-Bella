@@ -174,6 +174,10 @@ export function playEnding(root: HTMLElement): Promise<'title' | 'stay'> {
         n < total ? h('div', { class: 'end-miss' }, `Ainda faltam ${total - n} lembranças no álbum. Dá pra voltar em qualquer capítulo pelo menu Cenas.`) : h('div', { class: 'end-miss' }, 'Álbum completo. ♥'),
         h('div', { class: 'end-btns' }, ...btns),
       );
+      // ilustração de fundo do "Fim" (assets/ui/fim.png), se existir
+      const art = new Image();
+      art.onload = () => screen.insertBefore(h('div', { class: 'end-art', style: `background-image:url(${art.src})` }), stage);
+      art.src = new URL('assets/ui/fim.png', document.baseURI).href;
       await show(fim);
       hint.remove();
       let sel = 0;

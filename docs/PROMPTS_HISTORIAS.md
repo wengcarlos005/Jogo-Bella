@@ -1038,3 +1038,11 @@ Pixel art sprite sheet of a romantic envelope, EXACTLY the same art style, outli
 2. RIGHT: the same envelope opened, the flap lifted up, a folded cream letter sliding out of it with a few lines of handwriting (unreadable squiggles, no real letters), small hearts floating out of the envelope.
 No text, no letters, no numbers, no UI, no watermark.
 ```
+
+## 8. Ilustração do "Fim" (opcional)
+
+Fundo da tela final. Anexe `pascoa.png` + `bella-casual` e `weng-casual`. Arquivo: `fim.png` (1672x941).
+
+```
+Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. The attached girl and boy, seen from behind, walking hand in hand along a winding path at golden sunrise. Along the path, like a storybook map, tiny miniature versions of the places of their story: a small cozy house with a rainy window, a city apartment building, a white palace with a lake and a swan pedal boat, a ferris wheel by a lagoon, a beach with a sun umbrella, a white curvy modern museum by the bay with Sugarloaf Mountain, and an old stone fort on a beach with fireworks. The path continues past them toward a bright open horizon with clouds shaped like little hearts. Hopeful, romantic, warm. No text, no UI, no watermark.
+```
