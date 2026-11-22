@@ -11,9 +11,10 @@ import { textureURL } from '../textures';
  * O final do jogo (depois da virada em Cabo Frio):
  *  1. "Sete capítulos depois..."
  *  2. Retrospectiva: cada lembrança desbloqueada passa como polaroide, capítulo por capítulo.
- *  3. A carta (personal.ts), parágrafo por parágrafo, se já estiver escrita.
- *  4. O fechamento (personal.ts) com os dois rostinhos.
+ *  3. A carta final do Weng (personal.ts › finalLetter), parágrafo por parágrafo.
+ *  4. "Status da missão" com os dois rostinhos (personal.ts › closing).
  *  5. "Fim" + números da jornada + Voltar ao título / Continuar passeando.
+ * (A carta do Weng abre o jogo: ver Letter.ts.)
  * Teclado: Espaço / E / Enter avança (e pula a animação da vez); ← → escolhe no final.
  */
 export function playEnding(root: HTMLElement): Promise<'title' | 'stay'> {
@@ -110,26 +111,32 @@ export function playEnding(root: HTMLElement): Promise<'title' | 'stay'> {
         await hide(reel);
       }
 
-      // 3. a carta (só se já foi escrita)
-      const letter = PERSONAL.letter.filter((p) => p.trim() && !p.trim().startsWith('[') && !p.startsWith('Cada parágrafo deste array'));
-      if (letter.length) {
-        const body = h('div', { class: 'end-letter-body' });
-        const paper = h('div', { class: 'end-letter' }, h('div', { class: 'end-letter-head' }, 'Para a Bella'), body);
-        await show(paper);
-        await wait(700);
-        for (const p of letter) {
-          body.append(h('p', {}, p));
-          body.scrollTop = body.scrollHeight;
-          await wait(900);
+      // 3. a carta final (Espaço revela cada parágrafo)
+      const body = h('div', { class: 'lt-body' });
+      const paper = h('div', { class: 'lt-paper end-final' }, body);
+      const col = h('div', { class: 'lt-col' }, paper);
+      await show(col);
+      await wait(500);
+      const kind = (t: string) => ({ '#': 'hi', '~': 'beat', '@': 'sig', '+': 'ps' })[t[0]] ?? '';
+      for (const raw of PERSONAL.finalLetter) {
+        const k = kind(raw);
+        const el = h('p', { class: k }, k ? raw.slice(1) : raw);
+        body.append(el);
+        el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        AudioSystem.play('blip');
+        // título e assinatura entram sozinhos; o resto espera o Espaço
+        if (k === 'hi' || k === 'sig') await wait(1100);
+        else {
+          await wait(500);
           await press();
         }
-        await hide(paper);
       }
+      await hide(col);
 
-      // 4. fechamento
+      // 4. status da missão
       const fb = textureURL('portrait-bella');
       const fw = textureURL('portrait-weng');
-      const lines = h('div', { class: 'end-lines' });
+      const lines = h('div', { class: 'end-lines end-quest' });
       const closing = h(
         'div',
         { class: 'end-closing' },
@@ -138,9 +145,10 @@ export function playEnding(root: HTMLElement): Promise<'title' | 'stay'> {
       );
       await show(closing);
       for (const [i, l] of PERSONAL.closing.entries()) {
-        // as duas últimas linhas ("Feliz 3 anos" e a assinatura) em destaque
-        lines.append(h('p', { class: i >= PERSONAL.closing.length - 2 ? 'sig' : '' }, l));
-        await wait(2400 + l.length * 25);
+        const [label, ...rest] = l.split(':');
+        lines.append(h('p', { class: i === 0 ? 'done' : 'next' }, h('span', {}, `${label}:`), h('b', {}, rest.join(':').trim())));
+        AudioSystem.play(i === 0 ? 'quest' : 'confirm');
+        await wait(2600);
       }
       await press();
       await hide(closing);

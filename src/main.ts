@@ -5,6 +5,10 @@ import '@fontsource/pixelify-sans/600.css';
 import '@fontsource/nunito/600.css';
 import '@fontsource/nunito/700.css';
 import '@fontsource/nunito/800.css';
+// letra das cartas (cursiva, romântica)
+import '@fontsource/dancing-script/500.css';
+import '@fontsource/dancing-script/700.css';
+import '@fontsource/great-vibes/400.css';
 import { GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE } from './config/gameConfig';
 import { BootScene } from './scenes/BootScene';
 import { PreloadScene } from './scenes/PreloadScene';
@@ -67,8 +71,11 @@ UI.init(
     toast: (t) => UI.toasts.show(t),
   },
   {
-    newGame: () => {
+    newGame: async () => {
       GameState.reset();
+      // a carta do Weng abre a história
+      UI.title.close();
+      await UI.letter();
       startGame({ mapId: GameState.data.mapId, spawn: 'start' });
     },
     load: (data: SaveData) => {

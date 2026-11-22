@@ -3890,3 +3890,65 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 .end-miss { color: #fff3d6; opacity: .8; font-weight: 700; max-width: 520px; font-size: clamp(12px, 1.3vw, 16px); }
 .end-btns { display: flex; gap: 14px; margin-top: 1vh; }
 .end-btns .btn.kb-focus { outline: 3px solid #ffd23f; outline-offset: 3px; transform: scale(1.06); }
+
+/* ---------- A carta do Weng (abre o jogo) ---------- */
+.lt-screen { z-index: 950; display: grid; place-items: center; }
+.lt-env { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 18px; animation: ltIn 1s cubic-bezier(.2, 1.2, .4, 1) both; }
+@keyframes ltIn { from { opacity: 0; transform: translate(-50%, -40%) scale(.85); } }
+.lt-env-body { position: relative; width: clamp(240px, 32vw, 420px); aspect-ratio: 1.55; background: linear-gradient(#fff6e6, #f0dcbc); border-radius: 8px; box-shadow: 0 18px 40px rgba(0, 0, 0, .55); overflow: hidden; }
+.lt-env-body::before, .lt-env-body::after { content: ''; position: absolute; bottom: 0; width: 60%; height: 70%; background: #ecd3ac; }
+.lt-env-body::before { left: 0; clip-path: polygon(0 0, 100% 100%, 0 100%); }
+.lt-env-body::after { right: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+.lt-env-flap { position: absolute; inset: 0 0 38% 0; background: #e6c89a; clip-path: polygon(0 0, 100% 0, 50% 100%); z-index: 2; transform-origin: 50% 0; transition: transform .7s ease; }
+.lt-seal { position: absolute; left: 50%; top: 62%; transform: translate(-50%, -50%); z-index: 3; width: 22%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 40% 35%, #ff6a7a, #c0303f); color: #fff; font-size: clamp(20px, 3vw, 38px); box-shadow: 0 3px 0 #8a1a2a; animation: mgcBeat 1.3s infinite; }
+.lt-env-to { font-family: var(--font-pixel); color: #fff3d6; font-size: clamp(22px, 3vw, 40px); text-shadow: 0 4px 0 #a02a5a; }
+.lt-env-hint { color: #ffd23f; font-weight: 800; font-size: clamp(13px, 1.5vw, 18px); animation: agBulb 1s ease-in-out infinite alternate; }
+.lt-env.open .lt-env-flap { transform: rotateX(180deg) translateY(-4px); }
+.lt-env.open { transition: opacity .6s .3s, transform .9s; opacity: 0; transform: translate(-50%, -30%) scale(1.15); }
+.lt-paper { position: relative; width: min(92%, 780px); max-height: 80%; overflow: auto; background: linear-gradient(#fffaf0, #f6e7cc); border-radius: 6px; padding: clamp(18px, 3vw, 40px) clamp(20px, 3.5vw, 48px); box-shadow: 0 18px 46px rgba(0, 0, 0, .6); color: #4a2a1a; transition: opacity .6s, transform .6s; scrollbar-width: thin; }
+.lt-paper.off { opacity: 0; transform: translateY(20px); pointer-events: none; }
+.lt-paper::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(transparent 0 31px, rgba(160, 120, 80, .12) 31px 32px); pointer-events: none; }
+.lt-body { position: relative; display: flex; flex-direction: column; gap: 14px; }
+.lt-body p { font-weight: 700; line-height: 1.6; font-size: clamp(14px, 1.55vw, 20px); animation: endLine .9s both; }
+.lt-body p.hi { font-family: var(--font-pixel); font-weight: 400; color: #c0305f; font-size: clamp(20px, 2.4vw, 32px); }
+.lt-body p.ps { font-style: italic; color: #a0405a; }
+.lt-sign { display: flex; align-items: center; justify-content: flex-end; gap: 10px; animation: endLine 1s .3s both; }
+.lt-sign img { width: 56px; border-radius: 50%; border: 3px solid #fff; background: #f2e2ff; image-rendering: pixelated; box-shadow: 0 2px 8px rgba(0, 0, 0, .25); }
+.lt-sign span { font-family: var(--font-pixel); color: #c0305f; font-size: clamp(18px, 2vw, 26px); }
+.lt-go { position: absolute; bottom: 4%; left: 50%; transform: translateX(-50%); transition: opacity .5s; }
+.lt-go.off { opacity: 0; pointer-events: none; }
+.lt-go.kb-focus { outline: 3px solid #ffd23f; outline-offset: 3px; }
+.lt-keys { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; padding: 12px 14px; border-radius: 12px; background: rgba(192, 48, 95, .07); border: 2px dashed rgba(192, 48, 95, .3); animation: endLine .9s both; }
+.lt-keys div { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: clamp(12px, 1.3vw, 16px); }
+.lt-keys kbd { background: #fff; border: 2px solid #c0305f; border-bottom-width: 4px; border-radius: 6px; padding: 1px 7px; font-family: var(--font-body); font-weight: 900; color: #c0305f; white-space: nowrap; }
+@media (max-width: 700px) { .lt-keys { grid-template-columns: 1fr; } }
+.lt-col { position: relative; z-index: 2; width: min(92%, 780px); max-height: 92%; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.lt-col .lt-paper { width: 100%; max-height: calc(92vh - 140px); }
+.lt-go { position: static; transform: none; flex: none; }
+.lt-paper.compact .lt-body { gap: 8px; }
+.lt-paper.compact .lt-body p { font-size: clamp(13px, 1.35vw, 17px); line-height: 1.5; }
+.lt-paper.compact .lt-body p.hi { font-size: clamp(18px, 2vw, 26px); }
+.lt-env-img { width: clamp(260px, 34vw, 460px); image-rendering: pixelated; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .55)); animation: ltFloat 2.6s ease-in-out infinite; }
+@keyframes ltFloat { 50% { transform: translateY(-8px) rotate(-1deg); } }
+.lt-env.open .lt-env-img { animation: none; transform: scale(1.1); transition: transform .8s; }
+
+/* letra romântica nas cartas */
+.lt-body p { font-family: 'Dancing Script', cursive; font-weight: 500; font-size: clamp(19px, 2vw, 27px); line-height: 1.45; color: #4a2030; }
+.lt-body p.hi { font-family: 'Great Vibes', cursive; font-weight: 400; color: #c0305f; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.15; }
+.lt-body p.beat { text-align: center; font-weight: 700; color: #a0405a; font-size: clamp(22px, 2.4vw, 32px); padding: 4px 0 6px; }
+.lt-body p.sig { font-family: 'Great Vibes', cursive; text-align: right; color: #c0305f; font-size: clamp(26px, 2.8vw, 40px); line-height: 1.1; }
+.lt-body p.sig + p.sig { margin-top: -8px; }
+.lt-body p.ps { font-style: normal; font-weight: 700; color: #a0405a; border-top: 1px dashed rgba(160, 64, 90, .35); padding-top: 10px; }
+.lt-paper.compact .lt-body p { font-size: clamp(16px, 1.6vw, 22px); line-height: 1.4; }
+.lt-paper.compact .lt-body p.hi { font-size: clamp(26px, 2.8vw, 40px); }
+.lt-paper.compact .lt-keys div { font-family: var(--font-body); }
+.lt-sign span { font-family: 'Great Vibes', cursive; font-size: clamp(28px, 2.8vw, 40px); }
+.lt-env-to { font-family: 'Great Vibes', cursive; font-size: clamp(34px, 4vw, 58px); text-shadow: 0 3px 0 #a02a5a; }
+/* status da missão */
+.end-quest { gap: 18px; }
+.end-quest p { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 26px; border-radius: 16px; background: rgba(255, 255, 255, .07); border: 3px solid rgba(255, 210, 63, .6); }
+.end-quest p span { font-family: var(--font-body); font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: #ff9ac0; font-size: clamp(12px, 1.3vw, 16px); }
+.end-quest p b { font-family: var(--font-pixel); font-weight: 400; color: #ffd23f; font-size: clamp(20px, 2.6vw, 34px); }
+.end-quest p.done b::after { content: ' ✔'; color: #7fe39a; }
+.end-quest p.next { border-color: #ff9ac0; box-shadow: 0 0 24px rgba(255, 154, 192, .35); }
+.end-quest p.next b { color: #fff; }

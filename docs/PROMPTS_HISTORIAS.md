@@ -1027,3 +1027,14 @@ No text, no numbers, no letters, no UI, no watermark.
 ```
 
 Arquivo: `itens-cap1-2.png`
+
+## 7. Envelope das cartas
+
+Anexe uma folha de objetos do jogo como referência de estilo. Arquivo: `envelope.png`.
+
+```
+Pixel art sprite sheet of a romantic envelope, EXACTLY the same art style, outline thickness and colors as the attached reference sheet. Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, two items side by side, each about 600x420 px, at least 120 px of magenta between them and around them, nothing touching the edge:
+1. LEFT: a closed cream/ivory paper envelope seen from the back, front-facing, slightly tilted, with a red wax seal in the shape of a heart in the middle of the flap, a thin pink ribbon tied around it with a small bow, two tiny pink hearts and a small dried flower tucked under the ribbon, soft warm highlight.
+2. RIGHT: the same envelope opened, the flap lifted up, a folded cream letter sliding out of it with a few lines of handwriting (unreadable squiggles, no real letters), small hearts floating out of the envelope.
+No text, no letters, no numbers, no UI, no watermark.
+```

@@ -21,6 +21,7 @@ import type Phaser from 'phaser';
 import { h } from '@/utils/dom';
 import { showHowTo, HOWTO } from './screens/HowTo';
 import { playEnding } from './screens/Ending';
+import { playLetter } from './screens/Letter';
 import { curtainClose } from './screens/Curtain';
 import { playRoadTrip, type TripLine } from './screens/RoadTrip';
 import { ferrisShow, ferrisTop, ferrisHide } from './screens/FerrisScene';
@@ -661,7 +662,12 @@ class UIManagerImpl {
     });
   }
 
-  /** O final do jogo: retrospectiva, carta, fechamento e "Fim". */
+  /** A carta do Weng (abre o jogo). */
+  letter(): Promise<void> {
+    return playLetter(this.root);
+  }
+
+  /** O final do jogo: retrospectiva, fechamento e "Fim". */
   async ending(): Promise<void> {
     this.showGameplayUI(false);
     const r = await playEnding(this.root);
