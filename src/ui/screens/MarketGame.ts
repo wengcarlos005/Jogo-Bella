@@ -2,6 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { shell, type MiniResult } from './PetroGames';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — A lista da Vó (mercadinho da esquina, Duque de Caxias).
@@ -35,7 +36,7 @@ const OTHERS: Item[] = [
   { id: 'leitepo', file: 'acai-leite-po', name: 'Leite em pó' },
 ];
 const PACOCA: Item = { id: 'pacoca', file: 'acai-pacoca', name: 'Paçoca' };
-const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
 
 export function playMarketGame(parent: HTMLElement): Promise<MiniResult & { pacoca: boolean }> {
   return new Promise((resolve) => {

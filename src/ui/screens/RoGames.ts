@@ -3,6 +3,7 @@ import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
 import { shell, type MiniResult } from './PetroGames';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigames de Rio das Ostras (sprites em assets/minigames/so-* e tp-*):
@@ -10,8 +11,8 @@ import { shell, type MiniResult } from './PetroGames';
  *  - A tempestade: junte as coisas na areia (setas) desviando dos raios e corra pro quiosque.
  * Os dois só com teclado (prontos pra controle).
  */
-const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
-const chr = (f: string) => new URL(`assets/characters/${f}.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
+const chr = (f: string) => assetURL(`assets/characters/${f}.png`);
 
 /** Personagem andando (folha 4x4: baixo, esquerda, direita, cima), desenhado num div. */
 function walker(sheet: string, cls: string) {
@@ -151,7 +152,7 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
     const addCloud = () => {
       const w = 15 + Math.random() * 7;
       const el = h('img', { class: 'so-cloud', src: mg('so-nuvem'), alt: '', style: `width:${w}%` });
-      const sh = h('i', { class: 'so-shadow', style: `width:${w * 0.9}%` });
+      const sh = h('i', { class: 'so-shadow', style: `width:${w * 0.8}%` });
       sky.append(el);
       ground.append(sh);
       const fromLeft = Math.random() < 0.5;

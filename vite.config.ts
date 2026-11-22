@@ -16,7 +16,14 @@ function listFiles(dir: string): string[] {
     if (name.startsWith('.')) continue;
     const full = join(dir, name);
     if (statSync(full).isDirectory()) out.push(...listFiles(full));
-    else out.push(relative(join(root, 'public'), full).split(sep).join('/'));
+    else {
+      // um .webp mais velho que o .png do lado é arte antiga: fica de fora (vale o .png novo)
+      if (name.endsWith('.webp')) {
+        const png = full.slice(0, -5) + '.png';
+        if (existsSync(png) && statSync(png).mtimeMs > statSync(full).mtimeMs) continue;
+      }
+      out.push(relative(join(root, 'public'), full).split(sep).join('/'));
+    }
   }
   return out;
 }

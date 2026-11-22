@@ -3,6 +3,7 @@ import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { PERSONAL } from '@/data/personal';
 import { textureURL } from '../textures';
+import { assetURL } from '@/utils/asset';
 
 /**
  * A carta do Weng, que abre o jogo (Novo jogo, antes do prólogo).
@@ -12,7 +13,7 @@ import { textureURL } from '../textures';
 /** Envelope desenhado (assets/ui/envelope.png); sem a arte, o envelope em CSS. */
 export function envArt(): HTMLElement {
   const css = h('div', { class: 'lt-env-body' }, h('div', { class: 'lt-env-flap' }), h('b', { class: 'lt-seal' }, '♥'));
-  const img = h('img', { class: 'lt-env-img', src: new URL('assets/ui/envelope.png', document.baseURI).href, alt: '' }) as HTMLImageElement;
+  const img = h('img', { class: 'lt-env-img', src: assetURL('assets/ui/envelope.png'), alt: '' }) as HTMLImageElement;
   const box = h('div', { class: 'lt-env-art' }, img);
   img.addEventListener('error', () => box.replaceChildren(css));
   return box;
@@ -95,7 +96,7 @@ export function playLetter(root: HTMLElement): Promise<void> {
         if (im) {
           const open = new Image();
           open.onload = () => (im.src = open.src);
-          open.src = new URL('assets/ui/envelope-aberto.png', document.baseURI).href;
+          open.src = assetURL('assets/ui/envelope-aberto.png');
         }
         setTimeout(() => {
           env.remove();

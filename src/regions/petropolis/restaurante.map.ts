@@ -24,7 +24,8 @@ const scripts: Record<string, Script> = {
     await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', 'Weng... tem LUSTRE de cristal. E um piano. Eu tô de casaco de moletom!');
     await ctx.say('weng', 'Você tá linda. O lustre que se adapte.');
-    await ctx.move('garcom', 15.8, 14.4, 50);
+    // o garçom para na frente do casal (um passo acima), de frente pra eles, sem encostar
+    await ctx.move('garcom', 15.8, 13.0, 50);
     ctx.face('garcom', 'down');
     await ctx.say('garcom', 'Boa tarde! Reserva em nome de...?');
     await ctx.say('weng', 'Weng. Mesa pra dois. É aniversário dela.');

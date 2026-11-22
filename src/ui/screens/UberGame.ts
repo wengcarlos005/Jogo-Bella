@@ -2,6 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — Corrida de Uber até a hamburgueria.
@@ -45,7 +46,7 @@ const CALM_LINES = [
 export function playUberGame(parent: HTMLElement, opts: { title?: string; destino?: string } = {}): Promise<UberResult> {
   return new Promise((resolve) => {
     const car = textureURL('uber-car');
-    const asset = (f: string) => new URL(`assets/minigames/${f}`, document.baseURI).href;
+    const asset = (f: string) => assetURL(`assets/minigames/${f}`);
     const roadImg = asset('uber-road.png');
     const traffic = asset('uber-traffic.png');
     // pré-carrega tudo: nada pode aparecer "invisível" na primeira vez

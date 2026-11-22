@@ -3,6 +3,7 @@ import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
 import { shell, type MiniResult } from './PetroGames';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — Pedrinha na lagoa (beira da Lagoa de Araruama, tarde do dia 31).
@@ -20,7 +21,7 @@ const ANGLES = [
   { id: 'medio', name: 'Médio', hops: 1, len: 1 },
   { id: 'alto', name: 'Alto', hops: 0.7, len: 1.3 },
 ];
-const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
 const START_X = 12;
 const BOIA_X = 88;
 /** As jogadas do Weng (o "campeão"): pontos e a desculpa. */
@@ -61,7 +62,7 @@ export function playPedrinhaGame(parent: HTMLElement): Promise<MiniResult & { sk
       h('div', {}, h('span', { class: 'pe-ico' }), h('span', {}, 'Aperte ', h('kbd', {}, 'Espaço'), ' / ', h('kbd', {}, 'E'), ' com o ponteiro no ', h('u', { class: 'g' }, 'verde'), '. O vento muda a cada jogada e empurra o verde.')),
       h('div', {}, h('img', { src: mg('pd-vitoria'), alt: '' }), h('span', {}, 'Quique numa vitória-régia: +1. Chegar na boia lá no fundo: +3. A 3ª pedra é a pedra-coração: vale o dobro!')),
     );
-    const chr = (f: string) => new URL(`assets/characters/${f}.png`, document.baseURI).href;
+    const chr = (f: string) => assetURL(`assets/characters/${f}.png`);
     const couple = h(
       'div',
       { class: 'pe-couple' },
@@ -101,7 +102,7 @@ export function playPedrinhaGame(parent: HTMLElement): Promise<MiniResult & { sk
       lastW = weng;
     };
     const paintAngle = () => {
-      angleEl.replaceChildren('Ângulo: ', ...ANGLES.map((a, i) => h('span', { class: i === angle ? 'on' : '' }, a.name)));
+      angleEl.replaceChildren(h('span', { class: 'lbl' }, 'Ângulo ↑↓'), ...ANGLES.map((a, i) => h('span', { class: i === angle ? 'on' : '' }, a.name)));
       thrower.className = `pe-thrower a${angle}`;
     };
     const goodCenter = () => 0.5 + wind * 0.2;
@@ -117,7 +118,7 @@ export function playPedrinhaGame(parent: HTMLElement): Promise<MiniResult & { sk
       set(zStrong, g1 + 0.14, 1);
       const arrow = wind < -0.15 ? '←' : wind > 0.15 ? '→' : '·';
       const force = Math.abs(wind) > 0.6 ? 'forte' : Math.abs(wind) > 0.15 ? 'fraco' : 'parado';
-      windEl.textContent = `Vento: ${arrow} ${force}`;
+      windEl.replaceChildren(h('span', {}, 'Vento'), h('b', {}, `${arrow} ${force}`.trim()));
     };
     const layPads = () => {
       // 3 vitórias-régias espalhadas no caminho da pedra

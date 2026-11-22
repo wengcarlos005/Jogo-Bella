@@ -7,6 +7,7 @@ import { MEMORY_GOAL } from '@/data/memories';
 import { REGIONS } from '@/data/regions';
 import { getMap } from '@/regions';
 import { textureURL } from '../textures';
+import { assetURL } from '@/utils/asset';
 
 const BUTTONS: [tab: string, label: string, icon: string][] = [
   ['missoes', 'Missões', 'lua'],
@@ -80,7 +81,7 @@ export class Sidebar {
   /** Cria os botões depois que as texturas carregaram. */
   build(): void {
     // peças do kit de interface (assets/ui/hud-*.png) como variáveis de CSS
-    const ui = (f: string) => `url("${new URL(`assets/ui/${f}`, document.baseURI).href}")`;
+    const ui = (f: string) => `url("${assetURL(`assets/ui/${f}`)}")`;
     const de = document.documentElement.style;
     for (const k of ['topbar', 'plaque', 'scroll', 'frame', 'hotbar', 'heart-full', 'heart-empty', 'heart-half']) de.setProperty(`--hud-${k}`, ui(`hud-${k}.png`));
     document.documentElement.classList.add('hud-kit');
@@ -89,7 +90,7 @@ export class Sidebar {
         h(
           'button',
           { class: 'sb-btn sb-kit', title: label, 'aria-label': label, onclick: () => this.active && this.openMenu(tab) },
-          h('img', { src: new URL(`assets/ui/hud-btn-${icon}.png`, document.baseURI).href, alt: '' }),
+          h('img', { src: assetURL(`assets/ui/hud-btn-${icon}.png`), alt: '' }),
           h('span', { class: 'sb-label' }, label),
         ),
       ),

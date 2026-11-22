@@ -1,4 +1,5 @@
 import type Phaser from 'phaser';
+import { assetURL } from '@/utils/asset';
 
 let game: Phaser.Game | null = null;
 const cache = new Map<string, string>();
@@ -10,9 +11,9 @@ export function bindTextures(g: Phaser.Game): void {
 /** Converte uma textura do Phaser (real ou placeholder) em data URL para a UI DOM. */
 export function textureURL(key: string | undefined): string | null {
   // arte dos minigames (não é textura do Phaser): 'mg:<arquivo>'
-  if (key?.startsWith('mg:')) return new URL(`assets/minigames/${key.slice(3)}.png`, document.baseURI).href;
+  if (key?.startsWith('mg:')) return assetURL(`assets/minigames/${key.slice(3)}.png`);
   // ícones desenhados dos itens da mochila: 'it:<id>' → assets/items/it-<id>.png
-  if (key?.startsWith('it:')) return new URL(`assets/items/it-${key.slice(3)}.png`, document.baseURI).href;
+  if (key?.startsWith('it:')) return assetURL(`assets/items/it-${key.slice(3)}.png`);
   if (!key || !game || !game.textures.exists(key)) return null;
   let url = cache.get(key);
   if (!url) {

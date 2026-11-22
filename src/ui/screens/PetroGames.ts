@@ -2,6 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigames de Petrópolis (sprites em assets/minigames):
@@ -14,7 +15,7 @@ export interface MiniResult {
   mistakes: number;
 }
 
-const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
 const pick = <T,>(a: T[]) => a[Math.floor(Math.random() * a.length)];
 
 /** Moldura comum: título, área de jogo, fala com retrato e botões. */
@@ -287,7 +288,7 @@ export function playBreakfastGame(parent: HTMLElement): Promise<MiniResult> {
         return b;
       }),
     );
-    const room = h('div', { class: 'cf-room', style: `background-image:url(${new URL('assets/maps/pt-quarto-bg.png', document.baseURI).href})` });
+    const room = h('div', { class: 'cf-room', style: `background-image:url(${assetURL('assets/maps/pt-quarto-bg.png')})` });
     ui.stage.append(room, note, shelf, trayEl);
     const hud = () =>
       ui.hud.replaceChildren(

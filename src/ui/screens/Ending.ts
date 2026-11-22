@@ -6,6 +6,7 @@ import { MEMORIES } from '@/data/memories';
 import { REGIONS } from '@/data/regions';
 import { PERSONAL } from '@/data/personal';
 import { textureURL } from '../textures';
+import { assetURL } from '@/utils/asset';
 
 /**
  * O final do jogo (depois da virada em Cabo Frio):
@@ -174,10 +175,10 @@ export function playEnding(root: HTMLElement): Promise<'title' | 'stay'> {
         n < total ? h('div', { class: 'end-miss' }, `Ainda faltam ${total - n} lembranças no álbum. Dá pra voltar em qualquer capítulo pelo menu Cenas.`) : h('div', { class: 'end-miss' }, 'Álbum completo. ♥'),
         h('div', { class: 'end-btns' }, ...btns),
       );
-      // ilustração de fundo do "Fim" (assets/ui/fim.png), se existir
+      // ilustração de fundo do "Fim" (assets/ui/fim.webp), se existir
       const art = new Image();
       art.onload = () => screen.insertBefore(h('div', { class: 'end-art', style: `background-image:url(${art.src})` }), stage);
-      art.src = new URL('assets/ui/fim.png', document.baseURI).href;
+      art.src = assetURL('assets/ui/fim.webp');
       await show(fim);
       hint.remove();
       let sel = 0;

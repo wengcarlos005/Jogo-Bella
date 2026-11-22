@@ -3953,3 +3953,36 @@ body:has(#ui .pg-screen) #hotbar, body:has(#ui .bg-screen) #hotbar, body:has(#ui
 .end-quest p.next { border-color: #ff9ac0; box-shadow: 0 0 24px rgba(255, 154, 192, .35); }
 .end-quest p.next b { color: #fff; }
 .end-art { position: absolute; inset: 0; background-size: cover; background-position: center; filter: brightness(.45) saturate(1.1); animation: endLine 1.6s both; }
+/* café: imagens na proporção certa (não achatar) */
+.cf-item img { width: auto; max-width: 86%; height: calc(var(--u) * 18); object-fit: contain; }
+
+/* ---------- Pedrinha: tela limpa ---------- */
+/* controles num painel compacto embaixo, à direita (a lagoa fica livre) */
+.pe-bar { top: auto; bottom: 4%; left: auto; right: 2.5%; transform: none; width: min(46%, 420px); background: rgba(26, 16, 40, .78); border: 2px solid rgba(255, 255, 255, .25); border-radius: 14px; padding: 8px 12px 10px; box-shadow: 0 6px 14px rgba(0, 0, 0, .3); backdrop-filter: blur(2px); transition: opacity .3s; }
+.pe-stage:has(.pe-rules:not(.off)) .pe-bar, .pe-stage:has(.pe-rules:not(.off)) .pe-thrower { opacity: 0; }
+.pe-bar-top { color: #fff3d6; align-items: center; margin-bottom: 6px; }
+.pe-angle { display: flex; align-items: center; gap: 3px; }
+.pe-angle .lbl { color: #ffd23f; padding: 0 4px 0 0; font-size: .9em; }
+.pe-angle span { color: rgba(255, 243, 214, .55); }
+.pe-angle span.on { background: #ffd23f; color: #3a1a10; }
+.pe-wind { display: flex; align-items: center; gap: 6px; }
+.pe-wind span { color: #7fd8ee; font-size: .9em; }
+.pe-wind b { color: #fff; }
+.pe-special:empty { display: none; }
+.pe-special { flex-basis: 100%; text-align: center; color: #ff9ac0; }
+.pe-meter { height: 14px; border-color: rgba(255, 255, 255, .5); }
+.pe-needle { background: #fff; box-shadow: 0 0 6px #fff; }
+/* resultado da jogada: aparece e some (não fica parado no meio da lagoa) */
+.pe-score { top: 30%; }
+.pe-score.pop { animation: nv-pop2b .5s, peFade 2.4s 1s forwards; }
+@keyframes peFade { to { opacity: 0; } }
+.pe-thrower::before { box-shadow: 0 0 8px #ffd23f; opacity: .85; }
+/* Cisne Kart: sem painel da corrida enquanto as regras estão na tela; item vazio discreto */
+.ck-pre .ck-lap, .ck-pre .bk-slot, .ck-pre .bk-posbig, .ck-pre .ck-mini, .ck-pre .ck-speed, .ck-pre .bk-banner { opacity: 0; pointer-events: none; }
+.ck-lap, .bk-slot.ck, .bk-posbig.ck, .ck-mini, .ck-speed { transition: opacity .4s; }
+.bk-slot.ck:not(.has):not(.rolling) { opacity: .7; border-color: rgba(255, 210, 63, .45); }
+.bk-slot.ck:not(.has):not(.rolling) .bk-slot-ico::after { content: '?'; display: grid; place-items: center; height: 100%; font-family: var(--font-pixel); color: rgba(255, 255, 255, .45); font-size: calc(var(--u) * 11); }
+.bk-slot.ck .bk-slot-ico { width: calc(var(--u) * 17); }
+.ck-mini { width: clamp(80px, 12%, 130px); opacity: .9; }
+/* sol: a sombra da nuvem no chão, exatamente onde ela protege (nos pés do casal) */
+.so-shadow { top: 76%; height: 15%; background: radial-gradient(ellipse at 50% 50%, rgba(30, 40, 80, .42) 0 55%, rgba(30, 40, 80, .2) 68%, rgba(30, 40, 80, 0) 72%); }

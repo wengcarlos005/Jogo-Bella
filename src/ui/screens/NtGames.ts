@@ -4,10 +4,11 @@ import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
 import { shell, type MiniResult } from './PetroGames';
 import { heldKeys } from './RoGames';
+import { assetURL } from '@/utils/asset';
 
 /** Minigames de Niterói (sprites em assets/minigames/ch-*, ft-*, bq-*). Tudo só com teclado. */
-const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
-const npcSheet = (f: string) => new URL(`assets/npcs/${f}-walk.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
+const npcSheet = (f: string) => assetURL(`assets/npcs/${f}-walk.png`);
 
 // ====================================================================== Chuva de chocolate
 /**

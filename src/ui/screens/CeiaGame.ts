@@ -3,6 +3,7 @@ import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { shell, type MiniResult } from './PetroGames';
 import { textureURL } from '../textures';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — Mesa Giratória (ceia de ano-novo na cobertura dos tios do Weng, Araruama).
@@ -45,7 +46,7 @@ const ROUNDS: { who: string; seat: string; dish: string; line: string; push?: st
 ];
 /** Retrato de cada lugar (id do personagem). */
 const PORTRAIT: Record<string, string> = { tim: 'tia-tim', layla: 'laylinha' };
-const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
 const norm = (a: number) => ((a % 360) + 540) % 360 - 180; // -180..180
 
 export function playCeiaGame(parent: HTMLElement): Promise<MiniResult> {
@@ -100,7 +101,7 @@ export function playCeiaGame(parent: HTMLElement): Promise<MiniResult> {
       h('div', {}, h('img', { src: mg('mg-balao'), alt: '' }), h('span', {}, 'Aí aperte ', h('kbd', {}, 'Espaço'), ' ou ', h('kbd', {}, 'E'), ' pra servir. O balão mostra quem pediu e o quê.')),
       h('div', {}, h('img', { src: mg('mg-hashi'), alt: '' }), h('span', {}, 'Prato errado, pessoa errada ou demorar demais: ', h('u', {}, 'perde 1 ♥'), ' (são 3). Cuidado com as crianças girando a mesa!')),
     );
-    const backdrop = h('div', { class: 'ce-backdrop', style: `background-image:url(${new URL('assets/maps/ar-cobertura-bg.png', document.baseURI).href})` });
+    const backdrop = h('div', { class: 'ce-backdrop', style: `background-image:url(${assetURL('assets/maps/ar-cobertura-bg.png')})` });
     ui.stage.append(backdrop, legend, table, order, rules);
 
     const left = h('button', { class: 'btn pd-steer', 'aria-label': 'Girar pra esquerda' }, '⟲');

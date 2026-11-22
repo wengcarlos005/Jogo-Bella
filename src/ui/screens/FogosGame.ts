@@ -3,6 +3,7 @@ import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
 import { shell, type MiniResult } from './PetroGames';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — Foto dos fogos (virada de 2024, na varanda da cobertura, de frente pra Lagoa de Araruama).
@@ -13,7 +14,7 @@ import { shell, type MiniResult } from './PetroGames';
  * Pensado pra controle: direcional + 1 botão.
  */
 const BURSTS = ['ouro', 'rosa', 'azul', 'verde', 'roxo', 'ouro', 'rosa', 'azul', 'verde', 'roxo'];
-const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
 
 type Rocket = { el: HTMLElement; x: number; y: number; top: number; kind: string; t: number; phase: 'up' | 'boom' | 'gone'; shot: boolean };
 

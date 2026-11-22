@@ -2,6 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { shell, type MiniResult } from './PetroGames';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — Argolas (parque de diversões de Araruama, 1º de janeiro de 2024).
@@ -16,7 +17,7 @@ const BOTTLES = [33.7, 40.3, 47.4, 54.2, 60.8, 67.4, 74.0];
 const BOTTLE_Y = 58;
 const RINGS = 8;
 const NEED = 5;
-const mg = (f: string) => new URL(`assets/objects/${f}.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/objects/${f}.png`);
 
 export function playArgolasGame(parent: HTMLElement): Promise<MiniResult & { prize: boolean }> {
   return new Promise((resolve) => {
@@ -33,7 +34,7 @@ export function playArgolasGame(parent: HTMLElement): Promise<MiniResult & { pri
       h('div', {}, h('span', { class: 'ag-ico' }), h('span', {}, 'A argola corre de um lado pro outro. Aperte ', h('kbd', {}, 'Espaço'), ' ou ', h('kbd', {}, 'E'), ' quando ela estiver em cima da garrafa que brilha.')),
       h('div', {}, h('span', { class: 'ag-ico' }), h('span', {}, `São ${RINGS} argolas. Acerte ${NEED} e o Weng ganha uma pelúcia pra Bella.`)),
     );
-    const backdrop = h('div', { class: 'ag-backdrop', style: `background-image:url(${new URL('assets/maps/ar-parque-bg.png', document.baseURI).href})` });
+    const backdrop = h('div', { class: 'ag-backdrop', style: `background-image:url(${assetURL('assets/maps/ar-parque-bg.png')})` });
     const lights = h('div', { class: 'ag-lights' }, ...Array.from({ length: 16 }, (_, i) => h('i', { style: `left:${3 + i * 6.2}%;top:${8 + Math.sin(i / 2.4) * 6}%;animation-delay:${(i % 4) * 0.25}s` })));
     ui.stage.append(backdrop, lights, booth, left, rules);
 

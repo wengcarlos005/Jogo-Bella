@@ -2,6 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — Beijo escondido (filme no sofá, casa da Bella).
@@ -54,7 +55,7 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     const sofa = h('img', { class: 'kg-obj', src: url('casa-sofa'), style: `${at(730, 748)};width:${(360 / CW) * 100}%` });
     const sheet = (key: string, frame: number, cols: number) => `background-image:url(${url(key)});background-size:${cols * 100}% auto;background-position:${(frame % cols) * (100 / (cols - 1))}% ${Math.floor(frame / cols) * (100 / 3)}%`;
     // o casal no sofá (art-source/minigames/beijo-sofa.webp): inocente, beijando e no susto
-    const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+    const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
     const COUPLE: Record<'inocente' | 'beijo' | 'susto', number> = { inocente: 200, beijo: 224, susto: 196 };
     for (const k of Object.keys(COUPLE)) new Image().src = mg(`casal-${k}`);
     const couple = h('img', { class: 'kg-couple', src: mg('casal-inocente'), alt: '', style: at(728, 742) }) as HTMLImageElement;
@@ -67,7 +68,7 @@ export function playKissGame(parent: HTMLElement): Promise<KissResult> {
     };
     coupleSet('inocente');
     // mãe na porta da cozinha: sprites próprios (desconfiada → sobrancelha levantada → brava no flagra)
-    const momSrc = (k: string) => new URL(`assets/minigames/mae-${k}.png`, document.baseURI).href;
+    const momSrc = (k: string) => assetURL(`assets/minigames/mae-${k}.png`);
     for (const k of ['espia', 'desconfia', 'sobrancelha', 'brava']) new Image().src = momSrc(k);
     const momEl = h('img', { class: 'kg-mom2', src: momSrc('desconfia'), alt: '', style: `${at(968, 668)}` }) as HTMLImageElement;
     const momFace = (k: 'espia' | 'desconfia' | 'sobrancelha' | 'brava') => {

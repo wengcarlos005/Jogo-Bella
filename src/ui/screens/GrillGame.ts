@@ -2,6 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — Churrasqueira do Alexandre (2º encontro, quintal da Bella). 10 FASES DE TIMING.
@@ -44,7 +45,7 @@ function meatImgs(id: string): HTMLImageElement[] {
   if (!MEAT_IMG[id])
     MEAT_IMG[id] = [0, 1, 2, 3].map((k) => {
       const im = new Image();
-      im.src = new URL(`assets/minigames/churr-${id}-${k}.png`, document.baseURI).href;
+      im.src = assetURL(`assets/minigames/churr-${id}-${k}.png`);
       return im;
     });
   return MEAT_IMG[id];
@@ -94,7 +95,7 @@ const H = 112;
 const SC = 4;
 const fxImg = (f: string) => {
   const im = new Image();
-  im.src = new URL(`assets/minigames/churr-${f}.png`, document.baseURI).href;
+  im.src = assetURL(`assets/minigames/churr-${f}.png`);
   return im;
 };
 /** Sprites da churrasqueira (art-source/minigames/churrasco-grelha.webp). */

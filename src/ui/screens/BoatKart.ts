@@ -3,6 +3,7 @@ import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
 import { shell, type MiniResult } from './PetroGames';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Cisne Kart (pseudo-3D, câmera atrás do pedalinho, como num kart de verdade).
@@ -16,7 +17,7 @@ import { shell, type MiniResult } from './PetroGames';
  */
 type Item = 'pimenta' | 'pao' | 'onda' | 'coracao';
 const ITEM_NAME: Record<Item, string> = { pimenta: 'Pimenta turbo', pao: 'Pão pros patos', onda: 'Onda', coracao: 'Coração escudo' };
-const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
 
 /** Ícones dos itens (desenhados, pixel). */
 function itemSVG(it: Item | 'box'): string {
@@ -40,7 +41,10 @@ const W = 960;
 const H = 540;
 const SEG = 200;
 const ROAD = 2000; // meia-largura da pista
-const CAM_H = 1000;
+// câmera alta e afastada (vista inclinada): dá pra ver lá na frente o que vem (caixas, patos, vitórias-régias)
+const CAM_H = 1550;
+/** linha do horizonte na tela (mais alta = mais lago visível) */
+const HZ = H * 0.33;
 const DEPTH = 1 / Math.tan(((100 / 2) * Math.PI) / 180);
 const DRAW = 170;
 const PLAYER_Z = CAM_H * DEPTH;
@@ -82,7 +86,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
     const ctx = cv.getContext('2d')!;
     const banner = h('div', { class: 'bk-banner' });
     const slotIcon = h('div', { class: 'bk-slot-ico' });
-    const slotName = h('span', {}, 'Sem item');
+    const slotName = h('span', {}, 'Pegue uma ?');
     const slot = h('div', { class: 'bk-slot ck' }, h('b', {}, 'Item'), slotIcon, slotName);
     const posBig = h('div', { class: 'bk-posbig ck' }, h('b', {}, '4º'), h('span', {}, '/4'));
     const lapBox = h('div', { class: 'ck-lap' }, h('span', {}, 'VOLTA'), h('b', {}, `1/${LAPS}`));
@@ -98,6 +102,8 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       h('div', {}, h('span', { class: 'bk-rule-ico', html: itemSVG('pimenta') }), h('span', {}, 'Pimenta = turbo · Pão = patinhos cercam quem tá na frente · Onda = acerta quem tá na frente · Coração = escudo. Faixas amarelas dão turbo; vitória-régia e patos fazem rodar.')),
     );
     ui.stage.append(cv, lapBox, slot, posBig, mini, speedo, banner, rules);
+    // enquanto as regras estão na tela, o painel da corrida fica escondido (nada por cima do texto)
+    ui.stage.classList.add('ck-pre');
 
     // ---------------------------------------------------------------- imagens
     const imgs: Record<string, HTMLImageElement> = {};
@@ -204,7 +210,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
     const setItem = (it: Item | null) => {
       item = it;
       slotIcon.innerHTML = it ? itemSVG(it) : '';
-      slotName.textContent = it ? ITEM_NAME[it] : 'Sem item';
+      slotName.textContent = it ? ITEM_NAME[it] : 'Pegue uma ?';
       slot.classList.toggle('has', !!it);
     };
     const roll = (got: Item) => {
@@ -287,7 +293,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
     // ---------------------------------------------------------------- render
     const project = (worldX: number, relZ: number, camX: number) => {
       const scale = DEPTH / relZ;
-      return { x: W / 2 + (scale * (worldX - camX) * W) / 2, y: H / 2 + (scale * CAM_H * H) / 2, w: (scale * ROAD * W) / 2, scale };
+      return { x: W / 2 + (scale * (worldX - camX) * W) / 2, y: HZ + (scale * CAM_H * H) / 2, w: (scale * ROAD * W) / 2, scale };
     };
     const quad = (x1: number, y1: number, w1: number, x2: number, y2: number, w2: number, color: string) => {
       ctx.fillStyle = color;
@@ -300,11 +306,11 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       ctx.fill();
     };
     const drawBackground = () => {
-      const g = ctx.createLinearGradient(0, 0, 0, H / 2);
+      const g = ctx.createLinearGradient(0, 0, 0, HZ);
       g.addColorStop(0, '#5aa8e8');
       g.addColorStop(1, '#cfe9f7');
       ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H / 2 + 2);
+      ctx.fillRect(0, 0, W, HZ + 2);
       const pal = imgs.palacio;
       if (pal?.complete && pal.naturalWidth) {
         const pw = W * 1.7;
@@ -312,7 +318,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
         // a paisagem gira com as curvas; as cópias dos lados são espelhadas pra não ter emenda
         const span = pw * 2;
         const off = ((((W / 2 - pw / 2 - skyOff * 0.6) % span) + span) % span) - span;
-        const py = H / 2 - ph + 4;
+        const py = HZ - ph + 4;
         for (let px = off; px < W; px += span) {
           ctx.drawImage(pal, px, py, pw, ph);
           ctx.save();
@@ -324,7 +330,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       }
       // margem de grama no horizonte
       ctx.fillStyle = '#4e8a2c';
-      ctx.fillRect(0, H / 2, W, H / 2);
+      ctx.fillRect(0, HZ, W, H - HZ);
     };
     const render = (t: number) => {
       drawBackground();
@@ -466,7 +472,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
       // o casal
       const boat = imgs[phase === 'race' && Math.floor(t / 160) % 2 ? 'pd-barco2' : 'pd-barco'];
       if (boat?.complete && boat.naturalWidth) {
-        const bw = 205;
+        const bw = 170;
         const bh = (bw * boat.naturalHeight) / boat.naturalWidth;
         const bob = Math.sin(t / 140) * 3;
         ctx.save();
@@ -740,6 +746,7 @@ export function playBoatGame(parent: HTMLElement): Promise<MiniResult> {
     const start = () => {
       if (phase !== 'rules') return;
       rules.classList.add('off');
+      ui.stage.classList.remove('ck-pre');
       phase = 'count';
       countT = 3;
       ui.actions.replaceChildren(pad('◀', 'l'), itemBtn, pad('▶', 'r'));

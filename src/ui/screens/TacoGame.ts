@@ -2,6 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — Taco Roleta (restaurante mexicano, 2º encontro).
@@ -33,7 +34,7 @@ type Mood = 'b-pensa' | 'b-feliz' | 'b-fogo' | 'w-malandro' | 'w-ri' | 'w-orgulh
 
 export function playTacoGame(parent: HTMLElement, opts: { title?: string } = {}): Promise<TacoResult> {
   return new Promise((resolve) => {
-    const mg = (f: string) => new URL(`assets/minigames/taco-${f}.png`, document.baseURI).href;
+    const mg = (f: string) => assetURL(`assets/minigames/taco-${f}.png`);
     for (const f of ['prato', 'fechado', 'aberto', 'pimenta', 'fogo', 'brilho', 'agua', 'sombreiro', 'duvida', 'b-pensa', 'b-feliz', 'b-fogo', 'w-malandro', 'w-ri', 'w-orgulho']) new Image().src = mg(f);
     let round = 0;
     let lives = LIVES;

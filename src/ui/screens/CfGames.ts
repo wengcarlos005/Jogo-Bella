@@ -3,9 +3,10 @@ import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
 import { shell, type MiniResult } from './PetroGames';
+import { assetURL } from '@/utils/asset';
 
 /** Minigames de Cabo Frio (sprites em assets/minigames/gb-* e km-*). Tudo só com teclado. */
-const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
 const face = (who: string) => textureURL(`portrait-${who}`) ?? '';
 const NAME: Record<string, string> = { bella: 'Bella', weng: 'Weng', nathan: 'Nathan', vitoria: 'Vitória', ruan: 'Ruan', felipe: 'Felipe', puggian: 'Puggian' };
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));

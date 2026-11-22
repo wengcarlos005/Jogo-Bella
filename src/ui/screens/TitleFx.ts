@@ -1,4 +1,5 @@
 import { h } from '@/utils/dom';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Efeitos da abertura: tela de carregamento animada, o "boom" ao aparecer o título
@@ -40,7 +41,7 @@ export function showLoader(): void {
     s.style.setProperty('--s', `${1 + Math.random() * 2}px`);
     stars.append(s);
   }
-  const asset = (f: string) => new URL(`assets/${f}`, document.baseURI).href;
+  const asset = (f: string) => assetURL(`assets/${f}`);
   fill = h('div', { class: 'ld-fill' });
   beads = Array.from({ length: 14 }, (_, i) => h('i', { style: `left:${((i + 0.5) / 14) * 100}%` }, '♥'));
   pct = h('div', { class: 'ld-pct' }, '0%');
@@ -199,7 +200,7 @@ export function decorateTitle(root: HTMLElement, art: string, buttons: HTMLEleme
     h('div', { class: 'tx-glow lamp c', style: 'left:51.6%;top:61.5%' }),
     (() => {
       // brilho só dentro das letras/lua do logo (máscara no formato do logo)
-      const mask = new URL('assets/ui/title-logo-mask.png', document.baseURI).href;
+      const mask = assetURL('assets/ui/title-logo-mask.png');
       return h('div', { class: 'tx-shine-logo', style: `-webkit-mask-image:url("${mask}");mask-image:url("${mask}")` });
     })(),
     h('div', { class: 'tx-bubble', style: 'left:56%;top:71%' }),

@@ -1,6 +1,7 @@
 import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Cartão "Como jogar" mostrado antes dos minigames que não têm as regras na própria tela.
@@ -12,7 +13,7 @@ export interface HowTo {
   rows: { img?: string; text: string }[];
 }
 
-const mg = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+const mg = (f: string) => assetURL(`assets/minigames/${f}.png`);
 
 /** "[Espaço]" vira tecla, "{perde 1 ♥}" vira aviso em vermelho. */
 function rich(text: string): (HTMLElement | string)[] {

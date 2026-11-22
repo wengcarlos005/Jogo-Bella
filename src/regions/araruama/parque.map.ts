@@ -339,11 +339,12 @@ export const parqueMap: MapDef = {
   ground: Array.from({ length: 22 }, () => '.'.repeat(32)),
 
   blocks: [
-    R(0, 0, 575, 300), // roda-gigante e cerca
+    R(0, 0, 450, 292), // roda-gigante (base) e cerca
+    R(450, 0, 575, 175), // cerca da roda (lado direito, que faz curva pra cima)
     R(575, 0, 770, 60), // fundo
     R(770, 0, 1536, 385), // pista do bate-bate e cerca
     R(245, 505, 690, 700), // base do carrossel
-    R(262, 300, 675, 505), // atrás do carrossel (ninguém some atrás da cobertura)
+    R(262, 350, 675, 505), // atrás do carrossel (fica um corredor livre entre o carrossel e a roda-gigante)
     R(1085, 385, 1536, 830), // barracas da direita
     R(1380, 300, 1536, 620), // árvores (dir.)
     R(1380, 800, 1536, 1024),
@@ -406,7 +407,7 @@ export const parqueMap: MapDef = {
     // a Laylinha perto do algodão-doce (antes ficava em cima do arco)
     { id: 'laylinha', sprite: 'laylinha', tx: 1040 / 48, ty: 768 / 48, facing: 'down', interact: 'carrossel' },
     // Mingau e Diego na grade do bate-bate (fora do caminho principal)
-    { id: 'mingau', sprite: 'mingau', tx: 640 / 48, ty: 410 / 48, facing: 'right', interact: 'mingauTalk' },
+    { id: 'mingau', sprite: 'mingau', tx: 860 / 48, ty: 575 / 48, facing: 'right', interact: 'mingauTalk' },
     { id: 'vivian', sprite: 'vivian', tx: 15.6, ty: 11.2, facing: 'down', interact: 'argolas' },
     { id: 'julinha', sprite: 'julinha', tx: 270 / 48, ty: 800 / 48, facing: 'left', interact: 'pipoca' },
     { id: 'diego', sprite: 'diego', tx: 720 / 48, ty: 560 / 48, facing: 'up', interact: 'diegoTalk' },
@@ -417,7 +418,7 @@ export const parqueMap: MapDef = {
     // a entrada da pista é na quina da grade, à esquerda da barraca das argolas (antes a seta ficava em cima da barraca)
     { rect: R(690, 330, 795, 425), interact: 'bate', label: 'Bate-bate', markerIf: () => objActive('bate') },
     { rect: R(800, 400, 1080, 515), interact: 'argolas', label: 'Argolas', markerIf: () => objActive('argolas') },
-    { rect: R(100, 200, 460, 315), interact: 'roda', label: 'Roda-gigante', markerIf: () => objActive('roda') && brinquedosFeitos() },
+    { rect: R(120, 250, 520, 330), interact: 'roda', label: 'Roda-gigante', markerIf: () => objActive('roda') && brinquedosFeitos() },
     { rect: R(150, 700, 250, 800), interact: 'pipoca', label: 'Pipoca' },
     { rect: R(1005, 740, 1115, 840), interact: 'algodao', label: 'Algodão-doce' },
     { rect: R(580, 170, 680, 260), interact: 'churros', label: 'Churros' },

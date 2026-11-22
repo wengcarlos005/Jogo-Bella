@@ -1,6 +1,7 @@
 import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — Susto na Sala 3 (o filme de terror do 3º encontro).
@@ -25,7 +26,7 @@ const pick = <T,>(a: T[]) => a[Math.floor(Math.random() * a.length)];
 
 export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
   return new Promise((resolve) => {
-    const mg = (f: string) => new URL(`assets/minigames/cine-${f}.png`, document.baseURI).href;
+    const mg = (f: string) => assetURL(`assets/minigames/cine-${f}.png`);
     for (const f of ['corredor', 'escuro', 'olhos', 'susto', 'gato', 'pisca', 'calmo', 'pegou', 'pipoca', 'ri', 'abraco', 'balde']) new Image().src = mg(f);
     // 5 sustos + 3 alarmes falsos, embaralhados (o primeiro é sempre de verdade, pra aprender)
     const rest = ([{ real: true }, { real: true }, { real: true }, { real: true }, { real: false, falso: 'gato' }, { real: false, falso: 'pisca' }, { real: false, falso: 'gato' }] as Beat[]).sort(() => Math.random() - 0.5);

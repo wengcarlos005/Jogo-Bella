@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import available from 'virtual:available-assets';
+import { assetPath } from '@/utils/asset';
 import { ASSETS } from '@/config/assetManifest';
 import { PlaceholderFactory } from '@/graphics/PlaceholderFactory';
 import { AudioSystem } from '@/systems/AudioSystem';
@@ -22,18 +23,19 @@ export class PreloadScene extends Phaser.Scene {
     this.load.on('progress', (p: number) => loaderProgress(p));
 
     for (const a of ASSETS) {
-      if (!files.has(a.file)) continue;
-      if (a.kind === 'spritesheet') this.load.spritesheet(a.key, a.file, { frameWidth: a.frameWidth!, frameHeight: a.frameHeight! });
-      else if (a.kind === 'image') this.load.image(a.key, a.file);
+      const file = assetPath(a.file);
+      if (!files.has(file)) continue;
+      if (a.kind === 'spritesheet') this.load.spritesheet(a.key, file, { frameWidth: a.frameWidth!, frameHeight: a.frameHeight! });
+      else if (a.kind === 'image') this.load.image(a.key, file);
       else AudioSystem.registerFile(a.key, a.file);
     }
     // Cenários pintados: qualquer maps/<id>-bg.png ou -fg.png é carregado automaticamente.
-    const known = new Set(ASSETS.map((a) => a.file));
+    const known = new Set(ASSETS.map((a) => assetPath(a.file)));
     for (const f of files) {
-      const m = /^assets\/maps\/(.+-(?:bg|fg))\.png$/.exec(f);
+      const m = /^assets\/maps\/(.+-(?:bg|fg))\.(?:png|webp)$/.exec(f);
       if (m && !known.has(f)) this.load.image(`map-${m[1]}`, f);
     }
-    const loaded = ASSETS.filter((a) => files.has(a.file)).map((a) => a.id);
+    const loaded = ASSETS.filter((a) => files.has(assetPath(a.file))).map((a) => a.id);
     console.info(`[assets] ${loaded.length}/${ASSETS.length} arquivos reais. Demais: placeholders.`, loaded);
   }
 

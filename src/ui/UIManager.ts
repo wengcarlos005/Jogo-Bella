@@ -38,6 +38,7 @@ import { playBurgerGame, type BurgerOptions, type BurgerResult } from './screens
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { bindTextures, textureURL, textureWidth } from './textures';
+import { assetURL } from '@/utils/asset';
 import { openWardrobe, type WardrobeOption } from './screens/Wardrobe';
 import { Sidebar } from './components/Sidebar';
 import './styles.css';
@@ -336,7 +337,7 @@ class UIManagerImpl {
   private vignetteEl: HTMLElement | null = null;
   /** Desenho grande da cena (assets/minigames/<nome>.png) por cima do mapa, com as falas embaixo. null tira. */
   vignette(main: string | null, side?: string): void {
-    const url = (f: string) => new URL(`assets/minigames/${f}.png`, document.baseURI).href;
+    const url = (f: string) => assetURL(`assets/minigames/${f}.png`);
     if (!main) {
       const el = this.vignetteEl;
       this.vignetteEl = null;

@@ -2,6 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { textureURL } from '../textures';
+import { assetURL } from '@/utils/asset';
 
 /**
  * Minigame — Jantar a dois (a primeira noite no apê do Weng).
@@ -33,7 +34,7 @@ const SHELF: Ing[] = ['macarrao', 'creme', 'queijo', 'alho', 'cebola', 'carne', 
 
 export function playCookGame(parent: HTMLElement): Promise<CookResult> {
   return new Promise((resolve) => {
-    const mg = (f: string) => new URL(`assets/minigames/cz-${f}.png`, document.baseURI).href;
+    const mg = (f: string) => assetURL(`assets/minigames/cz-${f}.png`);
     let recipe = 0;
     let mistakes = 0;
     let raf = 0;
