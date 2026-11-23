@@ -240,7 +240,7 @@ export function playBurgerGame(parent: HTMLElement, opts: BurgerOptions): Promis
         if (done) return;
         hints++;
         showOrder(true);
-        say(`${opts.helper ?? 'Weng'}: "De novo? Tá bom..."`);
+        say(`${opts.helper ?? 'Weng'}: "Tá bom, olha de novo!"`);
         setTimeout(() => !done && showOrder(false), 2200);
       });
       actions.append(hintBtn);

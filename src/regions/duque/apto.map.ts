@@ -145,7 +145,6 @@ export async function conviteSerra(ctx: ScriptContext): Promise<void> {
       { from: 'me', text: 'ainda nem é meu aniversário' },
       { from: 'them', text: 'pra mim já é' },
     ]);
-    await ctx.teleport('pt-quitandinha', 'entrada');
   await ctx.teleport('pt-quitandinha', 'entrada');
 }
 

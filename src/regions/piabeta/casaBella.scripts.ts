@@ -117,7 +117,7 @@ export const casaScripts: Record<string, Script> = {
 
   async oculos(ctx) {
     if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
-      await ctx.say('bella', segundoEncontro() ? 'A escrivaninha. Cadernos, canetas e a foto da gente que eu ainda não contei pra ninguém.' : 'Cadernos, canetas e uma pilha de coisas que eu juro que vou organizar.');
+      await ctx.say('bella', segundoEncontro() ? 'A escrivaninha. Cadernos, canetas e a foto da gente que eu ainda não mostrei pra ninguém.' : 'Cadernos, canetas e uma pilha de coisas que eu juro que vou organizar.');
       return;
     }
     if (ctx.objectiveDone(Q, 'oculos')) {
@@ -159,7 +159,7 @@ export const casaScripts: Record<string, Script> = {
 
   async espelho(ctx) {
     if (segundoEncontro() || QuestSystem.isDone('pia-m1')) {
-      await ctx.say('bella', segundoEncontro() ? 'Tô bem. Tô bem até demais. O Weng que fique nervoso dessa vez.' : 'Os cachos colaboraram hoje. Raro.');
+      await ctx.say('bella', segundoEncontro() ? 'Tô bem. Tô bem até demais. O Weng que fique nervoso dessa vez.' : 'Os cachos tão lindos hoje. Como sempre.');
       return;
     }
     const ready =
@@ -175,7 +175,7 @@ export const casaScripts: Record<string, Script> = {
     await ctx.say('bella', 'Ok. Respira.');
     const c = await ctx.choose('bella', 'Última olhada no espelho...', ['"Tá perfeita."', '"E se ele achar estranho meu cabelo?"']);
     if (c === 0) await ctx.say('bella', 'Tá perfeita. Os cachos colaboraram hoje. É um sinal.');
-    else await ctx.say('bella', 'Não. O cabelo tá lindo. Os cachos colaboraram hoje, e isso é raro.');
+    else await ctx.say('bella', 'Não. O cabelo tá lindo. Os cachos tão perfeitos hoje.');
     await ctx.emote('bella', 'heart');
     ctx.objective(Q, 'espelho');
     ctx.toast('Desça até a sala e pegue o guarda-chuva');
@@ -233,7 +233,7 @@ export const casaScripts: Record<string, Script> = {
             ? 'A Lala tá dormindo no quarto. Será que hoje ela me deixa fazer carinho?'
             : !done('filme')
               ? 'Sofá, filme e você do meu lado. Melhor parte do dia.'
-              : 'Bora dar uma volta? Tá uma noite bonita lá fora.';
+              : 'Bora dar uma volta? Tá um fim de tarde bonito lá fora.';
       await ctx.say('weng', fala);
       return;
     }

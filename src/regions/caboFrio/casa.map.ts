@@ -13,9 +13,9 @@ async function pizza(ctx: ScriptContext): Promise<void> {
   await ctx.narrate('Noite do dia 30. Todo mundo de banho tomado, com fome de leão e areia ainda no pé.');
   await ctx.fadeIn(400);
   await ctx.say('felipe', 'Pizza! Quem escolhe os sabores?');
-  await ctx.say('puggian', 'Eu voto em quem perdeu na altinha.');
+  await ctx.say('puggian', 'Eu voto em quem fez a melhor jogada na altinha.');
   await ctx.say('ruan', 'Então é a Bella.');
-  await ctx.say('bella', 'Ninguém perdeu! ...Tá, eu escolho. Mas sem reclamar.');
+  await ctx.say('bella', 'Eu?! ...Tá, eu escolho. Mas sem reclamar.');
   const sabores: [string, string[]][] = [
     ['Primeira pizza (a do Nathan, que come tudo):', ['Calabresa', 'Portuguesa', 'Frango com catupiry']],
     ['Segunda (a da Vitória, que não come cebola):', ['Margherita', 'Calabresa com cebola', 'Quatro queijos']],
@@ -41,14 +41,14 @@ async function pizza(ctx: ScriptContext): Promise<void> {
   }
   await ctx.narrate('Quarenta minutos depois: três caixas abertas na mesa e sete pessoas brigando pela última fatia.');
   await ctx.say('ruan', 'A última é de quem contar a melhor história da viagem.');
-  await ctx.say('felipe', 'A viagem começou ONTEM.');
+  await ctx.say('felipe', 'A viagem começou HOJE.');
   const c = await ctx.choose('bella', '(A última fatia, esticando o queijo)', ['Dividir a fatia com o Weng', 'Dar pro Nathan, que tá de olho', 'Pegar e sair correndo']);
   if (c === 0) {
     await ctx.say('weng', 'Metade? O queijo não quer soltar... olha isso.');
     await ctx.emote('weng', 'heart');
-    await ctx.say('vitoria', 'Gente, olha os dois puxando o queijo. Que nojo. Que lindo.');
+    await ctx.say('vitoria', 'Gente, olha os dois puxando o queijo. Que grude. Que lindo.');
   } else if (c === 1) await ctx.say('nathan', 'Bella, você é a melhor pessoa dessa casa.');
-  else await ctx.say('puggian', 'PEGA ELA! ...ela já comeu. Ela é rápida.');
+  else await ctx.say('puggian', 'PEGA ELA! ...Ela já comeu. Ela é rápida.');
   ctx.hearts('player', acertos >= 2 ? 8 : 5);
   if (ctx.hasArt('memory-cf-01')) await ctx.memory('mem-cf-01');
   ctx.objective(Q, 'pizza');
@@ -126,7 +126,7 @@ const scripts: Record<string, Script> = {
         await ctx.say('felipe', 'Par ou ímpar! ...Ímpar! Perdeu, Ruan!');
         await ctx.say('ruan', 'Isso foi armado.');
       } else await ctx.say('vitoria', 'Gente, a Bella é muito boazinha. Dá o quarto da janela pra ela!');
-      await ctx.narrate('No fim, ficou o quarto do canto pra Bella e o Weng. O ventilador fazia um barulhinho que virou trilha sonora da viagem.');
+      await ctx.narrate('No fim, ficou o quarto do canto pra Bella e pro Weng. O ventilador fazia um barulhinho que virou trilha sonora da viagem.');
       ctx.objective(Q, 'chegar');
       ctx.toast('Bora pra Praia do Peró! Saia pela porta');
       return;

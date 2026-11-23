@@ -96,7 +96,7 @@ const scripts: Record<string, Script> = {
     await ctx.narrate('A porta mal fechou e o barulho veio junto: panela no fogo, criança correndo, TV ligada e todo mundo falando ao mesmo tempo.');
     await ctx.say('tia-tim', 'Chegaram! Entra, entra! Bella, tá com fome? Já comeu?');
     await ctx.say('bella', 'Oi, tia Tim! Tô bem, obrigada!');
-    await ctx.say('tia-tim', 'Tá magrinha. Hoje à noite tem MUITA comida. Muita. Vai comer até não aguentar.');
+    await ctx.say('tia-tim', 'Que bom que vocês chegaram! Hoje à noite tem MUITA comida. Muita. Vai comer até não aguentar.');
     await ctx.emote('bella', 'sweat');
     await ctx.say('weng', '(cochichando) Viu? Ela já te adotou.');
     ctx.nerves(60);
@@ -233,7 +233,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Tudo que é vermelho aqui é de sorte. Se duvidar, até a panela.');
   },
   async relogio(ctx) {
-    await ctx.say('bella', 'Ainda faltam umas boas horas pra meia-noite.');
+    await ctx.say('bella', 'O relógio da sala. Hoje à noite todo mundo vai ficar de olho nele.');
   },
   async fogao(ctx) {
     await ctx.say('bella', 'Tem tanta panela no fogo que parece cozinha de restaurante.');

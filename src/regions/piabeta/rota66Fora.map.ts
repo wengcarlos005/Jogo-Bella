@@ -43,7 +43,7 @@ const scripts: Record<string, Script> = {
     const falas: [string, string][] = [
       ['weng', 'Acho que Fragoso não é por aí não...'],
       ['bella', 'Ops. Essa não é a direita, né?'],
-      ['weng', 'Pra lá é só mais rua e chuva. A gente vai pela direita!'],
+      ['weng', 'Pra lá é só mais rua. A gente vai pela direita!'],
     ];
     const n = Number(ctx.flag('fora-direita-n') ? 1 : 0);
     const [who, txt] = falas[(Math.floor(Math.random() * 3) + n) % 3];

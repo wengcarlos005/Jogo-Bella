@@ -173,7 +173,7 @@ export function playEnding(root: HTMLElement): Promise<'title' | 'stay'> {
           h('div', {}, h('b', {}, String(REGIONS.length)), h('span', {}, 'capítulos')),
           h('div', {}, h('b', {}, formatPlaytime(GameState.data.playtimeMs)), h('span', {}, 'juntos')),
         ),
-        n < total ? h('div', { class: 'end-miss' }, `Ainda faltam ${total - n} lembranças no álbum. Dá pra voltar em qualquer capítulo pelo menu Cenas.`) : h('div', { class: 'end-miss' }, 'Álbum completo. ♥'),
+        n < total ? h('div', { class: 'end-miss' }, `Ainda ${total - n === 1 ? 'falta 1 lembrança' : `faltam ${total - n} lembranças`} no álbum. Dá pra voltar em qualquer capítulo pelo menu Cenas.`) : h('div', { class: 'end-miss' }, 'Álbum completo. ♥'),
         h('div', { class: 'end-btns' }, ...btns),
       );
       // ilustração de fundo do "Fim" (assets/ui/fim.webp), se existir

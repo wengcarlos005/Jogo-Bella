@@ -36,7 +36,7 @@ async function proximo(ctx: ScriptContext): Promise<void> {
 
 /** O pai da Bella chama o Weng pra uma conversa de sogro (enquanto a Bella vai buscar mate). */
 async function conversaSogro(ctx: ScriptContext): Promise<void> {
-  await ctx.say('pai-ro', 'Filha, vai ali no barraqueiro buscar um mate pra gente? Eu pago. ...O meu.');
+  await ctx.say('pai-ro', 'Filha, vai ali no barraqueiro buscar um mate pra gente? Eu pago. Os três!');
   await ctx.say('bella', '(olhando pro Weng, desconfiada) Tá... já volto.');
   await ctx.say('pai-ro', 'Senta aqui, Weng. Na cadeira que você pagou.');
   await ctx.say('weng', '(engolindo seco) Claro, sogro.');
@@ -74,8 +74,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Eu trouxe chapéu. É a mesma coisa.');
     await ctx.say('weng', 'Não é a mesma coisa.');
     await ctx.say('pai-ro', 'Chegaram! Pontuais, gostei. Trouxe tudo: toalha, isopor, fruta lavada, torrada...');
-    await ctx.say('weng', 'Bom dia, sogro! E o guarda-sol?');
-    await ctx.say('weng', 'Então bora achar um lugar. De preferência na sombra.');
+    await ctx.say('weng', 'Bom dia, sogro! Bora achar um lugar? De preferência na sombra.');
     await ctx.say('pai-ro', 'Sombra pra quê? Aqui tá ótimo! Estica a toalha aqui mesmo.');
     await ctx.say('bella', 'Pai... aqui é sol puro.');
     await ctx.say('pai-ro', 'Guarda-sol aqui é um assalto. Trinta reais pra ficar debaixo de um pano? Nem pensar.');
@@ -195,7 +194,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', 'Melhor petisco da vida. E a gente nem ligou pra chuva.');
       return;
     }
-    await ctx.say('weng', 'Prometi, tá prometido. Bora pro quiosque!');
+    await ctx.say('weng', 'Fim de tarde, hora do petisco. Bora pro quiosque!');
     await ctx.fadeOut(500);
     await ctx.narrate('Fim de tarde. Uma mesinha de plástico, os pés na areia e a mesa cheia.');
     await ctx.fadeIn(400);
@@ -321,7 +320,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Engenharia, Bella. Engenharia.');
     } else {
       await ctx.narrate('O Weng puxou a Bella pra trás. O castelo virou uma montanhinha de areia lisa.');
-      await ctx.say('bella', 'Você escolheu eu em vez do castelo?');
+      await ctx.say('bella', 'Você me escolheu em vez do castelo?');
       await ctx.say('weng', 'Escolho sempre.');
       await ctx.emote('bella', 'heart');
     }
@@ -344,12 +343,12 @@ const scripts: Record<string, Script> = {
     const ond = await ctx.onda();
     ctx.setFlag('ro-onda-estrelas', ond.stars);
     const pontos = ond.stars;
-    await ctx.narrate('E aí uma onda levou o chapéu de palha da Bella, boiando mar adentro.');
+    await ctx.narrate('E aí uma onda levou o chapéu de palha da Bella, que saiu boiando mar adentro.');
     await ctx.say('bella', 'MEU CHAPÉU!');
     await ctx.say('weng', 'Deixa comigo!');
     await ctx.narrate('O Weng nadou atrás do chapéu, perdeu, achou, perdeu de novo... e voltou com ele na cabeça, todo encharcado.');
-    const c = await ctx.choose('bella', '(Ele voltando com o chapéu pingando)', ['"Meu herói. Pela terceira vez hoje."', '"Fica melhor em você, sabia?"', 'Dar um beijo salgado nele']);
-    if (c === 0) await ctx.say('weng', 'Três vezes num dia só. Vou pedir aumento.');
+    const c = await ctx.choose('bella', '(Ele voltando com o chapéu pingando)', ['"Meu herói. De novo."', '"Fica melhor em você, sabia?"', 'Dar um beijo salgado nele']);
+    if (c === 0) await ctx.say('weng', 'Herói em tempo integral. Vou pedir aumento.');
     else if (c === 1) await ctx.say('weng', 'Eu sei. Mas é seu. Toma.');
     else {
       await ctx.emote('weng', 'heart');

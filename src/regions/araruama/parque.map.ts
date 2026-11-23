@@ -26,7 +26,7 @@ async function falta(ctx: ScriptContext): Promise<void> {
 /** Cada brinquedo gasta uma ficha da mochila; sem ficha, a Bella lembra da bilheteria. */
 async function pagar(ctx: ScriptContext, brinquedo: string): Promise<boolean> {
   if (!ctx.flag('ar-fichas')) {
-    await ctx.say('weng', `Pro ${brinquedo} precisa de ficha. A tia Tim deixou as nossas na bilheteria, do lado do portão.`);
+    await ctx.say('weng', 'Pra esse brinquedo precisa de ficha. A tia Tim deixou as nossas na bilheteria, do lado do portão.');
     return false;
   }
   if (!ctx.has('fichas-parque')) {
@@ -35,16 +35,16 @@ async function pagar(ctx: ScriptContext, brinquedo: string): Promise<boolean> {
   }
   // a Bella entrega a ficha: escolher na barra de itens (outro item = o moço estranha)
   const ESTRANHO: Record<string, string> = {
-    'pedra-coracao': 'Moça, isso é uma pedra. Bonita, mas é uma pedra.',
-    'urso-araruama': 'O ursinho não paga brinquedo não, moça.',
-    chaveirinho: 'Chaveirinho não vale como ficha, desculpa!',
+    'pedra-coracao': '"Moça, isso é uma pedra." ...Ele tem razão. Bonita, mas é uma pedra.',
+    'urso-araruama': '"O ursinho não paga brinquedo não, moça." Desculpa, Araruama.',
+    chaveirinho: '"Chaveirinho não vale como ficha, desculpa!" Tá bom, moço, tá bom.',
   };
   for (let tries = 0; tries < 3; tries++) {
-    const id = await ctx.pickItem(`Entregue 1 ficha pro moço do ${brinquedo}`);
+    const id = await ctx.pickItem(`Entregue 1 ficha pro moço (${brinquedo})`);
     if (id === 'fichas-parque') {
       ctx.take('fichas-parque');
       ctx.sfx('blip');
-      ctx.toast(`Usou 1 ficha · sobraram ${ctx.count('fichas-parque')}`);
+      ctx.toast(`Usou 1 ficha · fichas restantes: ${ctx.count('fichas-parque')}`);
       return true;
     }
     await ctx.say('bella', ESTRANHO[id] ?? 'Ops, isso não é ficha. Cadê a ficha amarela?');
@@ -96,7 +96,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('diego', 'Ele diz isso todo ano. E todo ano fica preso na parede.');
     await ctx.say('mingau', 'Quem fica preso na parede é VOCÊ, Diego.');
     await ctx.say('bella', 'Weng, você pisa e eu dirijo. Combinado?');
-    await ctx.say('weng', 'Você vai dirigir? ...Combinado. Que Deus nos proteja.');
+    await ctx.say('weng', 'Você vai dirigir? ...Combinado. Mingau, pode ir se despedindo.');
     const r = await ctx.bateBate();
     ctx.setFlag('ar-bate-estrelas', r.stars);
     if (r.stars >= 2) {
@@ -170,7 +170,7 @@ const scripts: Record<string, Script> = {
     }
     ctx.hearts('player', 12);
     await ctx.say('bella', 'Espera! Selfie! Aqui em cima, com a lagoa atrás. Encosta, encosta.');
-    await ctx.say('weng', 'Segura o ursinho que ele tem que sair também.');
+    await ctx.say('weng', GameState.is('ar-pelucia') ? 'Segura o ursinho que ele tem que sair também.' : 'Mais perto. Tem que caber a gente e a lagoa.');
     await ctx.selfie('memory-ar-02', 'Lá no alto da roda-gigante · Araruama, 1º de janeiro');
     await ctx.say('bella', 'Ficou perfeita. Essa vai pro fundo de tela.');
     await ctx.ferris(null);
@@ -184,7 +184,7 @@ const scripts: Record<string, Script> = {
         'Ela chegou com medo de ser julgada pela família inteira do Weng.',
         'Teve tour pela cobertura, pedrinha na lagoa e a ceia da tia Tim na mesa giratória.',
         'À meia-noite, os fogos sobre a Lagoa de Araruama, vistos da varanda.',
-        'No primeiro dia de 2024: suco no Cosechas, parque de diversões e um beijo no alto da roda-gigante.',
+        'No primeiro dia de 2024: suco no Cosechas, parque de diversões e, no alto da roda-gigante, ele olhando pra ela em vez da vista.',
         'Ninguém julgou. A Laylinha chamou ela de tia, e a Anne, de cunhada.',
       ],
     });
@@ -204,13 +204,13 @@ const scripts: Record<string, Script> = {
     ]);
     await ctx.say('bella', 'Weng, meu pai chamou a gente pra praia em Rio das Ostras no sábado.');
     await ctx.say('weng', 'Praia com o seu pai? Bora! Ele vai alugar guarda-sol?');
-    await ctx.say('bella', 'Ele disse "a gente vê lá". O que significa: não.');
+    await ctx.say('bella', 'Ele disse "a gente vê lá". Ou seja: vai ser aventura.');
     await ctx.say('weng', 'Eu levo protetor. O fator mais alto que existir.');
     await ctx.roadTrip(
       'Araruama',
       'Rio das Ostras',
       [
-        { who: 'bella', text: 'Sete da manhã de sábado. Só meu pai pra achar isso normal.' },
+        { who: 'bella', text: 'Sete da manhã de sábado. Só meu pai pra acordar animado assim.' },
         { who: 'weng', text: 'Ele já mandou três áudios perguntando se a gente saiu.' },
         { who: 'bella', text: 'E a torrada? Ele vai mesmo levar torrada pra praia?' },
         { who: 'weng', text: 'Torrada e fruta. Numa bolsa térmica. Ele me mostrou a foto.' },
@@ -244,12 +244,12 @@ const scripts: Record<string, Script> = {
     }
     ctx.setFlag('ar-algodao');
     await ctx.say('bella', 'Algodão-doce rosa! Igual o do Quitandinha, lembra?');
-    await ctx.say('weng', 'Lembro. Você comeu o seu e metade do meu.');
+    await ctx.say('weng', 'Lembro. Você me deu um pedacinho. Bem pequenininho.');
     const c = await ctx.choose('bella', '(Um algodão-doce gigante, um palito só)', ['Dividir com ele', 'Comer tudo sozinha', 'Dar um pedaço pra Laylinha']);
     if (c === 0) await ctx.say('weng', 'Dividir algodão-doce é praticamente casar. Só pra você saber.');
     else if (c === 1) await ctx.say('weng', 'Eu sabia. Eu SEMPRE sei.');
     else {
-      await ctx.say('laylinha', 'OBRIGADA TIA BELLA! (com a cara inteira rosa)');
+      await ctx.say('laylinha', 'OBRIGADA, TIA BELLA! (com a cara inteira rosa)');
       ctx.hearts('player', 3);
     }
     ctx.sfx('pickup');
@@ -292,7 +292,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Moço, um rosa, por favor!');
     ctx.sfx('pickup');
     await ctx.say('laylinha', 'É PRA MIM?! Tia Bella, você é a minha tia preferida!');
-    await ctx.say('weng', '(cochichando) Pronto. Agora você ganhou de todas as tias de verdade.');
+    await ctx.say('weng', '(cochichando) Pronto. Tia preferida oficial, com balão e tudo.');
     ctx.hearts('player', 4);
   },
   async mingauTalk(ctx) {
@@ -302,7 +302,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('diego', objDone('bate') ? 'Minha meta pro ano: não ficar preso na parede do bate-bate.' : 'Eu vou no bate-bate só pra ver o Mingau perder.');
   },
   async vivianTalk(ctx) {
-    await ctx.say('vivian', objDone('argolas') ? 'Bella, o Weng nunca ganhou nada aqui antes de você. Sério.' : 'Desafio o Weng a ganhar uma pelúcia nas argolas. Duvido!');
+    await ctx.say('vivian', objDone('argolas') ? 'Bella, nunca vi o Weng se esforçar tanto nas argolas. É coisa sua, sério.' : 'Desafio o Weng a ganhar uma pelúcia nas argolas. Duvido!');
   },
   async julinhaTalk(ctx) {
     await ctx.say('julinha', 'Eu tô cuidando da pipoca. Ninguém mexe. Só a Laylinha. E a Bella. E... tá, pode pegar.');

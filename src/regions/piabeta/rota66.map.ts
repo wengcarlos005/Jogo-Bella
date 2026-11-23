@@ -123,9 +123,9 @@ const scripts: Record<string, Script> = {
     const ZOEIRA: Record<string, string> = {
       'colar-pingente': 'Seu colar da sorte? Não, esse é seu. Já me dá sorte só de olhar pra ele.',
       'oculos-rosa': 'Seus óculos? Mas aí você não vai conseguir ver meu rosto lindo.',
-      celular: 'Seu celular? Eu ia amar ler suas conversas sobre mim... brincadeira. (Não é brincadeira.)',
+      celular: 'Seu celular? Só se tiver foto sua pra eu ver... brincadeira. (Não é brincadeira.)',
       'rosa-rosa': 'A rosa que EU te dei? Devolvendo já no primeiro encontro? Meu coração não aguenta.',
-      guardanapo: 'Um guardanapo... usado? Bella, eu sei que eu como feito criança, mas assim é demais.',
+      guardanapo: 'Um guardanapo? Tá dizendo que eu tô todo sujo de molho? ...Tô, né?',
       'flor-do-quintal': 'Uma florzinha da pracinha! Linda... mas acho que essa é da Dona Cida.',
       'burger-rota66': 'Metade do seu hambúrguer? Isso sim é prova de amor. Mas não era isso, né?',
     };
@@ -146,13 +146,13 @@ const scripts: Record<string, Script> = {
       }
       erros++;
       await ctx.emote('weng', 'question');
-      await ctx.say('weng', ZOEIRA[id] ?? (erros > 2 ? 'Bella, eu te amo, mas acho que você se perdeu na bolsa.' : 'Hmm... é isso mesmo o presente?'));
+      await ctx.say('weng', ZOEIRA[id] ?? (erros > 2 ? 'Bella, acho que você se perdeu na bolsa. Mas tudo bem, eu espero.' : 'Hmm... é isso mesmo o presente?'));
     }
     await ctx.fadeOut(400);
     await ctx.backdrop('memory-pia-02');
     void mesaArt;
     await ctx.fadeIn(600);
-    await ctx.say('weng', '...Chocolates! Um monte de chocolates! E isso aqui é... um Vale Beijo? E um Vale Abraço?!');
+    await ctx.say('weng', '...Um monte de chocolates, um Vale Beijo E um Vale Abraço. Bella, é o melhor presente do mundo.');
     await ctx.emote('weng', 'heart');
     const cg = await ctx.choose('bella', '(Ele tá olhando os vales sem piscar...)', ['"Válidos por tempo indeterminado."', '"Os chocolates são pra dividir, tá?"', '"Gostou? Fui eu que fiz."']);
     if (cg === 0) await ctx.say('weng', 'Tempo indeterminado... Vou guardar isso com a minha vida.');

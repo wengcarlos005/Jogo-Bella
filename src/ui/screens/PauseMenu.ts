@@ -341,7 +341,7 @@ export class PauseMenu {
         h(
           'div',
           { class: 'info' },
-          h('div', { class: 'name' }, s ? place || `Espaço ${i + 1}` : `Espaço ${i + 1} · vazio`),
+          h('div', { class: 'name' }, s ? place || `Slot ${i + 1}` : `Slot ${i + 1} · vazio`),
           h('div', { class: 'sub' }, s ? `${formatDate(s.savedAt)} · ${formatPlaytime(s.playtimeMs)} · ♥ ${s.memories}` : 'Um cantinho pra guardar a nossa história'),
         ),
         h('button', {

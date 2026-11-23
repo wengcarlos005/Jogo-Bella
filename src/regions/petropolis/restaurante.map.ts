@@ -144,7 +144,7 @@ const scripts: Record<string, Script> = {
         { who: 'bella', text: 'E as crianças?' },
         { who: 'weng', text: 'Mingau e Julinha, os dois de dez anos. E a Laylinha, de cinco. Ela vai grudar em você.' },
         { who: 'bella', text: 'E se eu esquecer um nome? E se eu chamar a Vivian de Lilian?' },
-        { who: 'weng', text: 'Elas se confundem entre si. Ninguém vai notar.' },
+        { who: 'weng', text: 'Todo mundo troca o nome das duas. Ninguém vai notar.' },
         { who: 'bella', text: 'Olha a lagoa! É enorme... parece mar.' },
         { who: 'weng', text: 'É a Lagoa de Araruama. A varanda da tia dá de frente pra ela.' },
         { who: 'bella', text: 'Tá. Respira, Bella. É só uma família. Uma família GRANDE.' },

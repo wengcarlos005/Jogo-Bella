@@ -142,7 +142,7 @@ export function playGatinhoGame(parent: HTMLElement): Promise<MiniResult & { pla
         if (vic.hand.length) {
           const got = vic.hand.splice(Math.floor(Math.random() * vic.hand.length), 1)[0];
           p.hand.push(got);
-          if (pi === 0) ui.say('bella', `Roubei um ${CARD_NAME[got]} do ${NAME[vic.id]}!`);
+          if (pi === 0) ui.say('bella', `Roubei um ${CARD_NAME[got]} ${vic.id === 'vitoria' ? 'da' : 'do'} ${NAME[vic.id]}!`);
           if (t === 0) ui.say(p.id, `Valeu pelo ${CARD_NAME[got]}, Bella!`);
         }
       }
@@ -311,7 +311,7 @@ export function playTravessiaGame(parent: HTMLElement): Promise<MiniResult & { l
       { class: 'cs-rules tv2-rules' },
       h('b', {}, 'Como jogar'),
       h('div', {}, h('span', { class: 'tv2-ico areia' }), h('span', {}, 'Escolha a próxima pedra com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), ' e pise com ', h('kbd', {}, '↑'), '. ', h('u', { class: 'g' }, 'Areia clarinha'), ' é seguro.')),
-      h('div', {}, h('span', { class: 'tv2-ico fundo' }), h('span', {}, 'Azul-escuro é FUNDO. Brilhinho é concha cortante e bolhinhas é siri! Errou: perde 1 ♥ (são 3).')),
+      h('div', {}, h('span', { class: 'tv2-ico fundo' }), h('span', {}, 'Azul-escuro é FUNDO. Brilhinho é concha cortante e bolhinha é siri! Errou: perde 1 ♥ (são 3).')),
       h('div', {}, h('span', { class: 'tv2-ico' }, '♥'), h('span', {}, 'O medo da Bella sobe enquanto ela pensa. Segure ', h('kbd', {}, 'Espaço'), ' pra apertar a mão do Weng e acalmar.')),
     );
     ui.stage.append(h('div', { class: 'tv2-bg', style: bg ? `background-image:url(${bg})` : '' }), island, board, beach, couple, fx, rules);
@@ -581,7 +581,7 @@ export function playAltinhaGame(parent: HTMLElement): Promise<MiniResult & { bes
             const sp = h('img', { class: 'al-puff', src: mg('al-areia'), alt: '', style: `left:${ME.x + 4}%;top:${ME.y + 6}%` });
             fx.append(sp);
             setTimeout(() => sp.remove(), 800);
-            ui.say(ring[Math.floor(Math.random() * ring.length)], ['Ihh, caiu! Recomeça!', 'Bella, a bola é redonda, não precisa ter medo!', 'Tudo bem, tudo bem. De novo!'][Math.floor(Math.random() * 3)]);
+            ui.say(ring[Math.floor(Math.random() * ring.length)], ['Ihh, caiu! Recomeça!', 'Relaxa, Bella! A próxima é sua!', 'Tudo bem, tudo bem. De novo!'][Math.floor(Math.random() * 3)]);
             touches = 0;
             ball.style.visibility = 'hidden';
             hud();

@@ -146,7 +146,7 @@ const scripts: Record<string, Script> = {
     await ctx.memory('mem-pt-01');
     ctx.objective(Q, 'piquenique');
     await ctx.fadeOut(800);
-    await ctx.narrate('No fim da tarde, a subida até o hotel, lá no alto do morro.');
+    await ctx.narrate('Toalha dobrada, balões no carro. Próxima parada: o hotel.');
     if (!ctx.questActive('pt-m1') && !QuestSystem.isDone('pt-m1')) ctx.startQuest('pt-m1');
     ctx.objective('pt-m1', 'quitandinha');
     ctx.follow('weng', true);

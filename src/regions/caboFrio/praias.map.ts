@@ -46,7 +46,7 @@ const peroScripts: Record<string, Script> = {
       ['ruan', 'Eu vou ficar aqui na sombra. Bronzeado é superestimado.'],
       ['vitoria', 'Me passa o protetor? E não deixa o Nathan esquecer o dele.'],
       ['felipe', 'Eu juro que eu sei fazer embaixadinha. Juro.'],
-      ['puggian', 'Quem trouxe o isopor? ...Ninguém trouxe o isopor?'],
+      ['puggian', 'Quem deixou o isopor aberto? ...Ninguém? Ninguém assume?'],
     ];
     const n = Number(ctx.flag('cf-pero-n') || 0);
     ctx.setFlag('cf-pero-n', (n + 1) % f.length);
@@ -159,7 +159,7 @@ const japScripts: Record<string, Script> = {
     } else await ctx.photo('A enseada do Japonês, vista da ilha');
     ctx.hearts('player', 10);
     ctx.objective(Q, 'ilha');
-    await ctx.say('nathan', 'Gente, bora? Ainda tem banho, roupa branca, e a virada!');
+    await ctx.say('nathan', 'Gente, bora? Ainda tem banho, roupa branca e a virada!');
     await ctx.fadeOut(600);
     await ctx.narrate('A volta pela faixa de areia foi bem mais rápida. A Bella ia na frente.');
     ctx.setFlag('cf-noite2');
@@ -235,7 +235,7 @@ const forteScripts: Record<string, Script> = {
     await ctx.say('weng', 'Ele até desejou feliz ano-novo pra gente.');
     await ctx.say('vitoria', 'Gente, meu tênis branco tá cinza.');
     await ctx.say('nathan', 'Seis minutos! Todo mundo junto!');
-    await ctx.say('familia', 'DEZ! NOVE! OITO...');
+    await ctx.say('felipe', 'DEZ! NOVE! OITO...');
     const r = await ctx.fogos({ year: '2025', bg: 'map-cf-forte-bg', water: 'no mar' });
     ctx.setFlag('cf-fogos-estrelas', r.stars);
     await ctx.narrate('Os fogos explodiram sobre o mar de Cabo Frio. A turma inteira pulando, gritando e se abraçando na areia.');

@@ -37,12 +37,12 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Bella. Você tá linda de chapéu mexicano.');
     await ctx.say('bella', 'Você tá ridículo. E eu amei.');
     const c = await ctx.choose('bella', '(A bebida chegou, gelada e colorida)', ['Brindar: "Ao segundo encontro!"', 'Brindar: "Aos próximos!"']);
-    await ctx.say('weng', c === 0 ? 'Ao segundo encontro! E ao churrasco do Alexandre, que eu sobrevivi.' : 'Aos próximos. Muitos próximos.');
+    await ctx.say('weng', c === 0 ? 'Ao segundo encontro! E ao churrasco do Alexandre: sobrevivi e ainda ganhei o pegador!' : 'Aos próximos. Muitos próximos.');
     await ctx.say('bella', 'Hmm... que bebida gostosa! O que tem nisso?');
     await ctx.say('garcom', 'Segredo da casa, señorita.');
     await ctx.say('weng', 'A gente vai ter que voltar até descobrir.');
     await ctx.say('garcom', 'E hoje é noite da Taco Roleta! Três tacos, uma pimenta escondida. ¿Quién se atreve?');
-    await ctx.say('bella', 'Eu odeio pimenta. Weng, se eu comer pimenta hoje, a gente termina.');
+    await ctx.say('bella', 'Eu odeio pimenta. Weng, se eu comer pimenta hoje, não tem terceiro encontro.');
     await ctx.say('weng', '(já escondendo uma pimenta) Claro, amor. Jamais.');
     await ctx.backdrop(null);
     const tc = await ctx.tacos();
@@ -83,7 +83,7 @@ const scripts: Record<string, Script> = {
       { from: 'them', text: 'Na hora certa eu dou um jeito dela voltar correndo pra casa' },
       { from: 'me', text: 'Que jeito?' },
       { from: 'them', text: 'Confia 😎' },
-      { from: 'me', text: 'Tia, por favor não fala que alguém morreu' },
+      { from: 'me', text: 'Tia, só não assusta ela demais, tá?' },
       { from: 'them', text: 'Kkkkkk confia em mim, querido' },
       { from: 'them', text: 'O Alexandre mandou dizer que aprova. Disse "bom rapaz" de novo' },
       { from: 'me', text: '🥹' },

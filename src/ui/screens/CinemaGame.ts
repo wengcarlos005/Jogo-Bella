@@ -54,7 +54,7 @@ export function playCinemaGame(parent: HTMLElement): Promise<CinemaResult> {
       'div',
       { class: 'cs-rules' },
       h('b', {}, 'Como jogar'),
-      h('div', {}, h('img', { src: mg('susto'), alt: '' }), h('span', {}, 'Quando o MONSTRO aparecer na tela: aperte ', h('kbd', {}, 'PULAR!'), ' (ou espaço) na hora. Vocês pulam juntos e salvam a pipoca.')),
+      h('div', {}, h('img', { src: mg('susto'), alt: '' }), h('span', {}, 'Quando o MONSTRO aparecer na tela: aperte ', h('kbd', {}, 'PULAR!'), ' (ou Espaço) na hora. Vocês pulam juntos e salvam a pipoca.')),
       h('div', {}, h('img', { src: mg('gato'), alt: '' }), h('span', {}, 'Gatinho ou luz piscando é alarme falso: ', h('u', {}, 'NÃO pule'), '.')),
       h('div', {}, h('img', { src: mg('olhos'), alt: '' }), h('span', {}, 'Os olhos no escuro avisam que ele vem... mas espere ele PULAR. Pulou cedo, tarde ou no alarme falso: perde 1 ♥ (são 3).')),
     );

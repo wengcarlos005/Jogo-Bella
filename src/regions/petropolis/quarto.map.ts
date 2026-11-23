@@ -22,7 +22,7 @@ const scripts: Record<string, Script> = {
     await ctx.narrate('Quarto 12. Cheiro de madeira, lenha estalando e a serra inteira na janela.');
     await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', 'Weng... tem uma LAREIRA de verdade. Acesa. Esperando a gente.');
-    await ctx.say('weng', 'E chocolate quente na mesinha. A moça da recepção trouxe enquanto a gente subia.');
+    await ctx.say('weng', 'E chocolate quente na mesinha. O pessoal da recepção trouxe enquanto a gente subia.');
     await ctx.say('bella', 'Eu vou morar aqui. Pode avisar minha mãe.');
     ctx.follow('weng', true);
     ctx.toast('Explore o quarto: as malas, a janela e a lareira');

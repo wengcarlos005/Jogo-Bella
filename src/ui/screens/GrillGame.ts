@@ -154,7 +154,7 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
     const dots = h('div', { class: 'gt-dots' }, ...PHASES.map(() => h('i')));
     const meatName = h('div', { class: 'gt-meat' });
     const helperPic = textureURL('portrait-pai-bella');
-    const msg = h('div', { class: 'gp-bubble' }, '10 rodadas. Aperta "Virar!" (ou espaço) quando o marcador estiver no verde.');
+    const msg = h('div', { class: 'gp-bubble' }, '10 rodadas. Aperta "Virar!" (ou Espaço) quando o marcador estiver no verde.');
     const flipBtn = h('button', { class: 'gt-flip' }, '↻ Virar!');
     const startBtn = h('button', { class: 'btn primary gp-start' }, 'Acender a brasa!');
     const actions = h('div', { class: 'bg-actions' }, startBtn);
@@ -250,7 +250,7 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
       } else {
         pop(pos < okC ? 'Crua!' : 'Queimou!', 'g0');
         shake = 0.35;
-        talk(`${who}: "${pos < okC ? 'Tá mugindo ainda, rapaz.' : '...Isso aí é carvão.'}"`);
+        talk(`${who}: "${pos < okC ? 'Tá mugindo ainda, rapaz.' : 'Essa passou do ponto. Bora pra próxima.'}"`);
       }
       running = false;
       setTimeout(() => {
@@ -390,7 +390,7 @@ export function playGrillGame(parent: HTMLElement, opts: { title?: string; helpe
       const score = Math.round(points);
       const stars = score >= 16 ? 3 : score >= 10 ? 2 : 1;
       [...dots.children].forEach((d, i) => (d.className = `g${grades[i] ?? 0}`));
-      talk(stars === 3 ? `${who}: "...Bom rapaz. Pode voltar sempre."` : stars === 2 ? `${who}: "Dá pro gasto. Com treino melhora."` : `${who}: "Deixa que eu termino. Vai lá conversar."`);
+      talk(stars === 3 ? `${who}: "...Bom rapaz. Pode voltar sempre."` : stars === 2 ? `${who}: "Dá pro gasto. Com treino melhora."` : `${who}: "Valeu pela ajuda! Deixa que eu termino. Vai lá conversar."`);
       AudioSystem.play('quest');
       if (stars === 3) burst(24);
       const close = () => {

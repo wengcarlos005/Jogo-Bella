@@ -93,7 +93,7 @@ const scripts: Record<string, Script> = {
       if (!ctx.flag('dq-rua-passeio')) {
         ctx.setFlag('dq-rua-passeio');
         await ctx.wait(300);
-        await ctx.say('weng', 'Pra praça a gente vai a pé? Vinte e cinco minutos...');
+        await ctx.say('weng', 'Vinte e cinco minutos a pé até a praça... por onde a gente vai?');
         await ctx.say('bella', 'Pela trilha lá de cima. Sai direto em Fragoso. E é mais bonito.');
         await ctx.say('weng', 'Trilha, pôr do sol e você. Fechado.');
         ctx.toast('Suba pela trilha no alto da rua: ela leva a Fragoso');
@@ -106,7 +106,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', `Ufa. Acho que o ${PERSONAL.bellaStepdad.name} gostou de mim. Acho.`);
       await ctx.say('bella', 'Ele disse "bom rapaz". Isso, vindo dele, é praticamente um abraço.');
       await ctx.emote('weng', 'heart');
-      await ctx.say('weng', `Então bora! Já pedi um Uber pra ${ROTA}. Vamos esperar ali na calçada.`);
+      await ctx.say('weng', `Então bora! Vou pedir um Uber pra ${ROTA}. Vamos esperar ali na calçada.`);
     }
   },
 
@@ -312,13 +312,13 @@ const scripts: Record<string, Script> = {
     await ctx.narrate('"Fragoso e Praça — siga a trilha."');
   },
   async caixa(ctx) {
-    await ctx.say('bella', 'Só conta. Um dia vai ter carta boa aqui, eu sinto.');
+    await ctx.say('bella', 'Só contas. Um dia vai ter carta boa aqui, eu sinto.');
   },
   async carro(ctx) {
     await ctx.say('bella', 'O carro do vizinho. Sempre estacionado exatamente aqui.');
   },
   async banco(ctx) {
-    await ctx.sit(527, 797, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, debaixo de chuva... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho na sombra. Bom pra ficar pensando no que falar pra ele.']], { key: 'bench-rua', x: 527, y: 823, w: 137 });
+    await ctx.sit(527, 797, ctx.flag('weng-segue') ? [['weng', 'Um banquinho na pracinha, no meio do caminho... a gente é meio doido, né?'], ['bella', 'Um pouquinho. Mas tá bom aqui.']] : [['bella', 'Um banquinho. Bom pra ficar pensando no que falar pra ele.']], { key: 'bench-rua', x: 527, y: 823, w: 137 });
   },
   async banco2(ctx) {
     await ctx.sit(1008, 797, ctx.flag('weng-segue') ? [['bella', 'Senta aqui um pouquinho comigo.'], ['weng', 'Com você eu sento até na chuva.']] : [['bella', 'Daqui dá pra ver a rua inteira.']], { key: 'bench-rua', x: 1008, y: 823, w: 139 });

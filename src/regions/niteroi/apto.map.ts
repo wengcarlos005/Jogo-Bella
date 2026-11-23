@@ -78,7 +78,7 @@ const scripts: Record<string, Script> = {
   },
   async lilian(ctx) {
     if (precisaOi('nt-oi-lilian')) {
-      await ctx.say('lilian', 'Bella! De novo junto! Deixa eu te apresentar: esse é o Vinicius, meu namorado.');
+      await ctx.say('lilian', 'Bella! Juntas de novo! Deixa eu te apresentar: esse é o Vinicius, meu namorado.');
       await ctx.say('vinicius', 'Prazer, Bella. Ouvi falar muito de você.');
       await ctx.say('bella', 'O prazer é meu! Agora eu não sou a única pessoa nova da família.');
       await ctx.say('vinicius', 'Ufa. Somos dois.');
@@ -135,7 +135,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Mesa de oito lugares. Aqui em casa sempre cabe mais um.');
   },
   async quadro(ctx) {
-    await ctx.say('bella', 'Parece o mar de Icaraí no pôr do sol, em ondas laranjas e azuis.');
+    await ctx.say('bella', 'Parece o mar de Icaraí no pôr do sol, em ondas laranja e azuis.');
   },
   async estante(ctx) {
     await ctx.say('weng', 'Livro, globo, bonequinho... e chocolate escondido atrás. Eu sei porque eu já achei.');

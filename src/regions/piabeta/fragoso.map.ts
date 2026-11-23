@@ -173,7 +173,7 @@ const scripts: Record<string, Script> = {
     await ctx.emote('bella', 'heart');
   },
   async varal(ctx) {
-    await ctx.say('weng', 'Roupa no varal com essa chuva que deu mais cedo... alguém vai ficar triste amanhã.');
+    await ctx.say('weng', 'Roupa no varal. Dá pra sentir o cheirinho de amaciante daqui.');
   },
   async poste(ctx) {
     await ctx.say('bella', 'A luz amarelinha do poste deixa tudo com cara de filme.');

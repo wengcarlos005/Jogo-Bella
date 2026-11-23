@@ -154,15 +154,15 @@ const scripts: Record<string, Script> = {
       { from: 'me', text: 'ela já perguntou se você é magrinho' },
       { from: 'me', text: 'falei que sim. ela tá preparando farofa pra 10' },
       { from: 'them', text: 'kkkkkkkk eu vou sair rolando' },
-      { from: 'me', text: 'ah... e o Alexandre vai estar lá 🙄' },
+      { from: 'me', text: 'ah... e o Alexandre vai estar lá, viu' },
       { from: 'them', text: 'o do "bom rapaz"?' },
       { from: 'me', text: 'esse' },
-      { from: 'me', text: 'já aviso: ele se acha o rei da churrasqueira' },
+      { from: 'me', text: 'já aviso: ele é o rei da churrasqueira (e sabe disso)' },
       { from: 'me', text: 'ninguém encosta no pegador dele. NINGUÉM' },
       { from: 'me', text: 'ele vai querer te dar aula de como virar carne' },
       { from: 'them', text: 'e eu faço o quê?' },
       { from: 'me', text: 'sorri e concorda' },
-      { from: 'me', text: 'é o que eu faço há anos kkkkk' },
+      { from: 'me', text: 'e elogia a picanha. ele derrete kkkkk' },
       { from: 'them', text: 'kkkkkk anotado' },
       { from: 'them', text: 'sorrir, concordar, não encostar no pegador' },
       { from: 'me', text: 'isso. e comer muito pra minha vó ficar feliz' },
@@ -230,7 +230,7 @@ const scripts: Record<string, Script> = {
   async weng(ctx) {
     if (objActive('passear')) await ctx.say('weng', 'Vamos seguindo o caminho, pro meio do parque.');
     else if (objActive('abrigo')) await ctx.say('weng', 'Corre! O coreto, lá em cima!');
-    else await ctx.say('weng', 'Melhor primeiro encontro de todos.');
+    else await ctx.say('weng', 'A nossa praça. Sempre que eu passar aqui, vou lembrar daquele dia.');
   },
 };
 

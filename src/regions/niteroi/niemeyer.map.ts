@@ -51,7 +51,7 @@ const scripts: Record<string, Script> = {
   },
   async cupula(ctx) {
     await ctx.say('bella', 'Essa parece um disco voador que pousou e resolveu ficar.');
-    await ctx.say('weng', 'Os de Niterói já se acostumaram. O MAC, o museu famoso, fica ali perto também. Esse aqui é o primo dele.');
+    await ctx.say('weng', 'O pessoal de Niterói já se acostumou. O MAC, o museu famoso, fica ali perto também. Esse aqui é o primo dele.');
     await canto(ctx, 'nt-cupula');
   },
   async escultura(ctx) {
@@ -90,7 +90,7 @@ const scripts: Record<string, Script> = {
     }
     await ctx.say('bella', 'Aqui! Com a água e o Pão de Açúcar atrás.');
     await ctx.say('tio-nt', 'Deixa que eu tiro a de vocês dois! Me dá o celular.');
-    await ctx.say('weng', '(cochichando) Ele treme. Muito.');
+    await ctx.say('weng', '(cochichando) A mão dele treme um pouquinho. Mas ele tira com o maior carinho.');
     const r = await ctx.fotoNiemeyer();
     ctx.setFlag('nt-foto-estrelas', r.stars);
     await ctx.say('bella', 'Agora uma selfie nossa. Só nós dois. Bochecha com bochecha.');

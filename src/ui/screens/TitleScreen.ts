@@ -40,7 +40,7 @@ export class TitleScreen {
     if (latest) list.append(btn('Continuar', () => this.actions.load(latest), true));
     list.append(
       btn('Novo jogo', () => {
-        if (latest && !confirm('Começar um novo jogo? Seu progresso salvo continua nos espaços de save.')) return;
+        if (latest && !confirm('Começar um novo jogo? Seu progresso salvo continua guardado nos slots.')) return;
         this.actions.newGame();
       }, !latest),
     );
@@ -84,7 +84,7 @@ export class TitleScreen {
         left: 63.9,
         w: 24.5,
         fn: () => {
-          if (latest && !confirm('Começar um novo jogo? Seu progresso salvo continua nos espaços de save.')) return;
+          if (latest && !confirm('Começar um novo jogo? Seu progresso salvo continua guardado nos slots.')) return;
           this.actions.newGame();
         },
       },
@@ -138,7 +138,7 @@ export class TitleScreen {
     const list = h('div', { class: 'slots', style: 'min-width:min(90%,520px)' });
     sums.forEach((s, i) => {
       const slot = ALL_SLOTS[i];
-      const label = slot === AUTOSAVE_SLOT ? 'Automático' : `Espaço ${i}`;
+      const label = slot === AUTOSAVE_SLOT ? 'Automático' : `Slot ${i}`;
       list.append(
         h(
           'div',

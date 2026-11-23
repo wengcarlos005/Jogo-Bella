@@ -218,7 +218,7 @@ export function playAcaiGame(parent: HTMLElement, opts: AcaiOptions): Promise<Ac
           ? 'Weng: "Isso não é um açaí, é um sonho. Do jeitinho que você gosta."'
           : stars === 2
             ? 'Weng: "Bonito! Mas eu sei que você queria mais complemento..."'
-            : 'Weng: "Tá passando mal? Cadê os complementos?"',
+            : 'Weng: "Gostoso! Mas da próxima vez capricha nos complementos, hein?"',
       );
       AudioSystem.play('quest');
       const spoon = textureURL('acai-colher');

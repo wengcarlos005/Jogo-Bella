@@ -160,7 +160,7 @@ export function playCardGame(parent: HTMLElement, opts: { title?: string; rounds
         score();
         AudioSystem.play('cancel');
         pop(pile, 'bt-wrong');
-        msg.textContent = 'Bateu errado! −1. O Weng tá rindo da sua cara.';
+        msg.textContent = 'Bateu errado! −1. Respira, a próxima é sua!';
       }
     };
 

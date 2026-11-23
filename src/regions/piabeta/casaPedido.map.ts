@@ -32,7 +32,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'O que... é isso?');
     await ctx.say('bella', 'Nossas fotos... uma cartinha na cama... chocolates...');
     await ctx.emote('bella', 'exclaim');
-    await ctx.say('bella', 'Peraí. A minha irmã não tava passando mal, né?');
+    await ctx.say('bella', 'Peraí. Não tinha emergência nenhuma com a minha irmã, né?');
     // ele estava escondido no guarda-roupa: a porta range, ele sai e para atrás dela
     ctx.sfx('door');
     ctx.shake(150);
@@ -55,7 +55,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'O anel ainda não chegou... mas eu não aguentei esperar.');
     await ctx.say('weng', `${PERSONAL.bella.name}... você quer namorar comigo?`);
     await ctx.choose('bella', '(O coração quase saiu pela boca)', ['"ACEITO!"', '"Aceito, aceito, aceito!"', 'Pular no pescoço dele']);
-    await ctx.say('weng', '...Você nem me deixou terminar a frase.');
+    await ctx.say('weng', '...Você respondeu na hora. Nem deu tempo de eu ficar nervoso.');
     await ctx.say('bella', 'Eu sei. Desculpa. Aceito. Aceito MUITO.');
     await ctx.say('weng', 'Eu te amo.');
     await ctx.say('bella', 'Eu também te amo.');
@@ -71,11 +71,11 @@ const scripts: Record<string, Script> = {
       title: 'Dois encontros e um pedido',
       photos: ['cena-churrasco-mesa', 'memory-dq-04', 'cena-pedido'],
       lines: [
-        'No churrasco, o Weng sobreviveu à churrasqueira do Alexandre e conquistou a família com uma banoffee de banana.',
+        'No churrasco, o Weng encarou a churrasqueira do Alexandre e conquistou a família com uma banoffee de banana.',
         'A Lala, que ignorou o Alexandre por dois anos, deixou ele fazer carinho em dois minutos.',
         'Voltaram à praça do primeiro beijo e brindaram de chapéu mexicano.',
         'Depois veio o cinema, uma ligação muito suspeita da mãe...',
-        '...e um quarto cheio de luzinhas, tsurus e pétalas. Ela disse sim antes dele terminar a frase.',
+        '...e um quarto cheio de luzinhas, tsurus e pétalas. Ela disse sim antes mesmo de ele respirar.',
       ],
     });
     await ctx.chapterCard('Capítulo 2', 'Duque de Caxias', 'Nosso cantinho. A primeira vez no apê do Weng.', 'Começar');

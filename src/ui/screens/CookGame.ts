@@ -156,8 +156,8 @@ export function playCookGame(parent: HTMLElement): Promise<CookResult> {
     // ---------------------------------------------------------------- 3. cortar
     const chop = () => {
       const r = RECIPES[recipe];
-      hud(3, `Corte o(a) ${NAME[r.chop].toLowerCase()}`);
-      say('weng', 'Quando a faca passar em cima da marquinha... corta! (espaço ou clique)');
+      hud(3, `Corte ${r.chop === 'alho' ? 'o' : 'a'} ${NAME[r.chop].toLowerCase()}`);
+      say('weng', 'Quando a faca passar em cima da marquinha... corta! (Espaço ou clique)');
       const marks = [18, 34, 50, 66, 82];
       let cuts = 0;
       let pos = 0;

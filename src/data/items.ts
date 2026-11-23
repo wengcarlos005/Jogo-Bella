@@ -52,7 +52,7 @@ export const ITEMS: Record<string, ItemDef> = {
     id: 'rosa-rosa',
     name: 'Rosa rosa',
     category: 'flores',
-    description: 'A rosa que o Weng trouxe quando veio te buscar. A primeira flor de muitas.',
+    description: 'A rosa que o Weng te deu na esquina, no primeiro encontro. A primeira flor de muitas.',
     icon: 'it:rosa-rosa',
     unique: true,
     talk: [['bella', 'Lembra dessa rosa? A primeira que você me deu.'], ['weng', 'Lembro. Eu ensaiei a entrega umas cinco vezes no carro.']],

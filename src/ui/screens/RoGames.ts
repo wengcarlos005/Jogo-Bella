@@ -82,7 +82,7 @@ export function playSolGame(parent: HTMLElement): Promise<MiniResult & { burn: n
       'div',
       { class: 'cs-rules so-rules' },
       h('b', {}, 'Como jogar'),
-      h('div', {}, h('img', { src: mg('so-nuvem'), alt: '' }), h('span', {}, 'O pai não pagou o guarda-sol! Ande com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), ' e fique na ', h('u', { class: 'g' }, 'sombra das nuvens'), ': a queimadura desce e vocês ganham pontos.')),
+      h('div', {}, h('img', { src: mg('so-nuvem'), alt: '' }), h('span', {}, 'Ainda não tem guarda-sol! Ande com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), ' e fique na ', h('u', { class: 'g' }, 'sombra das nuvens'), ': a queimadura desce e vocês ganham pontos.')),
       h('div', {}, h('img', { src: mg('so-sol'), alt: '' }), h('span', {}, 'O sol tá bravo: quando uma faixa da areia ', h('u', {}, 'piscar'), ', ele vai soltar um raio de sol ali. Saia da faixa!')),
       h('div', {}, h('img', { src: mg('so-protetor'), alt: '' }), h('span', {}, 'Passe por cima do protetor pra pegar e aperte ', h('kbd', {}, 'Espaço'), ' / ', h('kbd', {}, 'E'), ' pra passar (escudo). Picolé esfria na hora!')),
     );

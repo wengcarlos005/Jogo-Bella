@@ -15,7 +15,7 @@ export interface MemoryDef {
 }
 
 /**
- * Álbum de memórias. Meta: 34 entradas ao longo dos 9 capítulos.
+ * Álbum de memórias, ao longo dos 7 capítulos.
  * Os textos aqui são provisórios e devem ser revisados pelo Weng.
  */
 export const MEMORIES: MemoryDef[] = [
@@ -189,7 +189,7 @@ export const MEMORIES: MemoryDef[] = [
     region: 'rio-das-ostras',
     title: 'O salvador do guarda-sol',
     year: 'Ano 1',
-    text: 'Meu pai não quis pagar o guarda-sol e a gente virou camarão. O Weng foi lá e salvou o dia: sombra, cadeira e um herói de chinelo.',
+    text: 'Meu pai achou que dava pra ficar sem guarda-sol e a gente virou camarão. O Weng foi lá e salvou o dia: sombra, cadeira e um herói de chinelo.',
     image: 'memory-ro-01',
   },
   {
@@ -250,5 +250,5 @@ export const MEMORIES: MemoryDef[] = [
   },
 ];
 
-/** 9 capítulos: 22 lembranças até o Capítulo 5 + 3 em cada um dos 4 que faltam. */
+/** 7 capítulos: a meta é o total de lembranças cadastradas acima. */
 export const MEMORY_GOAL = MEMORIES.length;

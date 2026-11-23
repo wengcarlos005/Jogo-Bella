@@ -19,7 +19,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('diego', 'Olha o tamanho desse defumador! Doze horas de brisket, Bella. DOZE.');
     await ctx.say('bella', 'Diego, você já falou isso umas cinco vezes.');
     await ctx.say('diego', 'E vou falar mais cinco.');
-    await ctx.say('tio-nt', 'Mesa grande pra todo mundo! Escolham o que quiser, hoje é por minha conta.');
+    await ctx.say('tio-nt', 'Mesa grande pra todo mundo! Escolham o que quiserem, hoje é por minha conta.');
     await ctx.say('mingau', 'Eu vou no escorregador primeiro!');
     await ctx.say('mae-lilian', 'Primeiro come, depois escorrega! Nessa ordem!');
     ctx.toast('Vá até o balcão pedir as bandejas');
@@ -47,7 +47,7 @@ const scripts: Record<string, Script> = {
     if (c === 0) await ctx.say('diego', 'DOZE HORAS, Bella. Agora você entende.');
     else if (c === 1) {
       await ctx.emote('weng', 'heart');
-      await ctx.say('vivian', 'Aaaaah! Para que eu vou chorar no meu milho.');
+      await ctx.say('vivian', 'Aaaaah! Para, que eu vou chorar no meu milho.');
     } else await ctx.say('mae-lilian', '(abrindo a bolsa) Mas é CLARO que eu trouxe.');
     await ctx.say('tio-nt', 'Bella, volta sempre, viu? Aqui é a sua casa também.');
     await ctx.say('bella', '(baixinho) Weng... sua família é muito boa.');

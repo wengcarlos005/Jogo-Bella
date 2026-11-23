@@ -23,6 +23,7 @@ import { UI } from './ui/UIManager';
 import type { SaveData } from './core/types';
 import { initGamepad, setDevice } from '@/systems/Gamepad';
 import { initGlyphs } from '@/ui/glyphs';
+import { MAPS } from '@/regions';
 
 SettingsStore.load();
 InputSystem.init();
@@ -120,4 +121,4 @@ window.addEventListener(
 );
 
 // Acesso de depuração no console: window.bw
-(window as unknown as { bw: unknown }).bw = { game, GameState, SaveSystem, UI, InputSystem };
+(window as unknown as { bw: unknown }).bw = { game, GameState, SaveSystem, UI, InputSystem, MAPS };

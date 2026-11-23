@@ -57,15 +57,15 @@ const scripts: Record<string, Script> = {
     ctx.face('avo-bella', 'weng');
     await ctx.say('mae-bella', 'Chegou o Weng! Entra, querido, fica à vontade. O Alexandre já acendeu a churrasqueira.');
     await ctx.say('mae-bella', 'Ai, trouxe sobremesa! Alexandre, ele mesmo FEZ uma banoffee!');
-    await ctx.say('pai-bella', '(sem tirar o olho da carne) Banoffee. Hm. Eu faço uma melhor. Mas tudo bem.');
+    await ctx.say('pai-bella', '(sem tirar o olho da carne) Banoffee? Hm. Eu também faço uma ótima. Vamos ver qual ganha.');
     await ctx.say('bella', '(E começou.)');
-    await ctx.say('pai-bella', 'Weng, né? Já mexeu com churrasco de verdade? Não tô falando de grill elétrico de apartamento, não.');
+    await ctx.say('pai-bella', 'Weng, né? Seja bem-vindo! Já mexeu com churrasco de verdade? De carvão, tipo esse aqui?');
     await ctx.emote('weng', 'sweat');
     await ctx.say('weng', 'Já ajudei umas vezes...');
-    await ctx.say('pai-bella', '"Ajudou". Sei. Vem cá, então. Vamos ver se você aprende alguma coisa hoje.');
-    await ctx.say('bella', '(baixinho) Desculpa. Ele é assim. Se acha o dono do fogo.');
+    await ctx.say('pai-bella', '"Ajudou", é? Então vem cá, que hoje eu te ensino uns segredos de churrasqueiro.');
+    await ctx.say('bella', '(baixinho) Prepara. Ele é o dono do fogo nessa casa. E leva isso MUITO a sério.');
     await ctx.say('weng', '(baixinho) Relaxa. Sorrir, concordar e não encostar no pegador. Decorei.');
-    await ctx.say('bella', '(baixinho) Ele vai te MANDAR encostar no pegador. É uma armadilha.');
+    await ctx.say('bella', '(baixinho) Ele vai te MANDAR encostar no pegador. É um teste.');
     await ctx.say('weng', '(baixinho) Então hoje eu ganho esse homem. Fica olhando.');
     // daqui em diante quem age é o Weng; a Bella acompanha, torcendo
     ctx.lead('weng');
@@ -78,7 +78,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('pai-bella', 'Chegou. Toma o pegador. Cuidado, que esse pegador tem mais tempo de casa que você.');
       await ctx.say('weng', 'Pode deixar, seu Alexandre.');
       await ctx.say('pai-bella', '"Seu" não. Alexandre. Não sou velho. Sou experiente.');
-      await ctx.say('bella', '(revirando os olhos) E chato.');
+      await ctx.say('bella', '(rindo) E muito modesto também.');
       await ctx.say('pai-bella', 'Ouvi isso, mocinha.');
       // o Weng assume a churrasqueira (na frente, ao lado do Alexandre); a Bella fica atrás, torcendo
       ctx.follow('bella', false);
@@ -100,16 +100,16 @@ const scripts: Record<string, Script> = {
       ctx.setFlag('dq-churrasco-estrelas', r.stars);
       if (r.stars === 3) {
         await ctx.say('pai-bella', '...');
-        await ctx.say('pai-bella', 'Hm. Até que não queimou. Sorte de principiante.');
-        await ctx.say('weng', '(Sorte de principiante. Vou aceitar como elogio.)');
+        await ctx.say('pai-bella', 'Hm. No ponto certinho. Sorte de principiante... ou talento. Mandou bem, rapaz.');
+        await ctx.say('weng', '("Mandou bem"! Vou guardar esse elogio pra sempre.)');
         await ctx.emote('bella', 'heart');
-        await ctx.say('bella', 'Ele QUASE sorriu. Eu vi. Isso nunca aconteceu nessa casa.');
+        await ctx.say('bella', 'Ele sorriu! Eu vi. É o sorriso de churrasqueiro orgulhoso.');
       } else if (r.stars === 2) {
-        await ctx.say('pai-bella', 'Passou um pouquinho do ponto. Mas pra primeira vez com um mestre do lado, aceitável.');
+        await ctx.say('pai-bella', 'Passou um pouquinho do ponto. Mas pra primeira vez, e com um mestre do lado, mandou bem!');
         await ctx.say('bella', '(baixinho) "Mestre". Ele mesmo se chamou de mestre.');
       } else {
-        await ctx.say('pai-bella', 'Tá vendo? Por isso que quem manda aqui sou eu. Me dá esse pegador.');
-        await ctx.say('bella', '(baixinho) Ignora. Tava ótimo. Ele queima a linguiça TODO domingo.');
+        await ctx.say('pai-bella', 'Calma, acontece! Por isso que tem um mestre aqui. Me dá esse pegador que eu te mostro o truque.');
+        await ctx.say('bella', '(baixinho) Tava ótimo, sério. E cá entre nós: a linguiça dele também queima às vezes.');
       }
       await ctx.unfocus(300);
       ctx.follow('bella', true);
@@ -140,25 +140,25 @@ const scripts: Record<string, Script> = {
       if (c === 0) {
         await ctx.say('mae-bella', 'Ai, que fofo. Bella, segura esse.');
       } else if (c === 1) {
-        await ctx.say('pai-bella', 'Todo mundo gosta de churrasco. O difícil é saber FAZER.');
+        await ctx.say('pai-bella', 'Gosta de churrasco? Então já é de casa! Agora só falta fazer igual a mim.');
         await ctx.say('bella', 'Ele fez, Alexandre. Você viu.');
       } else {
         await ctx.emote('bella', 'heart');
         await ctx.say('mae-bella', 'AAAH. Alexandre, você ouviu isso?');
-        await ctx.say('pai-bella', 'Ouvi. Gostar é fácil. Quero ver aguentar ela de manhã.');
+        await ctx.say('pai-bella', 'Ouvi. Rapaz corajoso. Falar isso na frente da família inteira!');
         await ctx.say('bella', 'ALEXANDRE!');
       }
       await ctx.say('pai-bella', 'E a Lala? Já deixou você fazer carinho nela?');
       await ctx.say('weng', 'Ainda não. Ela me ignora.');
-      await ctx.say('pai-bella', 'Normal. Gato tem bom gosto. Comigo ela demorou... bom, comigo ela ainda não deixa.');
-      await ctx.say('bella', '(Porque nem a Lala aguenta ele.)');
+      await ctx.say('pai-bella', 'Normal. Ela é exigente. Comigo ela levou dois anos pra deixar.');
+      await ctx.say('bella', '(Dois anos. E ele contou cada dia.)');
       await ctx.say('mae-bella', 'Agora a sobremesa! A banoffee que o Weng fez!');
       await ctx.say('avo-bella', 'Deixa eu provar essa banoffee... Hm. Doce de leite no ponto. Banana fresquinha.');
       await ctx.say('pai-bella', '...');
-      await ctx.say('pai-bella', 'Tá boa. O doce de leite eu compraria de outra marca. Mas tá boa.');
-      await ctx.say('bella', '(Pronto. Ele não consegue elogiar sem colocar um defeito.)');
+      await ctx.say('pai-bella', 'Tá boa. Tá boa MESMO. Ainda não é melhor que a minha... mas tá boa.');
+      await ctx.say('bella', '(Ele elogiou! Do jeitinho dele, mas elogiou.)');
       await ctx.emote('weng', 'heart');
-      await ctx.say('bella', '(Mas "tá boa", vindo do Alexandre, é praticamente um abraço.)');
+      await ctx.say('bella', '(E "tá boa", vindo do Alexandre, é praticamente um abraço.)');
       const c2 = await ctx.choose('weng', '(A mãe da Bella está olhando, esperando...)', ['"Foi a minha avó que me ensinou a receita."', '"Fiz duas. A primeira desmontou."', '"Doce é o caminho pro coração de qualquer família."']);
       if (c2 === 0) await ctx.say('mae-bella', 'Então manda um beijo pra ela! Ela criou você muito bem.');
       else if (c2 === 1) await ctx.say('mae-bella', 'Fez DUAS? Bella, esse é pra casar.');
