@@ -23,6 +23,9 @@ async function falta(ctx: ScriptContext): Promise<void> {
   }
 }
 
+/** Sem ficha na mochila, a única seta é a da bilheteria (nada de duas setas ao mesmo tempo). */
+const temFicha = () => GameState.is('ar-fichas') && InventorySystem.has('fichas-parque');
+
 /** Cada brinquedo gasta uma ficha da mochila; sem ficha, a Bella lembra da bilheteria. */
 async function pagar(ctx: ScriptContext, brinquedo: string): Promise<boolean> {
   if (!ctx.flag('ar-fichas')) {
@@ -414,11 +417,11 @@ export const parqueMap: MapDef = {
   ],
 
   hotspots: [
-    { rect: R(245, 470, 690, 715), interact: 'carrossel', label: 'Carrossel', markerIf: () => objActive('carrossel') },
+    { rect: R(245, 470, 690, 715), interact: 'carrossel', label: 'Carrossel', markerIf: () => objActive('carrossel') && temFicha() },
     // a entrada da pista é na quina da grade, à esquerda da barraca das argolas (antes a seta ficava em cima da barraca)
-    { rect: R(690, 330, 795, 425), interact: 'bate', label: 'Bate-bate', markerIf: () => objActive('bate') },
-    { rect: R(800, 400, 1080, 515), interact: 'argolas', label: 'Argolas', markerIf: () => objActive('argolas') },
-    { rect: R(120, 250, 520, 330), interact: 'roda', label: 'Roda-gigante', markerIf: () => objActive('roda') && brinquedosFeitos() },
+    { rect: R(690, 330, 795, 425), interact: 'bate', label: 'Bate-bate', markerIf: () => objActive('bate') && temFicha() },
+    { rect: R(800, 400, 1080, 515), interact: 'argolas', label: 'Argolas', markerIf: () => objActive('argolas') && temFicha() },
+    { rect: R(120, 250, 520, 330), interact: 'roda', label: 'Roda-gigante', markerIf: () => objActive('roda') && brinquedosFeitos() && temFicha() },
     { rect: R(150, 700, 250, 800), interact: 'pipoca', label: 'Pipoca' },
     { rect: R(1005, 740, 1115, 840), interact: 'algodao', label: 'Algodão-doce' },
     { rect: R(580, 170, 680, 260), interact: 'churros', label: 'Churros' },
