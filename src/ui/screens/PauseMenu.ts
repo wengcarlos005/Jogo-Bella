@@ -160,7 +160,7 @@ export class PauseMenu {
             h(
               'div',
               { class: 'pm-qinfo' },
-              h('div', { class: 'pm-kicker' }, `${q.chapter} · ${q.kind === 'principal' ? '★ Principal' : '✿ Secundária'}`),
+              h('div', { class: 'pm-kicker' }, `${q.chapter} · `, ...(q.kind === 'principal' ? [h('i', { class: 'px-ic star' }), ' Principal'] : ['Secundária'])),
               h('div', { class: 'pm-qtitle' }, q.title),
               h('div', { class: 'pm-qdesc' }, q.description),
             ),

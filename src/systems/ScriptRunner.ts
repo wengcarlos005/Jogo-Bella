@@ -145,7 +145,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       if (!before && QuestSystem.isObjectiveDone(q, o)) {
         AudioSystem.play('confirm');
         scene.sparkleBurst(scene.player.x, scene.player.headY + 4, 12);
-        scene.floatText(scene.player.x, scene.player.headY - 6, '✓');
+        if (scene.textures.exists('px-ui-check')) scene.floatIcon(scene.player.x, scene.player.headY - 6, 'px-ui-check');
+        else scene.floatText(scene.player.x, scene.player.headY - 6, '✓');
       }
     },
     questActive: (id) => QuestSystem.isActive(id),
@@ -169,18 +170,21 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       ensureEmotes(scene);
       // símbolo em pixel art com contorno (sem balão): pula, flutua e some
       const y0 = a.headY - 6;
-      const img = scene.add.image(a.x + 6, y0, `emote2-${emote}`).setOrigin(0.5, 1).setDepth(160_000).setScale(0);
-      scene.tweens.add({ targets: img, scale: 1, duration: 220, ease: 'Back.Out' });
+      // balão desenhado (folha ui-icones); sem ele, o símbolo em pixel art feito no código
+      const key = scene.textures.exists(`px-emote-${emote}`) ? `px-emote-${emote}` : `emote2-${emote}`;
+      const s = key.startsWith('px-') ? 18 / (scene.textures.get(key).getSourceImage().height as number) : 1;
+      const img = scene.add.image(a.x + 6, y0, key).setOrigin(0.5, 1).setDepth(160_000).setScale(0);
+      scene.tweens.add({ targets: img, scale: s, duration: 220, ease: 'Back.Out' });
       scene.tweens.add({ targets: img, y: y0 - 5, duration: 900, ease: 'Sine.Out' });
       if (emote === 'heart') {
-        scene.tweens.add({ targets: img, scale: 1.18, duration: 160, delay: 260, yoyo: true, repeat: 1, ease: 'Sine.InOut' });
+        scene.tweens.add({ targets: img, scale: 1.18 * s, duration: 160, delay: 260, yoyo: true, repeat: 1, ease: 'Sine.InOut' });
         for (let k = 0; k < 3; k++) {
-          const m = scene.add.image(a.x + 6, y0 - 6, 'emote2-mini').setDepth(160_001).setAlpha(0);
+          const m = scene.add.image(a.x + 6, y0 - (s === 1 ? 6 : 14), 'emote2-mini').setDepth(160_001).setAlpha(0);
           scene.tweens.add({
             targets: m,
             alpha: { from: 1, to: 0 },
             x: a.x + 6 + (k - 1) * 9,
-            y: y0 - 16 - k * 3,
+            y: y0 - (s === 1 ? 16 : 24) - k * 3,
             duration: 700,
             delay: 200 + k * 120,
             ease: 'Sine.Out',

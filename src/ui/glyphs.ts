@@ -15,6 +15,8 @@ function setVars(): void {
   const de = document.documentElement.style;
   de.setProperty('--px-heart', `url("${assetURL('assets/ui/hud-heart-full.png')}")`);
   de.setProperty('--px-heart-empty', `url("${assetURL('assets/ui/hud-heart-empty.png')}")`);
+  // ícones da folha ui-icones (estrela, coroa, check, explosão, beijo)
+  for (const n of ['star', 'star-empty', 'crown', 'check', 'boom', 'kiss']) de.setProperty(`--px-${n}`, `url("${assetURL(`assets/ui/ui-${n}.png`)}")`);
 }
 
 function isMeter(el: HTMLElement): boolean {

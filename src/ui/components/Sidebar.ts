@@ -1,3 +1,4 @@
+import { initNineSlice } from '../nineSlice';
 import { h } from '@/utils/dom';
 import { EventBus } from '@/core/EventBus';
 import { InventorySystem } from '@/systems/InventorySystem';
@@ -85,6 +86,7 @@ export class Sidebar {
     const de = document.documentElement.style;
     for (const k of ['topbar', 'plaque', 'scroll', 'frame', 'hotbar', 'heart-full', 'heart-empty', 'heart-half']) de.setProperty(`--hud-${k}`, ui(`hud-${k}.png`));
     document.documentElement.classList.add('hud-kit');
+    requestAnimationFrame(() => initNineSlice());
     this.right.replaceChildren(
       ...BUTTONS.map(([tab, label, icon]) =>
         h(

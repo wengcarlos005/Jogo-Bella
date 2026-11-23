@@ -120,7 +120,7 @@ export function playBurgerGame(parent: HTMLElement, opts: BurgerOptions): Promis
       order.forEach((id, i) => {
         const doneLayer = i < layers.length;
         ticket.append(
-          h('div', { class: `bg-line ${doneLayer ? 'ok' : ''}` }, visible || doneLayer ? `${doneLayer ? '✔' : '•'} ${name(id)}` : '• ???'),
+          h('div', { class: `bg-line ${doneLayer ? 'ok' : ''}` }, ...(visible || doneLayer ? [doneLayer ? h('i', { class: 'px-ic check' }) : '•', ` ${name(id)}`] : ['• ???'])),
         );
       });
     };

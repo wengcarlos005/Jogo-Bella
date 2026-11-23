@@ -259,6 +259,10 @@ export const ASSETS: AssetEntry[] = [
   { id: 'MEM-014', key: 'memory-ar-03', file: 'assets/cinematics/memory-ar-03.png', kind: 'image' },
 
   // UI
+  // Ícones de interface (folha ui-icones): estrelas de nota, balões de emoção, seta de objetivo etc.
+  ...['ui-star', 'ui-star-empty', 'emote-heart', 'emote-exclaim', 'emote-question', 'emote-note', 'emote-sweat', 'ui-marker', 'ui-crown', 'ui-check', 'ui-boom', 'ui-kiss'].map(
+    (n, i): AssetEntry => ({ id: `UI-IC-${i}`, key: `px-${n}`, file: `assets/ui/${n}.png`, kind: 'image' }),
+  ),
   { id: 'UI-001', key: 'ui-title-art', file: 'assets/ui/title-art.png', kind: 'image' },
   { id: 'UI-002', key: 'ui-world-map', file: 'assets/ui/world-map.png', kind: 'image' },
   { id: 'UI-003', key: 'ui-logo', file: 'assets/ui/logo.png', kind: 'image' },

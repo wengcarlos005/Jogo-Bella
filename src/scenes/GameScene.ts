@@ -53,7 +53,7 @@ export class GameScene extends Phaser.Scene {
   umbrellas = new Map<string, { img: Phaser.GameObjects.Image; shaft: Phaser.GameObjects.Image; mode: 'up' | 'hide' }>();
   weather!: WeatherSystem;
   interactions!: InteractionSystem;
-  private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2; side?: 'left' | 'right'; caption?: Phaser.GameObjects.Text }[] = [];
+  private markers: { sprite: Phaser.GameObjects.Image; cond: () => boolean; anchor: () => Vec2; side?: 'left' | 'right'; caption?: Phaser.GameObjects.Text; base: number }[] = [];
   private scriptRunning = false;
   private transitioning = false;
   /** Cada entrada num mapa ganha um número: o que sobrou do mapa anterior não mexe no novo. */
@@ -841,6 +841,16 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  /** Ícone flutuante (folha ui-icones) sobre um ponto: sobe e some. */
+  floatIcon(x: number, y: number, key: string, size = 14): void {
+    if (!this.textures.exists(key)) return;
+    const img = this.add.image(x, y, key).setDepth(171_000);
+    const s = size / (this.textures.get(key).getSourceImage().height as number);
+    img.setScale(0);
+    this.tweens.add({ targets: img, scale: s, duration: 240, ease: 'Back.Out' });
+    this.tweens.add({ targets: img, y: y - 18, alpha: { from: 1, to: 0 }, delay: 350, duration: 1100, ease: 'Sine.easeOut', onComplete: () => img.destroy() });
+  }
+
   /** Texto flutuante sobre um ponto (ex.: "✓ Objetivo!"). */
   floatText(x: number, y: number, text: string, color = '#ffd75e'): void {
     const t = this.add
@@ -921,7 +931,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   private addMarker(cond: () => boolean, anchor: () => Vec2, visible: () => boolean, side?: 'left' | 'right', label?: string): void {
-    const sprite = this.add.image(0, 0, 'fx-marker').setDepth(170_500).setVisible(false);
+    // seta amarela desenhada (folha ui-icones), no tamanho da antiga de 13px; sem ela, a feita no código
+    const hd = this.textures.exists('px-ui-marker');
+    const sprite = this.add.image(0, 0, hd ? 'px-ui-marker' : 'fx-marker').setDepth(170_500).setVisible(false);
+    const base = hd ? 15 / (this.textures.get('px-ui-marker').getSourceImage().height as number) : 1;
+    sprite.setScale(base);
     // seta deitada apontando pro lado (ex.: "o restaurante é pra lá"), maior e com o nome do lugar
     let caption: Phaser.GameObjects.Text | undefined;
     if (side) {
@@ -934,7 +948,7 @@ export class GameScene extends Phaser.Scene {
           .setDepth(170_500)
           .setVisible(false);
     }
-    this.markers.push({ sprite, cond: () => visible() && cond(), anchor, side, caption });
+    this.markers.push({ sprite, cond: () => visible() && cond(), anchor, side, caption, base });
   }
 
   /** Atores escondidos por cena (ctx.visible false): flags mudando no meio da cena não podem reexibi-los. */
@@ -1210,7 +1224,7 @@ export class GameScene extends Phaser.Scene {
           const push = Math.abs(Math.sin(time / 200)) * 3;
           m.sprite.setPosition(Math.round(cx + Math.cos(ang) * push), Math.round(cy + Math.sin(ang) * push));
           m.sprite.setRotation(ang - Math.PI / 2);
-          m.sprite.setScale(1.35);
+          m.sprite.setScale((1.35) * m.base);
           m.caption?.setVisible(false);
           continue;
         }
@@ -1220,11 +1234,11 @@ export class GameScene extends Phaser.Scene {
           // balança só pra dentro do mapa (nunca some na borda)
           const dir = m.side === 'right' ? 1 : -1;
           m.sprite.setPosition(Math.round(a.x - dir * (6 - bob)), Math.round(a.y));
-          m.sprite.setScale(1.35 + Math.max(0, Math.sin(time / 260)) * 0.12);
+          m.sprite.setScale((1.35 + Math.max(0, Math.sin(time / 260)) * 0.12) * m.base);
           m.caption?.setPosition(Math.round(a.x + dir * 2), Math.round(a.y - 9)).setVisible(true);
         } else {
           m.sprite.setPosition(Math.round(a.x), Math.round(a.y - 2 - bob));
-          m.sprite.setScale(1 + Math.max(0, Math.sin(time / 260)) * 0.12);
+          m.sprite.setScale((1 + Math.max(0, Math.sin(time / 260)) * 0.12) * m.base);
         }
       }
     }
