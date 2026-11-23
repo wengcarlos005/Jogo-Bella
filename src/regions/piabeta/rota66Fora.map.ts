@@ -1,3 +1,4 @@
+import { GameState } from '@/core/GameState';
 import { T } from '@/world/tiles';
 import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
@@ -45,7 +46,7 @@ const scripts: Record<string, Script> = {
       ['bella', 'Ops. Essa não é a direita, né?'],
       ['weng', 'Pra lá é só mais rua. A gente vai pela direita!'],
     ];
-    const n = Number(ctx.flag('fora-direita-n') ? 1 : 0);
+    const n = Number(GameState.getFlag<number>('fora-direita-n') ?? 0);
     const [who, txt] = falas[(Math.floor(Math.random() * 3) + n) % 3];
     ctx.setFlag('fora-direita-n');
     await ctx.say(who, txt);

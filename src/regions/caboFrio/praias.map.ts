@@ -1,3 +1,4 @@
+import { GameState } from '@/core/GameState';
 import { T } from '@/world/tiles';
 import type { MapDef } from '@/world/MapTypes';
 import type { Script } from '@/core/script';
@@ -48,7 +49,7 @@ const peroScripts: Record<string, Script> = {
       ['felipe', 'Eu juro que eu sei fazer embaixadinha. Juro.'],
       ['puggian', 'Quem deixou o isopor aberto? ...Ninguém? Ninguém assume?'],
     ];
-    const n = Number(ctx.flag('cf-pero-n') || 0);
+    const n = Number(GameState.getFlag<number>('cf-pero-n') ?? 0);
     ctx.setFlag('cf-pero-n', (n + 1) % f.length);
     await ctx.say(...f[n % f.length]);
   },
@@ -173,7 +174,7 @@ const japScripts: Record<string, Script> = {
       ['felipe', 'Eu vi um siri. Pequeno. Mas vi.'],
       ['puggian', 'Espetinho tá saindo! Quem quer?'],
     ];
-    const n = Number(ctx.flag('cf-jap-n') || 0);
+    const n = Number(GameState.getFlag<number>('cf-jap-n') ?? 0);
     ctx.setFlag('cf-jap-n', (n + 1) % f.length);
     await ctx.say(...f[n % f.length]);
   },

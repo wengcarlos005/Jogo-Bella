@@ -131,7 +131,7 @@ export const HOWTO: Record<string, HowTo> = {
     rows: [
       { img: 'cz-panela', text: 'Pega no ar: o Weng joga os ingredientes. Ande com a panela com [setas] e pegue {só os da receita}.' },
       { img: 'cz-faca', text: 'Corte no ritmo: a setinha mostra onde cortar. Aperte [Espaço] quando o anel {encostar no círculo}.' },
-      { img: 'cz-colher', text: 'Mexe com amor: [←] e [→] alternados enchem o Sabor. Quando aparecer {Tempero!}, aperte [Espaço].' },
+      { img: 'cz-colher', text: 'Mexe com amor: [←] e [→] alternados enchem o Sabor. {Tempero!} = [Espaço]. No fim, {desligue o fogo} com [Espaço] antes de passar do ponto.' },
     ],
   },
   acai: {

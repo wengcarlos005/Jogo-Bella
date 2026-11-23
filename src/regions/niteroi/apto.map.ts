@@ -57,7 +57,7 @@ const scripts: Record<string, Script> = {
     }
     if (objActive('chocolates')) return chocolates(ctx);
     const f = ['Já comeu chocolate hoje? Tem mais na cesta, viu?', 'Fica à vontade, a casa é sua. Quer água? Suco? Chocolate?', 'O Weng falava tanto de você. Agora eu entendi por quê.'];
-    const n = Number(ctx.flag('nt-mae-n') || 0);
+    const n = Number(GameState.getFlag<number>('nt-mae-n') ?? 0);
     ctx.setFlag('nt-mae-n', (n + 1) % f.length);
     await ctx.say('mae-lilian', f[n % f.length]);
   },

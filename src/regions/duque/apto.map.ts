@@ -789,17 +789,30 @@ export const aptoMap: MapDef = {
   ],
   scripts: {
     ...scripts,
+    // o Vô e a Vó: cada conversa é uma fala nova (e depois recomeça), com a Bella respondendo
     async vof(ctx) {
-      const f = ['Come mais, menina! Tem bolinho na cozinha.', 'O Weng era um bebê gordinho, sabia? Tenho foto. Depois te mostro.', 'A Meli gosta mais de você do que de mim. Que traição.'];
-      const n = Number(ctx.flag('vof-n') ? 1 : 0) + (ctx.flag('vof-n2') ? 1 : 0);
-      ctx.setFlag(n === 0 ? 'vof-n' : 'vof-n2');
-      await ctx.say('vof-weng', f[Math.min(n, 2)]);
+      const f: [string, string][] = [
+        ['Tem bolinho saindo do forno. O primeiro pedaço é seu, viu?', 'Eu aceito. O primeiro e o segundo.'],
+        ['O Weng era um bebê bochechudo, sabia? Tenho foto. Depois te mostro.', 'Quero ver TODAS as fotos, Vó.'],
+        ['A Meli gosta mais de você do que de mim. Que traição!', 'Foi o sachê, Vó. Eu comprei ela.'],
+        ['Fico feliz de ver o Weng sorrindo desse jeito. É coisa sua.', 'É coisa nossa, Vó.'],
+      ];
+      const n = Number(GameState.getFlag<number>('vof-n') ?? 0);
+      ctx.setFlag('vof-n', (n + 1) % f.length);
+      await ctx.say('vof-weng', f[n % f.length][0]);
+      await ctx.say('bella', f[n % f.length][1]);
     },
     async vom(ctx) {
-      const f = ['Na China tava frio. Aqui tá esse calor de Caxias... já sinto saudade do frio.', 'Joga Bate-Gato com o Weng? Ele perde pra mim também.', 'Cuida bem do meu neto, hein.'];
-      const n = Number(ctx.flag('vom-n') ? 1 : 0) + (ctx.flag('vom-n2') ? 1 : 0);
-      ctx.setFlag(n === 0 ? 'vom-n' : 'vom-n2');
-      await ctx.say('vom-weng', f[Math.min(n, 2)]);
+      const f: [string, string][] = [
+        ['Na China tava frio. Aqui tá esse calor de Caxias... já tô com saudade do frio.', 'Aqui o frio é o ar-condicionado do mercado, Vô.'],
+        ['Joga Bate-Gato com o Weng? Ele perde pra mim também.', 'Então a gente faz um campeonato, Vô.'],
+        ['Cuida bem do meu neto, hein.', 'Pode deixar, Vô. Ele também cuida de mim.'],
+        ['O Weng aprendeu a cozinhar comigo. Pelo menos o miojo.', 'O miojo gourmet dele é famoso, Vô.'],
+      ];
+      const n = Number(GameState.getFlag<number>('vom-n') ?? 0);
+      ctx.setFlag('vom-n', (n + 1) % f.length);
+      await ctx.say('vom-weng', f[n % f.length][0]);
+      await ctx.say('bella', f[n % f.length][1]);
     },
     async weng(ctx) {
       if (QuestSystem.isActive('dq-m4')) {
@@ -818,7 +831,7 @@ export const aptoMap: MapDef = {
         ctx.startQuest('dq-m5');
         ctx.refresh();
         await ctx.fadeIn(500);
-        await ctx.say('vof-weng', 'Bella! Finalmente te conheci pessoalmente! Vem cá, deixa eu te olhar. Que menina linda! Vou fazer um bolinho pra você.');
+        await ctx.say('vof-weng', 'Bella! Finalmente a gente se conhece! Vem cá, deixa eu te olhar. Que menina linda! Vou fazer um bolinho pra você.');
         await ctx.say('vom-weng', 'Seja bem-vinda. O Weng não para de falar de você.');
         await ctx.emote('bella', 'heart');
         await ctx.say('bella', 'Ai, que fofos! Eu é que tô feliz de conhecer vocês.');

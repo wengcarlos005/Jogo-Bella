@@ -4197,3 +4197,19 @@ body.pad .kb-only { display: none; }
 .ck2-list-t { font-family: var(--font-pixel); font-weight: 400; color: #c85a2a; font-size: clamp(12px, calc(var(--u) * 6), 18px); text-align: center; margin-bottom: 4px; }
 .ck2-need { font-size: clamp(11px, calc(var(--u) * 5.2), 15px) !important; }
 .ck2-need img { height: 2.2em !important; }
+/* desligar o fogo */
+.ck2-flame.high i { animation-duration: .15s; transform: scaleY(1.5); filter: brightness(1.15); }
+.ck2-flame.off i { opacity: 0; transition: opacity .3s; }
+.ck2-knob { position: absolute; right: -6%; bottom: 4%; z-index: 7; display: grid; justify-items: center; gap: 2px; pointer-events: none; }
+.ck2-knob img { height: calc(var(--u) * 12); animation: ck2Bob .4s ease-in-out infinite alternate; filter: drop-shadow(0 2px 0 rgba(0, 0, 0, .25)); }
+.ck2-knob i { width: calc(var(--u) * 14); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #fff, #c8c8d0 45%, #7a7a88); border: 3px solid #4a4a58; box-shadow: 0 3px 0 rgba(0, 0, 0, .3); position: relative; }
+.ck2-knob i::after { content: ''; position: absolute; left: 45%; top: 8%; width: 10%; height: 42%; background: #d8343f; border-radius: 99px; transition: transform .25s; transform-origin: 50% 100%; }
+.ck2-knob.done i::after { transform: rotate(-90deg); }
+.ck2-knob.done img, .ck2-knob.done span { opacity: 0; }
+.ck2-knob span { font-family: var(--font-pixel); color: #fff; background: #d8343f; padding: 1px 8px; border-radius: 99px; white-space: nowrap; font-size: clamp(11px, calc(var(--u) * 5.5), 16px); order: -1; animation: gp-hot .3s infinite alternate; }
+.ck2-offbar { position: absolute; left: 50%; bottom: 4%; transform: translateX(-50%); width: 40%; height: 10px; border-radius: 99px; background: #eadcc8; border: 2px solid #8a4a1e; overflow: hidden; z-index: 8; }
+.ck2-offbar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #d8343f, #ffb02a); }
+.ck2-knob { right: -24% !important; bottom: 6% !important; }
+.ck2-knob i { width: calc(var(--u) * 22) !important; border-width: 4px !important; }
+.ck2-knob img { height: calc(var(--u) * 16) !important; }
+.ck2-offbar { bottom: 2% !important; width: 46% !important; height: 12px !important; }

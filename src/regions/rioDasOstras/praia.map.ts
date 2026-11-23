@@ -282,7 +282,7 @@ const scripts: Record<string, Script> = {
       return;
     }
     const f = ['A sombra até que é boa. Mas eu aguentava o sol, viu?', 'Weng, você é um rapaz direito. Gastador, mas direito.', 'Esse petisco do quiosque tá muito caro. Mas tá cheiroso, né?'];
-    const n = Number(ctx.flag('ro-pai-n') || 0);
+    const n = Number(GameState.getFlag<number>('ro-pai-n') ?? 0);
     ctx.setFlag('ro-pai-n', (n + 1) % f.length);
     await ctx.say('pai-ro', f[n % f.length]);
   },

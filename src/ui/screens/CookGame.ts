@@ -270,7 +270,11 @@ export function playCookGame(parent: HTMLElement): Promise<CookResult> {
           d.el.style.top = `${d.y}%`;
           d.el.style.transform = `translate(-50%, -50%) rotate(${d.rot}deg)`;
           // boca da panela
-          if (d.y > 74 && d.y < 88 && Math.abs(d.x - px) < 10) {
+          const pr = pot.getBoundingClientRect();
+          const dr = d.el.getBoundingClientRect();
+          const mouthTop = pr.top + pr.height * 0.12;
+          const cx = dr.left + dr.width / 2;
+          if (dr.bottom >= mouthTop && dr.top <= pr.top + pr.height * 0.55 && cx >= pr.left + pr.width * 0.08 && cx <= pr.left + pr.width * 0.78) {
             drops.splice(i, 1);
             d.el.classList.add('in');
             later(250, () => d.el.remove());
@@ -361,7 +365,7 @@ export function playCookGame(parent: HTMLElement): Promise<CookResult> {
           cancelAnimationFrame(raf);
           clearKeys();
           say('weng', combo >= 4 ? 'Que mão! Parece programa de culinária.' : 'Cortadinho com carinho. Pra panela!');
-          later(1100, () => intro('3 · Mexe com amor!', '← e → alternados giram a colher. Tempero? Espaço!', stirStage));
+          later(1100, () => intro('3 · Mexe com amor!', '← → alternados giram a colher. Tempero? Espaço! No fim, desliga o fogo.', stirStage));
           return;
         }
         waiting = true;
@@ -462,10 +466,56 @@ export function playCookGame(parent: HTMLElement): Promise<CookResult> {
         paintScore();
         if (flavor >= 100) {
           AudioSystem.play('quest');
-          say('weng', 'Sente esse cheirinho... no ponto certinho!');
           burst(50, 45, 16, true);
-        } else say('weng', 'Tá quase... mas já tá cheiroso. Vamos servir assim mesmo, com amor.');
-        later(1300, finish);
+        }
+        spice.classList.remove('on');
+        // por último: desligar o fogo na hora (a chama sobe; o botão do fogão pisca com a setinha)
+        say('bella', flavor >= 100 ? 'Cheirinho perfeito! Rápido: desliga o fogo!' : 'Já tá cheiroso! Agora desliga o fogo, rápido!');
+        const knob = h('div', { class: 'ck2-knob' }, h('img', { src: assetURL('assets/ui/ui-marker.png'), alt: '' }), h('i'), h('span', {}, 'Desliga o fogo!'));
+        const clock = h('i');
+        const timer = h('div', { class: 'ck2-offbar' }, clock);
+        stove.append(knob);
+        stage.append(timer);
+        flame.classList.add('high');
+        actions.replaceChildren(keyBtn('Desligar o fogo', 'Space', 'btn primary'));
+        let left2 = 2.6;
+        let last2 = 0;
+        let done2 = false;
+        const turnOff = (ok: boolean) => {
+          if (done2) return;
+          done2 = true;
+          cancelAnimationFrame(raf);
+          clearKeys();
+          flame.classList.remove('high');
+          flame.classList.add('off');
+          knob.classList.add('done');
+          timer.remove();
+          if (ok) {
+            const quick = left2 > 1.5;
+            gain(quick ? 30 : 20, 50, 22, quick ? 'No ponto!' : 'Ufa!');
+            burst(50, 40, 12, true);
+            for (let i = 0; i < 4; i++) later(i * 120, () => puff(i % 2 === 0));
+            say('weng', 'Desligou na hora certa. Agora é só servir!');
+          } else {
+            miss(50, 22, 'Passou um pouquinho!');
+            say('weng', 'Passou um pouquinho... tá crocante embaixo. A gente chama de "toque do chef".');
+          }
+          later(1300, finish);
+        };
+        onKey('keydown', (e) => {
+          if (!isAction(e.code) || e.repeat) return;
+          e.preventDefault();
+          turnOff(true);
+        });
+        const tick2 = (t: number) => {
+          const dt = last2 ? Math.min(0.05, (t - last2) / 1000) : 0;
+          last2 = t;
+          left2 -= dt;
+          clock.style.width = `${Math.max(0, left2 / 2.6) * 100}%`;
+          if (left2 <= 0) return turnOff(false);
+          raf = requestAnimationFrame(tick2);
+        };
+        raf = requestAnimationFrame(tick2);
       };
       const tick = (t: number) => {
         const dt = last ? Math.min(0.05, (t - last) / 1000) : 0;
@@ -504,7 +554,8 @@ export function playCookGame(parent: HTMLElement): Promise<CookResult> {
       const pct = score / max;
       const stars = pct >= 0.55 && mistakes <= 3 ? 3 : pct >= 0.32 ? 2 : 1;
       const nota = Math.min(10, Math.max(6, 6 + pct * 6)).toFixed(1).replace('.', ',');
-      const plate = h('img', { class: 'ck2-plate', src: mg('prato'), alt: '' });
+      // o prato de cada receita (o 'prato' antigo era macarrão com carne pra qualquer receita)
+      const plate = h('img', { class: 'ck2-plate', src: mg(r.pan), alt: '' });
       stage.replaceChildren(
         h('div', { class: 'ck2-final' }, h('div', { class: 'ck2-rays' }), plate, h('b', {}, r.name), h('span', {}, `Nota do chef: ${nota} · maior combo x${bestCombo}`)),
       );
