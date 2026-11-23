@@ -492,8 +492,12 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     // a selfie é a própria lembrança: depois da foto, ela vai pro álbum (a do Niemeyer nunca entrava)
     selfie: async (key, caption) => {
       await UI.photo(caption, key);
+      // mostra a lembrança ali mesmo, antes da cena seguir (se ficasse na fila, aparecia no mapa seguinte e não fechava)
       const m = MEMORIES.find((x) => x.image === key);
-      if (m) MemoryAlbumSystem.unlock(m.id);
+      if (m && !MemoryAlbumSystem.isUnlocked(m.id)) {
+        MemoryAlbumSystem.unlock(m.id);
+        await scene.showMemoryNow(m.id);
+      }
     },
 
     nerves(value, message) {

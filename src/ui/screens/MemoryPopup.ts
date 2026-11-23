@@ -12,12 +12,27 @@ export function showMemoryPopup(parent: HTMLElement, id: string): Promise<void> 
   AudioSystem.play('memory');
   const url = textureURL(def.image);
   return new Promise((resolve) => {
+    let done = false;
     const close = () => {
+      if (done) return;
+      done = true;
       InputSystem.off('memory:interact', close);
-      InputSystem.pop('memory');
+      window.removeEventListener('keydown', onKey, true);
+      if (InputSystem.context === 'memory') InputSystem.pop('memory');
       screen.remove();
       resolve();
     };
+    // fecha também por tecla direta: se o mapa trocar com ela aberta, a pilha de controles zera e o evento não chega
+    let ready = false;
+    const onKey = (e: KeyboardEvent) => {
+      if (!ready || e.repeat) return;
+      if (e.code !== 'Space' && e.code !== 'KeyE' && e.code !== 'Enter') return;
+      if (InputSystem.context === 'memory') return; // caminho normal (memory:interact) cuida
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      close();
+    };
+    window.addEventListener('keydown', onKey, true);
     const screen = h(
       'div',
       { class: 'screen' },
@@ -34,6 +49,9 @@ export function showMemoryPopup(parent: HTMLElement, id: string): Promise<void> 
     );
     parent.append(screen);
     InputSystem.push('memory');
-    setTimeout(() => InputSystem.on('memory:interact', close), 400);
+    setTimeout(() => {
+      ready = true;
+      InputSystem.on('memory:interact', close);
+    }, 400);
   });
 }
