@@ -57,7 +57,7 @@ const scripts: Record<string, Script> = {
     ctx.setFlag('ar-fogos-estrelas', r.stars);
     ctx.setFlag('ar-fogos-fotos', r.photos);
     // a família comemora de verdade: pulando, olhando os fogos, corações
-    const fimFesta = ctx.party(['player', 'weng', 'tia-tim', 'anne', 'lilian', 'vivian', 'diego', 'mingau', 'julinha', 'laylinha'], '2024');
+    const fimFesta = ctx.party(['player', 'weng', 'tia-tim', 'anne', 'lilian', 'vivian', 'diego', 'mingau', 'julinha', 'laylinha'], '2024', 'down');
     ctx.vignette('fg-casal');
     await ctx.narrate('Os fogos sobre a Lagoa de Araruama. A família inteira gritando, se abraçando, brindando.');
     const c = await ctx.choose('bella', '(Um pedido de ano-novo)', ['Pedir mais um ano inteiro assim, com ele', 'Pedir pra nunca mais ter medo de ser eu mesma', 'Não contar o pedido pra ninguém']);

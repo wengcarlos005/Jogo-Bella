@@ -343,7 +343,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
 
     letterbox: (on) => UI.letterbox(on),
 
-    party(who, year) {
+    party(who, year, sky = 'up') {
       const people = who.map((w) => scene.findActor(w)).filter((a): a is NonNullable<typeof a> => !!a && a.visible);
       let alive = true;
       const timers: Phaser.Time.TimerEvent[] = [];
@@ -355,9 +355,9 @@ export function createScriptContext(scene: GameScene): ScriptContext {
           const o = { v: 0 };
           scene.tweens.add({ targets: o, v: Phaser.Math.Between(4, 9), duration: Phaser.Math.Between(140, 200), yoyo: true, ease: 'Sine.Out', onUpdate: () => a.setLift(o.v), onComplete: () => a.setLift(0) });
           const r = Math.random();
-          if (r < 0.35) a.face('up');
-          else if (r < 0.6) a.face(Math.random() < 0.5 ? 'left' : 'right');
-          else if (r < 0.7) a.face('down');
+          // olha pros fogos (o céu pode ficar em cima ou, na varanda, embaixo), pros lados, pros amigos
+          if (r < 0.45) a.face(sky);
+          else if (r < 0.75) a.face(Math.random() < 0.5 ? 'left' : 'right');
           if (Math.random() < 0.12) void ctx.emote(who[i], Math.random() < 0.6 ? 'heart' : 'note');
           later(Phaser.Math.Between(380, 950), hop);
         };
@@ -367,16 +367,16 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       const firework = () => {
         const v = scene.cameras.main.worldView;
         const x = v.x + Phaser.Math.Between(24, Math.max(25, v.width - 24));
-        const y = v.y + Phaser.Math.Between(14, Math.max(15, v.height * 0.38));
+        const y = sky === 'up' ? v.y + Phaser.Math.Between(14, Math.max(15, v.height * 0.38)) : v.bottom - Phaser.Math.Between(22, Math.max(23, v.height * 0.2));
         const color = Phaser.Utils.Array.GetRandom(COLORS);
-        const flash = scene.add.circle(x, y, 3, 0xffffff, 0.9).setDepth(199_600).setBlendMode(Phaser.BlendModes.ADD);
+        const flash = scene.add.circle(x, y, 5, 0xffffff, 0.95).setDepth(199_600).setBlendMode(Phaser.BlendModes.ADD);
         scene.tweens.add({ targets: flash, scale: 6, alpha: 0, duration: 260, onComplete: () => flash.destroy() });
-        const n = 18;
+        const n = 22;
         for (let k = 0; k < n; k++) {
           const ang = (Math.PI * 2 * k) / n + Math.random() * 0.2;
-          const dist = Phaser.Math.Between(16, 28);
-          const dot = scene.add.circle(x, y, 1.3, color, 1).setDepth(199_600).setBlendMode(Phaser.BlendModes.ADD);
-          scene.tweens.add({ targets: dot, x: x + Math.cos(ang) * dist, y: y + Math.sin(ang) * dist + 8, alpha: 0, scale: 0.4, duration: Phaser.Math.Between(700, 1000), ease: 'Cubic.easeOut', onComplete: () => dot.destroy() });
+          const dist = Phaser.Math.Between(26, 46);
+          const dot = scene.add.circle(x, y, 2.6, color, 1).setDepth(199_600).setBlendMode(Phaser.BlendModes.ADD);
+          scene.tweens.add({ targets: dot, x: x + Math.cos(ang) * dist, y: y + Math.sin(ang) * dist + 8, alpha: { from: 1, to: 0 }, scale: 0.5, duration: Phaser.Math.Between(1000, 1400), ease: 'Quad.easeOut', onComplete: () => dot.destroy() });
         }
         later(Phaser.Math.Between(260, 620), firework);
       };

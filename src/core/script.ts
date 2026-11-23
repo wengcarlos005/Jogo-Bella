@@ -110,7 +110,7 @@ export interface ScriptContext {
   /** Explosão de corações sobre um personagem. */
   hearts(who: string, count?: number): void;
   /** Comemoração de virada: todo mundo pulando, olhando os fogos, corações e "FELIZ <ano>!". Devolve a função que para. */
-  party(who: string[], year: string): () => void;
+  party(who: string[], year: string, sky?: 'up' | 'down'): () => void;
   travel(label: string, icon?: string, ms?: number): Promise<void>;
   /** Viagem de carro animada entre duas cidades, com a conversa do casal em balões. */
   roadTrip(from: string, to: string, lines: { who: string; text: string }[], trees?: [string, string], opts?: { coast?: boolean; sunset?: boolean }): Promise<void>;
