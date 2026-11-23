@@ -27,6 +27,8 @@ export interface BuiltOverlay {
   /** Fica translúcido quando alguém passa atrás (copas grandes). */
   fade: boolean;
   when?: () => boolean;
+  /** sombra do objeto (some junto quando o objeto some) */
+  shadow?: Phaser.GameObjects.Image;
   front?: boolean;
   frontAlpha?: number;
   tall?: boolean;
@@ -246,9 +248,10 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
   }
   for (const ob of def.objects ?? []) {
     if (!scene.textures.exists(ob.key)) continue;
+    let shadow: Phaser.GameObjects.Image | undefined;
     if (ob.shadow !== false) {
       const sw = ((ob.w ?? 60) * (ob.shadow ?? 1.05)) / 3;
-      scene.add
+      shadow = scene.add
         .image(ob.x / 3, ob.y / 3 - 1, 'fx-objshadow')
         .setDisplaySize(sw, Math.max(4, sw * 0.3))
         .setDepth(-4)
@@ -264,7 +267,7 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     // no chão (toalha, tapete): fica sempre embaixo de todos; não entra na ordenação por profundidade
     if (ob.flat) continue;
     // profundidade fixa na base (tall): objeto separado não troca de camada quando alguém passa por ele
-    overlays.push({ img, rect: new Phaser.Geom.Rectangle(b.x, b.y, b.width, b.height), base, fade: !!ob.fade || !!ob.front, front: ob.front, tall: ob.tall ?? true, when: ob.when });
+    overlays.push({ img, rect: new Phaser.Geom.Rectangle(b.x, b.y, b.width, b.height), base, fade: !!ob.fade || !!ob.front, front: ob.front, tall: ob.tall ?? true, when: ob.when, shadow });
   }
 
   for (const b of def.blocks ?? []) {

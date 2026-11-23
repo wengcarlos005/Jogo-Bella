@@ -73,7 +73,7 @@ export function playCeiaGame(parent: HTMLElement): Promise<MiniResult> {
       return el;
     });
     const seatEls = SEATS.map((s) => {
-      const r = 51;
+      const r = 44; // na beirada da mesa (como gente sentada); assim a mesa pode ser maior
       const x = 50 + r * Math.sin((s.a * Math.PI) / 180);
       const y = 50 - r * Math.cos((s.a * Math.PI) / 180);
       const face = textureURL(`portrait-${PORTRAIT[s.id] ?? s.id}`);

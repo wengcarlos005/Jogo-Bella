@@ -4232,3 +4232,14 @@ body.pad .pad-only { display: flex !important; }
 .ps-dots i.ok { background: #3ac85a; }
 .ps-dots i.now { background: #ffd23f; box-shadow: 0 0 8px #ffd23f; }
 .ps-btns { display: flex; gap: 10px; }
+/* Mesa Giratória maior: palco alto, mesa ocupando a altura, pratos e rostos grandes */
+.ce-panel { padding-top: 8px !important; padding-bottom: 8px !important; gap: 6px !important; }
+.ce-panel .so-sb-chip { padding-top: 2px !important; padding-bottom: 2px !important; }
+.ce-stage { height: min(72vh, calc(var(--u) * 310)) !important; }
+.ce-table { height: 92% !important; top: 48% !important; }
+.ce-dish { width: 15.5cqw !important; }
+.ce-ask { width: 15cqw !important; }
+.ce-seat { font-size: clamp(11px, 3.6cqw, 18px) !important; }
+.ce-seat img, .ce-seat i { width: 13cqw !important; border-width: 4px !important; }
+.ce-legend { width: 18% !important; }
+.ce-order { width: 20% !important; }

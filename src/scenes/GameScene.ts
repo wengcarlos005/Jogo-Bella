@@ -1174,6 +1174,7 @@ export class GameScene extends Phaser.Scene {
       if (o.when) {
         const on = o.when();
         o.img.setVisible(on);
+        o.shadow?.setVisible(on);
         if (!on) continue;
       }
       if (o.front) {

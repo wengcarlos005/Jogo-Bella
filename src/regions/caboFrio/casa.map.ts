@@ -232,7 +232,8 @@ export const cfCasaMap: MapDef = {
   ],
 
   objects: [
-    { key: 'cf-mesa', x: 560, y: 568, w: 430, shadow: 0.8, when: () => !GameState.is('cf-dia2') || objDone('cartas') },
+    // sempre visível: sumia no 2º dia, mas a sombra, a colisão e o "Mesa" continuavam ali (as caixas de pizza de ontem ficam)
+    { key: 'cf-mesa', x: 560, y: 568, w: 430, shadow: 0.8 },
     { key: 'cf-sofa', x: 1180, y: 434, w: 300, shadow: 0.8 },
     { key: 'cf-mesinha', x: 1180, y: 574, w: 260, shadow: 0.7 },
     { key: 'cf-isopor', x: 960, y: 304, w: 110, shadow: 0.6 },
