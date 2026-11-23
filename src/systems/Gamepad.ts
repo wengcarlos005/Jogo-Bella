@@ -19,29 +19,84 @@
 type Key = { code: string; key: string };
 const K = (code: string, key: string): Key => ({ code, key });
 const SPACE = K('Space', ' ');
-const BUTTONS: Record<number, Key> = {
-  0: SPACE,
-  1: K('KeyQ', 'q'),
-  2: K('ShiftLeft', 'Shift'),
-  3: K('KeyI', 'i'),
-  4: K('PageUp', 'PageUp'),
-  5: K('PageDown', 'PageDown'),
-  6: K('ShiftLeft', 'Shift'),
-  7: K('ShiftLeft', 'Shift'),
-  8: K('KeyL', 'l'),
-  9: K('Escape', 'Escape'),
-  12: K('ArrowUp', 'ArrowUp'),
-  13: K('ArrowDown', 'ArrowDown'),
-  14: K('ArrowLeft', 'ArrowLeft'),
-  15: K('ArrowRight', 'ArrowRight'),
+
+/** Ações do controle → tecla que elas "apertam". */
+export type PadAction = 'confirm' | 'back' | 'run' | 'bag' | 'menu' | 'album' | 'tabPrev' | 'tabNext' | 'up' | 'down' | 'left' | 'right';
+export const ACTION_KEY: Record<PadAction, Key> = {
+  confirm: SPACE,
+  back: K('KeyQ', 'q'),
+  run: K('ShiftLeft', 'Shift'),
+  bag: K('KeyI', 'i'),
+  menu: K('Escape', 'Escape'),
+  album: K('KeyL', 'l'),
+  tabPrev: K('PageUp', 'PageUp'),
+  tabNext: K('PageDown', 'PageDown'),
+  up: K('ArrowUp', 'ArrowUp'),
+  down: K('ArrowDown', 'ArrowDown'),
+  left: K('ArrowLeft', 'ArrowLeft'),
+  right: K('ArrowRight', 'ArrowRight'),
 };
+/** Um botão (b) ou um eixo (a) num valor (v): direcional "de eixo" dos controles genéricos, gatilhos. */
+export type Bind = { b: number } | { a: number; v: number };
+export type PadMap = [PadAction, Bind][];
+
+/** Layout padrão do navegador (DualSense / DualShock / Xbox reconhecidos). */
+const STANDARD: PadMap = [
+  ['confirm', { b: 0 }], ['back', { b: 1 }], ['run', { b: 2 }], ['bag', { b: 3 }],
+  ['tabPrev', { b: 4 }], ['tabNext', { b: 5 }], ['run', { b: 6 }], ['run', { b: 7 }],
+  ['album', { b: 8 }], ['menu', { b: 9 }],
+  ['up', { b: 12 }], ['down', { b: 13 }], ['left', { b: 14 }], ['right', { b: 15 }],
+];
 const DEAD = 0.45;
+
+/** Mapas configurados pela Bella (Opções › Configurar controle), por modelo de controle. */
+const MAPS_KEY = 'bella-controle-v1';
+function loadMaps(): Record<string, PadMap> {
+  try {
+    return JSON.parse(localStorage.getItem(MAPS_KEY) ?? '{}') as Record<string, PadMap>;
+  } catch {
+    return {};
+  }
+}
+let customMaps = loadMaps();
+export function saveCustomMap(padId: string, map: PadMap): void {
+  customMaps = { ...customMaps, [padId]: map };
+  try {
+    localStorage.setItem(MAPS_KEY, JSON.stringify(customMaps));
+  } catch {
+    /* modo privado: vale só nesta sessão */
+  }
+}
+export function hasCustomMap(padId: string): boolean {
+  return !!customMaps[padId];
+}
+export function currentPad(): Gamepad | null {
+  return Array.from(navigator.getGamepads?.() ?? []).find((p): p is Gamepad => !!p && p.connected) ?? null;
+}
+/** Enquanto a tela de configurar está aberta, o controle não aperta tecla nenhuma. */
+let calibrating = false;
+export function setCalibrating(on: boolean): void {
+  calibrating = on;
+  if (on) {
+    for (const [code] of holding) send('keyup', { code, key: code });
+    holding.clear();
+    prev = {};
+  }
+}
+
+export function bindActive(pad: Gamepad, bind: Bind): boolean {
+  if ('b' in bind) return !!pad.buttons[bind.b]?.pressed || (pad.buttons[bind.b]?.value ?? 0) > 0.5;
+  const val = pad.axes[bind.a] ?? 0;
+  // eixo de analógico/gatilho: passou da metade pro lado certo; "chapéu" do direcional: valor exato
+  if (Math.abs(bind.v) >= 0.9) return val * Math.sign(bind.v) > 0.5;
+  return Math.abs(val - bind.v) < 0.12;
+}
 
 /** quantas fontes (botões/eixos) estão segurando cada tecla agora */
 const holding = new Map<string, number>();
 let padMode = false;
 let raf = 0;
-let prev: boolean[] = [];
+let prev: Record<string, boolean> = {};
 
 function send(type: 'keydown' | 'keyup', k: Key): void {
   window.dispatchEvent(new KeyboardEvent(type, { code: k.code, key: k.key, bubbles: true, cancelable: true }));
@@ -61,27 +116,34 @@ function release(k: Key): void {
 
 function poll(): void {
   raf = requestAnimationFrame(poll);
-  const pads = navigator.getGamepads?.() ?? [];
-  const pad = Array.from(pads).find((p) => p && p.connected);
+  if (calibrating) return;
+  const pad = currentPad();
   if (!pad) return;
-  const now: boolean[] = [];
-  for (const i of Object.keys(BUTTONS)) now[+i] = !!pad.buttons[+i]?.pressed;
-  // analógico esquerdo vira setas
+  const map = customMaps[pad.id] ?? STANDARD;
+  const now: Record<string, boolean> = {};
+  const keyOf: Record<string, Key> = {};
+  map.forEach(([action, bind], i) => {
+    const id = `${i}:${action}`;
+    now[id] = bindActive(pad, bind);
+    keyOf[id] = ACTION_KEY[action];
+  });
+  // analógico esquerdo sempre anda (setas)
   const ax = pad.axes[0] ?? 0;
   const ay = pad.axes[1] ?? 0;
-  now[100] = ax < -DEAD;
-  now[101] = ax > DEAD;
-  now[102] = ay < -DEAD;
-  now[103] = ay > DEAD;
-  const STICK: Record<number, Key> = { 100: BUTTONS[14], 101: BUTTONS[15], 102: BUTTONS[12], 103: BUTTONS[13] };
-  for (let i = 0; i < now.length; i++) {
-    if (now[i] === undefined || now[i] === !!prev[i]) continue;
-    const k = BUTTONS[i] ?? STICK[i];
-    if (!k) continue;
-    if (now[i]) {
+  now['s:l'] = ax < -DEAD;
+  now['s:r'] = ax > DEAD;
+  now['s:u'] = ay < -DEAD;
+  now['s:d'] = ay > DEAD;
+  keyOf['s:l'] = ACTION_KEY.left;
+  keyOf['s:r'] = ACTION_KEY.right;
+  keyOf['s:u'] = ACTION_KEY.up;
+  keyOf['s:d'] = ACTION_KEY.down;
+  for (const id of Object.keys(now)) {
+    if (now[id] === !!prev[id]) continue;
+    if (now[id]) {
       setPadMode(true);
-      press(k);
-    } else release(k);
+      press(keyOf[id]);
+    } else release(keyOf[id]);
   }
   prev = now;
 }
@@ -161,18 +223,21 @@ function setPadMode(on: boolean): void {
 }
 
 let started = false;
-export function initGamepad(onConnect?: (name: string) => void): void {
+export function initGamepad(onConnect?: (name: string) => void, onUnknown?: (pad: Gamepad) => void): void {
   if (started) return;
   started = true;
   window.addEventListener('gamepadconnected', (e) => {
     setPadMode(true);
     if (!raf) poll();
-    onConnect?.((e as GamepadEvent).gamepad.id);
+    const pad = (e as GamepadEvent).gamepad;
+    onConnect?.(pad.id);
+    // controle que o navegador não reconhece (ordem de botões própria): pede pra configurar uma vez
+    if (pad.mapping !== 'standard' && !hasCustomMap(pad.id)) onUnknown?.(pad);
   });
   window.addEventListener('gamepaddisconnected', () => {
     for (const [code] of holding) send('keyup', { code, key: code });
     holding.clear();
-    prev = [];
+    prev = {};
     if (!Array.from(navigator.getGamepads?.() ?? []).some((p) => p?.connected)) setPadMode(false);
   });
   // voltou pro teclado de verdade: textos de teclado de volta

@@ -24,6 +24,7 @@ import type { SaveData } from './core/types';
 import { initGamepad, setDevice } from '@/systems/Gamepad';
 import { initGlyphs } from '@/ui/glyphs';
 import { MAPS } from '@/regions';
+import { openPadSetup } from '@/ui/screens/PadSetup';
 
 SettingsStore.load();
 InputSystem.init();
@@ -100,7 +101,11 @@ UI.init(
 setDevice(SettingsStore.data.device);
 // corações de texto viram o coração desenhado do jogo
 initGlyphs();
-initGamepad(() => UI.toasts.show('Controle conectado: ✕ confirma · ◯ volta · □ corre · OPTIONS menu'));
+initGamepad(
+  () => UI.toasts.show('Controle conectado: ✕ confirma · ◯ volta · □ corre · OPTIONS menu'),
+  // controle que o navegador não reconhece (ex.: "estilo PS5" com SELECT / MODE / START): configura uma vez
+  () => void openPadSetup(document.getElementById('ui') ?? document.body),
+);
 
 // Salva ao fechar/ocultar a aba (celular).
 document.addEventListener('visibilitychange', () => {

@@ -1,5 +1,6 @@
 import { h, formatDate, formatPlaytime } from '@/utils/dom';
 import { attachMenuNav } from '../menuNav';
+import { openPadSetup } from './PadSetup';
 import { GameState } from '@/core/GameState';
 import { QuestSystem } from '@/systems/QuestSystem';
 import { InventorySystem } from '@/systems/InventorySystem';
@@ -478,6 +479,7 @@ export class PauseMenu {
         range('Efeitos', '', 'sfxVolume'),
         seg('Velocidade do texto', '', 'textSpeed', [['lenta', 'Lenta'], ['normal', 'Normal'], ['rapida', 'Rápida']]),
         seg('Jogando no', '', 'device', [['pc', 'PC (teclado)'], ['controle', 'Controle']]),
+        h('div', { class: 'pm-opt' }, h('span', { class: 'lbl' }, 'Controle'), h('button', { class: 'btn small', onclick: () => void openPadSetup(this.parent) }, 'Configurar controle')),
         seg('Controles de toque', '', 'touchControls', [['auto', 'Auto'], ['sempre', 'Sempre'], ['nunca', 'Nunca']]),
       ),
       h('div', { class: 'pm-section' }, 'Controles'),
