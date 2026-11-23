@@ -4275,3 +4275,18 @@ body.pad .pad-only { display: flex !important; }
 .tv2-me.scared .tv2-chr:first-child { animation: shake .25s infinite; }
 .tv2-board { top: 7% !important; bottom: 9% !important; width: 48% !important; gap: 8px 12px !important; transform: translateX(-50%) perspective(900px) rotateX(26deg) !important; }
 .tv2-shell { width: 26% !important; }
+/* Gatinho-Bomba legível: mesa no meio-alto, carta jogada grande ao lado da pilha, dica no meio da mesa (longe da mão) */
+.gb-pile { left: 40% !important; top: 40% !important; width: 9% !important; }
+.gb-played { left: 58% !important; top: 40% !important; width: 12% !important; z-index: 3; }
+.gb-played .gb-fly b { font-size: clamp(11px, calc(var(--u) * 5.2), 15px) !important; }
+.gb-count { bottom: -20% !important; }
+.gb-tip { bottom: auto !important; top: 64% !important; z-index: 3 !important; }
+.gb-hand { bottom: 2% !important; }
+.gb-card { width: calc(var(--u) * 30) !important; }
+.gb-card.sel { transform: translateY(-12%) scale(1.1) !important; z-index: 2; }
+.gb-seat.s0 { left: 4% !important; top: 14% !important; } .gb-seat.s2 { right: 4% !important; top: 14% !important; }
+.gb-panel .pg-hud { display: flex; align-items: center; gap: 12px; }
+.gb-panel .pg-hud .gb-tip { position: static !important; transform: none !important; flex: 1; max-width: none !important; text-align: left; font-size: clamp(12px, calc(var(--u) * 5.4), 16px) !important; padding: 6px 12px !important; }
+.gb-played { left: 60% !important; top: 42% !important; width: 13% !important; }
+.gb-pile { left: 40% !important; top: 42% !important; }
+.gb-pile { top: 36% !important; width: 8% !important; } .gb-played { top: 36% !important; }

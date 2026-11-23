@@ -68,7 +68,7 @@ export function playGatinhoGame(parent: HTMLElement): Promise<MiniResult & { pla
       h('div', {}, h('img', { src: mg('gb-desarmar'), alt: '' }), h('span', {}, 'Escolha a carta com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), ' e jogue com ', h('kbd', {}, 'Espaço'), '. A última opção, ', h('b', {}, 'Comprar'), ', termina a sua vez.')),
       h('div', {}, h('img', { src: mg('gb-espiar'), alt: '' }), h('span', {}, 'Pular, Espiar, Embaralhar e Roubar te ajudam a fugir da bomba. Quem sobrar por último ganha!')),
     );
-    ui.stage.append(h('div', { class: 'gb-table' }), seats, pile, played, peek, hand, tip, boom, rules);
+    ui.stage.append(h('div', { class: 'gb-table' }), seats, pile, played, peek, hand, boom, rules);
 
     let turn = 0;
     let sel = 0;
@@ -79,7 +79,7 @@ export function playGatinhoGame(parent: HTMLElement): Promise<MiniResult & { pla
     const sbLeft = h('b', { class: 'so-sb-n' }, '4');
     const sbPile = h('b', { class: 'so-sb-n' }, '0');
     const sbBombs = h('b', { class: 'so-sb-n' }, '3');
-    ui.hud.replaceChildren(sb(['Na mesa', sbLeft], ['Pilha', sbPile], ['Bombas', sbBombs]));
+    ui.hud.replaceChildren(sb(['Na mesa', sbLeft], ['Pilha', sbPile], ['Bombas', sbBombs]), tip); // a dica da carta fica no alto, sem cobrir a mão
 
     const alive = () => players.filter((p) => !p.out);
     const paintSeats = () => {
