@@ -4098,3 +4098,102 @@ body.pad .kb-only { display: none; }
 
 /* ícones e sprites em caixas de tamanho fixo: nunca achatar (a arte cabe inteira, na proporção dela) */
 .toast img, .item-card img, .bg-talk img, .bk-boat img, .fr-ball img, .al-ball img, .ce-leg img { object-fit: contain; }
+
+/* ================= Jantar a dois (versão nova: pega no ar · corte no ritmo · mexe com amor) ================= */
+.ck2-sb { margin: 0 auto; }
+.ck2-combo.hot { border-color: #ff7a3a !important; box-shadow: 0 0 14px #ff9a3a, 0 calc(var(--u) * 2) 0 #1a0616 !important; }
+.ck2-combo.hot b { color: #ffd23f; }
+.ck2-stage { overflow: hidden; display: flex; align-items: center; justify-content: center; background: linear-gradient(#f9e9cf, #f1d6ac) !important; }
+.ck2-float { position: absolute; transform: translate(-50%, -50%); z-index: 30; pointer-events: none; font-family: var(--font-pixel); font-size: clamp(12px, calc(var(--u) * 6.5), 22px); white-space: nowrap; text-shadow: 0 2px 0 #fff, 0 -1px 0 #fff, 2px 0 0 #fff, -2px 0 0 #fff; animation: ck2Float .9s ease-out forwards; }
+.ck2-float.good { color: #2a9a4a; }
+.ck2-float.bad { color: #d8343f; }
+.ck2-float.combo { color: #ff7a1a; font-size: clamp(16px, calc(var(--u) * 10), 32px); animation-duration: 1.1s; }
+@keyframes ck2Float { 0% { opacity: 0; transform: translate(-50%, -20%) scale(.6); } 20% { opacity: 1; transform: translate(-50%, -60%) scale(1.15); } 100% { opacity: 0; transform: translate(-50%, -180%) scale(1); } }
+.ck2-spark { position: absolute; width: calc(var(--u) * 6); height: calc(var(--u) * 6); z-index: 25; pointer-events: none; background: var(--px-star) center / contain no-repeat; animation: ck2Spark .75s ease-out forwards; }
+.ck2-spark.heart { background-image: var(--px-heart); }
+@keyframes ck2Spark { 0% { transform: translate(-50%, -50%) scale(.3); opacity: 1; } 100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1); opacity: 0; } }
+.ck2-intro { display: grid; justify-items: center; gap: 6px; padding: 14px 26px; background: #fff; border: 3px solid #c85a2a; border-radius: 16px; box-shadow: 0 6px 0 #8a4a1e; animation: ck2In .35s cubic-bezier(.2, 1.6, .4, 1); text-align: center; }
+.ck2-intro b { font-family: var(--font-pixel); font-weight: 400; color: #c85a2a; font-size: clamp(16px, calc(var(--u) * 10), 30px); }
+.ck2-intro span { font-weight: 800; color: #5a2f1a; font-size: clamp(11px, calc(var(--u) * 5.5), 16px); }
+.ck2-intro.out { transition: transform .25s, opacity .25s; transform: scale(.85); opacity: 0; }
+@keyframes ck2In { from { transform: scale(.4); opacity: 0; } }
+.ck2-key { min-width: 3.2em; touch-action: none; user-select: none; }
+/* 1. pega no ar */
+.ck2-field { position: relative; flex: 1; height: 100%; }
+.ck2-pot { position: absolute; bottom: 2%; left: 50%; height: 26%; transform: translateX(-50%); image-rendering: pixelated; filter: drop-shadow(0 4px 0 rgba(0, 0, 0, .2)); z-index: 3; }
+.ck2-drop { position: absolute; height: 15%; image-rendering: pixelated; z-index: 2; filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .2)); }
+.ck2-drop.in { transition: transform .22s, opacity .22s; opacity: 0; }
+.ck2-list { flex: 0 0 24%; align-self: stretch; margin: 2%; display: flex; flex-direction: column; justify-content: center; gap: 4px; background: #fff; border: 2px dashed #c85a2a; border-radius: 12px; padding: 6px 8px; }
+.ck2-need { display: flex; align-items: center; gap: 6px; font-weight: 800; color: #5a2f1a; font-size: clamp(10px, calc(var(--u) * 4.6), 14px); }
+.ck2-need img { height: 1.8em; image-rendering: pixelated; filter: grayscale(.6) opacity(.7); }
+.ck2-need.ok { color: #2a8a3a; }
+.ck2-need.ok img { filter: none; animation: ck2Pop .4s cubic-bezier(.2, 1.8, .4, 1); }
+.ck2-need.ok span::after { content: ''; display: inline-block; width: 1em; height: 1em; margin-left: .3em; vertical-align: -0.15em; background: var(--px-check) center / contain no-repeat; }
+@keyframes ck2Pop { 0% { transform: scale(.4); } 60% { transform: scale(1.3); } }
+/* 2. corte no ritmo */
+.ck2-board { position: relative; width: 62%; height: 92%; }
+.ck2-board.chop { animation: ck2Chop .18s; }
+@keyframes ck2Chop { 50% { transform: translateY(3px); } }
+.ck2-tabua { position: absolute; inset: 8% 0 0 0; width: 100%; height: 92%; object-fit: contain; image-rendering: pixelated; }
+.ck2-food { position: absolute; left: 50%; top: 54%; height: 42%; transform: translate(-50%, -50%); image-rendering: pixelated; z-index: 2; }
+.ck2-target, .ck2-ring { position: absolute; left: 50%; top: 54%; width: 40%; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 3; }
+.ck2-target { border: 4px dashed rgba(200, 90, 42, .75); }
+.ck2-ring { border: 6px solid #ffb02a; box-shadow: 0 0 10px rgba(255, 176, 42, .7); }
+.ck2-ring.near { border-color: #3ac85a; box-shadow: 0 0 18px #3ac85a; }
+.ck2-knife { position: absolute; left: 50%; top: 18%; height: 34%; transform: translate(-50%, -80%) rotate(-25deg); image-rendering: pixelated; z-index: 5; pointer-events: none; filter: drop-shadow(0 4px 2px rgba(0, 0, 0, .25)); }
+.ck2-guide { position: absolute; left: 50%; top: 4%; transform: translateX(-50%); z-index: 6; display: grid; justify-items: center; pointer-events: none; animation: ck2Bob .6s ease-in-out infinite alternate; }
+.ck2-guide img { height: calc(var(--u) * 13); filter: drop-shadow(0 2px 0 rgba(0, 0, 0, .25)); }
+.ck2-guide span { order: -1; font-family: var(--font-pixel); color: #fff; background: #3ac85a; padding: 1px 8px; border-radius: 99px; font-size: clamp(11px, calc(var(--u) * 5.5), 16px); opacity: 0; transform: scale(.6); transition: opacity .1s, transform .1s; }
+.ck2-guide.now span { opacity: 1; transform: scale(1.1); }
+.ck2-guide.now img { filter: drop-shadow(0 0 8px #3ac85a); }
+@keyframes ck2Bob { to { transform: translateX(-50%) translateY(6px); } }
+.ck2-pile { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.ck2-slice { position: absolute; left: 50%; top: 54%; height: 14%; image-rendering: pixelated; clip-path: inset(30% 0 30% 0); animation: ck2Slice .5s ease-out forwards; }
+@keyframes ck2Slice { from { transform: translate(-50%, -50%); } to { transform: translate(calc(-50% + var(--dx)), 60%) rotate(var(--rot)); } }
+.ck2-beats { position: absolute; right: 3%; top: 50%; transform: translateY(-50%); display: grid; gap: 6px; }
+.ck2-beats i { width: calc(var(--u) * 6); height: calc(var(--u) * 6); border-radius: 50%; background: #eadcc8; border: 2px solid #8a4a1e; }
+.ck2-beats i.perf { background: #3ac85a; box-shadow: 0 0 8px #3ac85a; }
+.ck2-beats i.good { background: #ffd23f; }
+.ck2-beats i.bad { background: #d8343f; }
+/* 3. mexe com amor */
+.ck2-stove { position: relative; height: 92%; aspect-ratio: 1; display: flex; align-items: flex-end; justify-content: center; }
+.ck2-pan { position: relative; height: 78%; image-rendering: pixelated; z-index: 2; }
+.ck2-spoon { position: absolute; left: 50%; top: 46%; height: 30%; transform: translate(-50%, -50%) translateY(-18%); transition: transform .12s; image-rendering: pixelated; z-index: 3; transform-origin: 50% 80%; }
+.ck2-flame { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 50%; height: 16%; display: flex; justify-content: space-around; align-items: flex-end; z-index: 1; }
+.ck2-flame i { width: 22%; height: 100%; border-radius: 50% 50% 40% 40%; background: radial-gradient(ellipse at 50% 80%, #fff3a0, #ff9a2a 45%, #ff4a2a 75%, transparent 76%); animation: ck2Flame .25s ease-in-out infinite alternate; }
+.ck2-flame i:nth-child(2) { animation-delay: .1s; height: 120%; }
+@keyframes ck2Flame { to { transform: scaleY(.75) scaleX(1.1); } }
+.ck2-steam { position: absolute; top: 22%; width: calc(var(--u) * 8); height: calc(var(--u) * 8); border-radius: 50%; background: rgba(255, 255, 255, .85); z-index: 4; pointer-events: none; animation: ck2Steam 1.2s ease-out forwards; }
+.ck2-steam.heart { background: var(--px-heart) center / contain no-repeat; border-radius: 0; }
+@keyframes ck2Steam { from { transform: translate(-50%, 0) scale(.5); opacity: .9; } to { transform: translate(calc(-50% + var(--dx)), -120%) scale(1.4); opacity: 0; } }
+.ck2-spice { position: absolute; top: 2%; left: 50%; z-index: 6; transform: translateX(-50%) scale(.5); opacity: 0; font-family: var(--font-pixel); color: #fff; background: #ff7a1a; padding: 4px 14px; border-radius: 99px; border: 3px solid #fff; box-shadow: 0 4px 0 #a8481e; font-size: clamp(13px, calc(var(--u) * 7), 22px); transition: transform .12s, opacity .12s; pointer-events: none; }
+.ck2-spice.on { opacity: 1; transform: translateX(-50%) scale(1); animation: gp-hot .3s infinite alternate; }
+.ck2-meter { position: absolute; left: 4%; top: 50%; transform: translateY(-50%); width: 22%; display: grid; gap: 4px; font-family: var(--font-pixel); color: #a8481e; font-size: clamp(11px, calc(var(--u) * 5.5), 16px); }
+.ck2-bar { height: 16px; border-radius: 99px; background: #eadcc8; border: 2px solid #8a4a1e; overflow: hidden; }
+.ck2-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #ffd23f, #ff7a3a); transition: width .1s; }
+.ck2-meter.hot .ck2-bar { box-shadow: 0 0 10px #ff9a3a; }
+.ck2-time { position: absolute; right: 5%; top: 8%; font-family: var(--font-pixel); font-weight: 400; color: #5a2f1a; font-size: clamp(18px, calc(var(--u) * 12), 36px); }
+/* final */
+.ck2-final { position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-pixel); color: #5a2f1a; z-index: 2; }
+.ck2-final b { font-weight: 400; font-size: clamp(14px, calc(var(--u) * 8), 24px); }
+.ck2-final span { font-family: var(--font-body); font-weight: 800; font-size: clamp(11px, calc(var(--u) * 5), 15px); color: #a8481e; }
+.ck2-plate { height: 52%; image-rendering: pixelated; animation: ck2Plate .6s cubic-bezier(.2, 1.6, .4, 1); position: relative; z-index: 2; }
+@keyframes ck2Plate { from { transform: scale(.2) rotate(-20deg); opacity: 0; } }
+.ck2-rays { position: absolute; left: 50%; top: 42%; width: 70%; aspect-ratio: 1; transform: translate(-50%, -50%); background: repeating-conic-gradient(rgba(255, 210, 63, .35) 0 10deg, transparent 10deg 20deg); border-radius: 50%; animation: ck2Spin 8s linear infinite; z-index: 1; mask-image: radial-gradient(circle, #000 30%, transparent 70%); }
+@keyframes ck2Spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+.ck2-confetti { position: absolute; top: -5%; width: 8px; height: 12px; background: hsl(var(--h), 85%, 60%); z-index: 20; animation: ck2Conf 1.8s ease-in forwards; }
+@keyframes ck2Conf { to { transform: translate(var(--dx), 120vh) rotate(720deg); } }
+/* pega no ar: cozinha de azulejo, bancada embaixo, o Weng jogando lá de cima */
+.ck2-field { background:
+  linear-gradient(transparent 82%, #b97a4a 82%, #a0623b 86%, #8a4a2a 100%),
+  linear-gradient(90deg, rgba(255, 255, 255, .55) 2px, transparent 2px) 0 0 / 34px 34px,
+  linear-gradient(rgba(255, 255, 255, .55) 2px, transparent 2px) 0 0 / 34px 34px,
+  linear-gradient(#cfe6ea, #b9d8de); }
+.ck2-counter { position: absolute; left: 0; right: 0; bottom: 0; height: 4%; background: #6a3a22; }
+.ck2-tosser { position: absolute; top: 1%; left: 50%; height: 16%; transform: translateX(-50%); border-radius: 50%; background: #ffe2b8; border: 3px solid #fff; box-shadow: 0 3px 0 rgba(0, 0, 0, .2); transition: left .25s ease-out; z-index: 3; image-rendering: pixelated; }
+.ck2-drop { height: 21% !important; }
+.ck2-pot { height: 34% !important; bottom: 3% !important; }
+.ck2-list { flex: 0 0 22% !important; justify-content: flex-start !important; padding-top: 10px !important; }
+.ck2-list-t { font-family: var(--font-pixel); font-weight: 400; color: #c85a2a; font-size: clamp(12px, calc(var(--u) * 6), 18px); text-align: center; margin-bottom: 4px; }
+.ck2-need { font-size: clamp(11px, calc(var(--u) * 5.2), 15px) !important; }
+.ck2-need img { height: 2.2em !important; }

@@ -129,9 +129,9 @@ export const HOWTO: Record<string, HowTo> = {
   cook: {
     title: 'Jantar a dois',
     rows: [
-      { img: 'cz-macarrao', text: 'Escolha a receita e pegue na bancada SÓ os ingredientes dela. Pegar errado conta como erro.' },
-      { img: 'cz-faca', text: 'Cortar: a faca passa pela tábua. Aperte [Cortar!] (ou [Espaço]) em cima de cada marquinha.' },
-      { img: 'cz-panela', text: 'Fogão: quando aparecer "Mexe!", mexa com [Espaço] / [E]. Quando o ponto estiver no verde, {desligue o fogo} com [Enter].' },
+      { img: 'cz-panela', text: 'Pega no ar: o Weng joga os ingredientes. Ande com a panela com [setas] e pegue {só os da receita}.' },
+      { img: 'cz-faca', text: 'Corte no ritmo: a setinha mostra onde cortar. Aperte [Espaço] quando o anel {encostar no círculo}.' },
+      { img: 'cz-colher', text: 'Mexe com amor: [←] e [→] alternados enchem o Sabor. Quando aparecer {Tempero!}, aperte [Espaço].' },
     ],
   },
   acai: {
