@@ -351,7 +351,8 @@ export class GameScene extends Phaser.Scene {
           enabled: () => npc.visible,
           run: () => this.talkTo(npc),
           anchor: () => ({ x: npc.x, y: npc.headY - 2 }),
-          priority: def.id === 'weng' ? -1 : 0,
+          // gente e bicho vencem o móvel do lado (o Pombo encostado no sofá ainda é o Pombo)
+          priority: def.id === 'weng' ? -1 : 0.3,
         });
       }
       if (def.markerIf) this.addMarker(def.markerIf, () => ({ x: npc.x, y: npc.headY - 4 }), () => npc.visible);
