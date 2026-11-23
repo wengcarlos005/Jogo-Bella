@@ -4296,3 +4296,8 @@ body.pad .pad-only { display: flex !important; }
 .lt-body p.beat { font-size: 27px !important; color: #a0405a; }
 .lt-body p.sig { font-size: 30px !important; color: #c0305f; }
 .lt-paper.compact .lt-body p.hi { font-size: 30px !important; }
+/* tela Fim legível em cima da ilustração: cartão escuro translúcido atrás do texto */
+.end-fim { background: rgba(26, 10, 34, .72); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); border: 2px solid rgba(255, 210, 63, .45); border-radius: 22px; padding: 2.2vh 3.2vw 2.6vh; box-shadow: 0 12px 40px rgba(0, 0, 0, .45); }
+.end-fim-s, .end-fim-d, .end-miss { text-shadow: 0 2px 0 rgba(0, 0, 0, .6); }
+.end-miss { opacity: 1 !important; }
+.end-stats div { background: rgba(42, 12, 36, .85) !important; border-color: #f2c14e !important; }
