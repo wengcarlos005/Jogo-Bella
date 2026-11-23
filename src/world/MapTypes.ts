@@ -151,6 +151,8 @@ export interface MapDef {
   art?: 'fill' | 'native';
   npcs?: NpcPlacement[];
   spawns: Record<string, SpawnDef>;
+  /** Seta de objetivo em cima do Weng (que segue a Bella e não está na lista de NPCs do mapa). */
+  wengMarkerIf?: () => boolean;
   exits?: ExitDef[];
   triggers?: TriggerDef[];
   scripts?: Record<string, Script>;

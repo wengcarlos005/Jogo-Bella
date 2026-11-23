@@ -777,6 +777,8 @@ export const aptoMap: MapDef = {
   spawns: {
     porta: { tx: 15.5, ty: 17.4, facing: 'up' },
   },
+  // a briga boba: ele foi pro quarto; a seta mostra onde ele tá
+  wengMarkerIf: () => QuestSystem.isActive('dq-m4'),
   triggers: [
     // Porta de saída: durante a visita fica em casa; depois, passeios
     { id: 'porta', rect: R(715, 900, 820, 945), script: 'porta' },

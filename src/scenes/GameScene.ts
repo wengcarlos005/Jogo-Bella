@@ -409,6 +409,7 @@ export class GameScene extends Phaser.Scene {
         run: () => this.talkTo(npc),
         anchor: () => ({ x: npc.x, y: npc.headY - 2 }),
       });
+      if (this.def.wengMarkerIf) this.addMarker(this.def.wengMarkerIf, () => ({ x: npc.x, y: npc.headY - 4 }), () => npc.visible);
     }
     entry.npc.follow(this.player);
   }
