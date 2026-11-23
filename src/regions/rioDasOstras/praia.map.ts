@@ -38,6 +38,12 @@ async function proximo(ctx: ScriptContext): Promise<void> {
 async function conversaSogro(ctx: ScriptContext): Promise<void> {
   await ctx.say('pai-ro', 'Filha, vai ali no barraqueiro buscar um mate pra gente? Eu pago. Os três!');
   await ctx.say('bella', '(olhando pro Weng, desconfiada) Tá... já volto.');
+  // a Bella vai mesmo até o barraqueiro; o Weng fica sozinho com o sogro
+  ctx.follow('weng', false);
+  ctx.face('pai-ro', 'right');
+  void ctx.move('weng', 14.0, 13.6, 55).then(() => ctx.face('weng', 'left'));
+  await ctx.move('player', 7.2, 11.7, 80);
+  ctx.face('player', 'left');
   await ctx.say('pai-ro', 'Senta aqui, Weng. Na cadeira que você pagou.');
   await ctx.say('weng', '(engolindo seco) Claro, sogro.');
   await ctx.say('pai-ro', 'Eu trazia a Bella aqui quando ela era pequenininha. Ela chorava quando a onda derrubava o castelo.');
@@ -53,10 +59,13 @@ async function conversaSogro(ctx: ScriptContext): Promise<void> {
   await ctx.say('pai-ro', 'Só uma coisa. Cuida dela. Ela é o meu tesouro.');
   await ctx.say('weng', 'Pode deixar. Ela é o meu também.');
   await ctx.say('pai-ro', '...Bom. Isso aqui foi uma conversa de homem. Não conta pra ela que eu fiquei emocionado.');
+  await ctx.move('player', 15.4, 13.9, 80);
+  ctx.face('player', 'left');
   await ctx.say('bella', '(voltando com três copos de mate) Do que vocês tavam falando?');
   await ctx.say('pai-ro', 'Do preço do mate. Um absurdo.');
   await ctx.say('weng', '(piscando pra Bella) Do preço do mate.');
   ctx.hearts('player', 10);
+  ctx.follow('weng', true);
   ctx.objective(Q, 'sogro');
   await ctx.narrate('O sol começou a baixar e o cheiro de petisco do quiosque ficou impossível de ignorar.');
   await proximo(ctx);
