@@ -5,6 +5,7 @@ import { GameState } from '@/core/GameState';
 import { InventorySystem } from './InventorySystem';
 import { QuestSystem } from './QuestSystem';
 import { MemoryAlbumSystem } from './MemoryAlbumSystem';
+import { MEMORIES } from '@/data/memories';
 import { AudioSystem } from './AudioSystem';
 import { UI } from '@/ui/UIManager';
 import { NPC } from '@/entities/NPC';
@@ -430,7 +431,12 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     },
     backdrop: (key, rainy) => UI.backdrop(key, rainy),
     ferris: (mode) => UI.ferris(mode),
-    selfie: (key, caption) => UI.photo(caption, key),
+    // a selfie é a própria lembrança: depois da foto, ela vai pro álbum (a do Niemeyer nunca entrava)
+    selfie: async (key, caption) => {
+      await UI.photo(caption, key);
+      const m = MEMORIES.find((x) => x.image === key);
+      if (m) MemoryAlbumSystem.unlock(m.id);
+    },
 
     nerves(value, message) {
       const v = Math.max(0, Math.min(100, Math.round(value)));
