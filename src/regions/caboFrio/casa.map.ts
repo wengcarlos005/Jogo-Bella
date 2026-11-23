@@ -97,6 +97,8 @@ async function cartas(ctx: ScriptContext): Promise<void> {
   else await ctx.say('weng', 'Carrego. Mas só depois do quilômetro quatro.');
   const k = await ctx.cincoKm();
   ctx.setFlag('cf-km-estrelas', k.stars);
+  // eles já estão na rua, chegando no Forte: nada de voltar a mostrar a casa
+  await ctx.fadeOut(300);
   if (!ctx.has('chinelo-misterioso')) {
     await ctx.say('bella', 'Gente... eu ainda tô segurando aquele chinelo perdido do caminho.');
     await ctx.say('ruan', 'Leva. Vira o mascote da virada.');

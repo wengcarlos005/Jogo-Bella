@@ -141,8 +141,13 @@ const japScripts: Record<string, Script> = {
     const r = await ctx.travessia();
     ctx.setFlag('cf-travessia-estrelas', r.stars);
     await ctx.fadeOut(500);
+    // os dois lá em cima da ilhota (onde a faixa de areia chega), olhando a enseada
+    ctx.follow('weng', false);
+    ctx.place('player', 24.7, 16.4, 'left');
+    ctx.place('weng', 26.5, 16.3, 'left');
     await ctx.narrate('Na ilha: pedra quente, uma moitinha de sombra e a enseada inteira lá embaixo, verde-água.');
     await ctx.fadeIn(500);
+    await ctx.focus(25.6, 15.8, 1.35, 900);
     await ctx.say('bella', 'Valeu a pena. Valeu MUITO a pena.');
     await ctx.say('weng', 'Eu falei que era rasinho.');
     await ctx.say('bella', 'Tinha um siri. Ele olhou pra mim.');
