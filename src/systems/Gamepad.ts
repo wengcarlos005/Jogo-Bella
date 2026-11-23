@@ -91,7 +91,7 @@ const hidden = new Set<HTMLElement>();
 
 function swapText(node: Text): void {
   // textos que já mostram as duas formas (ex.: "✕ / Espaço") ficam como estão
-  if ((node.parentElement as HTMLElement | null)?.closest('.kb-only')) return;
+  if ((node.parentElement as HTMLElement | null)?.closest('.kb-only, .no-swap')) return;
   const t = node.nodeValue ?? '';
   if (!/Espaço|\bShift\b|\bEsc\b/.test(t)) return;
   if (!original.has(node)) original.set(node, t);

@@ -235,7 +235,7 @@ export function playFotoNiemeyerGame(parent: HTMLElement): Promise<MiniResult & 
       { class: 'cs-rules ft-rules' },
       h('b', {}, 'Como jogar'),
       h('div', {}, h('img', { src: mg('ft-coracao'), alt: '' }), h('span', {}, 'O tio tá tirando a foto, mas a mão treme! Segure as ', h('kbd', {}, 'setas'), ' pra deixar o casal no ', h('u', { class: 'g' }, 'quadradinho do meio'), '.')),
-      h('div', {}, h('span', { class: 'ft-ico' }, '⛰'), h('span', {}, 'Ponto extra se o Pão de Açúcar (lá no fundo, à direita) aparecer no visor. Aperte ', h('kbd', {}, 'Espaço'), ' / ', h('kbd', {}, 'E'), ' pra bater.')),
+      h('div', {}, h('img', { class: 'ft-ico', src: mg('ft-paodeacucar'), alt: '' }), h('span', {}, 'Ponto extra se o Pão de Açúcar (lá no fundo, à direita) aparecer no visor. Aperte ', h('kbd', {}, 'Espaço'), ' / ', h('kbd', {}, 'E'), ' pra bater.')),
       h('div', {}, h('img', { src: mg('ft-gaivota1'), alt: '' }), h('span', {}, 'Se a gaivota estiver no visor na hora da foto, é photobomb! São 3 fotos, uma pra cada pose.')),
     );
     ui.stage.append(scene, finder, poseTag, strip, fx, flash, rules);

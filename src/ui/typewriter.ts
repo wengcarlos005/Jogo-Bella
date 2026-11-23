@@ -1,3 +1,5 @@
+import { decorateHearts } from './glyphs';
+
 /**
  * Máquina de escrever: o texto vai aparecendo letra por letra dentro de `el`.
  * `skip()` completa na hora (Espaço no meio da frase). `done` resolve quando terminar.
@@ -12,6 +14,7 @@ export function typewrite(el: HTMLElement, text: string, cps = 38, onTick?: () =
   const caret = document.createElement('i');
   caret.className = 'tw-caret';
   const textNode = document.createTextNode('');
+  el.dataset.typing = '1';
   el.replaceChildren(textNode, caret);
   const end = () => {
     if (finished) return;
@@ -19,6 +22,8 @@ export function typewrite(el: HTMLElement, text: string, cps = 38, onTick?: () =
     clearTimeout(timer);
     textNode.nodeValue = text;
     caret.remove();
+    delete el.dataset.typing;
+    decorateHearts(el);
     onTick?.();
     resolveDone();
   };

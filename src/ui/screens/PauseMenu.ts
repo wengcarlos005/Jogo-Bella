@@ -208,7 +208,7 @@ export class PauseMenu {
                 EventBus.emit('item:show', id);
               },
             },
-            '💬 Mostrar pro Weng',
+            'Mostrar pro Weng',
           )
         : h('span');
       detail.replaceChildren(

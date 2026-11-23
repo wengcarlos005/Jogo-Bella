@@ -2190,7 +2190,7 @@ html.hud-kit #rightbar .sb-btn.sb-kit .sb-label { font-size: clamp(11px, 0.95vw,
   background: conic-gradient(#ff4d7d calc(var(--p, 0) * 360deg), rgba(255, 255, 255, .35) 0); box-shadow: 0 0 0 3px #fff, 0 0 12px #ff8fb8; }
 .kg-ring.on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 .kg-ring i { position: absolute; inset: 22%; border-radius: 50%; background: #fff; }
-.kg-ring i::after { content: '💋'; position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(8px, calc(var(--u) * 4), 13px); font-style: normal; }
+.kg-ring i::after { content: ''; background: var(--px-heart) center / 70% no-repeat; position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(8px, calc(var(--u) * 4), 13px); font-style: normal; }
 .kg-heart { position: absolute; color: #ff6f9a; font-style: normal; font-size: clamp(10px, calc(var(--u) * 6), 18px); text-shadow: 0 1px 0 #8e1a3e; z-index: 8; animation: kg-heart 1.2s ease-out forwards; }
 @keyframes kg-heart { to { transform: translate(var(--dx), -70px) scale(1.5); opacity: 0; } }
 .kg-flash { position: absolute; inset: 0; background: #ff3b5c; opacity: 0; pointer-events: none; z-index: 9; }
@@ -2761,7 +2761,7 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 /* mercado: a mão do Weng (teclado / controle) */
 .mk-row.sel { background: linear-gradient(#fff4c8 0%, #ffe9a0 100%); }
 .mk-hand { position: absolute; left: 6%; width: 20%; top: 6%; bottom: 6%; border: 3px dashed #e8a020; border-radius: 10px; background: rgba(255, 210, 63, .18); pointer-events: none; z-index: 0; }
-.mk-hand::before { content: '✋'; position: absolute; left: -2px; top: 50%; transform: translate(-60%, -50%); font-size: 22px; filter: drop-shadow(0 2px 0 rgba(0,0,0,.25)); }
+.mk-hand::before { content: '▶'; color: #e8a020; position: absolute; left: -2px; top: 50%; transform: translate(-60%, -50%); font-size: 22px; filter: drop-shadow(0 2px 0 rgba(0,0,0,.25)); }
 .mk-hand.miss { animation: shake .3s; border-color: #e05555; }
 .mk-item { z-index: 1; }
 
@@ -2849,7 +2849,7 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 }
 .pe-sb-side.bump .pe-sb-n { animation: peBump .6s cubic-bezier(.2, 1.6, .4, 1); }
 .pe-sb.lead-bella .pe-sb-side.bella, .pe-sb.lead-weng .pe-sb-side.weng { outline: calc(var(--u) * 1.5) solid #f2c14e; outline-offset: calc(var(--u) * 1); }
-.pe-sb.lead-bella .pe-sb-side.bella .pe-sb-name::after, .pe-sb.lead-weng .pe-sb-side.weng .pe-sb-name::before { content: '♛'; color: #ffe27a; margin: 0 .3em; }
+.pe-sb.lead-bella .pe-sb-side.bella .pe-sb-name::after, .pe-sb.lead-weng .pe-sb-side.weng .pe-sb-name::before { content: '★'; color: #ffe27a; margin: 0 .3em; }
 .pe-sb-mid { display: grid; justify-items: center; align-content: center; gap: calc(var(--u) * 1); }
 .pe-sb-x { font-family: var(--font-pixel); color: #6a3a8a; font-size: clamp(16px, calc(var(--u) * 10), 30px); line-height: 1; }
 .pe-sb-round { font-family: var(--font-body); font-weight: 800; color: #6a3a8a; font-size: clamp(10px, calc(var(--u) * 5), 14px); white-space: nowrap; }
@@ -3441,7 +3441,7 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .ft-focus { position: absolute; left: 50%; top: 50%; width: 22%; height: 26%; transform: translate(-50%, -50%); border: 3px dashed #fff; }
 .ft-finder.good .c { border-color: #7fe39a; }
 .ft-finder.good .ft-focus { border-color: #7fe39a; border-style: solid; box-shadow: 0 0 10px #7fe39a; }
-.ft-finder.loaf::after { content: '⛰ Pão de Açúcar'; position: absolute; right: 4%; top: 4%; font-family: var(--font-body); font-weight: 900; font-size: clamp(10px, calc(var(--u) * 5), 13px); color: #fff; background: rgba(42, 106, 200, .85); padding: 1px 8px; border-radius: 99px; }
+.ft-finder.loaf::after { content: 'Pão de Açúcar ✓'; position: absolute; right: 4%; top: 4%; font-family: var(--font-body); font-weight: 900; font-size: clamp(10px, calc(var(--u) * 5), 13px); color: #fff; background: rgba(42, 106, 200, .85); padding: 1px 8px; border-radius: 99px; }
 .ft-rec { position: absolute; left: 4%; top: 4%; font-family: var(--font-pixel); font-weight: 400; color: #ff5a5a; font-size: clamp(10px, calc(var(--u) * 5), 14px); text-shadow: 0 1px 0 #000; animation: mgcBeat 1s infinite; }
 .ft-flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 30; pointer-events: none; }
 .ft-flash.on { animation: tp-flash .4s; }
@@ -3497,7 +3497,7 @@ html.hud-kit .tb-encanto.full { filter: drop-shadow(0 0 6px rgba(255, 106, 154, 
 .gb-seat b { font-family: var(--font-pixel); font-weight: 400; color: #fff; font-size: clamp(10px, calc(var(--u) * 5.5), 15px); text-shadow: 0 2px 0 #000; }
 .gb-seat.turn .gb-face { border-color: #ffd23f; box-shadow: 0 0 14px #ffd23f; animation: mgcBeat .8s infinite; }
 .gb-seat.out { filter: grayscale(1) brightness(.6); }
-.gb-seat.out b::after { content: ' 💥'; }
+.gb-seat.out b::after { content: ' (explodiu)'; font-size: .75em; opacity: .8; }
 .gb-backs { display: flex; }
 .gb-backs img { width: calc(var(--u) * 9); margin-left: calc(var(--u) * -4); filter: drop-shadow(0 2px 0 rgba(0,0,0,.3)); }
 .gb-pile { position: absolute; left: 38%; top: 34%; width: 11%; z-index: 2; transform: translate(-50%, -50%) rotate(-4deg); }
@@ -4080,3 +4080,12 @@ body.pad .kb-only { display: none; }
 .lt-paper.compact .lt-body p { font-size: 20px; line-height: 30px; margin-bottom: 6px; }
 .lt-paper.compact .lt-body p.hi { font-size: 32px; margin-bottom: 8px; }
 .lt-paper.compact .lt-keys { padding: 8px 12px; gap: 4px 16px; }
+
+/* corações desenhados no lugar do ♥ de texto */
+.pxh { display: inline-block; width: 1em; height: .92em; vertical-align: -0.1em; color: transparent !important; text-shadow: none !important; -webkit-text-stroke: 0 !important; background: var(--px-heart) center / contain no-repeat; font-style: normal; overflow: hidden; filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .25)); }
+.pxh.pxh-empty { background-image: var(--px-heart-empty); opacity: .9; }
+.pxh-inline { width: .95em; height: .88em; margin: 0 .08em; }
+.lt-ico { width: 30px; height: auto; image-rendering: pixelated; }
+.ft-ico { width: 46px; height: 32px; object-fit: cover; border-radius: 6px; image-rendering: pixelated; }
+.dv-icon { width: clamp(90px, 11vw, 140px); line-height: 0; }
+.dv-icon svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 4px 0 rgba(0, 0, 0, .35)); }

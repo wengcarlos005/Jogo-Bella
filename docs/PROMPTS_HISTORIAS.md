@@ -1046,3 +1046,24 @@ Fundo da tela final. Anexe `pascoa.png` + `bella-casual` e `weng-casual`. Arquiv
 ```
 Cozy pixel art illustration, same art style, colors and framing as the attached reference illustration, 1672x941 pixels, landscape. The attached girl and boy, seen from behind, walking hand in hand along a winding path at golden sunrise. Along the path, like a storybook map, tiny miniature versions of the places of their story: a small cozy house with a rainy window, a city apartment building, a white palace with a lake and a swan pedal boat, a ferris wheel by a lagoon, a beach with a sun umbrella, a white curvy modern museum by the bay with Sugarloaf Mountain, and an old stone fort on a beach with fireworks. The path continues past them toward a bright open horizon with clouds shaped like little hearts. Hopeful, romantic, warm. No text, no UI, no watermark.
 ```
+
+## 9. Ícones de interface (substituem desenhos feitos por código)
+
+Anexe `hud-heart-full.png` (ou a folha de botões do HUD) como referência de estilo. Arquivo: `ui-icones.png`.
+
+```
+Pixel art sprite sheet of small game UI icons, EXACTLY the same art style, thick dark outline, glossy highlights and colors as the attached reference icon. Canvas 1536x1024, ONE flat solid magenta (#FF00FF) background, 12 icons arranged in a clean grid of 4 columns x 3 rows, reading order left to right, top to bottom, each icon about 160x160 px, centered in its cell, at least 80 px of magenta between icons, nothing touching the edge:
+1. A golden star, full, shiny (rating star, earned).
+2. The same star empty: dark grey-purple, no shine (rating star, not earned).
+3. A round speech-bubble emote with a pink heart inside (white bubble with small tail at the bottom).
+4. The same bubble with a red exclamation mark.
+5. The same bubble with a blue question mark.
+6. The same bubble with a dark music note.
+7. The same bubble with a light-blue sweat drop.
+8. A bouncy yellow quest arrow pointing DOWN, with a white highlight (objective marker above a character).
+9. A small golden crown (leader of the score).
+10. A green round check mark badge.
+11. A cartoon explosion puff (orange and yellow) with tiny stars.
+12. A pair of red cartoon lips (kiss mark).
+No text, no letters, no UI frame, no watermark.
+```

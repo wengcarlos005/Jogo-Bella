@@ -3,6 +3,7 @@ import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { SettingsStore } from '@/systems/SaveSystem';
 import { setDevice } from '@/systems/Gamepad';
+import { ICON_PC, ICON_PAD } from './deviceIcons';
 
 /**
  * Antes do jogo novo: "Vai jogar no PC ou no Controle?". O jogo adapta os textos das teclas
@@ -12,8 +13,8 @@ import { setDevice } from '@/systems/Gamepad';
 export function chooseDevice(root: HTMLElement): Promise<'pc' | 'controle'> {
   return new Promise((resolve) => {
     const opts: { id: 'pc' | 'controle'; icon: string; name: string; keys: string[] }[] = [
-      { id: 'pc', icon: '⌨️', name: 'PC', keys: ['Setas ou WASD: andar', 'Espaço ou E: interagir', 'Shift: correr', 'Esc: menu'] },
-      { id: 'controle', icon: '🎮', name: 'Controle', keys: ['Direcional / analógico: andar', '✕: interagir', '□: correr', 'OPTIONS: menu'] },
+      { id: 'pc', icon: ICON_PC, name: 'PC', keys: ['Setas ou WASD: andar', 'Espaço ou E: interagir', 'Shift: correr', 'Esc: menu'] },
+      { id: 'controle', icon: ICON_PAD, name: 'Controle', keys: ['Direcional / analógico: andar', '✕: interagir', '□: correr', 'OPTIONS: menu'] },
     ];
     let sel = SettingsStore.data.device === 'controle' ? 1 : 0;
     // apertou um botão do controle nesta tela? já sugere "Controle"
@@ -21,8 +22,8 @@ export function chooseDevice(root: HTMLElement): Promise<'pc' | 'controle'> {
     const cards = opts.map((o, i) =>
       h(
         'button',
-        { class: 'dv-card', onclick: () => pick(i) },
-        h('div', { class: 'dv-icon' }, o.icon),
+        { class: 'dv-card no-swap', onclick: () => pick(i) },
+        h('div', { class: 'dv-icon', html: o.icon }),
         h('div', { class: 'dv-name' }, o.name),
         h('ul', {}, ...o.keys.map((k) => h('li', {}, k))),
       ),

@@ -22,6 +22,7 @@ import { AudioSystem } from './systems/AudioSystem';
 import { UI } from './ui/UIManager';
 import type { SaveData } from './core/types';
 import { initGamepad, setDevice } from '@/systems/Gamepad';
+import { initGlyphs } from '@/ui/glyphs';
 
 SettingsStore.load();
 InputSystem.init();
@@ -96,7 +97,9 @@ UI.init(
 
 // Controle de videogame (PlayStation / Xbox): cada botão aperta a tecla equivalente.
 setDevice(SettingsStore.data.device);
-initGamepad(() => UI.toasts.show('🎮 Controle conectado: ✕ confirma · ◯ volta · □ corre · OPTIONS menu'));
+// corações de texto viram o coração desenhado do jogo
+initGlyphs();
+initGamepad(() => UI.toasts.show('Controle conectado: ✕ confirma · ◯ volta · □ corre · OPTIONS menu'));
 
 // Salva ao fechar/ocultar a aba (celular).
 document.addEventListener('visibilitychange', () => {

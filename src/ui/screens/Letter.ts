@@ -64,7 +64,7 @@ export function playLetter(root: HTMLElement): Promise<void> {
             h('div', {}, h('kbd', {}, '← ↑ → ↓'), h('span', {}, 'andar (Shift corre)')),
             h('div', {}, h('kbd', {}, 'Espaço'), h('kbd', {}, 'E'), h('span', {}, 'conversar e interagir')),
             h('div', {}, h('kbd', {}, 'Esc'), h('span', {}, 'missões, mochila, álbum e mapa')),
-            h('div', {}, h('b', {}, '🎬'), h('span', {}, 'em Cenas dá pra rever qualquer capítulo')),
+            h('div', {}, h('img', { class: 'lt-ico', src: assetURL('assets/ui/hud-btn-cenas.png'), alt: '' }), h('span', {}, 'em Cenas dá pra rever qualquer capítulo')),
           ),
           h('p', { class: 'ps' }, 'Bom jogo, meu amor. ♥'),
         );
