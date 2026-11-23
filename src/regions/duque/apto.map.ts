@@ -82,7 +82,7 @@ export async function passeioDuque(ctx: ScriptContext, id: (typeof PASSEIOS)[num
   ctx.objective('dq-m5', id);
   if (!passeiosFeitos()) {
     const falta = PASSEIOS.filter((o) => !QuestSystem.isObjectiveDone('dq-m5', o.id)).map((o) => o.nome);
-    ctx.toast(`Ainda falta: ${falta.join(' e ')}`);
+    ctx.toast(`Ainda falta${falta.length > 1 ? 'm' : ''}: ${falta.join(' e ')}`);
     return;
   }
   await ctx.wait(500);
@@ -286,7 +286,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Essa é a Meli. Dona do apê. Eu só pago as contas.');
       await ctx.say('bella', 'Oi, Meli... vem cá, vem?');
       await ctx.emote('meli', 'sweat');
-      await ctx.say('weng', 'Ela é desconfiada, mas é interesseira. Tenta com sachê, fica no armário da cozinha.');
+      await ctx.say('weng', 'Ela é desconfiada, mas é interesseira. Tenta com sachê, que fica no armário da cozinha.');
       ctx.objective(Q, 'achar-meli');
       await encanto(ctx, 10, 'Encantômetro da Meli: 10% (ela tá desconfiada...)');
       ctx.toast('Pegue um sachê no armário da cozinha');
@@ -411,7 +411,7 @@ const scripts: Record<string, Script> = {
       ctx.follow('weng', true);
       ctx.objective(Q, 'potinho');
       await encanto(ctx, 35, 'Encantômetro da Meli: 35% (sachê funciona!)');
-      await ctx.say('weng', 'Agora ela já gosta de você uns 30%. Pra chegar nos 100%, só brincando.');
+      await ctx.say('weng', 'Agora ela já gosta de você uns 35%. Pra chegar nos 100%, só brincando.');
       ctx.toast('Pegue um novelo no cesto da sala');
       return;
     }
@@ -422,7 +422,7 @@ const scripts: Record<string, Script> = {
   },
   async fogao(ctx) {
     if (QuestSystem.isActive('dq-m3') && !QuestSystem.isObjectiveDone('dq-m3', 'jantar')) {
-      await ctx.say('weng', 'Hoje eu cozinho. Quer dizer... a gente cozinha.');
+      await ctx.say('weng', 'Avental posto. Pode mandar, chef.');
       const r = await ctx.cook();
       ctx.setFlag('dq-jantar-estrelas', r.stars);
       await ctx.narrate('Música baixinha, a Meli rondando a cozinha esperando cair alguma coisa.');
@@ -432,7 +432,7 @@ const scripts: Record<string, Script> = {
       ctx.toast('Sente no sofá para ver o filme');
       return;
     }
-    await ctx.say('weng', 'Um dia a gente cozinha junto aqui. Eu corto, você manda.');
+    await ctx.say('weng', 'Cozinha pequena, mas cabe nós dois. Eu corto, você manda.');
     await ctx.say('bella', 'Fechado. E eu provo tudo antes.');
   },
 
@@ -815,12 +815,12 @@ export const aptoMap: MapDef = {
         ctx.startQuest('dq-m5');
         ctx.refresh();
         await ctx.fadeIn(500);
-        await ctx.say('vof-weng', 'Bella! Finalmente te conheci pessoalmente! Vem cá, deixa eu te olhar. Tá magrinha, vou fazer um bolinho.');
+        await ctx.say('vof-weng', 'Bella! Finalmente te conheci pessoalmente! Vem cá, deixa eu te olhar. Que menina linda! Vou fazer um bolinho pra você.');
         await ctx.say('vom-weng', 'Seja bem-vinda. O Weng não para de falar de você.');
         await ctx.emote('bella', 'heart');
         await ctx.say('bella', 'Ai, que fofos! Eu é que tô feliz de conhecer vocês.');
         await ctx.say('weng', '(Hotel no alto do morro, restaurante chique, Quitandinha, piquenique... já tá tudo reservado. Só falta a hora certa de contar.)');
-        await ctx.say('vof-weng', 'Weng, aproveita e passa no mercado pra Vó? Tô sem farinha pro bolinho.');
+        await ctx.say('vof-weng', 'Weng, aproveita e passa no mercado pra Vó? Tá faltando umas coisinhas pro bolinho.');
         await ctx.say('weng', 'Pode deixar, Vó. Bella, bora dar uma volta? Açaí, Multidão e o mercado da Vó.');
         await ctx.say('bella', 'Açaí E Multidão no mesmo dia? Hoje é meu dia de sorte.');
         ctx.toast('Saia com o Weng: açaí, Shopping da Multidão e o mercado da Vó');
@@ -829,7 +829,7 @@ export const aptoMap: MapDef = {
       if (QuestSystem.isActive('dq-m5')) {
         if (passeiosFeitos()) return conviteSerra(ctx);
         const falta = PASSEIOS.filter((o) => !QuestSystem.isObjectiveDone('dq-m5', o.id)).map((o) => o.nome);
-        await ctx.say('weng', `Bora dar uma volta? Ainda falta: ${falta.join(', ')}.`);
+        await ctx.say('weng', `Bora dar uma volta? Ainda falta${falta.length > 1 ? 'm' : ''}: ${falta.join(', ')}.`);
         await ctx.say('bella', 'Bora! (Ele tá com uma cara de quem tá escondendo alguma coisa...)');
         return;
       }

@@ -82,7 +82,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'As DUAS?! Mãe, que história é essa?!');
     await ctx.say('mae-tel', 'Não discute! Vem logo, filha! Tchau!');
     await ctx.emote('weng', 'sweat');
-    await ctx.say('weng', '(Sogra... criatividade nota mil. Credibilidade nota zero.)');
+    await ctx.say('weng', '(Sogrinha... criatividade nota mil. Melhor parceira de plano que eu podia ter.)');
     await ctx.say('bella', 'Ai, gente... tá bom. Tô indo.');
     ctx.face('player', 'weng');
     await ctx.emote('bella', 'sweat');
@@ -112,7 +112,7 @@ const scripts: Record<string, Script> = {
       await scripts.filme(ctx);
       return;
     }
-    await ctx.say('weng', 'Pipoca grande. Que voltou cheia.');
+    await ctx.say('weng', 'Pipoca grande. E quase nada foi pra boca.');
     await ctx.say('bella', 'A gente tava ocupado.');
   },
   async cartaz(ctx) {

@@ -31,7 +31,7 @@ const LOJAS: Record<Cat, { titulo: string; itens: Item[] }> = {
   casa: {
     titulo: 'Utilidades',
     itens: [
-      { id: 'vela', nome: 'Vela aromática de baunilha', preco: 18, weng: 'Cheiro de bolo. Perigoso pra quem tá de dieta.' },
+      { id: 'vela', nome: 'Vela aromática de baunilha', preco: 18, weng: 'Cheiro de bolo. Perigoso: vai dar fome toda hora.' },
       { id: 'potes', nome: 'Potinhos organizadores', preco: 15, weng: 'Pra organizar... os outros potinhos.' },
       { id: 'pano', nome: 'Pano de prato de gatinho', preco: 6, weng: 'Tem a cara da Lala. Leva.' },
     ],
@@ -41,7 +41,7 @@ const LOJAS: Record<Cat, { titulo: string; itens: Item[] }> = {
     itens: [
       { id: 'pacoca', nome: 'Pote de paçoca', preco: 9, weng: 'Metade é minha. Já tô avisando.' },
       { id: 'balas', nome: 'Balinha de gelatina', preco: 7, weng: 'Você vai comer as vermelhas e me deixar as verdes.' },
-      { id: 'choco', nome: 'Barra de chocolate', preco: 6, weng: 'Essa não chega no carro.' },
+      { id: 'choco', nome: 'Barra de chocolate', preco: 6, weng: 'Essa não chega inteira no apê.' },
     ],
   },
   celular: {
@@ -72,7 +72,7 @@ async function loja(ctx: ScriptContext, cat: Cat): Promise<void> {
   const noCarro = cart();
   const livres = l.itens.filter((i) => !noCarro.includes(i.id));
   if (!livres.length) {
-    await ctx.say('bella', `Já peguei tudo da ${l.titulo.toLowerCase()}. Tudo!`);
+    await ctx.say('bella', 'Já peguei tudo dessa lojinha. Tudo!');
     return;
   }
   const c = await ctx.choose('bella', `${l.titulo} · na cestinha: ${real(total())} de ${real(ORCAMENTO)}`, [...livres.map((i) => `${i.nome} — ${real(i.preco)}`), 'Só olhar']);
@@ -172,7 +172,7 @@ const scripts: Record<string, Script> = {
   },
 
   async weng(ctx) {
-    await ctx.say('weng', objDone('pagar') ? 'Sacolinha rosa, missão cumprida. Bora?' : `Na cestinha tem ${real(total())}. Ainda dá pra ${real(Math.max(0, ORCAMENTO - total()))}.`);
+    await ctx.say('weng', objDone('pagar') ? 'Sacolinha rosa, missão cumprida. Bora?' : `Na cestinha tem ${real(total())}. Ainda dá pra gastar ${real(Math.max(0, ORCAMENTO - total()))}.`);
   },
   async saida(ctx) {
     if (QuestSystem.isActive(Q) && cart().length && !objDone('pagar')) {

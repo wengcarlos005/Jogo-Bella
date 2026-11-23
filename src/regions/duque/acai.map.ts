@@ -26,7 +26,7 @@ const scripts: Record<string, Script> = {
   async chegada(ctx) {
     ctx.follow('weng', true);
     if (ctx.flag('acai-1')) return;
-    await ctx.say('bella', 'Açaíííí! Olha esse balcão de complemento, Weng. Eu tô no paraíso.');
+    await ctx.say('bella', 'Açaíííí! Olha esse balcão de complementos, Weng. Eu tô no paraíso.');
     await ctx.say('weng', 'Pede o que você quiser. Hoje é por minha conta.');
     await ctx.say('bella', 'Você vai se arrepender de ter falado isso.');
     ctx.toast('Faça o pedido no balcão');
@@ -51,7 +51,7 @@ const scripts: Record<string, Script> = {
     } else if (r.toppings.length >= 4) {
       await ctx.say('weng', 'Bonito. Mas eu te conheço: amanhã você vai dizer que faltou complemento.');
     } else {
-      await ctx.say('weng', 'Só isso? Tá doente?');
+      await ctx.say('weng', 'Só isso? Logo você, a rainha dos complementos?');
       await ctx.say('bella', 'Eu tô me controlando! ...Coloca mais paçoca, moça.');
     }
     ctx.sfx('pickup');

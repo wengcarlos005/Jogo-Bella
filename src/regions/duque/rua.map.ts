@@ -29,7 +29,7 @@ const scripts: Record<string, Script> = {
     ctx.setFlag('dq-rua-1');
     await ctx.say('weng', 'Essa é a minha rua. Ali na frente, o Multidão. E ali do lado, o teatro.');
     await ctx.emote('bella', 'heart');
-    await ctx.say('bella', 'Você mora no melhor lugar do mundo e nunca me contou.');
+    await ctx.say('bella', 'Você mora no melhor lugar do mundo, sabia?');
     ctx.toast('Explore: o Shopping da Multidão (porta da frente) e a açaiteria, à direita');
   },
   async portaria(ctx) {
