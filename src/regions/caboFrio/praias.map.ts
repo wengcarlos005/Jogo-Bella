@@ -179,7 +179,7 @@ const japScripts: Record<string, Script> = {
   },
 };
 /** Até onde vai a areia (à direita é água), por altura. */
-const japSand = (y: number) => (y < 330 ? 0 : y < 400 ? 420 : y < 520 ? 330 : y < 640 ? 300 : y < 740 ? 360 : y < 820 ? 470 : 0);
+const japSand = (y: number) => (y < 330 ? 0 : y < 400 ? 420 : y < 520 ? 330 : y < 640 ? 300 : y < 740 ? 390 : y < 820 ? 500 : 0);
 export const cfJaponesMap: MapDef = {
   id: 'cf-japones',
   region: 'cabo-frio',
@@ -195,7 +195,8 @@ export const cfJaponesMap: MapDef = {
   blocks: [
     R(0, 0, 1536, 310), // morro e pedras de cima
     R(0, 310, 85, 720), // pedras e mato da esquerda
-    R(0, 720, 330, 1024), // pedras de baixo
+    R(0, 770, 330, 1024), // pedras de baixo
+    R(0, 720, 270, 770), // (a trilhinha de areia entre as pedras e a água fica livre até a faixa)
     R(330, 840, 1536, 1024),
     ...Array.from({ length: 11 }, (_, i) => {
       const y = 310 + i * 48;
@@ -212,8 +213,8 @@ export const cfJaponesMap: MapDef = {
     { id: 'puggian', sprite: 'puggian', tx: 130 / 48, ty: 560 / 48, facing: 'right', interact: 'churrasco' },
     { id: 'nathan', sprite: 'nathan', tx: 290 / 48, ty: 400 / 48, facing: 'down', interact: 'talk' },
     { id: 'vitoria', sprite: 'vitoria', tx: 245 / 48, ty: 410 / 48, facing: 'down', interact: 'talk' },
-    { id: 'ruan', sprite: 'ruan', tx: 300 / 48, ty: 720 / 48, facing: 'up', interact: 'talk' },
-    { id: 'felipe', sprite: 'felipe', tx: 350 / 48, ty: 770 / 48, facing: 'right', interact: 'talk' },
+    { id: 'ruan', sprite: 'ruan', tx: 375 / 48, ty: 480 / 48, facing: 'left', interact: 'talk' },
+    { id: 'felipe', sprite: 'felipe', tx: 335 / 48, ty: 600 / 48, facing: 'left', interact: 'talk' },
   ],
   hotspots: [
     { rect: R(140, 500, 260, 580), interact: 'churrasco', label: 'Churrasco', markerIf: () => objActive('japones') },

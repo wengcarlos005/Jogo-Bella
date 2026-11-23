@@ -369,7 +369,7 @@ export const coberturaMap: MapDef = {
   spawns: {
     porta: { tx: 3.6, ty: 12.8, facing: 'right' },
     // voltando da varanda
-    varanda: { tx: 16.5, ty: 16.8, facing: 'up' },
+    varanda: { tx: 16.5, ty: 16.35, facing: 'up' },
   },
   scripts,
   onEnter: 'chegada',

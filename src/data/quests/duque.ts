@@ -42,7 +42,7 @@ export const DUQUE_QUESTS: QuestDef[] = [
       { id: 'lala', text: 'Apresentar a Lala pro Weng', hint: 'Entre pela porta da cozinha. A Lala costuma dormir no quarto da Bella.' },
       { id: 'filme', text: 'Ver um filme no sofá', hint: 'O sofá azul fica na sala.' },
       { id: 'passeio', text: 'Passear até a praça do primeiro beijo', hint: 'Saia pelo portão. A praça fica depois de Fragoso.' },
-      { id: 'mexicano', text: 'Ir ao restaurante mexicano', hint: 'Passe pela pontezinha do lago e saia da praça pela direita.' },
+      { id: 'mexicano', text: 'Ir ao restaurante mexicano', hint: 'Saia da praça pela direita, do lado do laguinho.' },
     ],
     rewardMemory: 'mem-dq-04',
   },

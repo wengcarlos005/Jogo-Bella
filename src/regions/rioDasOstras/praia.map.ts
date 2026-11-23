@@ -423,7 +423,7 @@ export const roPraiaMap: MapDef = {
   spawns: {
     chegada: { tx: 15.0, ty: 8.6, facing: 'down' },
   },
-  triggers: [{ id: 'escada', rect: R(660, 330, 820, 352), script: 'escada' }],
+  triggers: [{ id: 'escada', rect: R(660, 330, 840, 385), script: 'escada' }],
   scripts,
   onEnter: 'chegada',
 };

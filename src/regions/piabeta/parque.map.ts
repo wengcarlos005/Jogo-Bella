@@ -23,7 +23,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', 'Foi ali. Debaixo da chuva.');
       await ctx.emote('bella', 'heart');
       await ctx.say('bella', 'Eu lembro de cada segundo.');
-      await ctx.say('weng', 'Tem um restaurante mexicano aqui do lado, passando a pontezinha do lago. Bora conhecer?');
+      await ctx.say('weng', 'Tem um restaurante mexicano aqui do lado, saindo da praça pela direita, perto do laguinho. Bora conhecer?');
       ctx.toast('Siga pela calçada para a esquerda');
       return;
     }
@@ -185,7 +185,7 @@ const scripts: Record<string, Script> = {
   },
 
   async placaMex(ctx) {
-    await ctx.say('weng', 'O mexicano é logo ali, depois da pontezinha, saindo pela direita. Bora?');
+    await ctx.say('weng', 'O mexicano é logo ali, do lado do laguinho, saindo pela direita. Bora?');
   },
 
   async coreto(ctx) {

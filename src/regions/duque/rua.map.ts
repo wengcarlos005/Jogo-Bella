@@ -206,7 +206,7 @@ export const duqueRuaMap: MapDef = {
   },
   triggers: [
     { id: 'portaria', rect: R(332, 368, 428, 392), script: 'portaria' },
-    { id: 'multidao', rect: R(615, 862, 895, 880), script: 'multidao' },
+    { id: 'multidao', rect: R(615, 862, 895, 900), script: 'multidao' },
     { id: 'mercado', rect: R(0, 760, 24, 960), script: 'mercado' },
     { id: 'acai', rect: R(1512, 760, 1536, 960), script: 'acai' },
   ],

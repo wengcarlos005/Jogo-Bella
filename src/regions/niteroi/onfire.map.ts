@@ -200,9 +200,9 @@ export const ntOnFireMap: MapDef = {
 
   hotspots: [
     { rect: R(880, 370, 1180, 440), interact: 'balcao', label: 'Balcão', markerIf: () => objActive('almoco') },
-    { rect: R(520, 230, 820, 300), interact: 'defumador', label: 'Defumador' },
+    { rect: R(640, 230, 820, 400), interact: 'defumador', label: 'Defumador' },
     { rect: R(100, 380, 400, 440), interact: 'escorrega', label: 'Escorregador' },
-    { rect: R(560, 230, 700, 260), interact: 'neon', label: 'Neon' },
+    { rect: R(520, 230, 640, 300), interact: 'neon', label: 'Neon' },
     { rect: R(620, 712, 930, 745), interact: 'porta', label: 'Porta' },
   ],
 

@@ -311,7 +311,7 @@ export const rota66Map: MapDef = {
     { rect: R(80, 470, 300, 655), interact: 'mesa', label: 'Mesinha', markerIf: () => objActive('mesa') && objDone('pedido-weng') },
     { rect: R(1298, 230, 1442, 432), interact: 'jukebox', label: 'Jukebox' },
     { rect: R(410, 160, 500, 398), interact: 'bomba', label: 'Bomba antiga' },
-    { rect: R(240, 20, 420, 210), interact: 'quadro', label: 'Neon' },
+    { rect: R(240, 20, 480, 400), interact: 'quadro', label: 'Neon' },
   ],
 
   // a atendente anda pelo salão (com as mesmas colisões dos outros personagens)

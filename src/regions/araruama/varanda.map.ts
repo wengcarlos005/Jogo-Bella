@@ -218,7 +218,7 @@ export const varandaMap: MapDef = {
     // ao lado da mesa de frutas (na frente das portas da direita)
     porta: { tx: 1110 / 48, ty: 372 / 48, facing: 'down' },
   },
-  triggers: [{ id: 'portas', rect: R(390, 252, 1240, 268), script: 'portas' }],
+  triggers: [{ id: 'portas', rect: R(390, 252, 1240, 292), script: 'portas' }],
   scripts,
   onEnter: 'chegada',
 };
