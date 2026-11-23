@@ -1,4 +1,5 @@
 import { h, formatDate, formatPlaytime } from '@/utils/dom';
+import { attachMenuNav } from '../menuNav';
 import { GameState } from '@/core/GameState';
 import { QuestSystem } from '@/systems/QuestSystem';
 import { InventorySystem } from '@/systems/InventorySystem';
@@ -45,6 +46,7 @@ export class PauseMenu {
   private body = h('div', { class: 'tab-body' });
   private tab: PauseTab = 'missoes';
   private onClose: (() => void) | null = null;
+  private detachNav: (() => void) | null = null;
 
   constructor(private parent: HTMLElement, private actions: PauseActions) {
     InputSystem.on('pause:menu', () => this.close());
@@ -74,17 +76,30 @@ export class PauseMenu {
       );
     }
     tabs.append(h('button', { class: 'tab close', onclick: () => this.close(), 'aria-label': 'Fechar' }, '✕'));
-    this.el = h('div', { class: 'screen pm-screen' }, h('div', { class: 'pause panel pm' }, tabs, this.body));
+    // no modo controle: lembrete dos botões no pé do menu
+    const padHint = h('div', { class: 'pm-padhint pad-only no-swap' }, h('span', {}, 'L1 / R1 abas'), h('span', {}, 'Direcional anda'), h('span', {}, '✕ escolhe'), h('span', {}, '◯ volta'));
+    this.el = h('div', { class: 'screen pm-screen' }, h('div', { class: 'pause panel pm' }, tabs, this.body, padHint));
     this.el.addEventListener('pointerdown', (e) => {
       if (e.target === this.el) this.close();
     });
     this.parent.append(this.el);
     this.select(tab);
+    // controle / teclado: direcional anda, ✕ escolhe, ◯ volta, L1/R1 trocam de aba
+    const step = (d: number) => {
+      const ids = Array.from(this.el?.querySelectorAll<HTMLElement>('.tab[data-tab]') ?? []).map((b) => b.dataset.tab as PauseTab);
+      const i = ids.indexOf(this.tab);
+      if (i < 0 || !ids.length) return;
+      AudioSystem.play('blip');
+      this.select(ids[(i + d + ids.length) % ids.length]);
+    };
+    this.detachNav = attachMenuNav(this.el, { prevTab: () => step(-1), nextTab: () => step(1), close: () => this.close() });
   }
 
   close(): void {
     if (!this.el) return;
     AudioSystem.play('cancel');
+    this.detachNav?.();
+    this.detachNav = null;
     this.el.remove();
     this.el = null;
     InputSystem.pop('pause');
@@ -466,7 +481,9 @@ export class PauseMenu {
         seg('Controles de toque', '', 'touchControls', [['auto', 'Auto'], ['sempre', 'Sempre'], ['nunca', 'Nunca']]),
       ),
       h('div', { class: 'pm-section' }, 'Controles'),
-      h('div', { class: 'pm-keys' }, key('WASD / setas', 'Andar'), key('Shift', 'Correr'), key('E / Espaço', 'Interagir'), key('Esc / M', 'Menu')),
+      SettingsStore.data.device === 'controle'
+        ? h('div', { class: 'pm-keys no-swap' }, key('Direcional', 'Andar'), key('✕', 'Interagir / escolher'), key('◯', 'Voltar'), key('□ / L2 / R2', 'Correr'), key('OPTIONS', 'Menu'), key('△', 'Mochila'), key('SHARE', 'Álbum'), key('L1 / R1', 'Trocar de aba'))
+        : h('div', { class: 'pm-keys' }, key('WASD / setas', 'Andar'), key('Shift', 'Correr'), key('E / Espaço', 'Interagir'), key('Esc / M', 'Menu'), key('I', 'Mochila'), key('L', 'Álbum'), key('Q', 'Voltar'), key('PgUp / PgDn', 'Trocar de aba')),
     );
   }
 }

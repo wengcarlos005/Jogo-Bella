@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-export type InputAction = 'interact' | 'cancel' | 'menu' | 'up' | 'down' | 'left' | 'right';
+export type InputAction = 'interact' | 'cancel' | 'menu' | 'bag' | 'album' | 'up' | 'down' | 'left' | 'right';
 
 const KEYMAP: Record<string, InputAction> = {
   KeyE: 'interact',
@@ -8,6 +8,8 @@ const KEYMAP: Record<string, InputAction> = {
   Enter: 'interact',
   Escape: 'menu',
   KeyM: 'menu',
+  KeyI: 'bag',
+  KeyL: 'album',
   KeyQ: 'cancel',
   Backspace: 'cancel',
   ArrowUp: 'up',

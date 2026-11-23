@@ -165,6 +165,8 @@ export class GameScene extends Phaser.Scene {
 
     InputSystem.on('game:interact', this.onInteract, this);
     InputSystem.on('game:menu', this.onMenu, this);
+    InputSystem.on('game:bag', this.onBag, this);
+    InputSystem.on('game:album', this.onAlbum, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.cleanup());
 
     // retrato da caixa de falas = roupa que a Bella/Weng está usando agora
@@ -208,6 +210,8 @@ export class GameScene extends Phaser.Scene {
     this.busHandlers = [];
     InputSystem.off('game:interact', this.onInteract, this);
     InputSystem.off('game:menu', this.onMenu, this);
+    InputSystem.off('game:bag', this.onBag, this);
+    InputSystem.off('game:album', this.onAlbum, this);
     this.weather.destroy();
     UI.hud.setPrompt(null);
   }
@@ -1111,6 +1115,17 @@ export class GameScene extends Phaser.Scene {
   private onMenu(): void {
     if (this.busy) return;
     UI.openMenu('missoes');
+  }
+
+  /** Atalhos: I / △ abre a Mochila, L / SHARE abre o Álbum. */
+  private onBag(): void {
+    if (this.busy) return;
+    UI.openMenu('inventario');
+  }
+
+  private onAlbum(): void {
+    if (this.busy) return;
+    UI.openMenu('album');
   }
 
   // ------------------------------------------------------------ loop

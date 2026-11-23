@@ -4,13 +4,14 @@
  * O jogo inteiro (mapa, diálogos, menus e minigames) é lido pelo teclado. Aqui cada botão do
  * controle "aperta" a tecla equivalente (keydown/keyup sintéticos na janela), então tudo funciona
  * sem mexer em cada tela. Mapeamento (layout padrão do navegador):
- *   ✕ (Cross / A) ......... Espaço  → confirmar, conversar, pular, usar
- *   ◯ (Circle / B) ........ Q       → voltar / cancelar
- *   □ (Square / X) ........ Shift   → correr (segurar)
- *   △ (Triangle / Y) ...... M       → menu
- *   OPTIONS / START ....... Esc     → menu
- *   L1 / R1 ............... ← / →   (atalho pra escolher nos minijogos)
- *   L2 / R2 ............... Shift   → correr
+ *   ✕ (Cross / A) ......... Espaço    → confirmar, conversar, pular, usar
+ *   ◯ (Circle / B) ........ Q         → voltar / cancelar / fechar o menu
+ *   □ (Square / X) ........ Shift     → correr (segurar)
+ *   △ (Triangle / Y) ...... I         → Mochila
+ *   OPTIONS / START ....... Esc       → menu
+ *   SHARE / SELECT ........ L         → Álbum
+ *   L1 / R1 ............... PgUp/PgDn → trocar de aba no menu
+ *   L2 / R2 ............... Shift     → correr
  *   Direcional / analógico  setas
  * Enquanto o controle é usado, os textos de tecla viram os símbolos do controle (✕ ◯ □ △).
  */
@@ -22,11 +23,12 @@ const BUTTONS: Record<number, Key> = {
   0: SPACE,
   1: K('KeyQ', 'q'),
   2: K('ShiftLeft', 'Shift'),
-  3: K('KeyM', 'm'),
-  4: K('ArrowLeft', 'ArrowLeft'),
-  5: K('ArrowRight', 'ArrowRight'),
+  3: K('KeyI', 'i'),
+  4: K('PageUp', 'PageUp'),
+  5: K('PageDown', 'PageDown'),
   6: K('ShiftLeft', 'Shift'),
   7: K('ShiftLeft', 'Shift'),
+  8: K('KeyL', 'l'),
   9: K('Escape', 'Escape'),
   12: K('ArrowUp', 'ArrowUp'),
   13: K('ArrowDown', 'ArrowDown'),

@@ -4213,3 +4213,8 @@ body.pad .kb-only { display: none; }
 .ck2-knob i { width: calc(var(--u) * 22) !important; border-width: 4px !important; }
 .ck2-knob img { height: calc(var(--u) * 16) !important; }
 .ck2-offbar { bottom: 2% !important; width: 46% !important; height: 12px !important; }
+/* lembrete dos botões do controle (só aparece no modo controle) */
+.pad-only { display: none !important; }
+body.pad .pad-only { display: flex !important; }
+.pm-padhint { justify-content: center; gap: 18px; flex-wrap: wrap; padding: 6px 10px 2px; font-family: var(--font-pixel); color: #7a4a6a; font-size: clamp(11px, 1.1vw, 15px); border-top: 2px dashed rgba(122, 74, 106, .25); margin-top: 6px; }
+.pm-padhint span { white-space: nowrap; }
