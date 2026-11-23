@@ -4248,3 +4248,30 @@ body.pad .pad-only { display: flex !important; }
 .fg-casal.cheer { animation: fgCheer .45s cubic-bezier(.2, 1.6, .4, 1), fgSway 2.4s ease-in-out .45s infinite; }
 @keyframes fgSway { 0%, 100% { transform: translateX(-50%) rotate(-1deg); } 50% { transform: translateX(-50%) rotate(1deg); } }
 @keyframes fgCheer { 0% { transform: translateX(-50%); } 40% { transform: translateX(-50%) translateY(-9%) scaleY(1.04); } 100% { transform: translateX(-50%); } }
+/* ================= Travessia (visual novo): faixa de areia em perspectiva sobre a água ================= */
+.tv2-bg { background-position: 60% 55% !important; filter: saturate(1.15) brightness(1.03) !important; }
+.tv2-board { background: none !important; box-shadow: none !important; padding: 0 !important; border-radius: 0 !important; top: 9% !important; bottom: 10% !important; width: 52% !important; gap: 10px 14px !important;
+  transform: translateX(-50%) perspective(720px) rotateX(40deg) !important; transform-origin: 50% 100%; }
+.tv2-cell { box-shadow: none !important; border: none !important; }
+.tv2-cell.areia, .tv2-cell.concha, .tv2-cell.siri {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .55) 0 6%, transparent 7%),
+    radial-gradient(circle at 70% 60%, rgba(214, 180, 120, .5) 0 4%, transparent 5%),
+    radial-gradient(ellipse at 50% 45%, #fff1cc 0, #f1d9a4 55%, #d9b77a 78%, rgba(120, 200, 210, .0) 100%) !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .35), 0 6px 10px rgba(0, 60, 80, .25) !important; }
+.tv2-cell.fundo { background: radial-gradient(ellipse at 50% 50%, rgba(10, 52, 110, .85), rgba(20, 96, 150, .55) 60%, rgba(40, 150, 190, 0) 100%) !important; }
+.tv2-cell::before { display: none !important; }
+.tv2-shell { position: absolute; left: 50%; top: 45%; width: 42%; transform: translate(-50%, -50%) rotate(-12deg); image-rendering: pixelated; filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 2px #ffc0d0); animation: mgcBeat 1.2s infinite; }
+.tv2-cell.siri i { inset: 22% !important; }
+.tv2-cell.aim { transform: translateY(-4px) scale(1.08) !important; box-shadow: 0 0 0 4px #ffd23f, 0 0 22px #ffd23f !important; }
+.tv2-cell.seen.fundo, .tv2-cell.seen.concha, .tv2-cell.seen.siri { box-shadow: 0 0 0 4px #ff5a5a !important; }
+/* o casal de costas */
+.tv2-me { --k: 1; transform: translate(-50%, -88%) scale(var(--k)) !important; transform-origin: 50% 100%; transition: left .3s ease-out, top .35s ease-out, transform .35s; gap: 0; }
+.tv2-chr { display: block; width: calc(var(--u) * 26); aspect-ratio: 1; background-size: 400% 400%; background-position: 0% 100%; image-rendering: pixelated; filter: drop-shadow(0 5px 3px rgba(0, 40, 60, .35)); }
+.tv2-chr + .tv2-chr { margin-left: calc(var(--u) * -11); }
+.tv2-me.walk .tv2-chr { animation: tvWalk .45s steps(4) 1; }
+@keyframes tvWalk { from { background-position-x: 0%; } to { background-position-x: 133.33%; } }
+.tv2-hand { bottom: 38% !important; font-size: clamp(12px, calc(var(--u) * 6), 20px); }
+.tv2-me.scared .tv2-chr:first-child { animation: shake .25s infinite; }
+.tv2-board { top: 7% !important; bottom: 9% !important; width: 48% !important; gap: 8px 12px !important; transform: translateX(-50%) perspective(900px) rotateX(26deg) !important; }
+.tv2-shell { width: 26% !important; }

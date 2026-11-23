@@ -297,12 +297,23 @@ export function playTravessiaGame(parent: HTMLElement): Promise<MiniResult & { l
     const board = h('div', { class: 'tv2-board' });
     const cells: HTMLElement[][] = grid.map((row, r) =>
       row.map((t, c) => {
-        const el = h('div', { class: `tv2-cell ${t}`, style: `grid-row:${ROWS - r};grid-column:${c + 1}` }, h('i', {}));
+        // manchinha de areia com formato próprio (cada uma diferente), concha de verdade brilhando, bolhas de siri
+        const rad = `${40 + Math.random() * 20}% ${40 + Math.random() * 20}% ${40 + Math.random() * 20}% ${40 + Math.random() * 20}% / ${45 + Math.random() * 15}% ${45 + Math.random() * 15}% ${45 + Math.random() * 15}% ${45 + Math.random() * 15}%`;
+        const inner = t === 'concha' ? h('img', { class: 'tv2-shell', src: textureURL('it:concha-ilha') ?? '', alt: '' }) : h('i', {});
+        const el = h('div', { class: `tv2-cell ${t}`, style: `grid-row:${ROWS - r};grid-column:${c + 1};border-radius:${rad}` }, inner);
         board.append(el);
         return el;
       }),
     );
-    const couple = h('div', { class: 'tv2-me' }, h('img', { src: textureURL('portrait-bella-praia') ?? textureURL('portrait-bella') ?? '', alt: '' }), h('img', { src: textureURL('portrait-weng-praia') ?? textureURL('portrait-weng') ?? '', alt: '' }), h('i', { class: 'tv2-hand' }, '♥'));
+    // o casal de costas, de mãos dadas, andando pela faixa (folhas de andar de praia)
+    const sheet = (k: string, fb: string) => textureURL(k) ?? textureURL(fb) ?? '';
+    const couple = h(
+      'div',
+      { class: 'tv2-me' },
+      h('i', { class: 'tv2-chr', style: `background-image:url(${sheet('bella-praia', 'bella-casual')})` }),
+      h('i', { class: 'tv2-chr', style: `background-image:url(${sheet('weng-praia', 'weng-casual')})` }),
+      h('i', { class: 'tv2-hand' }, '♥'),
+    );
     const island = h('div', { class: 'tv2-island' }, 'ILHA');
     const beach = h('div', { class: 'tv2-beach' }, 'PRAIA');
     const fx = h('div', { class: 'fr-fx' });
@@ -338,15 +349,18 @@ export function playTravessiaGame(parent: HTMLElement): Promise<MiniResult & { l
     };
     const place = () => {
       // posição do casal: na linha atual (ou na praia), na coluna atual
-      const cell = row >= 0 ? cells[row][col] : null;
-      const sbx = board.getBoundingClientRect();
+      // posição pela pedra de verdade na tela (a faixa está em perspectiva)
       const st = ui.stage.getBoundingClientRect();
-      const colW = sbx.width / COLS;
-      const rowH = sbx.height / ROWS;
-      const x = sbx.left - st.left + colW * (col + 0.5);
-      const y = cell ? sbx.top - st.top + rowH * (ROWS - row - 0.5) : sbx.bottom - st.top + rowH * 0.5;
+      const ref = (row >= 0 ? cells[row][col] : cells[0][col]).getBoundingClientRect();
+      const x = ref.left + ref.width / 2 - st.left;
+      const y = row >= 0 ? ref.top + ref.height * 0.55 - st.top : ref.bottom - st.top + ref.height * 0.9;
       couple.style.left = `${x}px`;
       couple.style.top = `${y}px`;
+      // mais longe (perto da ilha) = menor
+      couple.style.setProperty('--k', String(1 - Math.max(0, row) * 0.045));
+      couple.classList.remove('walk');
+      void couple.offsetWidth;
+      couple.classList.add('walk');
       cells.forEach((rr, r) => rr.forEach((el, c) => el.classList.toggle('aim', r === row + 1 && c === aim && running)));
     };
     const pop = (text: string, cls: string) => {
