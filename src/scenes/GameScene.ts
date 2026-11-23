@@ -1175,6 +1175,7 @@ export class GameScene extends Phaser.Scene {
         const on = o.when();
         o.img.setVisible(on);
         o.shadow?.setVisible(on);
+        if (o.solid?.body) (o.solid.body as Phaser.Physics.Arcade.StaticBody).enable = on;
         if (!on) continue;
       }
       if (o.front) {

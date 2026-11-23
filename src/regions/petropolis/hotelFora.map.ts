@@ -215,7 +215,7 @@ export const hotelForaMap: MapDef = {
     { key: 'hf-banco', x: 974, y: 694, w: 118, shadow: 0.9 },
     { key: 'hf-lixeira', x: 258, y: 612, w: 36, shadow: 0.8 },
     { key: 'hf-lixeira', x: 896, y: 676, w: 34, shadow: 0.8 },
-    { key: 'hf-placa', x: 884, y: 594, w: 60, shadow: 0.6 },
+    { key: 'hf-placa', x: 884, y: 594, w: 60, shadow: 0.6, solid: 0.4 },
     { key: 'hf-hortazul', x: 782, y: 650, w: 140, shadow: false },
     { key: 'hf-hortrosa', x: 157, y: 652, w: 150, shadow: false },
     { key: 'hf-hortrosa', x: 1130, y: 770, w: 110, shadow: false, flip: true },

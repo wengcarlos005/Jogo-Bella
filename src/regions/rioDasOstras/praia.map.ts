@@ -394,14 +394,14 @@ export const roPraiaMap: MapDef = {
   objects: [
     { key: 'ro-toalha', x: 760, y: 640, w: 200, flat: true, shadow: false },
     { key: 'ro-isopor', x: 700, y: 668, w: 95, shadow: 0.6 },
-    { key: 'ro-guardasol', x: 790, y: 640, w: 200, shadow: 0.9, when: () => GameState.is('ro-guardasol') },
-    { key: 'ro-cadeira', x: 860, y: 655, w: 72, shadow: 0.5, when: () => GameState.is('ro-guardasol') },
+    { key: 'ro-guardasol', x: 790, y: 640, w: 200, shadow: 0.9, when: () => GameState.is('ro-guardasol'), solid: 0.12 },
+    { key: 'ro-cadeira', x: 860, y: 655, w: 72, shadow: 0.5, when: () => GameState.is('ro-guardasol'), solid: 0.7 },
     { key: 'ro-fechado', x: 250, y: 530, w: 34, shadow: false },
-    { key: 'ro-placa', x: 330, y: 535, w: 78, shadow: 0.5 },
+    { key: 'ro-placa', x: 330, y: 535, w: 78, shadow: 0.5, solid: 0.35 },
     { key: 'ro-raquetes', x: 960, y: 610, w: 72, flat: true, shadow: false },
     { key: 'ro-castelo', x: 435, y: 752, w: 90, shadow: false },
     { key: 'ro-mesa', x: 1160, y: 472, w: 110, shadow: 0.6 },
-    { key: 'ro-protetor', x: 640, y: 652, w: 24, shadow: false },
+    { key: 'ro-protetor', x: 640, y: 652, w: 24, shadow: false, solid: 0.8 },
   ],
 
   npcs: [

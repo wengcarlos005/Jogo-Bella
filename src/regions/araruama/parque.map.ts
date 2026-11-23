@@ -379,7 +379,7 @@ export const parqueMap: MapDef = {
     { key: 'pq-algodao', x: 1060, y: 834, w: 115, shadow: 0.6 },
     { key: 'pq-churros', x: 630, y: 254, w: 115, shadow: 0.6 },
     { key: 'pq-bilheteria', x: 472, y: 854, w: 105, shadow: 0.6 },
-    { key: 'pq-baloes', x: 372, y: 852, w: 62, shadow: 0.4 },
+    { key: 'pq-baloes', x: 372, y: 852, w: 62, shadow: 0.4, solid: 0.5 },
   ],
 
   overlays: [

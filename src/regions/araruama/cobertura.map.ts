@@ -331,7 +331,7 @@ export const coberturaMap: MapDef = {
     { key: 'cb-sofa', x: 520, y: 702, w: 470, shadow: false },
     { key: 'cb-mesinha', x: 505, y: 802, w: 200, shadow: false },
     { key: 'cb-cooler', x: 1250, y: 424, w: 105, shadow: false },
-    { key: 'cb-ventilador', x: 1271, y: 604, w: 78, shadow: false },
+    { key: 'cb-ventilador', x: 1271, y: 604, w: 78, shadow: false, solid: 0.45 },
     { key: 'cb-brinquedos', x: 232, y: 824, w: 165, shadow: false },
   ],
 

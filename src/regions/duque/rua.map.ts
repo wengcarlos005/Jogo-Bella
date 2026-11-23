@@ -159,15 +159,15 @@ export const duqueRuaMap: MapDef = {
     { key: 'dr-cercaviva', x: 222, y: 386, w: 130, shadow: false, flip: true },
     { key: 'dr-arbustoflor', x: 588, y: 386, w: 80, shadow: false },
     // postes duplos nas esquinas da calçada do Multidão
-    { key: 'dr-postedupla', x: 45, y: 706, w: 140, shadow: 0.4 },
-    { key: 'dr-postedupla', x: 1492, y: 708, w: 140, shadow: 0.4, flip: true },
+    { key: 'dr-postedupla', x: 45, y: 706, w: 140, shadow: 0.4, solid: 0.18 },
+    { key: 'dr-postedupla', x: 1492, y: 708, w: 140, shadow: 0.4, flip: true, solid: 0.18 },
     { key: 'dr-lixeira', x: 1131, y: 385, w: 28, shadow: 0.8 },
     { key: 'dr-lixeira', x: 1130, y: 950, w: 38, shadow: 0.8 },
     { key: 'dr-vaso', x: 580, y: 882, w: 55, shadow: 0.7 },
     { key: 'dr-vaso', x: 926, y: 882, w: 60, shadow: 0.7, flip: true },
     { key: 'dr-floreira', x: 309, y: 955, w: 140, shadow: false },
     { key: 'dr-floreira', x: 1050, y: 955, w: 110, shadow: false },
-    { key: 'hf-placa', x: 1470, y: 975, w: 56, shadow: 0.5 }, // placa: → açaiteria, ← mercado
+    { key: 'hf-placa', x: 1470, y: 975, w: 56, shadow: 0.5, solid: 0.4 }, // placa: → açaiteria, ← mercado
     { key: 'dr-ponto', x: 1280, y: 965, w: 262, shadow: 0.6 },
   ],
 

@@ -343,6 +343,64 @@ export function createScriptContext(scene: GameScene): ScriptContext {
 
     letterbox: (on) => UI.letterbox(on),
 
+    party(who, year) {
+      const people = who.map((w) => scene.findActor(w)).filter((a): a is NonNullable<typeof a> => !!a && a.visible);
+      let alive = true;
+      const timers: Phaser.Time.TimerEvent[] = [];
+      const later = (ms: number, fn: () => void) => timers.push(scene.time.delayedCall(ms, () => alive && fn()));
+      const COLORS = [0xff5a8a, 0xffd23f, 0x7fe3ff, 0xb48cff, 0x7fe39a, 0xffffff, 0xff9a3a];
+      // cada um pula no seu ritmo, vira pro céu, pros lados, pros amigos
+      people.forEach((a, i) => {
+        const hop = () => {
+          const o = { v: 0 };
+          scene.tweens.add({ targets: o, v: Phaser.Math.Between(4, 9), duration: Phaser.Math.Between(140, 200), yoyo: true, ease: 'Sine.Out', onUpdate: () => a.setLift(o.v), onComplete: () => a.setLift(0) });
+          const r = Math.random();
+          if (r < 0.35) a.face('up');
+          else if (r < 0.6) a.face(Math.random() < 0.5 ? 'left' : 'right');
+          else if (r < 0.7) a.face('down');
+          if (Math.random() < 0.12) void ctx.emote(who[i], Math.random() < 0.6 ? 'heart' : 'note');
+          later(Phaser.Math.Between(380, 950), hop);
+        };
+        later(i * 110, hop);
+      });
+      // fogos no céu, em cima do grupo
+      const firework = () => {
+        const v = scene.cameras.main.worldView;
+        const x = v.x + Phaser.Math.Between(24, Math.max(25, v.width - 24));
+        const y = v.y + Phaser.Math.Between(14, Math.max(15, v.height * 0.38));
+        const color = Phaser.Utils.Array.GetRandom(COLORS);
+        const flash = scene.add.circle(x, y, 3, 0xffffff, 0.9).setDepth(199_600).setBlendMode(Phaser.BlendModes.ADD);
+        scene.tweens.add({ targets: flash, scale: 6, alpha: 0, duration: 260, onComplete: () => flash.destroy() });
+        const n = 18;
+        for (let k = 0; k < n; k++) {
+          const ang = (Math.PI * 2 * k) / n + Math.random() * 0.2;
+          const dist = Phaser.Math.Between(16, 28);
+          const dot = scene.add.circle(x, y, 1.3, color, 1).setDepth(199_600).setBlendMode(Phaser.BlendModes.ADD);
+          scene.tweens.add({ targets: dot, x: x + Math.cos(ang) * dist, y: y + Math.sin(ang) * dist + 8, alpha: 0, scale: 0.4, duration: Phaser.Math.Between(700, 1000), ease: 'Cubic.easeOut', onComplete: () => dot.destroy() });
+        }
+        later(Phaser.Math.Between(260, 620), firework);
+      };
+      firework();
+      // FELIZ <ano>! lá em cima
+      const v0 = scene.cameras.main.worldView;
+      const txt = scene.add
+        .text(v0.centerX, v0.y + 16, `FELIZ ${year}!`, { fontFamily: 'Pixelify Sans', fontSize: '28px', color: '#ffe27a', stroke: '#5a1a3a', strokeThickness: 6 })
+        .setOrigin(0.5)
+        .setScale(0)
+        .setDepth(199_700);
+      scene.tweens.add({ targets: txt, scale: 0.5, duration: 420, ease: 'Back.Out' });
+      scene.tweens.add({ targets: txt, scale: 0.56, duration: 600, yoyo: true, repeat: -1, delay: 450, ease: 'Sine.InOut' });
+      scene.sparkleBurst(scene.player.x, scene.player.headY, 14, true);
+      return () => {
+        if (!alive) return;
+        alive = false;
+        timers.forEach((t) => t.remove());
+        people.forEach((a) => a.setLift(0));
+        scene.tweens.killTweensOf(txt);
+        scene.tweens.add({ targets: txt, alpha: 0, duration: 400, onComplete: () => txt.destroy() });
+      };
+    },
+
     hearts(who, count = 10) {
       const a = actor(who);
       if (!a) return;

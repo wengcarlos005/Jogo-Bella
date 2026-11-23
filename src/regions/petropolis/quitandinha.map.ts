@@ -250,7 +250,7 @@ export const quitandinhaMap: MapDef = {
     { key: 'pq-toalha', x: 430, y: 940, w: 235, flat: true, shadow: false },
     { key: 'pq-prato', x: 430, y: 935, w: 78, flat: true, shadow: false },
     { key: 'pq-cesta', x: 540, y: 880, w: 66, shadow: 0.6 },
-    { key: 'pq-baloes', x: 302, y: 900, w: 62, shadow: 0.5 },
+    { key: 'pq-baloes', x: 302, y: 900, w: 62, shadow: 0.5, solid: 0.5 },
     { key: 'pq-arbusto', x: 1500, y: 560, w: 110, shadow: 0.5 },
     { key: 'pq-pedra', x: 600, y: 990, w: 80, shadow: 0.5 },
   ],

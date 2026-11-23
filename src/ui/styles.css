@@ -4243,3 +4243,8 @@ body.pad .pad-only { display: flex !important; }
 .ce-seat img, .ce-seat i { width: 13cqw !important; border-width: 4px !important; }
 .ce-legend { width: 18% !important; }
 .ce-order { width: 20% !important; }
+/* fogos: o casal balança de leve e pula a cada estouro */
+.fg-casal { animation: fgSway 2.4s ease-in-out infinite; transform-origin: 50% 100%; }
+.fg-casal.cheer { animation: fgCheer .45s cubic-bezier(.2, 1.6, .4, 1), fgSway 2.4s ease-in-out .45s infinite; }
+@keyframes fgSway { 0%, 100% { transform: translateX(-50%) rotate(-1deg); } 50% { transform: translateX(-50%) rotate(1deg); } }
+@keyframes fgCheer { 0% { transform: translateX(-50%); } 40% { transform: translateX(-50%) translateY(-9%) scaleY(1.04); } 100% { transform: translateX(-50%); } }

@@ -56,6 +56,8 @@ const scripts: Record<string, Script> = {
     const r = await ctx.fogos();
     ctx.setFlag('ar-fogos-estrelas', r.stars);
     ctx.setFlag('ar-fogos-fotos', r.photos);
+    // a família comemora de verdade: pulando, olhando os fogos, corações
+    const fimFesta = ctx.party(['player', 'weng', 'tia-tim', 'anne', 'lilian', 'vivian', 'diego', 'mingau', 'julinha', 'laylinha'], '2024');
     ctx.vignette('fg-casal');
     await ctx.narrate('Os fogos sobre a Lagoa de Araruama. A família inteira gritando, se abraçando, brindando.');
     const c = await ctx.choose('bella', '(Um pedido de ano-novo)', ['Pedir mais um ano inteiro assim, com ele', 'Pedir pra nunca mais ter medo de ser eu mesma', 'Não contar o pedido pra ninguém']);
@@ -66,11 +68,18 @@ const scripts: Record<string, Script> = {
     await ctx.emote('bella', 'heart');
     ctx.hearts('player', 14);
     ctx.vignette(null);
+    // a tia Tim vem abraçar a Bella
+    const tb = ctx.playerTile();
+    await ctx.move('tia-tim', tb.x - 1.1, tb.y, 75);
+    ctx.face('tia-tim', 'right');
+    ctx.face('player', 'left');
+    ctx.hearts('tia-tim', 8);
     await ctx.say('tia-tim', 'Feliz ano-novo! Bella, vem cá, me dá um abraço. Agora você é da família, viu? Volta sempre!');
     await ctx.say('anne', 'Feliz ano-novo, cunhada!');
     await ctx.say('bella', '(sussurrando pro Weng) Ela me chamou de cunhada.');
     await ctx.say('weng', 'Eu ouvi. Pode se acostumar.');
     await ctx.memory('mem-ar-03');
+    fimFesta();
     ctx.objective(Q, 'virada');
     ctx.follow('weng', true);
     await ctx.say('tia-tim', 'Agora todo mundo pra dentro, que ainda tem sobremesa! E rabanada!');

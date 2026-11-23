@@ -138,8 +138,8 @@ export const praiaMap: MapDef = {
   objects: [
     { key: 'pr-coco', x: 650, y: 606, w: 150, shadow: 0.6 },
     { key: 'pr-guardasol', x: 1000, y: 664, w: 140, shadow: false },
-    { key: 'pr-cadeira', x: 935, y: 676, w: 52, shadow: 0.5 },
-    { key: 'pr-cadeira', x: 1065, y: 660, w: 52, shadow: 0.5, flip: true },
+    { key: 'pr-cadeira', x: 935, y: 676, w: 52, shadow: 0.5, solid: 0.7 },
+    { key: 'pr-cadeira', x: 1065, y: 660, w: 52, shadow: 0.5, flip: true, solid: 0.7 },
     { key: 'pr-castelo', x: 482, y: 746, w: 90, shadow: false },
     { key: 'pr-barco', x: 1380, y: 630, w: 180, shadow: false },
   ],

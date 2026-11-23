@@ -224,9 +224,9 @@ export const multidaoMap: MapDef = {
     { key: 'mt-balas', x: 720, y: 600, w: 210, shadow: 0.7 },
     { key: 'mt-estante', x: 1010, y: 560, w: 190, shadow: 0.7 },
     { key: 'mt-caixa', x: 1230, y: 752, w: 340, shadow: 0.7 },
-    { key: 'mt-cestas', x: 490, y: 815, w: 95, shadow: 0.6 },
-    { key: 'mt-planta', x: 180, y: 620, w: 95, shadow: 0.6 },
-    { key: 'mt-planta', x: 1330, y: 470, w: 85, shadow: 0.6, flip: true },
+    { key: 'mt-cestas', x: 490, y: 815, w: 95, shadow: 0.6, solid: 0.8 },
+    { key: 'mt-planta', x: 180, y: 620, w: 95, shadow: 0.6, solid: 0.6 },
+    { key: 'mt-planta', x: 1330, y: 470, w: 85, shadow: 0.6, flip: true, solid: 0.6 },
     { key: 'mt-banco', x: 340, y: 800, w: 210, shadow: 0.7 },
   ],
 

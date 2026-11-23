@@ -236,7 +236,7 @@ export const cfCasaMap: MapDef = {
     { key: 'cf-mesa', x: 560, y: 568, w: 430, shadow: 0.8 },
     { key: 'cf-sofa', x: 1180, y: 434, w: 300, shadow: 0.8 },
     { key: 'cf-mesinha', x: 1180, y: 574, w: 260, shadow: 0.7 },
-    { key: 'cf-isopor', x: 960, y: 304, w: 110, shadow: 0.6 },
+    { key: 'cf-isopor', x: 960, y: 304, w: 110, shadow: 0.6, solid: 0.8 },
   ],
 
   npcs: [

@@ -71,11 +71,11 @@ export const cfPeroMap: MapDef = {
     R(1150, 250, 1536, 1024), // pedras e morro da direita
   ],
   objects: [
-    { key: 'cf-guardasol1', x: 470, y: 470, w: 170, shadow: 0.9 },
-    { key: 'cf-guardasol2', x: 900, y: 430, w: 170, shadow: 0.9 },
-    { key: 'cf-isopor', x: 560, y: 470, w: 95, shadow: 0.6 },
+    { key: 'cf-guardasol1', x: 470, y: 470, w: 170, shadow: 0.9, solid: 0.12 },
+    { key: 'cf-guardasol2', x: 900, y: 430, w: 170, shadow: 0.9, solid: 0.12 },
+    { key: 'cf-isopor', x: 560, y: 470, w: 95, shadow: 0.6, solid: 0.8 },
     { key: 'cf-chinelos', x: 380, y: 480, w: 90, flat: true, shadow: false },
-    { key: 'cf-bola', x: 700, y: 540, w: 34, shadow: 0.5 },
+    { key: 'cf-bola', x: 700, y: 540, w: 34, shadow: 0.5, solid: 0.8 },
   ],
   npcs: [
     { id: 'nathan', sprite: 'nathan', tx: 600 / 48, ty: 520 / 48, facing: 'right', interact: 'talk' },
@@ -205,10 +205,10 @@ export const cfJaponesMap: MapDef = {
     }),
   ],
   objects: [
-    { key: 'cf-guardasol3', x: 300, y: 470, w: 170, shadow: 0.9 },
-    { key: 'cf-churrasqueira', x: 200, y: 560, w: 100, shadow: 0.6 },
-    { key: 'cf-mesaplastico', x: 175, y: 680, w: 110, shadow: 0.6 },
-    { key: 'cf-isopor', x: 270, y: 620, w: 90, shadow: 0.6 },
+    { key: 'cf-guardasol3', x: 300, y: 470, w: 170, shadow: 0.9, solid: 0.12 },
+    { key: 'cf-churrasqueira', x: 200, y: 560, w: 100, shadow: 0.6, solid: 0.6 },
+    { key: 'cf-mesaplastico', x: 175, y: 680, w: 110, shadow: 0.6, solid: 0.75 },
+    { key: 'cf-isopor', x: 270, y: 620, w: 90, shadow: 0.6, solid: 0.8 },
   ],
   npcs: [
     { id: 'puggian', sprite: 'puggian', tx: 130 / 48, ty: 560 / 48, facing: 'right', interact: 'churrasco' },
@@ -240,6 +240,8 @@ const forteScripts: Record<string, Script> = {
     await ctx.say('felipe', 'DEZ! NOVE! OITO...');
     const r = await ctx.fogos({ year: '2025', bg: 'map-cf-forte-bg', water: 'no mar' });
     ctx.setFlag('cf-fogos-estrelas', r.stars);
+    // a turma pulando de verdade na areia, olhando os fogos
+    const fimFesta = ctx.party(['player', 'weng', 'nathan', 'vitoria', 'ruan', 'felipe', 'puggian'], '2025');
     await ctx.narrate('Os fogos explodiram sobre o mar de Cabo Frio. A turma inteira pulando, gritando e se abraçando na areia.');
     const c = await ctx.choose('bella', '(Meia-noite, suada, descalça e de branco)', ['"Melhor virada. A gente andou cinco quilômetros por ela."', '"Feliz ano novo, amor."', 'Beijar ele antes de qualquer palavra']);
     if (c === 0) await ctx.say('weng', 'Três. A carona fez o resto. Mas eu conto como cinco.');
@@ -254,6 +256,7 @@ const forteScripts: Record<string, Script> = {
     await ctx.say('bella', 'NÃO.');
     ctx.hearts('player', 14);
     if (ctx.hasArt('memory-cf-03')) await ctx.memory('mem-cf-03');
+    fimFesta();
     ctx.objective(Q, 'virada');
     await ctx.fadeOut(800);
     await ctx.chapterCard('Último capítulo', 'Cabo Frio', 'A virada a pé.', 'Continuar', {

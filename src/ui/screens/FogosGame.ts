@@ -38,7 +38,7 @@ export function playFogosGame(parent: HTMLElement, opts: { year?: string; bg?: s
     ui.stage.append(
       h('div', { class: 'fg-bg', style: lagoa ? `background-image:url(${lagoa})` : '' }),
       sky,
-      h('img', { class: 'fg-casal', src: mg('fg-casal'), alt: '' }),
+      h('img', { class: 'fg-casal', src: mg('fg-casal'), alt: '' }), // balança de leve e pula a cada fogo
       cam,
       count,
       strip,
@@ -82,6 +82,11 @@ export function playFogosGame(parent: HTMLElement, opts: { year?: string; bg?: s
       rockets.push({ el, x, y: 78, top: heart ? 22 : 14 + Math.random() * 22, kind, t: 0, phase: 'up', shot: false });
     };
     const boom = (r: Rocket) => {
+      // o casal comemora cada estouro
+      const casal = ui.stage.querySelector('.fg-casal');
+      casal?.classList.remove('cheer');
+      void (casal as HTMLElement | null)?.offsetWidth;
+      casal?.classList.add('cheer');
       r.phase = 'boom';
       r.t = 0;
       (r.el as HTMLImageElement).src = mg(`fg-${r.kind}`);

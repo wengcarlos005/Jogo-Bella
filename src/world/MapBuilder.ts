@@ -29,6 +29,8 @@ export interface BuiltOverlay {
   when?: () => boolean;
   /** sombra do objeto (some junto quando o objeto some) */
   shadow?: Phaser.GameObjects.Image;
+  /** colisão do pé do objeto (desliga junto quando o objeto some) */
+  solid?: Phaser.GameObjects.Zone;
   front?: boolean;
   frontAlpha?: number;
   tall?: boolean;
@@ -265,9 +267,18 @@ export function buildMap(scene: Phaser.Scene, def: MapDef): BuiltMap {
     img.setDepth(ob.front ? 150_000 : ob.flat ? -3 : base);
     const b = img.getBounds();
     // no chão (toalha, tapete): fica sempre embaixo de todos; não entra na ordenação por profundidade
+    // colisão no pé do objeto: a Bella para encostada na mesa / no isopor em vez de andar por cima
+    let solid: Phaser.GameObjects.Zone | undefined;
+    if (ob.solid) {
+      const fw = (b.width * ob.solid);
+      const fh = Math.max(4, Math.min(12, b.width * 0.16));
+      const by = (ob.base ?? ob.y) / 3;
+      solid = scene.add.zone(b.centerX, by - fh / 2 - 1, fw, fh);
+      solids.add(solid);
+    }
     if (ob.flat) continue;
     // profundidade fixa na base (tall): objeto separado não troca de camada quando alguém passa por ele
-    overlays.push({ img, rect: new Phaser.Geom.Rectangle(b.x, b.y, b.width, b.height), base, fade: !!ob.fade || !!ob.front, front: ob.front, tall: ob.tall ?? true, when: ob.when, shadow });
+    overlays.push({ img, rect: new Phaser.Geom.Rectangle(b.x, b.y, b.width, b.height), base, fade: !!ob.fade || !!ob.front, front: ob.front, tall: ob.tall ?? true, when: ob.when, shadow, solid });
   }
 
   for (const b of def.blocks ?? []) {
