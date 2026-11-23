@@ -5,3 +5,4 @@ dist
 .vercel
 __pycache__/
 dist-scan
+dist-scan2

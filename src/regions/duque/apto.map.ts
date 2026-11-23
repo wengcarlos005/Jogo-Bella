@@ -276,6 +276,7 @@ const scripts: Record<string, Script> = {
     if (objActive('achar-meli')) {
       await ctx.say('bella', 'Tem um par de olhos verdes brilhando aqui dentro da casinha...');
       ctx.setFlag('dq-meli-vista');
+      ctx.setFlag('dq-meli-achando');
       ctx.refresh();
       ctx.place('meli', P.torre.x, P.torre.y, 'down');
       await ctx.emote('meli', 'exclaim');
@@ -770,7 +771,8 @@ export const aptoMap: MapDef = {
       },
       facing: 'down',
       interact: 'meli',
-      visibleIf: () => GameState.is('dq-meli-vista') || questDone(),
+      // escondida até a Bella achar (uma marca velha de outra partida ou do menu Cenas não pode mostrá-la antes)
+      visibleIf: () => questDone() || (GameState.is('dq-meli-vista') && (objDone('achar-meli') || GameState.is('dq-meli-achando'))),
       markerIf: () => (objActive('brincar') && objDone('novelo')) || (objActive('carinho') && objDone('brincar')),
     },
   ],
