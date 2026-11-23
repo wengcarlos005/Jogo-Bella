@@ -4290,3 +4290,9 @@ body.pad .pad-only { display: flex !important; }
 .gb-played { left: 60% !important; top: 42% !important; width: 13% !important; }
 .gb-pile { left: 40% !important; top: 42% !important; }
 .gb-pile { top: 36% !important; width: 8% !important; } .gb-played { top: 36% !important; }
+/* cartas: uma letra só do começo ao fim (título, frases de efeito e assinatura só mudam de cor e tamanho) */
+.lt-body p, .lt-body p.hi, .lt-body p.beat, .lt-body p.sig, .lt-body p.ps { font-family: 'Patrick Hand', 'Nunito', sans-serif !important; font-weight: 400 !important; font-style: normal !important; }
+.lt-body p.hi { font-size: 34px !important; color: #c0305f; }
+.lt-body p.beat { font-size: 27px !important; color: #a0405a; }
+.lt-body p.sig { font-size: 30px !important; color: #c0305f; }
+.lt-paper.compact .lt-body p.hi { font-size: 30px !important; }
