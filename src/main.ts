@@ -9,6 +9,7 @@ import '@fontsource/nunito/800.css';
 import '@fontsource/dancing-script/500.css';
 import '@fontsource/dancing-script/700.css';
 import '@fontsource/great-vibes/400.css';
+import '@fontsource/patrick-hand/400.css';
 import { GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE } from './config/gameConfig';
 import { BootScene } from './scenes/BootScene';
 import { PreloadScene } from './scenes/PreloadScene';
@@ -20,7 +21,7 @@ import { SaveSystem, SettingsStore } from './systems/SaveSystem';
 import { AudioSystem } from './systems/AudioSystem';
 import { UI } from './ui/UIManager';
 import type { SaveData } from './core/types';
-import { initGamepad } from '@/systems/Gamepad';
+import { initGamepad, setDevice } from '@/systems/Gamepad';
 
 SettingsStore.load();
 InputSystem.init();
@@ -76,6 +77,7 @@ UI.init(
       GameState.reset();
       // a carta do Weng abre a história
       UI.title.close();
+      await UI.chooseDevice();
       await UI.letter();
       startGame({ mapId: GameState.data.mapId, spawn: 'start' });
     },
@@ -93,6 +95,7 @@ UI.init(
 );
 
 // Controle de videogame (PlayStation / Xbox): cada botão aperta a tecla equivalente.
+setDevice(SettingsStore.data.device);
 initGamepad(() => UI.toasts.show('🎮 Controle conectado: ✕ confirma · ◯ volta · □ corre · OPTIONS menu'));
 
 // Salva ao fechar/ocultar a aba (celular).

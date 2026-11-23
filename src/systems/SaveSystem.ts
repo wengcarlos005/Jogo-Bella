@@ -97,6 +97,7 @@ const DEFAULT_SETTINGS: Settings = {
   sfxVolume: 0.7,
   textSpeed: 'normal',
   touchControls: 'auto',
+  device: 'pc',
 };
 
 /** Preferências pequenas ficam no localStorage. */

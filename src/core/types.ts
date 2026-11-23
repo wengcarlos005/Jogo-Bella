@@ -37,6 +37,8 @@ export interface Settings {
   sfxVolume: number;
   textSpeed: 'lenta' | 'normal' | 'rapida';
   touchControls: 'auto' | 'sempre' | 'nunca';
+  /** Como ela joga: 'pc' (teclado) ou 'controle' (os textos mostram ✕ ◯ □ △). */
+  device: 'pc' | 'controle';
 }
 
 export interface SaveData {

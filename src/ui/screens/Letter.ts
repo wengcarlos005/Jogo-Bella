@@ -2,6 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { PERSONAL } from '@/data/personal';
+import { typewrite } from '../typewriter';
 import { textureURL } from '../textures';
 import { assetURL } from '@/utils/asset';
 
@@ -28,13 +29,13 @@ export function playLetter(root: HTMLElement): Promise<void> {
       'div',
       { class: 'lt-env' },
       envArt(),
-      h('div', { class: 'lt-env-to' }, 'Para a Bella'),
+      h('div', { class: 'lt-env-to' }, 'Para o meu amor'),
       h('div', { class: 'lt-env-hint' }, 'Aperte Espaço para abrir'),
     );
     const fb = textureURL('portrait-weng');
     const body = h('div', { class: 'lt-body' });
     const paper = h('div', { class: 'lt-paper off' }, body);
-    const hint = h('div', { class: 'end-hint' }, 'Espaço ▸');
+    const hint = h('div', { class: 'end-hint' }, h('b', { class: 'pad-glyph' }, '✕'), h('span', { class: 'kb-only' }, ' / Espaço'), ' ▸');
     const btn = h('button', { class: 'btn primary lt-go off' }, 'Continuar');
     const col = h('div', { class: 'lt-col' }, paper, btn);
     const screen = h('div', { class: 'screen opaque end-screen lt-screen' }, stars, env, col, hint);
@@ -43,6 +44,7 @@ export function playLetter(root: HTMLElement): Promise<void> {
     InputSystem.releaseAll();
 
     let i = -1; // -1 = envelope fechado
+    let typing: ReturnType<typeof typewrite> | null = null;
     let done = false;
     // depois da carta: um bilhetinho pra ela aproveitar o jogo (com as teclas)
     let welcome = false;
@@ -105,20 +107,31 @@ export function playLetter(root: HTMLElement): Promise<void> {
         }, 900);
         return;
       }
+      if (typing?.typing()) {
+        // Espaço no meio da frase: completa o parágrafo
+        typing.skip();
+        return;
+      }
       if (i < paras.length) {
         const last = i === paras.length - 1;
         const p = paras[i];
-        const el = h('p', { class: i === 0 ? 'hi' : last ? 'ps' : '' }, p);
+        const el = h('p', { class: i === 0 ? 'hi' : last ? 'ps' : '' });
         body.append(el);
-        el.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        AudioSystem.play('blip');
+        hint.classList.remove('on');
+        typing = typewrite(el, p, i === 0 ? 14 : 40, () => (paper.scrollTop = paper.scrollHeight));
         i++;
-        if (i === paras.length) {
+        const atEnd = i === paras.length;
+        void typing.done.then(() => {
+          if (!atEnd) hint.classList.add('on');
+        });
+        if (!atEnd) return;
+        void typing.done.then(() => {
           if (fb) body.append(h('div', { class: 'lt-sign' }, h('img', { src: fb, alt: '' }), h('span', {}, 'Weng')));
+          paper.scrollTop = paper.scrollHeight;
           hint.remove();
           btn.classList.remove('off');
           btn.classList.add('kb-focus');
-        } else hint.classList.add('on');
+        });
         return;
       }
       finish();

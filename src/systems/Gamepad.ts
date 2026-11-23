@@ -90,6 +90,8 @@ const original = new WeakMap<Node, string>();
 const hidden = new Set<HTMLElement>();
 
 function swapText(node: Text): void {
+  // textos que já mostram as duas formas (ex.: "✕ / Espaço") ficam como estão
+  if ((node.parentElement as HTMLElement | null)?.closest('.kb-only')) return;
   const t = node.nodeValue ?? '';
   if (!/Espaço|\bShift\b|\bEsc\b/.test(t)) return;
   if (!original.has(node)) original.set(node, t);
@@ -140,7 +142,15 @@ export function isPadMode(): boolean {
   return padMode;
 }
 
+/** Escolha feita no início ("PC" ou "Controle"): com Controle, os textos ficam sempre com ✕ ◯ □ △. */
+let device: 'pc' | 'controle' = 'pc';
+export function setDevice(d: 'pc' | 'controle'): void {
+  device = d;
+  setPadMode(d === 'controle');
+}
+
 function setPadMode(on: boolean): void {
+  if (!on && device === 'controle') return;
   if (padMode === on) return;
   padMode = on;
   document.body.classList.toggle('pad', on);
@@ -164,7 +174,7 @@ export function initGamepad(onConnect?: (name: string) => void): void {
     if (!Array.from(navigator.getGamepads?.() ?? []).some((p) => p?.connected)) setPadMode(false);
   });
   // voltou pro teclado de verdade: textos de teclado de volta
-  window.addEventListener('keydown', (e) => e.isTrusted && setPadMode(false), true);
+  window.addEventListener('keydown', (e) => e.isTrusted && device === 'pc' && setPadMode(false), true);
   // textos que aparecem depois (diálogos, minijogos, menus)
   new MutationObserver((muts) => {
     if (!padMode) return;

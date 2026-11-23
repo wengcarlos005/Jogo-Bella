@@ -22,6 +22,7 @@ import { h } from '@/utils/dom';
 import { showHowTo, HOWTO } from './screens/HowTo';
 import { playEnding } from './screens/Ending';
 import { playLetter } from './screens/Letter';
+import { chooseDevice } from './screens/DeviceChoice';
 import { curtainClose } from './screens/Curtain';
 import { playRoadTrip, type TripLine } from './screens/RoadTrip';
 import { ferrisShow, ferrisTop, ferrisHide } from './screens/FerrisScene';
@@ -661,6 +662,11 @@ class UIManagerImpl {
         ready = true;
       })();
     });
+  }
+
+  /** "PC ou Controle?" (antes do jogo novo). */
+  chooseDevice(): Promise<'pc' | 'controle'> {
+    return chooseDevice(this.root);
   }
 
   /** A carta do Weng (abre o jogo). */

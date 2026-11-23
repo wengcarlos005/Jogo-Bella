@@ -80,17 +80,17 @@ export const PERSONAL = {
     'Espero que esses três anos sejam apenas o começo de uma história muito maior. Ainda quero conhecer tantos lugares com você, conhecer a Disney, viajar para a China, Coreia, Japão, ter um passeio romântico na Itália... colecionar novas memórias e descobrir milhares de motivos para me apaixonar ainda mais.',
     'Obrigado por ser minha companheira, minha parceira e por fazer parte da minha vida de uma maneira tão especial.',
     'Feliz 3 anos de namoro, meu amor!',
-    'Eu te amo, Bella. Hoje, amanhã e em todos os capítulos que ainda vamos escrever juntos. ❤️',
+    'Eu te amo, meu amor. Hoje, amanhã e em todos os capítulos que ainda vamos escrever juntos. ❤️',
     'Prometo te dar dois universos :)',
   ],
 
   /** Bilhete depois da carta, antes do prólogo: pra ela aproveitar o jogo. */
   welcome: [
-    'Esse jogo é a nossa história, contada do jeito que eu lembro (com um pouquinho de exagero, juro que só um pouquinho).',
-    'São sete capítulos: de Piabetá até a virada a pé em Cabo Frio. Cada lugar tem conversas, minijogos e lembranças escondidas pra você achar.',
-    'Não tem pressa e não tem como perder. Se algum minijogo ficar difícil, tenta de novo ou segue em frente: a nossa história continua do mesmo jeito.',
-    'Fala com todo mundo, mexe em tudo que brilhar e me mostra os itens da mochila. Eu sempre tenho alguma coisa pra dizer.',
-    'Aproveita cada pedacinho. Fiz pensando em você o tempo todo.',
+    'Esse jogo é um presente, feito pedacinho por pedacinho, só pra você.',
+    'Ele guarda um monte de coisas nossas: lugares, pessoas, piadas internas e momentos que eu nunca quero esquecer. Alguns você vai reconhecer na hora. Outros talvez te peguem de surpresa.',
+    'Não tem pressa nenhuma. Anda devagar, conversa com todo mundo e mexe em tudo o que brilhar: quase sempre tem alguma coisinha escondida esperando por você.',
+    'Se alguma coisa ficar difícil, tudo bem. Dá pra tentar de novo quantas vezes quiser. Aqui não existe perder.',
+    'Joga com calma, ri das minhas bobeiras e, se bater saudade no meio do caminho, é só olhar pro lado. Eu tô aqui.',
   ],
 
   /**

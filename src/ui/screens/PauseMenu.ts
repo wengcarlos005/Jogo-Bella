@@ -7,6 +7,7 @@ import { SaveSystem, SettingsStore } from '@/systems/SaveSystem';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { EventBus } from '@/core/EventBus';
+import { setDevice } from '@/systems/Gamepad';
 import { CATEGORY_LABEL } from '@/data/items';
 import { MEMORY_GOAL } from '@/data/memories';
 import { REGIONS } from '@/data/regions';
@@ -431,7 +432,7 @@ export class PauseMenu {
       input.addEventListener('change', () => AudioSystem.play('blip'));
       return h('div', { class: 'pm-opt' }, h('span', { class: 'lbl' }, `${icon} ${label}`), input, val);
     };
-    const seg = <K extends 'textSpeed' | 'touchControls'>(label: string, icon: string, key: K, opts: [string, string][]) => {
+    const seg = <K extends 'textSpeed' | 'touchControls' | 'device'>(label: string, icon: string, key: K, opts: [string, string][]) => {
       const wrap = h('div', { class: 'pm-seg' });
       const draw = () =>
         wrap.replaceChildren(
@@ -441,6 +442,7 @@ export class PauseMenu {
               onclick: () => {
                 (s as unknown as Record<string, string>)[key] = v;
                 SettingsStore.save();
+                if (key === 'device') setDevice(SettingsStore.data.device);
                 this.actions.settingsChanged();
                 AudioSystem.play('blip');
                 draw();
@@ -460,6 +462,7 @@ export class PauseMenu {
         range('Música', '', 'musicVolume'),
         range('Efeitos', '', 'sfxVolume'),
         seg('Velocidade do texto', '', 'textSpeed', [['lenta', 'Lenta'], ['normal', 'Normal'], ['rapida', 'Rápida']]),
+        seg('Jogando no', '', 'device', [['pc', 'PC (teclado)'], ['controle', 'Controle']]),
         seg('Controles de toque', '', 'touchControls', [['auto', 'Auto'], ['sempre', 'Sempre'], ['nunca', 'Nunca']]),
       ),
       h('div', { class: 'pm-section' }, 'Controles'),
