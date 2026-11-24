@@ -114,9 +114,9 @@ class AudioSystemImpl {
     if (ac) Chiptune.play(ac, key, this.musicLevel());
   }
 
-  /** Música de fundo mais baixa que os efeitos (100% no controle = 40% do volume real). */
+  /** Música de fundo mais baixa que os efeitos (100% no controle = 28% do volume real). */
   private musicLevel(): number {
-    return SettingsStore.data.musicVolume * 0.4;
+    return SettingsStore.data.musicVolume * 0.28;
   }
 
   stopMusic(): void {
