@@ -86,6 +86,7 @@ const scripts: Record<string, Script> = {
       photos: ['memory-nt-01', 'memory-nt-02', 'memory-nt-03'].filter((k) => ctx.hasArt(k)),
       lines: [
         'Icaraí, um apartamento com o mar na janela e a família da mãe da Lilian.',
+        'A sabatina: a família inteira quis saber da história de vocês (e o Weng ficou vermelho).',
         'Uma cesta inteira de chocolate (e um brócolis escondido no meio).',
         'O Caminho Niemeyer no fim de tarde, com o Rio do outro lado da baía.',
         'E o churrasco no On Fire: nove bandejas, molho na bochecha e o Vinicius aprovado.',

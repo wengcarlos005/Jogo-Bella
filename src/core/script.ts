@@ -149,8 +149,8 @@ export interface ScriptContext {
    */
   sit(seatX: number, seatY: number, lines?: [string, string][], couple?: { key: string; x: number; y: number; /** largura do banco pintado (px da arte original) */ w?: number }): Promise<void>;
   /**
-   * Animação do beijo. `eyesClosed`: troca pelos sprites de olhos fechados (desenhados com a roupa
-   * do primeiro encontro); com outra roupa, passe false pra não trocar a roupa no meio do beijo.
+   * Animação do beijo. `eyesClosed` (padrão): troca pelos sprites de olhos fechados da roupa que
+   * eles estão usando (casual ou branco); se não houver dessa roupa, fica com os olhos abertos.
    */
   kiss(eyesClosed?: boolean): Promise<void>;
   /** Existe arte carregada com essa chave? */

@@ -3,6 +3,7 @@ import type { MapDef, TileRect } from '@/world/MapTypes';
 import type { Script, ScriptContext } from '@/core/script';
 import { QuestSystem } from '@/systems/QuestSystem';
 import { GameState } from '@/core/GameState';
+import { PERSONAL } from '@/data/personal';
 
 const Q = 'nt-m1';
 const objDone = (o: string) => QuestSystem.isObjectiveDone(Q, o);
@@ -10,24 +11,101 @@ const objActive = (o: string) => QuestSystem.isActive(Q) && !objDone(o);
 /** Retângulo no cenário ORIGINAL (art-source/maps/nt-apto.webp, 1536x1024). 48 px = 1 tile. */
 const R = (x0: number, y0: number, x1: number, y1: number): TileRect => ({ x: x0 / 48, y: y0 / 48, w: (x1 - x0) / 48, h: (y1 - y0) / 48 });
 
-/** Quem a Bella cumprimenta logo que chega (a seta fica em cima de cada um). */
-const OIS = ['nt-oi-tio', 'nt-oi-lilian', 'nt-oi-vivian', 'nt-oi-diego', 'nt-oi-mingau'];
-const precisaOi = (f: string) => QuestSystem.isActive(Q) && objDone('chegar') && !objDone('oi') && !GameState.is(f);
+/** Onde cada um fica na roda da sala (tiles) e pra onde olha; depois todos voltam pro seu canto. */
+const RODA: [string, number, number, 'up' | 'down' | 'left' | 'right'][] = [
+  ['lilian', 6.9, 10.25, 'down'],
+  ['vinicius', 8.1, 10.25, 'down'],
+  ['tio-nt', 9.8, 10.25, 'down'],
+  ['vivian', 11.45, 10.25, 'down'],
+  ['diego', 12.7, 11.3, 'left'],
+  ['mingau', 6.2, 11.7, 'right'],
+  ['mae-lilian', 12.2, 12.5, 'left'],
+];
+const CANTO: Record<string, [number, number, 'up' | 'down' | 'left' | 'right']> = {
+  lilian: [760 / 48, 398 / 48, 'right'],
+  vinicius: [828 / 48, 398 / 48, 'left'],
+  'tio-nt': [1372 / 48, 470 / 48, 'left'],
+  vivian: [610 / 48, 525 / 48, 'left'],
+  diego: [975 / 48, 382 / 48, 'down'],
+  mingau: [805 / 48, 560 / 48, 'left'],
+  'mae-lilian': [1180 / 48, 382 / 48, 'down'],
+};
+const precisaSabatina = () => QuestSystem.isActive(Q) && objDone('chegar') && !objDone('oi');
 
-async function oi(ctx: ScriptContext, flag: string): Promise<void> {
-  if (!precisaOi(flag)) return;
-  ctx.setFlag(flag);
-  const falta = OIS.filter((f) => !GameState.is(f)).length;
-  if (falta) {
-    ctx.toast(falta === 1 ? 'Falta dar oi pra 1 pessoa' : `Falta dar oi pra ${falta} pessoas`);
-    return;
+/**
+ * A sabatina: em vez de sair dando oi um por um (como em Araruama), a família inteira senta em volta
+ * da Bella e quer saber TUDO sobre o casal. Perguntas sobre a história deles; errar só rende risada.
+ */
+async function sabatina(ctx: ScriptContext): Promise<void> {
+  ctx.follow('weng', false);
+  await ctx.fadeOut(400);
+  ctx.place('player', 8.96, 12.5, 'up');
+  ctx.place('weng', 10.4, 12.5, 'up');
+  for (const [who, x, y, f] of RODA) ctx.place(who, x, y, f);
+  ctx.letterbox(true);
+  await ctx.frame(9.4, 11.6, 0);
+  await ctx.fadeIn(400);
+  await ctx.narrate('Cinco minutos depois, a sala inteira em volta da Bella. Ninguém nem fingiu que tava fazendo outra coisa.');
+  await ctx.say('lilian', 'Bella, aqui em casa tem uma tradição. Quem chega novo passa pela sabatina.');
+  await ctx.say('vinicius', 'Eu passei semana passada. Sobrevivi. Mais ou menos.');
+  await ctx.say('weng', '(cochichando) Responde com confiança. Eles sentem o medo.');
+  let pontos = 0;
+
+  await ctx.say('tio-nt', 'Primeira pergunta. Onde foi que esse rapaz te deu o primeiro beijo?');
+  let c = await ctx.choose('bella', '(A família inteira inclinada pra frente)', ['"No coreto da praça, debaixo de chuva."', '"Na fila do cinema."', '"Ele ainda tá me devendo esse beijo."']);
+  if (c === 0) {
+    pontos++;
+    await ctx.say('tio-nt', 'Debaixo de chuva! Romântico. Puxou o tio.');
+  } else if (c === 1) await ctx.say('weng', 'Fila do cinema?! Bella, foi no CORETO. Com chuva. Eu me preparei a semana inteira!');
+  else {
+    await ctx.emote('weng', 'sweat');
+    await ctx.say('diego', 'HAHAHA! Weng, você tá devendo beijo?');
   }
-  await ctx.wait(300);
-  await ctx.say('weng', 'Pronto, deu oi pra todo mundo. Agora o mais perigoso: a mãe da Lilian tá te chamando na cozinha.');
-  await ctx.say('bella', 'Perigoso por quê?');
-  await ctx.say('weng', 'Você vai ver.');
+
+  await ctx.say('vivian', 'Minha vez. Onde foi o primeiro encontro de vocês?');
+  c = await ctx.choose('bella', '(A Vivian com cara de quem já sabe a resposta)', [`"Na ${PERSONAL.places.hamburgueria}. Hambúrguer."`, '"Num restaurante francês chiquérrimo."', '"Na casa da minha avó."']);
+  if (c === 0) {
+    pontos++;
+    await ctx.say('vivian', 'Hambúrguer no primeiro encontro. Gostei. Sem frescura.');
+  } else if (c === 1) await ctx.say('vivian', 'Francês? O Weng? Ele não sabe nem pronunciar croissant.');
+  else await ctx.say('weng', 'Na casa da avó foi depois! O primeiro foi hambúrguer, eu lembro de tudo.');
+
+  await ctx.say('diego', 'Pergunta séria agora. O Weng cozinha?');
+  c = await ctx.choose('bella', '(O Diego de braços cruzados)', ['"Fez miojo na primeira noite. Muito bem feito, aliás."', '"Ele assumiu a churrasqueira lá de casa."', '"Eu não deixo ele chegar perto do fogão."']);
+  if (c < 2) {
+    pontos++;
+    await ctx.say('diego', c === 0 ? 'Miojo bem feito é uma arte. Respeito.' : 'Assumiu a churrasqueira do sogro? Corajoso. Ou doido.');
+  } else await ctx.say('mae-lilian', 'Faz muito bem, minha filha. Da última vez ele queimou até o arroz.');
+
+  await ctx.say('mingau', 'E qual é o nome da gata dele? Essa é fácil.');
+  c = await ctx.choose('bella', '(O Mingau segurando a risada)', ['"Meli."', '"Mingau."', '"Lala."']);
+  if (c === 0) {
+    pontos++;
+    await ctx.say('mingau', 'Acertou. A Meli me odeia, mas tudo bem.');
+  } else if (c === 1) {
+    await ctx.emote('mingau', 'exclaim');
+    await ctx.say('mingau', 'MINGAU SOU EU!');
+  } else await ctx.say('weng', 'A Lala é a SUA gata, amor. A minha é a Meli.');
+
+  await ctx.say('lilian', 'Última, e não vale errar porque não tem resposta errada. Do que você mais gosta nele?');
+  c = await ctx.choose('bella', '(O Weng olhando pro teto, fingindo que não tá ouvindo)', ['"Do jeito que ele cuida de mim."', '"Que ele me faz rir o dia inteiro."', '"Do abraço. É o melhor lugar do mundo."']);
+  await ctx.emote('weng', 'heart');
+  await ctx.say('vivian', ['Aaaah. Para.', 'Isso ele faz mesmo. Até sem querer.', 'Gente, eu vou chorar antes do almoço.'][c]);
+  await ctx.say('weng', '...Ninguém tinha me avisado que essa pergunta existia.');
+
+  const nota = pontos >= 4 ? 'Quatro de quatro! Aprovada com louvor.' : pontos >= 2 ? `${pontos} de 4. Aprovada! O resto o Weng explica depois.` : 'Aprovada mesmo assim. Quem faz o Weng ficar vermelho desse jeito já tá dentro.';
+  await ctx.say('mae-lilian', nota);
+  ctx.hearts('player', 6 + pontos * 2);
+  ctx.setFlag('nt-sabatina-pontos', pontos);
+  await ctx.say('mae-lilian', 'Agora vem comigo na cozinha. Aquela coisinha que eu falei tá te esperando.');
   ctx.objective(Q, 'oi');
-  ctx.toast('A mãe da Lilian tá te esperando na cozinha');
+  await ctx.fadeOut(400);
+  ctx.letterbox(false);
+  await ctx.unfocus(10);
+  for (const [who, [x, y, f]] of Object.entries(CANTO)) ctx.place(who, x, y, f);
+  ctx.follow('weng', true);
+  await ctx.fadeIn(400);
+  ctx.toast('A mãe da Lilian te espera na cozinha');
 }
 
 const scripts: Record<string, Script> = {
@@ -54,16 +132,14 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Oi! Obrigada por receber a gente!');
     await ctx.say('mae-lilian', 'Imagina, minha filha. Que abraço gostoso! Dá oi pra todo mundo e depois vem aqui na cozinha. Eu tenho uma coisinha pra você.');
     await ctx.say('weng', '(cochichando) "Uma coisinha". Prepara a bolsa.');
-    void ctx.move('mae-lilian', 13.0, 9.6, 80).then(() => ctx.move('mae-lilian', 24.6, 9.6, 80)).then(() => ctx.move('mae-lilian', 1180 / 48, 382 / 48, 80)).then(() => ctx.face('mae-lilian', 'down'));
     ctx.objective(Q, 'chegar');
-    ctx.toast('Dê oi pra família (siga as setas)');
+    await ctx.say('lilian', '(lá do sofá) Bella! Senta aqui! Todo mundo quer te conhecer direito!');
+    await ctx.say('weng', '(baixinho) Ih. Lá vem a sabatina.');
+    await sabatina(ctx);
   },
 
   async maeLilian(ctx) {
-    if (objActive('oi')) {
-      await ctx.say('mae-lilian', 'Vai lá dar oi pro pessoal primeiro! Depois vem aqui, que eu tô te esperando.');
-      return;
-    }
+    if (precisaSabatina()) return sabatina(ctx);
     if (objActive('chocolates')) return chocolates(ctx);
     const f = ['Já comeu chocolate hoje? Tem mais na cesta, viu?', 'Fica à vontade, a casa é sua. Quer água? Suco? Chocolate?', 'O Weng falava tanto de você. Agora eu entendi por quê.'];
     const n = Number(GameState.getFlag<number>('nt-mae-n') ?? 0);
@@ -71,14 +147,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('mae-lilian', f[n % f.length]);
   },
   async tio(ctx) {
-    if (precisaOi('nt-oi-tio')) {
-      await ctx.say('tio-nt', 'E aí, Weng! Cresceu, hein? E essa é a famosa Bella?');
-      await ctx.say('bella', 'Famosa?');
-      await ctx.say('tio-nt', 'Ele só fala de você. A gente já te conhecia antes de te conhecer.');
-      await ctx.emote('bella', 'heart');
-      await oi(ctx, 'nt-oi-tio');
-      return;
-    }
+    if (precisaSabatina()) return sabatina(ctx);
     if (objDone('varanda') && objActive('niemeyer')) {
       await ctx.say('tio-nt', 'Bora no Caminho Niemeyer antes do almoço? Dá pra ir andando. É só sair pela porta.');
       return;
@@ -86,50 +155,23 @@ const scripts: Record<string, Script> = {
     await ctx.say('tio-nt', objDone('chocolates') ? 'Ela te deu chocolate, né? Ela dá chocolate pra todo mundo. Pro porteiro. Pro carteiro.' : 'Senta, fica à vontade. A vista daqui é a melhor parte da casa.');
   },
   async lilian(ctx) {
-    if (precisaOi('nt-oi-lilian')) {
-      await ctx.say('lilian', 'Bella! Juntas de novo! Deixa eu te apresentar: esse é o Vinicius, meu namorado.');
-      await ctx.say('vinicius', 'Prazer, Bella. Ouvi falar muito de você.');
-      await ctx.say('bella', 'O prazer é meu! Agora eu não sou a única pessoa nova da família.');
-      await ctx.say('vinicius', 'Ufa. Somos dois.');
-      await ctx.say('weng', 'Vinicius, regra número um: aceita tudo que a mãe da Lilian te oferecer.');
-      await ctx.say('vinicius', 'Já aprendi. Eu tô com três bombons no bolso.');
-      await oi(ctx, 'nt-oi-lilian');
-      return;
-    }
+    if (precisaSabatina()) return sabatina(ctx);
     await ctx.say('lilian', 'Depois vamos tirar uma foto todo mundo junto na varanda, tá?');
   },
   async vinicius(ctx) {
-    if (precisaOi('nt-oi-lilian')) return scripts.lilian(ctx);
+    if (precisaSabatina()) return sabatina(ctx);
     await ctx.say('vinicius', 'Quatro bombons agora. Ela me viu sem nada na mão e resolveu.');
   },
   async vivian(ctx) {
-    if (precisaOi('nt-oi-vivian')) {
-      await ctx.say('vivian', 'Bella! Que vestido lindo! Laranja combina com você.');
-      await ctx.say('bella', 'Obrigada! Eu fiquei com medo de ser demais.');
-      await ctx.say('vivian', 'Demais nada. Aqui em casa o demais é a comida. E o chocolate.');
-      await oi(ctx, 'nt-oi-vivian');
-      return;
-    }
+    if (precisaSabatina()) return sabatina(ctx);
     await ctx.say('vivian', 'Já foi na varanda? Dá pra ver o Rio inteiro do outro lado.');
   },
   async diego(ctx) {
-    if (precisaOi('nt-oi-diego')) {
-      await ctx.say('diego', 'E aí, Bella. Sobreviveu ao ano-novo da tia Tim, sobrevive a esse.');
-      await ctx.say('bella', 'Esse parece mais tranquilo.');
-      await ctx.say('diego', 'Parece. Espera a cesta de chocolate.');
-      await oi(ctx, 'nt-oi-diego');
-      return;
-    }
+    if (precisaSabatina()) return sabatina(ctx);
     await ctx.say('diego', 'Eu já tô de olho no churrasco. Disseram que é americano. Defumado. Doze horas no fogo.');
   },
   async mingau(ctx) {
-    if (precisaOi('nt-oi-mingau')) {
-      await ctx.say('mingau', 'Bella! Você vai ganhar chocolate da tia. Se não quiser algum, me dá.');
-      await ctx.say('bella', 'E se eu quiser todos?');
-      await ctx.say('mingau', '...Aí a gente negocia.');
-      await oi(ctx, 'nt-oi-mingau');
-      return;
-    }
+    if (precisaSabatina()) return sabatina(ctx);
     await ctx.say('mingau', objDone('chocolates') ? 'Você tem MUITO chocolate. Tipo, muito. Divide comigo? Só um. Dois.' : 'Ainda não foi na cozinha? Vai logo, ela tá com a cesta pronta.');
   },
 
@@ -150,6 +192,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Livro, globo, bonequinho... e chocolate escondido atrás. Eu sei porque eu já achei.');
   },
   async cozinha(ctx) {
+    if (precisaSabatina()) return sabatina(ctx);
     if (objActive('chocolates') && objDone('oi')) return chocolates(ctx);
     await ctx.say('bella', 'Uma ilha de mármore na cozinha. Eu quero uma ilha de mármore.');
   },
@@ -286,12 +329,12 @@ export const ntAptoMap: MapDef = {
 
   npcs: [
     { id: 'mae-lilian', sprite: 'mae-lilian', tx: 1180 / 48, ty: 382 / 48, facing: 'down', interact: 'maeLilian', markerIf: () => objDone('oi') && objActive('chocolates') },
-    { id: 'tio-nt', sprite: 'tio-nt', tx: 1372 / 48, ty: 470 / 48, facing: 'left', interact: 'tio', markerIf: () => precisaOi('nt-oi-tio') || (objDone('varanda') && objActive('niemeyer')) },
-    { id: 'lilian', sprite: 'lilian', tx: 760 / 48, ty: 398 / 48, facing: 'right', interact: 'lilian', markerIf: () => precisaOi('nt-oi-lilian') },
+    { id: 'tio-nt', sprite: 'tio-nt', tx: 1372 / 48, ty: 470 / 48, facing: 'left', interact: 'tio', markerIf: () => (objDone('varanda') && objActive('niemeyer')) },
+    { id: 'lilian', sprite: 'lilian', tx: 760 / 48, ty: 398 / 48, facing: 'right', interact: 'lilian' },
     { id: 'vinicius', sprite: 'vinicius', tx: 828 / 48, ty: 398 / 48, facing: 'left', interact: 'vinicius' },
-    { id: 'vivian', sprite: 'vivian', tx: 610 / 48, ty: 525 / 48, facing: 'left', interact: 'vivian', markerIf: () => precisaOi('nt-oi-vivian') },
-    { id: 'diego', sprite: 'diego', tx: 975 / 48, ty: 382 / 48, facing: 'down', interact: 'diego', markerIf: () => precisaOi('nt-oi-diego') },
-    { id: 'mingau', sprite: 'mingau', tx: 805 / 48, ty: 560 / 48, facing: 'left', interact: 'mingau', markerIf: () => precisaOi('nt-oi-mingau') },
+    { id: 'vivian', sprite: 'vivian', tx: 610 / 48, ty: 525 / 48, facing: 'left', interact: 'vivian' },
+    { id: 'diego', sprite: 'diego', tx: 975 / 48, ty: 382 / 48, facing: 'down', interact: 'diego' },
+    { id: 'mingau', sprite: 'mingau', tx: 805 / 48, ty: 560 / 48, facing: 'left', interact: 'mingau' },
   ],
 
   hotspots: [

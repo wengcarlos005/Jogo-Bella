@@ -315,7 +315,7 @@ async function soNosDois(ctx: ScriptContext): Promise<void> {
   await ctx.say('bella', 'Hm?');
   await ctx.say('weng', 'Feliz ano novo. É o nosso segundo. E eu quero todos os outros.');
   await ctx.focus(17.65, 8.4, 2.0, 1800);
-  await ctx.kiss(false); // de branco: sem trocar pelos sprites do primeiro encontro
+  await ctx.kiss(); // de branco: olhos fechados com a roupa da virada
   await ctx.fadeOut(1600, '#fff3f6');
   await ctx.unfocus(10);
   ctx.letterbox(false);

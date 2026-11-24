@@ -78,6 +78,7 @@ export class GameScene extends Phaser.Scene {
     this.npcs = new Map();
     this.tempProps = new Map();
     this.umbrellas = new Map();
+    this.umbrellaSheet.clear();
     this.markers = [];
     this.scriptRunning = false;
     this.transitioning = false;
@@ -1324,8 +1325,32 @@ export class GameScene extends Phaser.Scene {
     UI.hud.setPrompt(target.label(), a.x - cam.worldView.x, a.y - cam.worldView.y, UI.touch.usingTouch);
   }
 
+  /** Quem está com a folha "segurando o guarda-chuva" (o guarda-chuva desenhado junto, na mão). */
+  private umbrellaSheet = new Set<string>();
+
+  /** Troca pra folha com guarda-chuva (ou volta pra roupa normal), mantendo a direção. */
+  private holdUmbrella(a: NPC | Player, on: boolean): void {
+    const base = a.charKey.replace(/-umb$/, '');
+    const key = on && this.textures.exists(`${base}-umb`) ? `${base}-umb` : base;
+    if (a.charKey === key) return;
+    const f = a.facing;
+    a.applySheet(key);
+    a.face(f);
+  }
+
   setUmbrella(who: string, mode: 'up' | 'hide' | 'off'): void {
     const cur = this.umbrellas.get(who);
+    const actor = this.findActor(who);
+    // com arte do personagem segurando o guarda-chuva: usa ela (nada de guarda-chuva solto flutuando)
+    if (mode === 'up' && actor && this.textures.exists(`${actor.charKey.replace(/-umb$/, '')}-umb`)) {
+      cur?.img.destroy();
+      cur?.shaft.destroy();
+      this.umbrellas.delete(who);
+      this.umbrellaSheet.add(who);
+      this.holdUmbrella(actor, true);
+      return;
+    }
+    if (this.umbrellaSheet.delete(who) && actor) this.holdUmbrella(actor, false);
     if (mode === 'off') {
       cur?.img.destroy();
       cur?.shaft.destroy();
@@ -1345,6 +1370,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   private updateUmbrellas(): void {
+    // se a roupa foi reaplicada (troca de roupa, quem lidera), devolve o guarda-chuva pra mão
+    for (const who of this.umbrellaSheet) {
+      const a = this.findActor(who);
+      if (a && !a.charKey.endsWith('-umb') && !a.sitting) this.holdUmbrella(a, true);
+    }
     for (const [who, u] of this.umbrellas) {
       const a = this.findActor(who);
       if (!a || !a.visible) {

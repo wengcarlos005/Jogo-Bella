@@ -674,8 +674,17 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       // olhos fechados
       b.face('right');
       w.face('left');
-      if (eyesClosed && scene.textures.exists('bella-kiss')) b.setTexture('bella-kiss');
-      if (eyesClosed && scene.textures.exists('weng-kiss')) w.setTexture('weng-kiss');
+      // olhos fechados com a MESMA roupa (bella-kiss = roupa do primeiro encontro; bella-kiss-branco...)
+      const kissKey = (a: typeof b | typeof w) => {
+        const who = a.charKey.startsWith('weng') ? 'weng' : 'bella';
+        const outfit = a.charKey.replace(/^(bella|weng)-/, '').replace(/-umb$/, '');
+        const k = outfit === 'casual' ? `${who}-kiss` : `${who}-kiss-${outfit}`;
+        return scene.textures.exists(k) ? k : null;
+      };
+      const kb = eyesClosed ? kissKey(b) : null;
+      const kw = eyesClosed ? kissKey(w) : null;
+      if (kb) b.setTexture(kb);
+      if (kw) w.setTexture(kw);
       // 3) o beijo: brilho rosa e um coração grande que pulsa atrás dos dois
       // por cima de tudo (o telhado do coreto fica por cima dos dois, mas não do coração)
       const glow = scene.add.image(midX, headY, 'fx-glow').setTint(0xff7aa8).setBlendMode(Phaser.BlendModes.ADD).setDepth(160_000).setAlpha(0).setDisplaySize(10, 10);

@@ -236,6 +236,36 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'A gente tá queimado, molhado e cheio de areia.');
     await ctx.say('weng', 'Melhor dia de praia da vida?');
     await ctx.say('bella', 'Melhor dia de praia da vida.');
+    // a chuva passa e o fim de tarde fica só pros dois, na beira d'água
+    await ctx.fadeOut(600);
+    ctx.weather('sunset');
+    ctx.follow('weng', false);
+    ctx.place('player', 16.4, 14.55, 'right');
+    ctx.place('weng', 17.8, 14.45, 'left');
+    ctx.place('pai-ro', 12.6, 13.6, 'right');
+    ctx.letterbox(true);
+    await ctx.frame(17.1, 14.5, 0);
+    await ctx.narrate('A chuva foi embora tão rápido quanto veio. O céu abriu laranja, e a beira do mar ficou só pra eles.');
+    await ctx.fadeIn(700);
+    await ctx.say('bella', 'Weng... eu sei que vocês não tavam falando do preço do mate.');
+    await ctx.say('weng', '...Ele disse que você é o tesouro dele.');
+    await ctx.emote('bella', 'heart');
+    await ctx.say('bella', 'E você respondeu o quê?');
+    await ctx.say('weng', 'Que você é o meu também.');
+    const fim = await ctx.choose('bella', '(Os dois de pé na areia molhada, o sol encostando no mar)', ['Abraçar ele bem forte', '"Então cuida bem, tá?"', 'Dar um beijo com gosto de sal']);
+    if (fim === 0) {
+      await ctx.emote('weng', 'heart');
+      await ctx.say('weng', 'Molhado, cheio de areia e queimado. O abraço mais bonito do dia.');
+    } else if (fim === 1) await ctx.say('weng', 'Todo dia. Com guarda-sol e tudo.');
+    else {
+      await ctx.emote('weng', 'heart');
+      await ctx.say('weng', 'Sal, protetor e batata frita. Aprovado.');
+    }
+    await ctx.say('pai-ro', '(lá do quiosque) Ô casal! O carro tá esperando! E alguém viu a minha torrada?');
+    await ctx.say('bella', '(rindo) Ele vai procurar aquela torrada até o Natal.');
+    ctx.letterbox(false);
+    await ctx.unfocus(500);
+    ctx.follow('weng', true);
     ctx.hearts('player', 12);
     await ctx.memory('mem-ro-02');
     ctx.objective(Q, 'petisco');
@@ -251,6 +281,7 @@ const scripts: Record<string, Script> = {
         'Frescobol, castelo de areia meio torto, onda gigante e um chapéu resgatado do mar.',
         'Uma conversa de sogro sobre "o preço do mate".',
         'E petisco no quiosque até a tempestade chegar.',
+        'Depois da chuva, o pôr do sol na beira do mar e um segredo de sogro contado baixinho.',
       ],
     });
     // a família do Weng chama os dois pra Niterói

@@ -7,10 +7,10 @@ export const NITEROI_QUESTS: QuestDef[] = [
     chapter: 'Capítulo 6',
     title: 'Do outro lado da baía',
     kind: 'principal',
-    description: 'Icaraí com a família da mãe da Lilian: chocolates, Caminho Niemeyer e churrasco no On Fire.',
+    description: 'Icaraí com a família da mãe da Lilian: a sabatina, os chocolates, o Caminho Niemeyer e o churrasco no On Fire.',
     objectives: [
       { id: 'chegar', text: 'Chegar no apê em Icaraí', hint: 'Entre no apartamento.' },
-      { id: 'oi', text: 'Dar oi pra família', hint: 'Siga as setas: mãe da Lilian, tio, Lilian e Vinicius, Vivian, Diego e Mingau.' },
+      { id: 'oi', text: 'Passar pela sabatina da família', hint: 'Todo mundo quer saber da história de vocês. Fale com qualquer um na sala.' },
       { id: 'chocolates', text: 'Os chocolates da mãe da Lilian', hint: 'Ela tá na cozinha, com uma cesta enorme.' },
       { id: 'varanda', text: 'Ver a vista da varanda', hint: 'A porta de vidro da varanda fica embaixo.' },
       { id: 'niemeyer', text: 'Passear no Caminho Niemeyer', hint: 'Saia pela porta de entrada.' },
