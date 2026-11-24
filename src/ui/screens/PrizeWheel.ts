@@ -296,15 +296,20 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
     const msg = h('div', { class: 'gp-bubble tr-msg pw-msg' });
     const btn = h('button', { class: 'btn primary pw-btn' }, 'Continuar') as HTMLButtonElement;
     const result = h('div', { class: 'pw-result' });
+    // roda grande à esquerda; à direita o que está acontecendo (prêmio, fala e botão), com espaço
+    const side = h(
+      'div',
+      { class: 'pw-side' },
+      h('div', { class: 'pw-sub' }, id === 'bolsa' ? 'Prêmio do fim do prólogo' : 'Prêmio do fim do capítulo 1'),
+      result,
+      h('div', { class: 'tr-talk pw-talk' }, face, msg),
+      h('div', { class: 'bg-actions tr-actions pw-actions' }, btn),
+    );
     const panel = h(
       'div',
       { class: 'bg-panel panel gp-panel tr-panel pw-panel' },
       h('div', { class: 'bg-title pw-title' }, 'Roleta da Sorte do Weng'),
-      h('div', { class: 'pw-sub' }, id === 'bolsa' ? 'Prêmio do fim do prólogo' : 'Prêmio do fim do capítulo 1'),
-      wheelBox,
-      result,
-      h('div', { class: 'tr-talk' }, face, msg),
-      h('div', { class: 'bg-actions tr-actions' }, btn),
+      h('div', { class: 'pw-body' }, wheelBox, side),
     );
     const screen = h('div', { class: 'screen bg-screen pw-screen' }, panel);
     parent.append(screen);
@@ -352,8 +357,8 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
       btn.classList.add('pw-hide');
     };
     const show = (text: string, good = false) => {
-      result.textContent = text;
-      result.className = `pw-result on${good ? ' good' : ''}`;
+      result.textContent = text || 'Qual vai ser o prêmio?';
+      result.className = `pw-result on${good ? ' good' : ''}${text ? '' : ' idle'}`;
     };
 
     // ---------- giro ----------
@@ -502,11 +507,10 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
         { class: 'pw-reveal' },
         h('div', { class: 'pw-kicker' }, 'É DE VERDADE!'),
         h('div', { class: 'pw-stage' }, box, h('div', { class: 'pw-polaroid' }, photo)),
-        h('div', { class: 'pw-name' }, cfg.prize.title),
         h('div', { class: 'pw-text' }, cfg.prize.text),
       );
       wheelBox.replaceWith(reveal);
-      result.remove();
+      show(cfg.prize.title, true);
       requestAnimationFrame(() => reveal.classList.add('show'));
       await wait(900);
       box.classList.add('open');
