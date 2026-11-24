@@ -4384,3 +4384,10 @@ body.pad .pad-only { display: flex !important; }
 /* a pata vem lá da borda do painel (o braço some fora da tela, sem corte aparecendo) */
 .pw-paw.art { left: 84%; right: auto; width: 160%; top: 34%; transform: translateX(130%); }
 .pw-paw.art.in { transform: translateX(0) rotate(-6deg); }
+/* travessia: o siri aparece de verdade (antes a pedra dele era igual à de areia segura) */
+.tv2-cell.siri { background:
+    radial-gradient(circle at 26% 70%, rgba(40, 130, 180, .9) 0 5%, transparent 6%),
+    radial-gradient(circle at 76% 34%, rgba(40, 130, 180, .9) 0 4%, transparent 5%),
+    radial-gradient(ellipse at 50% 45%, #f0d6a0 0, #dcb87a 55%, #c39a5c 78%, rgba(120, 200, 210, 0) 100%) !important; }
+.tv2-crab { position: absolute; left: 50%; top: 46%; width: 58%; transform: translate(-50%, -50%); filter: drop-shadow(0 2px 0 rgba(90, 30, 10, .35)); animation: tvCrab 1.4s ease-in-out infinite; }
+@keyframes tvCrab { 0%, 100% { transform: translate(-50%, -50%); } 25% { transform: translate(-62%, -50%) rotate(-6deg); } 75% { transform: translate(-38%, -50%) rotate(6deg); } }

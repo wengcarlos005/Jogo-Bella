@@ -275,6 +275,24 @@ export function playGatinhoGame(parent: HTMLElement): Promise<MiniResult & { pla
  * bolhinhas = siri. O medo da Bella sobe enquanto ela pensa; segure Espaço pra apertar a mão do Weng.
  */
 type Tile = 'areia' | 'fundo' | 'concha' | 'siri';
+/** Siri meio enterrado (antes as bolhinhas brancas sumiam na areia clara e o siri parecia areia segura). */
+const CRAB =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 44" shape-rendering="crispEdges">
+      <g stroke="#5a1a0a" stroke-width="2.4" stroke-linejoin="round">
+        <path d="M14 28 L4 20 M14 32 L3 30 M50 28 L60 20 M50 32 L61 30" fill="none"/>
+        <path d="M10 14 C2 12 2 2 10 3 C8 6 9 9 13 9 Z" fill="#ff6a3d"/>
+        <path d="M54 14 C62 12 62 2 54 3 C56 6 55 9 51 9 Z" fill="#ff6a3d"/>
+        <path d="M12 14 L18 22 M52 14 L46 22" fill="none"/>
+        <ellipse cx="32" cy="30" rx="20" ry="12" fill="#ff6a3d"/>
+        <path d="M24 18 L24 11 M40 18 L40 11" fill="none"/>
+        <circle cx="24" cy="10" r="4" fill="#fff"/><circle cx="40" cy="10" r="4" fill="#fff"/>
+      </g>
+      <circle cx="25" cy="10" r="2" fill="#2a0a05"/><circle cx="41" cy="10" r="2" fill="#2a0a05"/>
+      <ellipse cx="26" cy="26" rx="6" ry="3" fill="#ffb08a"/>
+    </svg>`,
+  );
 export function playTravessiaGame(parent: HTMLElement): Promise<MiniResult & { lives: number }> {
   return new Promise((resolve) => {
     const ui = shell(parent, 'tv2', 'Travessia até a ilha');
@@ -299,7 +317,12 @@ export function playTravessiaGame(parent: HTMLElement): Promise<MiniResult & { l
       row.map((t, c) => {
         // manchinha de areia com formato próprio (cada uma diferente), concha de verdade brilhando, bolhas de siri
         const rad = `${40 + Math.random() * 20}% ${40 + Math.random() * 20}% ${40 + Math.random() * 20}% ${40 + Math.random() * 20}% / ${45 + Math.random() * 15}% ${45 + Math.random() * 15}% ${45 + Math.random() * 15}% ${45 + Math.random() * 15}%`;
-        const inner = t === 'concha' ? h('img', { class: 'tv2-shell', src: textureURL('it:concha-ilha') ?? '', alt: '' }) : h('i', {});
+        const inner =
+          t === 'concha'
+            ? h('img', { class: 'tv2-shell', src: textureURL('it:concha-ilha') ?? '', alt: '' })
+            : t === 'siri'
+              ? h('img', { class: 'tv2-crab', src: CRAB, alt: '' })
+              : h('i', {});
         const el = h('div', { class: `tv2-cell ${t}`, style: `grid-row:${ROWS - r};grid-column:${c + 1};border-radius:${rad}` }, inner);
         board.append(el);
         return el;
