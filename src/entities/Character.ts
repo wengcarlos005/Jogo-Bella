@@ -166,6 +166,11 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
       });
     } else {
       this.face(dir);
+      // de costas o Weng também fica menor que a Bella (o cabelo dela ocupa mais): mesmo ajuste da pose de frente
+      if (who === 'weng') {
+        this.sitScale = this.scaleX;
+        this.setScale(this.scaleX * 1.14);
+      }
       const fh = this.frame.height;
       const fw = this.frame.width;
       const legs = fh * this.headRatio * 0.3;
@@ -188,11 +193,11 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     if (this.standKey) {
       this.setTexture(this.standKey, 0);
       this.standKey = null;
-      if (this.sitScale !== null) {
-        this.setScale(this.sitScale);
-        this.sitScale = null;
-      }
       this.face(this.facing);
+    }
+    if (this.sitScale !== null) {
+      this.setScale(this.sitScale);
+      this.sitScale = null;
     }
     this.setCrop();
   }
