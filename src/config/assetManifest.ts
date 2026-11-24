@@ -43,8 +43,8 @@ export const ASSETS: AssetEntry[] = [
   char('CHAR-017', 'bella-praia', 'characters/bella-praia.png', 136),
   char('CHAR-018', 'bella-branco', 'characters/bella-branco.png', 136),
   // segurando o guarda-chuva (chuva do primeiro encontro): quadros mais altos, a cobertura cabe em cima
-  { id: 'CHAR-019', key: 'bella-casual-umb', file: 'assets/characters/bella-casual-umb.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 184 },
-  { id: 'CHAR-020', key: 'weng-casual-umb', file: 'assets/characters/weng-casual-umb.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 184 },
+  { id: 'CHAR-019', key: 'bella-casual-umb', file: 'assets/characters/bella-casual-umb.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 192 },
+  { id: 'CHAR-020', key: 'weng-casual-umb', file: 'assets/characters/weng-casual-umb.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 192 },
   // Sentados (2 quadros: olhos abertos / fechados)
   { id: 'CHAR-031', key: 'bella-sit', file: 'assets/characters/bella-sit.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 136 },
   { id: 'CHAR-032', key: 'weng-sit', file: 'assets/characters/weng-sit.png', kind: 'spritesheet', frameWidth: 136, frameHeight: 136 },
@@ -200,9 +200,8 @@ export const ASSETS: AssetEntry[] = [
   ),
   { id: 'CHAR-K1', key: 'bella-kiss', file: 'assets/characters/bella-kiss.png', kind: 'image' },
   { id: 'CHAR-K2', key: 'weng-kiss', file: 'assets/characters/weng-kiss.png', kind: 'image' },
-  // olhos fechados com a roupa branca (virada em Cabo Frio): scripts/make-kiss-outfit.py
-  { id: 'CHAR-K3', key: 'bella-kiss-branco', file: 'assets/characters/bella-kiss-branco.png', kind: 'image' },
-  { id: 'CHAR-K4', key: 'weng-kiss-branco', file: 'assets/characters/weng-kiss-branco.png', kind: 'image' },
+  // olhos fechados com a roupa branca (virada em Cabo Frio): entram quando a arte chegar
+  ...(['bella', 'weng'] as const).map((w, i): AssetEntry => ({ id: `CHAR-K${3 + i}`, key: `${w}-kiss-branco`, file: `assets/characters/${w}-kiss-branco.png`, kind: 'image' })),
   { id: 'OBJ-040', key: 'rua-carro-vermelho', file: 'assets/objects/rua-carro-vermelho.png', kind: 'image' },
   { id: 'OBJ-030', key: 'prop-umbrella-stand', file: 'assets/objects/umbrella-stand.png', kind: 'image' },
   { id: 'OBJ-031', key: 'prop-umbrella-stand-empty', file: 'assets/objects/umbrella-stand-empty.png', kind: 'image' },
