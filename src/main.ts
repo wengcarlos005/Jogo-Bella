@@ -21,7 +21,7 @@ import { SaveSystem, SettingsStore } from './systems/SaveSystem';
 import { AudioSystem } from './systems/AudioSystem';
 import { UI } from './ui/UIManager';
 import type { SaveData } from './core/types';
-import { initGamepad, setDevice, setPadStyle, glyph } from '@/systems/Gamepad';
+import { initGamepad, setDevice, setPadStyle, glyph, needsSetup } from '@/systems/Gamepad';
 import { initGlyphs } from '@/ui/glyphs';
 import { MAPS } from '@/regions';
 import { openPadSetup } from '@/ui/screens/PadSetup';
@@ -82,6 +82,8 @@ UI.init(
       UI.title.close();
       await UI.chooseDevice();
       await UI.letter();
+      // jogando de controle e ele não é reconhecido pelo navegador: configura uma vez, agora (depois da carta)
+      if (SettingsStore.data.device === 'controle' && needsSetup()) await openPadSetup(document.getElementById('ui') ?? document.body);
       startGame({ mapId: GameState.data.mapId, spawn: 'start' });
     },
     load: (data: SaveData) => {
@@ -104,8 +106,8 @@ setPadStyle(SettingsStore.data.padStyle ?? 'auto');
 initGlyphs();
 initGamepad(
   () => UI.toasts.show(`Controle conectado: ${glyph('confirm')} confirma · ${glyph('back')} volta · ${glyph('run')} corre · ${glyph('menu')} menu`),
-  // controle que o navegador não reconhece (ex.: "estilo PS5" com SELECT / MODE / START): configura uma vez
-  () => void openPadSetup(document.getElementById('ui') ?? document.body),
+  // controle que o navegador não reconhece: não interrompe o título; a configuração vem depois da carta (ou em Opções)
+  () => undefined,
 );
 
 // Salva ao fechar/ocultar a aba (celular).

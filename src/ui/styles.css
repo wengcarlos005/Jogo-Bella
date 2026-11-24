@@ -4301,3 +4301,4 @@ body.pad .pad-only { display: flex !important; }
 .end-fim-s, .end-fim-d, .end-miss { text-shadow: 0 2px 0 rgba(0, 0, 0, .6); }
 .end-miss { opacity: 1 !important; }
 .end-stats div { background: rgba(42, 12, 36, .85) !important; border-color: #f2c14e !important; }
+.ps-seen { min-height: 1.1em; font-size: 12px; color: #8a6a5a; font-weight: 700; }

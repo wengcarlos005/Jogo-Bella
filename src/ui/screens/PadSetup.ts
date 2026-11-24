@@ -2,7 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { SettingsStore } from '@/systems/SaveSystem';
-import { currentPad, saveCustomMap, setCalibrating, setDevice, glyph, type Bind, type PadAction, type PadMap } from '@/systems/Gamepad';
+import { allPads, bindActive, saveCustomMap, setCalibrating, setDevice, glyph, type Bind, type PadAction, type PadMap } from '@/systems/Gamepad';
 
 /**
  * Configurar controle: cada fabricante numera os botões de um jeito (controles "estilo PS5" genéricos,
@@ -59,17 +59,21 @@ export function openPadSetup(root: HTMLElement): Promise<boolean> {
 
     const map: PadMap = [];
     let step = 0;
-    let waitRelease = true; // começa esperando soltar tudo (o botão que abriu esta tela)
-    let base: { b: boolean[]; a: number[] } | null = null;
-    let rest: { b: boolean[]; a: number[] } | null = null;
     let raf = 0;
+    let padId = '';
+    /** por controle: estado anterior (pra pegar só o APERTO, não o que já estava segurado) e o repouso dos eixos */
+    const prevB = new Map<string, boolean[]>();
+    const restA = new Map<string, number[]>();
+    let holdUntilRelease: { id: string; bind: Bind } | null = null;
+    const seen = h('div', { class: 'ps-seen' });
+    box.insertBefore(seen, dots);
 
     const paint = () => {
       const [, sym, txt] = STEPS[step];
       big.textContent = sym;
       what.textContent = `Aperte ${txt}`;
       warn.textContent = '';
-      dots.querySelectorAll('i').forEach((d, i) => d.className = i < step ? 'ok' : i === step ? 'now' : '');
+      dots.querySelectorAll('i').forEach((d, i) => (d.className = i < step ? 'ok' : i === step ? 'now' : ''));
       big.classList.remove('pop');
       void big.offsetWidth;
       big.classList.add('pop');
@@ -81,50 +85,51 @@ export function openPadSetup(root: HTMLElement): Promise<boolean> {
         AudioSystem.play('confirm');
       } else AudioSystem.play('blip');
       step++;
-      waitRelease = true;
-      base = null;
       if (step >= STEPS.length) return finish(true);
       paint();
     };
-    const snapshot = (pad: Gamepad) => ({ b: pad.buttons.map((x) => x.pressed || x.value > 0.5), a: [...pad.axes] });
     const tick = () => {
       raf = requestAnimationFrame(tick);
-      const pad = currentPad();
-      if (!pad) {
-        warn.textContent = 'Nenhum controle conectado. Aperte qualquer botão nele.';
+      const pads = allPads();
+      if (!pads.length) {
+        warn.textContent = 'Nenhum controle encontrado. Aperte qualquer botão nele (o navegador só "vê" o controle depois do primeiro aperto).';
         return;
       }
-      const snap = snapshot(pad);
-      // "em repouso": lido uma vez, no primeiro instante sem nenhum botão apertado
-      if (!rest) {
-        if (!snap.b.some(Boolean)) rest = snap;
-        return;
+      // esperando soltar o botão que acabou de ser gravado
+      if (holdUntilRelease) {
+        const p = pads.find((x) => x.id === holdUntilRelease!.id);
+        if (!p || !bindActive(p, holdUntilRelease.bind)) holdUntilRelease = null;
+        else return;
       }
-      base = rest;
-      const still = !snap.b.some(Boolean) && snap.a.every((v, i) => Math.abs(v - (rest?.a[i] ?? 0)) < 0.25);
-      if (waitRelease) {
-        // só pede o próximo depois de soltar tudo (botão e direcional de volta ao repouso)
-        if (still) waitRelease = false;
-        return;
-      }
-      // botão novo?
-      const bi = snap.b.findIndex((on, i) => on && !base?.b[i]);
-      let bind: Bind | null = bi >= 0 ? { b: bi } : null;
-      // eixo que se mexeu? (direcional de eixo, gatilho ou analógico)
-      if (!bind) {
-        const ai = snap.a.findIndex((v, i) => Math.abs(v - (base?.a[i] ?? 0)) > 0.5);
-        if (ai >= 0) {
-          const v = snap.a[ai];
-          bind = { a: ai, v: Math.abs(v) >= 0.9 ? Math.sign(v) : Math.round(v * 1000) / 1000 };
+      for (const pad of pads) {
+        const b = pad.buttons.map((x) => x.pressed || x.value > 0.5);
+        const pb = prevB.get(pad.id) ?? b.map(() => true); // 1º quadro: não conta nada como aperto
+        prevB.set(pad.id, b);
+        if (!restA.has(pad.id)) restA.set(pad.id, [...pad.axes]);
+        const ra = restA.get(pad.id)!;
+        let bind: Bind | null = null;
+        const bi = b.findIndex((on, i) => on && !pb[i]);
+        if (bi >= 0) bind = { b: bi };
+        if (!bind) {
+          const ai = pad.axes.findIndex((v, i) => Math.abs(v - (ra[i] ?? 0)) > 0.5);
+          if (ai >= 0) {
+            const v = pad.axes[ai];
+            bind = { a: ai, v: Math.abs(v) >= 0.9 ? Math.sign(v) : Math.round(v * 1000) / 1000 };
+          }
         }
-      }
-      if (!bind) return;
-      if (used(bind)) {
-        warn.textContent = 'Esse botão já foi usado. Aperte outro.';
-        waitRelease = true;
+        if (!bind) continue;
+        // mostra o que chegou (ajuda a saber que o controle está sendo lido)
+        seen.textContent = `Recebido: ${'b' in bind ? `botão ${bind.b}` : `eixo ${bind.a}`} · ${pad.id.slice(0, 40)}`;
+        holdUntilRelease = { id: pad.id, bind };
+        if (padId && pad.id !== padId) continue; // outro controle (ex.: o "fantasma"): ignora
+        if (used(bind)) {
+          warn.textContent = 'Esse botão já foi usado. Aperte outro.';
+          continue;
+        }
+        padId = pad.id;
+        next(bind);
         return;
       }
-      next(bind);
     };
     const onKey = (e: KeyboardEvent) => {
       if (!e.isTrusted) return;
@@ -135,9 +140,8 @@ export function openPadSetup(root: HTMLElement): Promise<boolean> {
     function finish(ok: boolean): void {
       cancelAnimationFrame(raf);
       window.removeEventListener('keydown', onKey, true);
-      const pad = currentPad();
-      if (ok && pad && map.length) {
-        saveCustomMap(pad.id, map);
+      if (ok && padId && map.length) {
+        saveCustomMap(padId, map);
         SettingsStore.data.device = 'controle';
         SettingsStore.save();
         setDevice('controle');

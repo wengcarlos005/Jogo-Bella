@@ -47,6 +47,15 @@ const STANDARD: PadMap = [
   ['album', { b: 8 }], ['menu', { b: 9 }],
   ['up', { b: 12 }], ['down', { b: 13 }], ['left', { b: 14 }], ['right', { b: 15 }],
 ];
+/** Controle não reconhecido e ainda sem configuração: qualquer botão da frente confirma, START abre o menu,
+ *  direcional de eixo ("chapéu" no eixo 9) anda. Dá pra navegar no título e na carta antes de configurar. */
+const FORGIVING: PadMap = [
+  ['confirm', { b: 0 }], ['confirm', { b: 1 }], ['confirm', { b: 2 }], ['confirm', { b: 3 }],
+  ['tabPrev', { b: 4 }], ['tabNext', { b: 5 }], ['run', { b: 6 }], ['run', { b: 7 }],
+  ['album', { b: 8 }], ['menu', { b: 9 }],
+  ['up', { b: 12 }], ['down', { b: 13 }], ['left', { b: 14 }], ['right', { b: 15 }],
+  ['up', { a: 9, v: -1 }], ['right', { a: 9, v: -0.4286 }], ['down', { a: 9, v: 0.1429 }], ['left', { a: 9, v: 0.7143 }],
+];
 const DEAD = 0.45;
 
 /** Mapas configurados pela Bella (Opções › Configurar controle), por modelo de controle. */
@@ -70,8 +79,19 @@ export function saveCustomMap(padId: string, map: PadMap): void {
 export function hasCustomMap(padId: string): boolean {
   return !!customMaps[padId];
 }
+/** Todos os controles conectados (controles genéricos às vezes aparecem duas vezes, ou vem um "fantasma"). */
+export function allPads(): Gamepad[] {
+  return Array.from(navigator.getGamepads?.() ?? []).filter((p): p is Gamepad => !!p && p.connected);
+}
+/** O controle que ela está usando: o que mandou sinal por último. */
+let lastActiveId = '';
 export function currentPad(): Gamepad | null {
-  return Array.from(navigator.getGamepads?.() ?? []).find((p): p is Gamepad => !!p && p.connected) ?? null;
+  const pads = allPads();
+  return pads.find((p) => p.id === lastActiveId) ?? pads.sort((x, y) => y.timestamp - x.timestamp)[0] ?? null;
+}
+/** Controle desconhecido (ordem de botões própria) ainda sem configuração? */
+export function needsSetup(): boolean {
+  return allPads().some((p) => p.mapping !== 'standard' && !customMaps[p.id]);
 }
 /** Enquanto a tela de configurar está aberta, o controle não aperta tecla nenhuma. */
 let calibrating = false;
@@ -117,27 +137,29 @@ function release(k: Key): void {
 function poll(): void {
   raf = requestAnimationFrame(poll);
   if (calibrating) return;
-  const pad = currentPad();
-  if (!pad) return;
-  const map = customMaps[pad.id] ?? STANDARD;
   const now: Record<string, boolean> = {};
   const keyOf: Record<string, Key> = {};
-  map.forEach(([action, bind], i) => {
-    const id = `${i}:${action}`;
-    now[id] = bindActive(pad, bind);
-    keyOf[id] = ACTION_KEY[action];
+  // lê TODOS os controles conectados (o que recebe os botões pode não ser o primeiro da lista)
+  allPads().forEach((pad, pi) => {
+    const map = customMaps[pad.id] ?? (pad.mapping === 'standard' ? STANDARD : FORGIVING);
+    let any = false;
+    map.forEach(([action, bind], i) => {
+      const id = `${pi}:${i}:${action}`;
+      now[id] = bindActive(pad, bind);
+      keyOf[id] = ACTION_KEY[action];
+      if (now[id]) any = true;
+    });
+    // analógico esquerdo sempre anda (setas)
+    const ax = pad.axes[0] ?? 0;
+    const ay = pad.axes[1] ?? 0;
+    const st: [string, boolean, Key][] = [['l', ax < -DEAD, ACTION_KEY.left], ['r', ax > DEAD, ACTION_KEY.right], ['u', ay < -DEAD, ACTION_KEY.up], ['d', ay > DEAD, ACTION_KEY.down]];
+    for (const [k, on, key] of st) {
+      now[`${pi}:s:${k}`] = on;
+      keyOf[`${pi}:s:${k}`] = key;
+      if (on) any = true;
+    }
+    if (any) lastActiveId = pad.id;
   });
-  // analógico esquerdo sempre anda (setas)
-  const ax = pad.axes[0] ?? 0;
-  const ay = pad.axes[1] ?? 0;
-  now['s:l'] = ax < -DEAD;
-  now['s:r'] = ax > DEAD;
-  now['s:u'] = ay < -DEAD;
-  now['s:d'] = ay > DEAD;
-  keyOf['s:l'] = ACTION_KEY.left;
-  keyOf['s:r'] = ACTION_KEY.right;
-  keyOf['s:u'] = ACTION_KEY.up;
-  keyOf['s:d'] = ACTION_KEY.down;
   for (const id of Object.keys(now)) {
     if (now[id] === !!prev[id]) continue;
     if (now[id]) {
@@ -255,8 +277,9 @@ export function initGamepad(onConnect?: (name: string) => void, onUnknown?: (pad
     if (!raf) poll();
     const pad = (e as GamepadEvent).gamepad;
     onConnect?.(pad.id);
-    // controle que o navegador não reconhece (ordem de botões própria): pede pra configurar uma vez
+    // controle que o navegador não reconhece: só avisa (a configuração é oferecida depois da carta, ou em Opções)
     if (pad.mapping !== 'standard' && !hasCustomMap(pad.id)) onUnknown?.(pad);
+    if (!raf) poll();
   });
   window.addEventListener('gamepaddisconnected', () => {
     for (const [code] of holding) send('keyup', { code, key: code });
