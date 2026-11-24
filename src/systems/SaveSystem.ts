@@ -98,6 +98,7 @@ const DEFAULT_SETTINGS: Settings = {
   textSpeed: 'normal',
   touchControls: 'auto',
   device: 'pc',
+  padStyle: 'auto',
 };
 
 /** Preferências pequenas ficam no localStorage. */

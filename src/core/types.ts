@@ -39,6 +39,8 @@ export interface Settings {
   touchControls: 'auto' | 'sempre' | 'nunca';
   /** Como ela joga: 'pc' (teclado) ou 'controle' (os textos mostram ✕ ◯ □ △). */
   device: 'pc' | 'controle';
+  /** Nomes dos botões: automático, Xbox/genérico (A B X Y) ou PlayStation (✕ ◯ □ △). */
+  padStyle: 'auto' | 'xbox' | 'ps';
 }
 
 export interface SaveData {

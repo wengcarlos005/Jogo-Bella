@@ -7,6 +7,7 @@ import { REGIONS } from '@/data/regions';
 import { PERSONAL } from '@/data/personal';
 import { textureURL } from '../textures';
 import { assetURL } from '@/utils/asset';
+import { glyph } from '@/systems/Gamepad';
 
 /**
  * O final do jogo (depois da virada em Cabo Frio):
@@ -23,7 +24,7 @@ export function playEnding(root: HTMLElement): Promise<'title' | 'stay'> {
     const screen = h('div', { class: 'screen opaque end-screen' });
     const stars = h('div', { class: 'end-stars' }, ...Array.from({ length: 40 }, (_, i) => h('i', { style: `left:${(i * 37) % 100}%;top:${(i * 53) % 100}%;animation-delay:${-(i % 9) * 0.4}s` })));
     const stage = h('div', { class: 'end-stage' });
-    const hint = h('div', { class: 'end-hint' }, h('b', { class: 'pad-glyph' }, '✕'), h('span', { class: 'kb-only' }, ' / Espaço'), ' ▸');
+    const hint = h('div', { class: 'end-hint' }, h('b', { class: 'pad-glyph' }, glyph('confirm')), h('span', { class: 'kb-only' }, ' / Espaço'), ' ▸');
     screen.append(stars, stage, hint);
     root.append(screen);
     InputSystem.push('chapter');

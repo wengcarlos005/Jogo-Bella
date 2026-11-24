@@ -21,7 +21,7 @@ import { SaveSystem, SettingsStore } from './systems/SaveSystem';
 import { AudioSystem } from './systems/AudioSystem';
 import { UI } from './ui/UIManager';
 import type { SaveData } from './core/types';
-import { initGamepad, setDevice } from '@/systems/Gamepad';
+import { initGamepad, setDevice, setPadStyle, glyph } from '@/systems/Gamepad';
 import { initGlyphs } from '@/ui/glyphs';
 import { MAPS } from '@/regions';
 import { openPadSetup } from '@/ui/screens/PadSetup';
@@ -99,10 +99,11 @@ UI.init(
 
 // Controle de videogame (PlayStation / Xbox): cada botão aperta a tecla equivalente.
 setDevice(SettingsStore.data.device);
+setPadStyle(SettingsStore.data.padStyle ?? 'auto');
 // corações de texto viram o coração desenhado do jogo
 initGlyphs();
 initGamepad(
-  () => UI.toasts.show('Controle conectado: ✕ confirma · ◯ volta · □ corre · OPTIONS menu'),
+  () => UI.toasts.show(`Controle conectado: ${glyph('confirm')} confirma · ${glyph('back')} volta · ${glyph('run')} corre · ${glyph('menu')} menu`),
   // controle que o navegador não reconhece (ex.: "estilo PS5" com SELECT / MODE / START): configura uma vez
   () => void openPadSetup(document.getElementById('ui') ?? document.body),
 );

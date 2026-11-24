@@ -5,6 +5,7 @@ import { PERSONAL } from '@/data/personal';
 import { typewrite } from '../typewriter';
 import { textureURL } from '../textures';
 import { assetURL } from '@/utils/asset';
+import { glyph } from '@/systems/Gamepad';
 
 /**
  * A carta do Weng, que abre o jogo (Novo jogo, antes do prólogo).
@@ -35,7 +36,7 @@ export function playLetter(root: HTMLElement): Promise<void> {
     const fb = textureURL('portrait-weng');
     const body = h('div', { class: 'lt-body' });
     const paper = h('div', { class: 'lt-paper off' }, body);
-    const hint = h('div', { class: 'end-hint' }, h('b', { class: 'pad-glyph' }, '✕'), h('span', { class: 'kb-only' }, ' / Espaço'), ' ▸');
+    const hint = h('div', { class: 'end-hint' }, h('b', { class: 'pad-glyph' }, glyph('confirm')), h('span', { class: 'kb-only' }, ' / Espaço'), ' ▸');
     const btn = h('button', { class: 'btn primary lt-go off' }, 'Continuar');
     const col = h('div', { class: 'lt-col' }, paper, btn);
     const screen = h('div', { class: 'screen opaque end-screen lt-screen' }, stars, env, col, hint);

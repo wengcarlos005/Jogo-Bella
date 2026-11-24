@@ -148,8 +148,32 @@ function poll(): void {
   prev = now;
 }
 
-// ---------------------------------------------------------------- textos das teclas
-const LABEL: Record<string, string> = { Espaço: '✕', Enter: '✕', Esc: 'OPTIONS', Shift: '□', setas: 'direcional' };
+// ---------------------------------------------------------------- nomes dos botões (PlayStation ou Xbox)
+/** 'xbox' = A B X Y / START / SELECT (Xbox e genéricos); 'ps' = ✕ ◯ □ △ / OPTIONS / SHARE. */
+export type PadStyle = 'auto' | 'ps' | 'xbox';
+let styleSetting: PadStyle = 'auto';
+const GLYPHS = {
+  ps: { confirm: '✕', back: '◯', run: '□', bag: '△', menu: 'OPTIONS', album: 'SHARE', tabs: 'L1 / R1' },
+  xbox: { confirm: 'A', back: 'B', run: 'X', bag: 'Y', menu: 'START', album: 'SELECT', tabs: 'L1 / R1' },
+};
+export type GlyphKey = keyof (typeof GLYPHS)['ps'];
+function resolvedStyle(): 'ps' | 'xbox' {
+  if (styleSetting !== 'auto') return styleSetting;
+  const id = currentPad()?.id ?? '';
+  return /054c|sony|dualsense|dualshock|playstation|ps4|ps5/i.test(id) ? 'ps' : 'xbox';
+}
+/** Nome do botão no controle que ela tem na mão. */
+export function glyph(k: GlyphKey): string {
+  return GLYPHS[resolvedStyle()][k];
+}
+export function setPadStyle(st: PadStyle): void {
+  styleSetting = st;
+  if (padMode) {
+    restore();
+    relabel(document.body);
+  }
+}
+const label = (): Record<string, string> => ({ Espaço: glyph('confirm'), Enter: glyph('confirm'), Esc: glyph('menu'), Shift: glyph('run'), setas: 'direcional' });
 const original = new WeakMap<Node, string>();
 const hidden = new Set<HTMLElement>();
 
@@ -159,7 +183,7 @@ function swapText(node: Text): void {
   const t = node.nodeValue ?? '';
   if (!/Espaço|\bShift\b|\bEsc\b/.test(t)) return;
   if (!original.has(node)) original.set(node, t);
-  node.nodeValue = t.replace(/Espaço/g, '✕').replace(/\bShift\b/g, '□').replace(/\bEsc\b/g, 'OPTIONS');
+  node.nodeValue = t.replace(/Espaço/g, glyph('confirm')).replace(/\bShift\b/g, glyph('run')).replace(/\bEsc\b/g, glyph('menu'));
 }
 function relabel(root: ParentNode): void {
   if (!padMode) return;
@@ -179,7 +203,7 @@ function relabel(root: ParentNode): void {
       }
       return;
     }
-    const to = LABEL[t];
+    const to = label()[t];
     if (to) {
       k.dataset.kb = t;
       k.textContent = to;

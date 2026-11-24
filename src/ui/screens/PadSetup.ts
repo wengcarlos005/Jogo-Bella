@@ -2,7 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { SettingsStore } from '@/systems/SaveSystem';
-import { currentPad, saveCustomMap, setCalibrating, setDevice, type Bind, type PadAction, type PadMap } from '@/systems/Gamepad';
+import { currentPad, saveCustomMap, setCalibrating, setDevice, glyph, type Bind, type PadAction, type PadMap } from '@/systems/Gamepad';
 
 /**
  * Configurar controle: cada fabricante numera os botões de um jeito (controles "estilo PS5" genéricos,
@@ -10,13 +10,14 @@ import { currentPad, saveCustomMap, setCalibrating, setDevice, type Bind, type P
  * Abre sozinho quando um controle desconhecido conecta, e fica em Opções › Configurar controle.
  * Direcional de eixo (o "chapéu" dos controles genéricos, ou com MODE ligado) também vale.
  */
-const STEPS: [PadAction, string, string][] = [
-  ['confirm', '✕', 'o botão de CONFIRMAR (✕, embaixo)'],
-  ['back', '◯', 'o botão de VOLTAR (◯, direita)'],
-  ['run', '□', 'o botão de CORRER (□, esquerda)'],
-  ['bag', '△', 'o botão da MOCHILA (△, em cima)'],
-  ['menu', 'START', 'o START / OPTIONS (abre o menu)'],
-  ['album', 'SELECT', 'o SELECT / SHARE (abre o Álbum)'],
+/** Um botão por vez, pelo NOME que está escrito no controle dela (A B X Y ou ✕ ◯ □ △). */
+const steps = (): [PadAction, string, string][] => [
+  ['confirm', glyph('confirm'), `o ${glyph('confirm')} (confirmar / conversar)`],
+  ['back', glyph('back'), `o ${glyph('back')} (voltar)`],
+  ['run', glyph('run'), `o ${glyph('run')} (correr)`],
+  ['bag', glyph('bag'), `o ${glyph('bag')} (mochila)`],
+  ['menu', glyph('menu'), `o ${glyph('menu')} (menu)`],
+  ['album', glyph('album'), `o ${glyph('album')} (álbum)`],
   ['tabPrev', 'L1', 'o L1 (aba anterior no menu)'],
   ['tabNext', 'R1', 'o R1 (próxima aba no menu)'],
   ['run', 'R2', 'o R2 (também corre)'],
@@ -31,6 +32,7 @@ let open = false;
 export function openPadSetup(root: HTMLElement): Promise<boolean> {
   if (open) return Promise.resolve(false);
   open = true;
+  const STEPS = steps();
   return new Promise((resolve) => {
     const big = h('div', { class: 'ps-big' });
     const what = h('div', { class: 'ps-what' });

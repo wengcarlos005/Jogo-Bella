@@ -9,7 +9,7 @@ import { SaveSystem, SettingsStore } from '@/systems/SaveSystem';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { EventBus } from '@/core/EventBus';
-import { setDevice } from '@/systems/Gamepad';
+import { setDevice, setPadStyle, glyph } from '@/systems/Gamepad';
 import { CATEGORY_LABEL } from '@/data/items';
 import { MEMORY_GOAL } from '@/data/memories';
 import { REGIONS } from '@/data/regions';
@@ -78,7 +78,7 @@ export class PauseMenu {
     }
     tabs.append(h('button', { class: 'tab close', onclick: () => this.close(), 'aria-label': 'Fechar' }, '✕'));
     // no modo controle: lembrete dos botões no pé do menu
-    const padHint = h('div', { class: 'pm-padhint pad-only no-swap' }, h('span', {}, 'L1 / R1 abas'), h('span', {}, 'Direcional anda'), h('span', {}, '✕ escolhe'), h('span', {}, '◯ volta'));
+    const padHint = h('div', { class: 'pm-padhint pad-only no-swap' }, h('span', {}, 'L1 / R1 abas'), h('span', {}, 'Direcional anda'), h('span', {}, `${glyph('confirm')} escolhe`), h('span', {}, `${glyph('back')} volta`));
     this.el = h('div', { class: 'screen pm-screen' }, h('div', { class: 'pause panel pm' }, tabs, this.body, padHint));
     this.el.addEventListener('pointerdown', (e) => {
       if (e.target === this.el) this.close();
@@ -448,7 +448,7 @@ export class PauseMenu {
       input.addEventListener('change', () => AudioSystem.play('blip'));
       return h('div', { class: 'pm-opt' }, h('span', { class: 'lbl' }, `${icon} ${label}`), input, val);
     };
-    const seg = <K extends 'textSpeed' | 'touchControls' | 'device'>(label: string, icon: string, key: K, opts: [string, string][]) => {
+    const seg = <K extends 'textSpeed' | 'touchControls' | 'device' | 'padStyle'>(label: string, icon: string, key: K, opts: [string, string][]) => {
       const wrap = h('div', { class: 'pm-seg' });
       const draw = () =>
         wrap.replaceChildren(
@@ -459,6 +459,8 @@ export class PauseMenu {
                 (s as unknown as Record<string, string>)[key] = v;
                 SettingsStore.save();
                 if (key === 'device') setDevice(SettingsStore.data.device);
+                if (key === 'padStyle') setPadStyle(SettingsStore.data.padStyle);
+                if (key === 'padStyle' || key === 'device') this.select('config');
                 this.actions.settingsChanged();
                 AudioSystem.play('blip');
                 draw();
@@ -479,12 +481,13 @@ export class PauseMenu {
         range('Efeitos', '', 'sfxVolume'),
         seg('Velocidade do texto', '', 'textSpeed', [['lenta', 'Lenta'], ['normal', 'Normal'], ['rapida', 'Rápida']]),
         seg('Jogando no', '', 'device', [['pc', 'PC (teclado)'], ['controle', 'Controle']]),
+        seg('Botões do controle', '', 'padStyle', [['auto', 'Automático'], ['xbox', 'A B X Y'], ['ps', '✕ ◯ □ △']]),
         h('div', { class: 'pm-opt' }, h('span', { class: 'lbl' }, 'Controle'), h('button', { class: 'btn small', onclick: () => void openPadSetup(this.parent) }, 'Configurar controle')),
         seg('Controles de toque', '', 'touchControls', [['auto', 'Auto'], ['sempre', 'Sempre'], ['nunca', 'Nunca']]),
       ),
       h('div', { class: 'pm-section' }, 'Controles'),
       SettingsStore.data.device === 'controle'
-        ? h('div', { class: 'pm-keys no-swap' }, key('Direcional', 'Andar'), key('✕', 'Interagir / escolher'), key('◯', 'Voltar'), key('□ / L2 / R2', 'Correr'), key('OPTIONS', 'Menu'), key('△', 'Mochila'), key('SHARE', 'Álbum'), key('L1 / R1', 'Trocar de aba'))
+        ? h('div', { class: 'pm-keys no-swap' }, key('Direcional', 'Andar'), key(glyph('confirm'), 'Interagir / escolher'), key(glyph('back'), 'Voltar'), key(`${glyph('run')} / L2 / R2`, 'Correr'), key(glyph('menu'), 'Menu'), key(glyph('bag'), 'Mochila'), key(glyph('album'), 'Álbum'), key('L1 / R1', 'Trocar de aba'))
         : h('div', { class: 'pm-keys' }, key('WASD / setas', 'Andar'), key('Shift', 'Correr'), key('E / Espaço', 'Interagir'), key('Esc / M', 'Menu'), key('I', 'Mochila'), key('L', 'Álbum'), key('Q', 'Voltar'), key('PgUp / PgDn', 'Trocar de aba')),
     );
   }

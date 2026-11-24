@@ -2,7 +2,7 @@ import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
 import { SettingsStore } from '@/systems/SaveSystem';
-import { setDevice } from '@/systems/Gamepad';
+import { setDevice, glyph } from '@/systems/Gamepad';
 import { ICON_PC, ICON_PAD } from './deviceIcons';
 
 /**
@@ -14,7 +14,7 @@ export function chooseDevice(root: HTMLElement): Promise<'pc' | 'controle'> {
   return new Promise((resolve) => {
     const opts: { id: 'pc' | 'controle'; icon: string; name: string; keys: string[] }[] = [
       { id: 'pc', icon: ICON_PC, name: 'PC', keys: ['Setas ou WASD: andar', 'Espaço ou E: interagir', 'Shift: correr', 'Esc: menu'] },
-      { id: 'controle', icon: ICON_PAD, name: 'Controle', keys: ['Direcional / analógico: andar', '✕: interagir', '□: correr', 'OPTIONS: menu'] },
+      { id: 'controle', icon: ICON_PAD, name: 'Controle', keys: ['Direcional: andar', `${glyph('confirm')}: interagir`, `${glyph('run')}: correr`, `${glyph('bag')}: mochila`, `${glyph('menu')}: menu`] },
     ];
     let sel = SettingsStore.data.device === 'controle' ? 1 : 0;
     // apertou um botão do controle nesta tela? já sugere "Controle"
@@ -31,7 +31,7 @@ export function chooseDevice(root: HTMLElement): Promise<'pc' | 'controle'> {
     const screen = h(
       'div',
       { class: 'screen opaque dv-screen' },
-      h('div', { class: 'dv-box' }, h('div', { class: 'dv-title' }, 'Como você vai jogar?'), h('div', { class: 'dv-sub' }, 'O jogo se adapta. Dá pra trocar depois em Opções.'), h('div', { class: 'dv-cards' }, ...cards), h('div', { class: 'dv-hint' }, '← → escolher · Espaço / ✕ confirmar')),
+      h('div', { class: 'dv-box' }, h('div', { class: 'dv-title' }, 'Como você vai jogar?'), h('div', { class: 'dv-sub' }, 'O jogo se adapta. Dá pra trocar depois em Opções.'), h('div', { class: 'dv-cards' }, ...cards), h('div', { class: 'dv-hint' }, `← → escolher · Espaço / ${glyph('confirm')} confirmar`)),
     );
     const paint = () => cards.forEach((c, i) => c.classList.toggle('sel', i === sel));
     paint();
