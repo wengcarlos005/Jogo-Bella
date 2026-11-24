@@ -99,7 +99,7 @@ class AudioSystemImpl {
     if (file) {
       this.music = file;
       file.loop = true;
-      file.volume = SettingsStore.data.musicVolume;
+      file.volume = this.musicLevel();
       void file.play().catch(() => {
         // navegador bloqueia som antes do primeiro clique/tecla: tenta de novo no próximo
         const retry = () => {
@@ -111,7 +111,12 @@ class AudioSystemImpl {
       return;
     }
     const ac = this.ac();
-    if (ac) Chiptune.play(ac, key, SettingsStore.data.musicVolume);
+    if (ac) Chiptune.play(ac, key, this.musicLevel());
+  }
+
+  /** Música de fundo mais baixa que os efeitos (100% no controle = 40% do volume real). */
+  private musicLevel(): number {
+    return SettingsStore.data.musicVolume * 0.4;
   }
 
   stopMusic(): void {
@@ -122,8 +127,8 @@ class AudioSystemImpl {
   }
 
   applyVolumes(): void {
-    Chiptune.setVolume(SettingsStore.data.musicVolume);
-    if (this.music) this.music.volume = SettingsStore.data.musicVolume;
+    Chiptune.setVolume(this.musicLevel());
+    if (this.music) this.music.volume = this.musicLevel();
     if (this.rainNode) this.updateRain();
   }
 

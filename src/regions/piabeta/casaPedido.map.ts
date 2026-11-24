@@ -45,6 +45,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'AAAH! Weng?! Você tava dentro do meu GUARDA-ROUPA?!');
     await ctx.say('weng', 'Tava. Sua mãe me escondeu aí faz uma hora. Tem um cabide me cutucando até agora.');
     await ctx.say('weng', 'Bella.');
+    ctx.music('amarelo'); // Yellow: a música do pedido
     await ctx.fadeOut(500);
     await ctx.backdrop('cena-pedido');
     await ctx.fadeIn(700);

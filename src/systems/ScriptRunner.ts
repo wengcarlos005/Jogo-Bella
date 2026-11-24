@@ -7,6 +7,7 @@ import { QuestSystem } from './QuestSystem';
 import { MemoryAlbumSystem } from './MemoryAlbumSystem';
 import { MEMORIES } from '@/data/memories';
 import { AudioSystem } from './AudioSystem';
+import { trackForMap } from './Chiptune';
 import { UI } from '@/ui/UIManager';
 import { NPC } from '@/entities/NPC';
 import { InputSystem } from './InputSystem';
@@ -399,6 +400,10 @@ export function createScriptContext(scene: GameScene): ScriptContext {
         scene.tweens.killTweensOf(txt);
         scene.tweens.add({ targets: txt, alpha: 0, duration: 400, onComplete: () => txt.destroy() });
       };
+    },
+
+    music(track) {
+      AudioSystem.playMusic(track ?? trackForMap(scene.def.id));
     },
 
     hearts(who, count = 10) {

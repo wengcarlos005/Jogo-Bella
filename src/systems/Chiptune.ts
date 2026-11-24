@@ -116,11 +116,16 @@ const TRACKS: Record<string, TrackDef> = {
 
 /** Qual faixa toca em cada lugar (pelo id do mapa). */
 export function trackForMap(id: string): string {
+  // Viva la Vida: parques, restaurantes, churrascos e o Niemeyer
+  if (/parque|rota66|mexicano|onfire|quintal|acai|restaurante|varanda|niemeyer/.test(id)) return 'viva';
+  // Paradise: praias
   if (/praia|pero|japones|forte/.test(id)) return 'paraiso';
+  // Fix You: Petrópolis
   if (/^pt-/.test(id)) return 'conserto';
-  if (/parque|rota66|mexicano|onfire|quintal|multidao|acai|cinema|restaurante|varanda|niemeyer/.test(id)) return 'viva';
-  if (/casa|apto|quarto|cobertura/.test(id)) return 'cientista';
-  return 'amarelo';
+  // The Scientist: Duque de Caxias e Araruama
+  if (/^duque-|^dq-|^ar-/.test(id)) return 'cientista';
+  // o resto (casas, ruas, apês fora de Caxias): Paradise. Yellow fica guardada pro pedido e pro final
+  return 'paraiso';
 }
 
 class ChiptuneImpl {

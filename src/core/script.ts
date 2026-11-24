@@ -109,6 +109,8 @@ export interface ScriptContext {
   letterbox(on: boolean): void;
   /** Explosão de corações sobre um personagem. */
   hearts(who: string, count?: number): void;
+  /** Troca a música (amarelo, cientista, viva, paraiso, conserto); null volta pra música do lugar. */
+  music(track: string | null): void;
   /** Comemoração de virada: todo mundo pulando, olhando os fogos, corações e "FELIZ <ano>!". Devolve a função que para. */
   party(who: string[], year: string, sky?: 'up' | 'down'): () => void;
   travel(label: string, icon?: string, ms?: number): Promise<void>;

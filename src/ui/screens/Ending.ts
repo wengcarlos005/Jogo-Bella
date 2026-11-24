@@ -83,7 +83,7 @@ export function playEnding(root: HTMLElement): Promise<'title' | 'stay'> {
     };
 
     void (async () => {
-      AudioSystem.playMusic('conserto'); // o final com a trilha mais emocionante
+      AudioSystem.playMusic('amarelo'); // Yellow: a música do final (e do pedido)
       AudioSystem.play('quest');
       // 1. abertura
       const open = h('div', { class: 'end-open' }, h('p', {}, 'Sete capítulos depois...'), h('p', { class: 'sm' }, 'de Piabetá à Praia do Forte.'));
