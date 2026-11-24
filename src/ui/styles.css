@@ -4373,12 +4373,6 @@ body.pad .pad-only { display: flex !important; }
 .pw-espia { position: absolute; z-index: 0; width: 42%; right: 0; top: 4%; transform: translateX(-30%); opacity: 0;
   transition: transform .45s cubic-bezier(.2, 1.4, .4, 1), opacity .2s; }
 .pw-espia.in { transform: translateX(62%); opacity: 1; }
-/* abertura: pede um toque pra liberar a música */
-.ld-tap { position: absolute; left: 50%; bottom: 9%; transform: translateX(-50%); z-index: 5; white-space: nowrap;
-  font-family: var(--font-pixel); color: #fff3c4; font-size: clamp(14px, 2.6vmin, 24px); text-shadow: 0 2px 0 #5a1d4a, 0 0 12px rgba(255, 150, 200, .6);
-  animation: ld-tap 1.1s ease-in-out infinite; }
-.ld-tap span { color: #ff7eb6; }
-@keyframes ld-tap { 50% { opacity: .55; transform: translateX(-50%) scale(.96); } }
 /* o aro desenhado passa um pouco da roda: espaço em volta pra não cobrir o título nem o nome do prêmio */
 .pw-wheel { width: min(100%, calc(var(--u) * 122)); margin: calc(var(--u) * 16) auto calc(var(--u) * 14); }
 /* a pata vem lá da borda do painel (o braço some fora da tela, sem corte aparecendo) */
