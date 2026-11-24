@@ -187,7 +187,9 @@ export class GameScene extends Phaser.Scene {
       return null;
     });
     UI.showGameplayUI(true);
-    AudioSystem.playMusic(trackForMap(def.id));
+    const track = trackForMap(def.id);
+    if (track) AudioSystem.playMusic(track);
+    else AudioSystem.stopMusic();
     this.lastTick = this.time.now;
 
     const gen = this.gen;

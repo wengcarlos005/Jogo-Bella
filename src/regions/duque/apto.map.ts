@@ -309,6 +309,7 @@ const scripts: Record<string, Script> = {
   async camaWeng(ctx) {
     if (questDone() || objDone('carinho')) restoreMeli(ctx);
     if (QuestSystem.isActive('dq-m3') && QuestSystem.isObjectiveDone('dq-m3', 'filme') && !QuestSystem.isObjectiveDone('dq-m3', 'dormir')) {
+      ctx.music('cientista');
       await ctx.say('bella', 'A cama de esteira de bambu... geladinha.');
       await ctx.say('weng', 'Eu disse que era a melhor invenção da China.');
       await ctx.fadeOut(700);
@@ -317,6 +318,7 @@ const scripts: Record<string, Script> = {
       await ctx.memory('mem-dq-07');
       ctx.outfit('casual');
       // dias depois: a briga boba
+      ctx.music(null);
       await ctx.narrate('Uns dias depois. Uma tarde qualquer, cada um no seu celular.');
       ctx.startQuest('dq-m4');
       ctx.follow('weng', false);
@@ -423,6 +425,7 @@ const scripts: Record<string, Script> = {
   async fogao(ctx) {
     if (QuestSystem.isActive('dq-m3') && !QuestSystem.isObjectiveDone('dq-m3', 'jantar')) {
       await ctx.say('weng', 'Avental posto. Pode mandar, chef.');
+      ctx.music('cientista'); // The Scientist: a primeira noite no apê
       const r = await ctx.cook();
       ctx.setFlag('dq-jantar-estrelas', r.stars);
       await ctx.narrate('Música baixinha, a Meli rondando a cozinha esperando cair alguma coisa.');
@@ -460,6 +463,7 @@ const scripts: Record<string, Script> = {
       return;
     }
     if (QuestSystem.isActive('dq-m3') && QuestSystem.isObjectiveDone('dq-m3', 'jantar') && !QuestSystem.isObjectiveDone('dq-m3', 'filme')) {
+      ctx.music('cientista');
       await ctx.sit(745, 640, [
         ['narrador', 'Um filme escolhido depois de vinte minutos de discussão. Pipoca, coberta e a Meli no meio dos dois.'],
         ['bella', 'Você vai dormir no meio do filme, né?'],

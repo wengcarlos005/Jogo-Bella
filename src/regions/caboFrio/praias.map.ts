@@ -237,6 +237,7 @@ const forteScripts: Record<string, Script> = {
     ctx.follow('weng', true);
     if (objDone('virada') || ctx.flag('cf-forte-chegou')) return;
     ctx.setFlag('cf-forte-chegou');
+    ctx.music('paraiso'); // Paradise: a virada na Praia do Forte
     await ctx.narrate('Praia do Forte, 23h54. A orla lotada, todo mundo de branco, o forte iluminado nas pedras.');
     await ctx.say('bella', 'A gente CONSEGUIU. Andando. E de carona com um desconhecido muito gente boa.');
     await ctx.say('weng', 'Ele até desejou feliz ano-novo pra gente.');

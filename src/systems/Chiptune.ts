@@ -115,17 +115,14 @@ const TRACKS: Record<string, TrackDef> = {
 };
 
 /** Qual faixa toca em cada lugar (pelo id do mapa). */
-export function trackForMap(id: string): string {
-  // Viva la Vida: parques, restaurantes, churrascos e o Niemeyer
-  if (/parque|rota66|mexicano|onfire|quintal|acai|restaurante|varanda|niemeyer/.test(id)) return 'viva';
-  // Paradise: praias
-  if (/praia|pero|japones|forte/.test(id)) return 'paraiso';
-  // Fix You: Petrópolis
-  if (/^pt-/.test(id)) return 'conserto';
-  // The Scientist: Duque de Caxias e Araruama
-  if (/^duque-|^dq-|^ar-/.test(id)) return 'cientista';
-  // o resto (casas, ruas, apês fora de Caxias): Paradise. Yellow fica guardada pro pedido e pro final
-  return 'paraiso';
+/**
+ * As músicas do casal só tocam em momentos especiais (cada uma num lugar da história), puxadas pelas cenas:
+ *   Fix You — tela inicial e a carta · The Scientist — a primeira noite no apê do Weng (Caxias)
+ *   Yellow — o pedido de namoro e o final · Viva la Vida — a virada de 2024 (Araruama)
+ *   Paradise — a virada na Praia do Forte (Cabo Frio). No resto do jogo: só os sons.
+ */
+export function trackForMap(_id: string): string | null {
+  return null;
 }
 
 class ChiptuneImpl {

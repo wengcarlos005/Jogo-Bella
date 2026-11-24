@@ -52,6 +52,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Weng, eu tava com tanto medo hoje cedo.');
     await ctx.say('weng', 'E agora?');
     await ctx.say('bella', 'Agora eu tô na varanda da sua família, cheia de pato, esperando os fogos com você. Tô ótima.');
+    ctx.music('viva'); // Viva la Vida: a virada de 2024
     await ctx.say('familia', 'DEZ! NOVE! OITO...');
     const r = await ctx.fogos();
     ctx.setFlag('ar-fogos-estrelas', r.stars);

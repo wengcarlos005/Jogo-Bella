@@ -403,7 +403,9 @@ export function createScriptContext(scene: GameScene): ScriptContext {
     },
 
     music(track) {
-      AudioSystem.playMusic(track ?? trackForMap(scene.def.id));
+      const t = track ?? trackForMap(scene.def.id);
+      if (t) AudioSystem.playMusic(t);
+      else AudioSystem.stopMusic();
     },
 
     hearts(who, count = 10) {
