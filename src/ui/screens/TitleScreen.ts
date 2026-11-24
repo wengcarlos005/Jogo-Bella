@@ -1,3 +1,4 @@
+import { askConfirm } from '../confirmBox';
 import { decorateTitle, hideLoader } from './TitleFx';
 import { h, formatDate, formatPlaytime } from '@/utils/dom';
 import { SaveSystem, AUTOSAVE_SLOT } from '@/systems/SaveSystem';
@@ -40,8 +41,10 @@ export class TitleScreen {
     if (latest) list.append(btn('Continuar', () => this.actions.load(latest), true));
     list.append(
       btn('Novo jogo', () => {
-        if (latest && !confirm('Começar um novo jogo? Seu progresso salvo continua guardado nos slots.')) return;
-        this.actions.newGame();
+        void (async () => {
+          if (latest && !(await askConfirm(this.parent, 'Começar um novo jogo? Seu progresso salvo continua guardado nos slots.', 'Começar', 'Voltar'))) return;
+          this.actions.newGame();
+        })();
       }, !latest),
     );
     list.append(btn('Carregar', () => void this.openLoad()));
@@ -84,8 +87,10 @@ export class TitleScreen {
         left: 63.9,
         w: 24.5,
         fn: () => {
-          if (latest && !confirm('Começar um novo jogo? Seu progresso salvo continua guardado nos slots.')) return;
-          this.actions.newGame();
+          void (async () => {
+            if (latest && !(await askConfirm(this.parent, 'Começar um novo jogo? Seu progresso salvo continua guardado nos slots.', 'Começar', 'Voltar'))) return;
+            this.actions.newGame();
+          })();
         },
       },
       { label: 'Carregar', top: 65.9, left: 63.9, w: 24.5, fn: () => void this.openLoad() },
