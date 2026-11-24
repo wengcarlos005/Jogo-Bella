@@ -4359,3 +4359,4 @@ body.pad .pad-only { display: flex !important; }
 .pw-name { font-weight: 900; color: #4a2a20; text-align: center; font-size: clamp(12px, calc(var(--u) * 6), 19px); opacity: 0; transition: opacity .4s .5s; }
 .pw-text { font-weight: 700; color: #7a4a30; text-align: center; font-size: clamp(11px, calc(var(--u) * 4.8), 15px); max-width: 92%; opacity: 0; transition: opacity .4s .8s; }
 .pw-reveal.photo .pw-name, .pw-reveal.photo .pw-text { opacity: 1; }
+.pw-label.small { font-size: 7px; }

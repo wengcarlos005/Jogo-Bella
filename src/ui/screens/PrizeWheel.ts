@@ -1,7 +1,7 @@
 import { h } from '@/utils/dom';
 import { InputSystem } from '@/systems/InputSystem';
 import { AudioSystem } from '@/systems/AudioSystem';
-import { assetURL } from '@/utils/asset';
+import { assetExists, assetURL } from '@/utils/asset';
 import { textureURL } from '../textures';
 
 /**
@@ -18,54 +18,81 @@ export type PrizeWheelId = 'bolsa' | 'kitty';
 type Mood = 'b-pensa' | 'b-feliz' | 'b-fogo' | 'w-malandro' | 'w-ri' | 'w-orgulho';
 type Line = [Mood, string];
 
+/** Uma fatia: imagem (assets/minigames/roleta-<id>.png, se existir), texto curto na roda e nome completo. */
+interface Slice {
+  id: string;
+  wheel: string;
+  full: string;
+}
+
 interface Roleta {
-  slices: string[];
+  slices: Slice[];
+  /** Fatia do presente de verdade. */
+  win: number;
   intro: Line[];
-  /** 1º giro: cai nesta fatia (prêmio ridículo). */
+  /** 1º giro: cai num prêmio muito ruim. */
   first: { slice: number; after: Line[] };
-  /** 2º giro: para no prêmio e alguma coisa estraga. */
-  second: { trick: 'creep' | 'meli'; slice: number; before: Line; after: Line[] };
-  /** 3º giro: o Weng "ajeita" a roleta. */
-  third: { before: Line[]; meia: string };
+  /**
+   * 2º giro: quase ganha uma coisa boa e acaba em outro prêmio muito ruim.
+   * 'creep': para no comecinho de `from` e escorrega pra `slice` (= from - 1).
+   * 'meli': para no meio de `from` e a pata da Meli empurra a roleta pra `slice`.
+   */
+  second: { trick: 'creep' | 'meli'; from: number; slice: number; before: Line; after: Line[] };
+  /** 3º giro: quase para em `tease` (= win + 1)... e clica pro presente. */
+  third: { before: Line[]; tease: number; teaseLine: Line; win: Line };
   prize: { photo: string; title: string; text: string };
 }
 
-const PRIZE = 'PRÊMIO SURPRESA';
+const S = (id: string, wheel: string, full = wheel): Slice => ({ id, wheel, full });
+const DINHEIRO = S('dinheiro', 'R$ 1.000 no Multidão', 'R$ 1.000 pra gastar no Shopping da Multidão');
+const KITTY = S('kitty', 'Hello Kitty ursinho', 'A Hello Kitty de ursinho polar');
 
+// A roda gira no sentido horário: a seta passa pelas fatias em ordem DECRESCENTE (5, 4, 3...).
 const ROLETAS: Record<PrizeWheelId, Roleta> = {
   bolsa: {
-    slices: [PRIZE, 'Nada de nada', 'Um taco com pimenta', 'Meia furada do Weng', 'Gire de novo (mentira)', 'Massagem de 3 segundos', 'Um pombo de estimação', 'Foto 3x4 do Weng'],
+    slices: [
+      S('bolsa', 'Bolsinha creme', 'A bolsinha creme de lacinho'),
+      S('camisinha', 'Camisinha'),
+      S('colar', 'Colar'),
+      S('louca', 'Lavar louça por um mês'),
+      S('anel', 'Anel de noivado'),
+      S('bala', 'Uma bala (só uma)'),
+      KITTY,
+      DINHEIRO,
+      S('colher', 'Colher de pau'),
+      S('paris', 'Viagem pra Paris'),
+    ],
+    win: 0,
     intro: [
       ['w-malandro', 'Fim do capítulo 1! E toda fase boa termina com prêmio. Apresento a Roleta da Sorte do Weng!'],
-      ['b-pensa', 'Por que ela tem a sua cara desenhada no meio?'],
-      ['w-orgulho', 'Porque é uma roleta de respeito. Pode girar, ela é 100% honesta.'],
+      ['b-pensa', 'Peraí. Tem anel de noivado nessa roleta?! E... camisinha?!'],
+      ['w-ri', 'Tem de tudo. É uma roleta muito completa. Pode girar, ela é 100% honesta.'],
     ],
     first: {
-      slice: 1,
+      slice: 3,
       after: [
-        ['w-ri', 'NADA! Que azar, hein? Mas parabéns pela participação.'],
+        ['w-ri', 'Lavar a louça por um mês! Parabéns, amor. A esponja é sua.'],
         ['b-fogo', 'Essa roleta tá roubada.'],
-        ['w-malandro', 'Imagina. Gira de novo, vai.'],
+        ['w-malandro', 'Imagina. Tá bom, roda de novo.'],
       ],
     },
     second: {
       trick: 'creep',
-      slice: 7,
-      before: ['b-feliz', 'AAAA, parou no prêmio! Parou no prêmio!'],
+      from: 6,
+      slice: 5,
+      before: ['b-feliz', 'A HELLO KITTY! Para aí, para aí, para aí!'],
       after: [
-        ['w-orgulho', 'Uma foto 3x4 minha! Pra guardar na carteira. Pode chorar.'],
-        ['b-fogo', 'WENG. A seta tava EM CIMA do prêmio.'],
-        ['w-ri', 'Foi o vento.'],
+        ['w-orgulho', 'Uma bala! Só uma. Sabor surpresa.'],
+        ['b-fogo', 'A seta TAVA na Hello Kitty.'],
+        ['w-ri', 'Foi o vento. A Hello Kitty fica pra próxima.'],
         ['b-fogo', 'A gente tá dentro de casa.'],
       ],
     },
     third: {
-      before: [
-        ['w-malandro', 'Tá bom, tá bom. Eu dei uma ajeitadinha na roleta. Agora vai.'],
-        ['b-pensa', '...Por que ainda sobrou uma meia furada?'],
-        ['w-ri', 'Pra dar emoção.'],
-      ],
-      meia: 'Meia furada do Weng',
+      before: [['w-malandro', 'Tá bom, tá bom. Mais uma chance. Roda de novo.']],
+      tease: 1,
+      teaseLine: ['b-fogo', 'NÃO. Na camisinha não. Anda, anda, anda...'],
+      win: ['b-feliz', 'A BOLSINHA! Eu ganhei a bolsinha!'],
     },
     prize: {
       photo: 'assets/cinematics/premio-bolsa.png',
@@ -74,37 +101,48 @@ const ROLETAS: Record<PrizeWheelId, Roleta> = {
     },
   },
   kitty: {
-    slices: [PRIZE, 'Um sachê da Meli (já comido)', 'Novelo usado', 'Lavar a louça do apê', 'Uma régua de casal perfeito', 'Chocolate da Páscoa (mordido)', 'Gire de novo (mentira de novo)', 'Um abraço (esse é bom)'],
+    slices: [
+      KITTY,
+      S('colher', 'Colher de pau'),
+      S('anel', 'Anel de noivado'),
+      S('sache', 'Sachê da Meli (já comido)'),
+      DINHEIRO,
+      S('camisinha', 'Camisinha'),
+      S('louca', 'Lavar a louça do apê'),
+      S('colar', 'Colar'),
+      S('paris', 'Viagem pra Paris'),
+      S('carro', 'Carro 0 km'),
+    ],
+    win: 0,
     intro: [
-      ['w-malandro', 'Fim do capítulo 2! A Roleta da Sorte voltou. E agora ela é 200% honesta.'],
-      ['b-pensa', 'Da última vez eu ganhei uma foto 3x4 sua.'],
-      ['w-orgulho', 'E você guardou? Gira aí.'],
+      ['w-malandro', 'Fim do capítulo 2! A Roleta da Sorte voltou. E a Hello Kitty continua lá, te esperando.'],
+      ['b-pensa', 'Dessa vez ela é minha. E se aparecer bala, eu vou embora.'],
+      ['w-orgulho', 'Agora tem até carro 0 km. Gira aí.'],
     ],
     first: {
-      slice: 3,
+      slice: 6,
       after: [
-        ['w-ri', 'Lavar a louça do apê! A pia tá te esperando, amor.'],
-        ['b-fogo', 'Eu não vou lavar louça de prêmio.'],
-        ['w-malandro', 'Tá, tá. Mais uma.'],
+        ['w-ri', 'Lavar a louça do apê! A pia agradece.'],
+        ['b-fogo', 'Eu NÃO vou lavar louça de prêmio.'],
+        ['w-malandro', 'Tá bom, roda de novo.'],
       ],
     },
     second: {
       trick: 'meli',
-      slice: 1,
-      before: ['b-feliz', 'PRÊMIO SURPRESA! Agora eu ganhei! Ganhei mesmo!'],
+      from: 4,
+      slice: 3,
+      before: ['b-feliz', 'MIL REAIS NO MULTIDÃO! Eu vou comprar o shopping inteiro!'],
       after: [
-        ['w-ri', 'A Meli empurrou a roleta. Ela ganhou um sachê. Você ganhou... o pacotinho vazio.'],
+        ['w-ri', 'A Meli empurrou a roleta. Ela ganhou o sachê. Você ganhou... o pacotinho vazio.'],
         ['b-fogo', 'MELI!'],
         ['w-orgulho', 'Ela é muito competitiva. Puxou a dona.'],
       ],
     },
     third: {
-      before: [
-        ['w-malandro', 'Prendi a Meli no quarto e tirei quase tudo que é ruim. Último giro!'],
-        ['b-pensa', 'Quase tudo?'],
-        ['w-ri', 'A régua ficou. A gente não é régua de ninguém, mas ela é engraçada.'],
-      ],
-      meia: 'Uma régua de casal perfeito',
+      before: [['w-malandro', 'Prendi a Meli no quarto. Roda de novo, última chance.']],
+      tease: 1,
+      teaseLine: ['b-fogo', 'A colher de pau de novo NÃO. Anda, anda...'],
+      win: ['b-feliz', 'A HELLO KITTY! Finalmente! Ela é minha!'],
     },
     prize: {
       photo: 'assets/cinematics/premio-kitty.png',
@@ -114,21 +152,22 @@ const ROLETAS: Record<PrizeWheelId, Roleta> = {
   },
 };
 
-const COLORS = ['#ffd36b', '#ff9fbf', '#fff1d6', '#c7b6ff', '#a9e4cf', '#ffc08a', '#fff1d6', '#9fd3ff'];
-const N = 8;
-const SEG = 360 / N;
+const COLORS = ['#ff9fbf', '#fff1d6', '#c7b6ff', '#a9e4cf', '#ffc08a', '#9fd3ff', '#ffd36b', '#fff1d6', '#b9e98f', '#ffb3a1'];
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 const ease = (t: number) => 1 - Math.pow(1 - t, 3.2);
 
 export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<void> {
   const cfg = ROLETAS[id];
+  const N = cfg.slices.length;
+  const SEG = 360 / N;
   const mg = (f: string) => assetURL(`assets/minigames/taco-${f}.png`);
   for (const f of ['b-pensa', 'b-feliz', 'b-fogo', 'w-malandro', 'w-ri', 'w-orgulho']) new Image().src = mg(f);
   const photoUrl = assetURL(cfg.prize.photo);
   new Image().src = photoUrl;
 
   return new Promise((resolve) => {
-    const labels = [...cfg.slices];
+    const labels: Slice[] = [...cfg.slices];
+    const iconUrl = (id: string) => (assetExists(`assets/minigames/roleta-${id}.png`) ? assetURL(`assets/minigames/roleta-${id}.png`) : null);
     // ---------- roda (SVG) ----------
     const NS = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(NS, 'svg');
@@ -138,6 +177,7 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
     svg.append(rot);
     const texts: SVGTextElement[] = [];
     const paths: SVGPathElement[] = [];
+    const icons: SVGImageElement[] = [];
     const pt = (deg: number, r: number) => {
       const a = ((deg - 90) * Math.PI) / 180;
       return `${(Math.cos(a) * r).toFixed(2)} ${(Math.sin(a) * r).toFixed(2)}`;
@@ -151,11 +191,18 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
       paths.push(p);
       const t = document.createElementNS(NS, 'text');
       const mid = i * SEG + SEG / 2;
-      t.setAttribute('transform', `rotate(${mid}) translate(0 -58) rotate(90)`);
+      // a imagem do prêmio fica perto da borda, o nome mais pra dentro
+      const ic = document.createElementNS(NS, 'image');
+      ic.setAttribute('x', '-15');
+      ic.setAttribute('y', '-15');
+      ic.setAttribute('width', '30');
+      ic.setAttribute('height', '30');
+      ic.setAttribute('transform', `rotate(${mid}) translate(0 -76)`);
+      icons.push(ic);
       t.setAttribute('text-anchor', 'middle');
       t.setAttribute('dominant-baseline', 'middle');
       t.setAttribute('class', 'pw-label');
-      rot.append(t);
+      rot.append(t, ic);
       texts.push(t);
     }
     // aro com luzinhas
@@ -190,30 +237,29 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
 
     const paint = () => {
       for (let i = 0; i < N; i++) {
-        const prize = labels[i] === PRIZE;
-        paths[i].setAttribute('fill', prize ? 'url(#pw-gold)' : COLORS[i]);
-        texts[i].classList.toggle('prize', prize);
-        // quebra em até 2 linhas
-        const words = labels[i].split(' ');
-        let a = '';
-        let b = '';
-        for (const w of words) {
-          if ((a + ' ' + w).trim().length <= 13 && !b) a = (a + ' ' + w).trim();
-          else b = (b + ' ' + w).trim();
+        paths[i].setAttribute('fill', COLORS[i % COLORS.length]);
+        const url = iconUrl(labels[i].id);
+        icons[i].setAttribute('href', url ?? '');
+        icons[i].style.display = url ? '' : 'none';
+        const mid = i * SEG + SEG / 2;
+        texts[i].setAttribute('transform', `rotate(${mid}) translate(0 ${url ? -44 : -58}) rotate(90)`);
+        // quebra em até 3 linhas curtas (o texto vai deitado ao longo do raio)
+        const max = url ? 9 : 12;
+        const lines: string[] = [];
+        for (const w of labels[i].wheel.split(' ')) {
+          const cur = lines[lines.length - 1];
+          if (cur !== undefined && (cur + ' ' + w).length <= max) lines[lines.length - 1] = cur + ' ' + w;
+          else lines.push(w);
         }
+        texts[i].classList.toggle('small', !!url || lines.length > 2);
         texts[i].replaceChildren();
-        const l1 = document.createElementNS(NS, 'tspan');
-        l1.setAttribute('x', '0');
-        l1.setAttribute('dy', b ? '-0.55em' : '0');
-        l1.textContent = a;
-        texts[i].append(l1);
-        if (b) {
-          const l2 = document.createElementNS(NS, 'tspan');
-          l2.setAttribute('x', '0');
-          l2.setAttribute('dy', '1.1em');
-          l2.textContent = b;
-          texts[i].append(l2);
-        }
+        lines.forEach((ln, k) => {
+          const sp = document.createElementNS(NS, 'tspan');
+          sp.setAttribute('x', '0');
+          sp.setAttribute('dy', k === 0 ? `${-(lines.length - 1) * 0.55}em` : '1.1em');
+          sp.textContent = ln;
+          texts[i].append(sp);
+        });
       }
     };
     const defs = document.createElementNS(NS, 'defs');
@@ -365,7 +411,7 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
 
       // 1º giro: prêmio ridículo
       await spinTo(cfg.first.slice, 0.5, 5, 4200);
-      show(labels[under()]);
+      show(labels[under()].full);
       await talk(cfg.first.after, 'Girar de novo');
       lock();
       show('');
@@ -373,8 +419,8 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
       // 2º giro: para no prêmio... e escapa
       if (cfg.second.trick === 'creep') {
         // para no finalzinho do prêmio e, devagar, escorrega pra fatia do lado
-        await spinTo(0, 0.04, 6, 4800);
-        show(PRIZE, true);
+        await spinTo(cfg.second.from, 0.04, 6, 4800);
+        show(labels[cfg.second.from].full, true);
         await say(cfg.second.before, '...');
         lock();
         await wait(500);
@@ -383,8 +429,8 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
         await nudge(SEG * 0.04, 1100);
       } else {
         // para bem no meio do prêmio... e a Meli empurra a roleta
-        await spinTo(0, 0.5, 6, 4800);
-        show(PRIZE, true);
+        await spinTo(cfg.second.from, 0.5, 6, 4800);
+        show(labels[cfg.second.from].full, true);
         await say(cfg.second.before, '...');
         lock();
         paw.classList.add('in');
@@ -396,36 +442,25 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
       }
       // garante a fatia do troll
       if (under() !== cfg.second.slice) await center(cfg.second.slice, 400);
-      show(labels[under()]);
-      await talk(cfg.second.after, 'Girar (último giro!)');
+      show(labels[under()].full);
+      await talk(cfg.second.after);
+      await talk(cfg.third.before, 'Girar de novo');
       lock();
-
-      // 3º giro: o Weng "ajeita" a roleta
       show('');
-      await talk(cfg.third.before, 'Girar!');
+
+      // 3º giro: quase para numa fatia ruim... e clica pro presente
+      await spinTo(cfg.third.tease, 0.05, 7, 5600);
+      show(labels[cfg.third.tease].full);
+      await say(cfg.third.teaseLine, '...');
       lock();
-      const meiaIdx = labels.indexOf(cfg.third.meia);
-      for (let i = 0; i < N; i++) {
-        if (i === meiaIdx || labels[i] === PRIZE) continue;
-        labels[i] = PRIZE;
-        paint();
-        texts[i].classList.add('flip');
-        AudioSystem.play('pickup');
-        await wait(220);
-      }
-      // cai na única fatia ruim que sobrou...
-      await spinTo(meiaIdx, 0.5, 7, 5200);
-      show(labels[meiaIdx]);
-      await say(['b-fogo', 'NÃO ACREDITO. Sete prêmios e caiu na única que não é!'], '...');
-      lock();
-      await say(['w-ri', 'Hahahaha! Calma. Olha de novo.'], 'Olhar');
-      lock();
-      labels[meiaIdx] = PRIZE;
-      paint();
-      texts[meiaIdx].classList.add('flip');
+      await wait(400);
+      await nudge(SEG * 0.07, 1300);
+      await wait(200);
+      await center(cfg.win, 700);
       AudioSystem.play('quest');
-      show(PRIZE, true);
-      await wait(700);
+      show(labels[cfg.win].full, true);
+      await say(cfg.third.win, 'Abrir o prêmio');
+      lock();
 
       // revelação: o presente de verdade
       party();
@@ -435,7 +470,7 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
       const reveal = h(
         'div',
         { class: 'pw-reveal' },
-        h('div', { class: 'pw-kicker' }, 'PRÊMIO DE VERDADE!'),
+        h('div', { class: 'pw-kicker' }, 'É DE VERDADE!'),
         h('div', { class: 'pw-stage' }, box, h('div', { class: 'pw-polaroid' }, photo)),
         h('div', { class: 'pw-name' }, cfg.prize.title),
         h('div', { class: 'pw-text' }, cfg.prize.text),
