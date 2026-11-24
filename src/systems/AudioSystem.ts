@@ -56,7 +56,11 @@ class AudioSystemImpl {
   }
 
   registerFile(key: string, url: string): void {
-    this.files.set(key, new Audio(url));
+    const a = new Audio();
+    // músicas são grandes: só baixam quando forem tocar (não pesam no carregamento inicial)
+    a.preload = key.startsWith('music-') ? 'none' : 'auto';
+    a.src = url;
+    this.files.set(key, a);
   }
 
   play(name: Sfx): void {
