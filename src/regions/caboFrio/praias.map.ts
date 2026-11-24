@@ -345,10 +345,10 @@ const forteScripts: Record<string, Script> = {
     await ctx.emote('nathan', 'exclaim');
     await ctx.say('nathan', 'Seis minutos! Todo mundo junto!');
     await ctx.say('felipe', 'DEZ! NOVE! OITO...');
-    const r = await ctx.fogos({ year: '2025', bg: 'map-cf-forte-bg', water: 'no mar' });
+    const r = await ctx.fogos({ year: '2026', bg: 'map-cf-forte-bg', water: 'no mar' });
     ctx.setFlag('cf-fogos-estrelas', r.stars);
     // a turma pulando de verdade na areia, olhando os fogos
-    const fimFesta = ctx.party(['player', 'weng', ...TURMA], '2025');
+    const fimFesta = ctx.party(['player', 'weng', ...TURMA], '2026');
     await ctx.narrate('Os fogos explodiram sobre o mar de Cabo Frio. A turma inteira pulando, gritando e se abraçando na areia.');
     const c = await ctx.choose('bella', '(Meia-noite, suada, descalça e de branco)', ['"Melhor virada. A gente andou quilômetros por ela."', '"Feliz ano novo, amor."', 'Abraçar ele bem apertado']);
     if (c === 0) await ctx.say('weng', 'Três. A carona fez o resto. Mas eu conto como cinco.');
@@ -357,7 +357,7 @@ const forteScripts: Record<string, Script> = {
       await ctx.emote('weng', 'heart');
       await ctx.say('weng', '...Esse abraço já valeu a caminhada.');
     }
-    await ctx.say('felipe', 'FELIZ 2025, GALERA!');
+    await ctx.say('felipe', 'FELIZ 2026, GALERA!');
     await ctx.say('ruan', 'E agora, como a gente volta?');
     await ctx.say('nathan', '...Uber?');
     await ctx.say('bella', 'NÃO.');
@@ -386,7 +386,7 @@ const forteScripts: Record<string, Script> = {
     await ctx.say('nathan', objDone('virada') ? 'Ano que vem eu reservo o Uber em julho. Juro.' : 'Seis minutos! Ninguém some, hein!');
   },
   async vitoria(ctx) {
-    await ctx.say('vitoria', objDone('virada') ? 'Feliz 2025! Meu pé dói e eu tô muito feliz.' : 'Rápido, rápido, tá quase!');
+    await ctx.say('vitoria', objDone('virada') ? 'Feliz 2026! Meu pé dói e eu tô muito feliz.' : 'Rápido, rápido, tá quase!');
   },
   async ruan(ctx) {
     await ctx.say('ruan', objDone('virada') ? 'Pulei as sete ondas. Na quarta eu engoli o mar.' : 'Daqui dá pra ver os fogos de três praias.');

@@ -21,7 +21,7 @@ export const REGIONS: RegionMeta[] = [
   { id: 'araruama', name: 'Araruama', chapter: 'Capítulo 4', year: 'Ano 1', subtitle: 'Ano-novo em família', entryMap: 'ar-cobertura', entrySpawn: 'porta', worldPos: { x: 0.74, y: 0.52 } },
   { id: 'rio-das-ostras', name: 'Rio das Ostras', chapter: 'Capítulo 5', year: 'Ano 1', subtitle: 'Um dia de praia', entryMap: 'ro-praia', entrySpawn: 'chegada', worldPos: { x: 0.90, y: 0.34 } },
   { id: 'niteroi', name: 'Niterói', chapter: 'Capítulo 6', year: 'Ano 1', subtitle: 'Do outro lado da baía', entryMap: 'nt-apto', entrySpawn: 'porta', worldPos: { x: 0.52, y: 0.64 } },
-  { id: 'cabo-frio', name: 'Cabo Frio', chapter: 'Capítulo 7', year: 'Ano 2', subtitle: 'A virada a pé', entryMap: 'cf-casa', entrySpawn: 'porta', worldPos: { x: 0.92, y: 0.62 } },
+  { id: 'cabo-frio', name: 'Cabo Frio', chapter: 'Capítulo 7', year: 'Ano 3', subtitle: 'A virada a pé', entryMap: 'cf-casa', entrySpawn: 'porta', worldPos: { x: 0.92, y: 0.62 } },
 ];
 
 export function regionMeta(id: RegionId): RegionMeta {

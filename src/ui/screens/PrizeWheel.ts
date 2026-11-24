@@ -5,7 +5,7 @@ import { assetExists, assetURL } from '@/utils/asset';
 import { textureURL } from '../textures';
 
 /**
- * Roleta da Sorte do Weng — aparece no fim dos capítulos 1 e 2.
+ * Roleta da Sorte do Weng — aparece no fim do prólogo (a bolsa) e do capítulo 1 (a Hello Kitty).
  *
  * É uma roleta "honesta" que trapaceia o tempo todo: no 1º giro cai num prêmio ridículo,
  * no 2º quase cai no prêmio e escapa no último segundo, e no 3º finalmente entrega o
@@ -35,7 +35,7 @@ interface Roleta {
   /**
    * 2º giro: quase ganha uma coisa boa e acaba em outro prêmio muito ruim.
    * 'creep': para no comecinho de `from` e escorrega pra `slice` (= from - 1).
-   * 'meli': para no meio de `from` e a pata da Meli empurra a roleta pra `slice`.
+   * 'meli': para no meio de `from` e a pata da gata (a Lala, gata da Bella) empurra a roleta pra `slice`.
    */
   second: { trick: 'creep' | 'meli'; from: number; slice: number; before: Line; after: Line[] };
   /** 3º giro: quase para em `tease` (= win + 1)... e clica pro presente. */
@@ -64,7 +64,7 @@ const ROLETAS: Record<PrizeWheelId, Roleta> = {
     ],
     win: 0,
     intro: [
-      ['w-malandro', 'Fim do capítulo 1! E toda fase boa termina com prêmio. Apresento a Roleta da Sorte do Weng!'],
+      ['w-malandro', 'Fim do prólogo! E toda fase boa termina com prêmio. Apresento a Roleta da Sorte do Weng!'],
       ['b-pensa', 'Peraí. Tem anel de noivado nessa roleta?! E... camisinha?!'],
       ['w-ri', 'Tem de tudo. É uma roleta muito completa. Pode girar, ela é 100% honesta.'],
     ],
@@ -105,24 +105,24 @@ const ROLETAS: Record<PrizeWheelId, Roleta> = {
       KITTY,
       S('colher', 'Colher de pau'),
       S('anel', 'Anel de noivado'),
-      S('sache', 'Sachê da Meli (já comido)'),
+      S('sache', 'Sachê da Lala (já comido)'),
       DINHEIRO,
       S('camisinha', 'Camisinha'),
-      S('louca', 'Lavar a louça do apê'),
+      S('louca', 'Lavar a louça do churrasco'),
       S('colar', 'Colar'),
       S('paris', 'Viagem pra Paris'),
       S('carro', 'Carro 0 km'),
     ],
     win: 0,
     intro: [
-      ['w-malandro', 'Fim do capítulo 2! A Roleta da Sorte voltou. E a Hello Kitty continua lá, te esperando.'],
+      ['w-malandro', 'Fim do capítulo 1! A Roleta da Sorte voltou. E a Hello Kitty continua lá, te esperando.'],
       ['b-pensa', 'Dessa vez ela é minha. E se aparecer bala, eu vou embora.'],
       ['w-orgulho', 'Agora tem até carro 0 km. Gira aí.'],
     ],
     first: {
       slice: 6,
       after: [
-        ['w-ri', 'Lavar a louça do apê! A pia agradece.'],
+        ['w-ri', 'Lavar a louça do churrasco! Farofa pra dez pessoas. A pia agradece.'],
         ['b-fogo', 'Eu NÃO vou lavar louça de prêmio.'],
         ['w-malandro', 'Tá bom, roda de novo.'],
       ],
@@ -133,13 +133,13 @@ const ROLETAS: Record<PrizeWheelId, Roleta> = {
       slice: 3,
       before: ['b-feliz', 'MIL REAIS NO MULTIDÃO! Eu vou comprar o shopping inteiro!'],
       after: [
-        ['w-ri', 'A Meli empurrou a roleta. Ela ganhou o sachê. Você ganhou... o pacotinho vazio.'],
-        ['b-fogo', 'MELI!'],
+        ['w-ri', 'A Lala empurrou a roleta. Ela ganhou o sachê. Você ganhou... o pacotinho vazio.'],
+        ['b-fogo', 'LALA!'],
         ['w-orgulho', 'Ela é muito competitiva. Puxou a dona.'],
       ],
     },
     third: {
-      before: [['w-malandro', 'Prendi a Meli no quarto. Roda de novo, última chance.']],
+      before: [['w-malandro', 'Tranquei a Lala no quarto. Roda de novo, última chance.']],
       tease: 1,
       teaseLine: ['b-fogo', 'A colher de pau de novo NÃO. Anda, anda...'],
       win: ['b-feliz', 'A HELLO KITTY! Finalmente! Ela é minha!'],
@@ -300,7 +300,7 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
       'div',
       { class: 'bg-panel panel gp-panel tr-panel pw-panel' },
       h('div', { class: 'bg-title pw-title' }, 'Roleta da Sorte do Weng'),
-      h('div', { class: 'pw-sub' }, id === 'bolsa' ? 'Prêmio do fim do capítulo 1' : 'Prêmio do fim do capítulo 2'),
+      h('div', { class: 'pw-sub' }, id === 'bolsa' ? 'Prêmio do fim do prólogo' : 'Prêmio do fim do capítulo 1'),
       wheelBox,
       result,
       h('div', { class: 'tr-talk' }, face, msg),

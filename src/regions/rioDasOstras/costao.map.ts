@@ -213,6 +213,8 @@ const scripts: Record<string, Script> = {
     await ctx.frame(26.2, 11.2, 0);
     await ctx.fadeIn(800);
     await ctx.narrate('O sol foi descendo devagar e pintou o mar inteiro de laranja. Só dava pra ouvir a onda batendo nas pedras.');
+    // a cena de pertinho: os dois abraçados no banco
+    await ctx.backdrop('cena-ro-mirante');
     await ctx.say('bella', 'Weng... eu sei que vocês não tavam falando do preço do mate.');
     await ctx.say('weng', '(rindo baixinho) Você percebeu?');
     await ctx.say('bella', 'Eu conheço meu pai. Ele só fala baixinho daquele jeito quando é coisa séria.');
@@ -234,6 +236,7 @@ const scripts: Record<string, Script> = {
     await ctx.say('pai-ro', '(lá de baixo, gritando) Ô casal! Já deu meia hora! E alguém viu a minha torrada?');
     await ctx.say('bella', '(rindo) Ele vai procurar aquela torrada até o Natal.');
     await ctx.fadeOut(500);
+    await ctx.backdrop(null);
     ctx.stand('player');
     ctx.stand('weng');
     ctx.setFlag('ro-no-banco', false);

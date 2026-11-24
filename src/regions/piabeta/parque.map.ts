@@ -118,6 +118,8 @@ const scripts: Record<string, Script> = {
         'E no coreto, debaixo de chuva, veio o primeiro beijo.',
       ],
     });
+    // presente de verdade: a Roleta da Sorte do Weng (que trapaceia até o último giro)
+    await ctx.prizeWheel('bolsa');
     await ctx.chapterCard('Capítulo 1', 'Piabetá', 'O segundo encontro', 'Começar');
     await ctx.phone({ contact: 'Weng ♥', avatar: 'portrait-weng', clock: '23:48', caption: 'Naquela mesma noite...' }, [
       { from: 'them', text: 'cheguei' },

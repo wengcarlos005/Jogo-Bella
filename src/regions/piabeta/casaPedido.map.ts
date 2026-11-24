@@ -80,7 +80,7 @@ const scripts: Record<string, Script> = {
       ],
     });
     // presente de verdade: a Roleta da Sorte do Weng (que trapaceia até o último giro)
-    await ctx.prizeWheel('bolsa');
+    await ctx.prizeWheel('kitty');
     await ctx.chapterCard('Capítulo 2', 'Duque de Caxias', 'Nosso cantinho. A primeira vez no apê do Weng.', 'Começar');
     ctx.setFlag('weng-segue');
     await ctx.teleport('duque-apto', 'porta');

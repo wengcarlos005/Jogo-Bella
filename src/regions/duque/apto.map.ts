@@ -116,8 +116,6 @@ export async function conviteSerra(ctx: ScriptContext): Promise<void> {
         'E aí veio o convite: o aniversário dela seria na serra.',
       ],
     });
-    // presente de verdade: a Roleta da Sorte do Weng (que trapaceia até o último giro)
-    await ctx.prizeWheel('kitty');
     await ctx.chapterCard('Capítulo 3', 'Petrópolis', 'O aniversário dela.', 'Começar');
     // a véspera: a Bella escolhendo a roupa da viagem (visual novo a partir daqui)
     await ctx.narrate('Na noite antes da viagem. Mala aberta em cima da cama, roupa espalhada pelo quarto inteiro.');
