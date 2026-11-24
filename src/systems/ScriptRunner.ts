@@ -625,7 +625,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       }
     },
 
-    async kiss() {
+    async kiss(eyesClosed = true) {
       const b = scene.player;
       const w = scene.npcs.get('weng')?.npc;
       if (!w) return;
@@ -674,8 +674,8 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       // olhos fechados
       b.face('right');
       w.face('left');
-      if (scene.textures.exists('bella-kiss')) b.setTexture('bella-kiss');
-      if (scene.textures.exists('weng-kiss')) w.setTexture('weng-kiss');
+      if (eyesClosed && scene.textures.exists('bella-kiss')) b.setTexture('bella-kiss');
+      if (eyesClosed && scene.textures.exists('weng-kiss')) w.setTexture('weng-kiss');
       // 3) o beijo: brilho rosa e um coração grande que pulsa atrás dos dois
       // por cima de tudo (o telhado do coreto fica por cima dos dois, mas não do coração)
       const glow = scene.add.image(midX, headY, 'fx-glow').setTint(0xff7aa8).setBlendMode(Phaser.BlendModes.ADD).setDepth(160_000).setAlpha(0).setDisplaySize(10, 10);

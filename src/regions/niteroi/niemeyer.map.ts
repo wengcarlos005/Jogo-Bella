@@ -22,6 +22,7 @@ async function canto(ctx: ScriptContext, flag: string): Promise<void> {
     return;
   }
   await ctx.wait(300);
+  ctx.weather('sunset');
   await ctx.say('bella', 'Weng, o sol tá baixando e a baía tá ficando dourada. Foto. Agora. Na beira da água.');
   await ctx.say('weng', 'Sim, senhora fotógrafa.');
   ctx.objective(Q, 'niemeyer');
@@ -69,8 +70,13 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Dois cocos, moço. Bem gelados.');
     ctx.sfx('pickup');
     await ctx.say('bella', 'Canudinho de papel! Que chique.');
+    const t = ctx.playerTile();
+    await ctx.move('mingau', t.x - 1.3, t.y + 0.2, 125);
+    ctx.face('mingau', 'right');
     await ctx.say('mingau', '(chegando correndo) E o meu?');
     await ctx.say('weng', '...Três cocos, moço.');
+    await ctx.emote('mingau', 'heart');
+    void ctx.move('mingau', 420 / 48, 450 / 48, 90).then(() => ctx.face('mingau', 'down'));
     ctx.hearts('player', 3);
   },
   async pombos(ctx) {
@@ -88,6 +94,8 @@ const scripts: Record<string, Script> = {
       await ctx.say('bella', 'O Rio do outro lado e a gente aqui. Gosto mais daqui.');
       return;
     }
+    ctx.weather('sunset');
+    ctx.letterbox(true);
     await ctx.say('bella', 'Aqui! Com a água e o Pão de Açúcar atrás.');
     await ctx.say('tio-nt', 'Deixa que eu tiro a de vocês dois! Me dá o celular.');
     await ctx.say('weng', '(cochichando) A mão dele treme um pouquinho. Mas ele tira com o maior carinho.');
@@ -98,6 +106,8 @@ const scripts: Record<string, Script> = {
     else await ctx.photo('Caminho Niemeyer, com o Rio do outro lado da baía');
     await ctx.say('bella', 'Ficou perfeita. A luz do fim de tarde ajudou.');
     await ctx.say('weng', 'A luz ajudou um pouco. Você ajudou o resto.');
+    await ctx.emote('bella', 'heart');
+    ctx.letterbox(false);
     ctx.hearts('player', 8);
     ctx.objective(Q, 'foto');
     await ctx.say('tio-nt', '(de longe) Casal! Bora? O On Fire tá esperando, eu reservei pra todo mundo!');

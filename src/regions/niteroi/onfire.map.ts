@@ -20,8 +20,11 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Diego, você já falou isso umas cinco vezes.');
     await ctx.say('diego', 'E vou falar mais cinco.');
     await ctx.say('tio-nt', 'Mesa grande pra todo mundo! Escolham o que quiserem, hoje é por minha conta.');
+    void ctx.move('mingau', 7.6, 9.0, 110);
     await ctx.say('mingau', 'Eu vou no escorregador primeiro!');
     await ctx.say('mae-lilian', 'Primeiro come, depois escorrega! Nessa ordem!');
+    await ctx.emote('mingau', 'sweat');
+    void ctx.move('mingau', 445 / 48, 440 / 48, 60).then(() => ctx.face('mingau', 'left'));
     ctx.toast('Vá até o balcão pedir as bandejas');
   },
   async balcao(ctx) {
@@ -35,13 +38,28 @@ const scripts: Record<string, Script> = {
     const r = await ctx.bandeja();
     ctx.setFlag('nt-bandeja-estrelas', r.stars);
     await ctx.fadeOut(600);
+    // todo mundo em volta da mesa grande
+    ctx.follow('weng', false);
+    ctx.place('player', 13.0, 14.75, 'up');
+    ctx.place('weng', 14.6, 14.75, 'up');
+    ctx.place('lilian', 16.6, 14.75, 'up');
+    ctx.place('vinicius', 18.2, 14.75, 'up');
+    ctx.place('vivian', 20.2, 14.75, 'up');
+    ctx.place('mingau', 21.6, 14.75, 'up');
+    ctx.place('diego', 17.3, 9.75, 'down');
+    ctx.place('tio-nt', 11.4, 12.9, 'right');
+    ctx.place('mae-lilian', 23.2, 12.9, 'left');
+    ctx.letterbox(true);
+    await ctx.frame(17.3, 12.6, 0);
     await ctx.narrate('A mesa grande lotada de bandeja. Brisket com o anel rosa da fumaça, costela brilhando de molho, batata, milho, mac and cheese.');
     await ctx.fadeIn(500);
     await ctx.say('tio-nt', r.stars >= 2 ? 'Acertou o pedido de todo mundo! Até o do Diego, que pediu metade do cardápio.' : 'Teve uma trocadinha aqui e ali, mas ninguém tá reclamando com a boca cheia.');
     await ctx.say('vinicius', 'Primeira vez aqui. Já quero voltar.');
     await ctx.say('lilian', 'Viu? Eu falei que a família é legal.');
     await ctx.say('mingau', 'A Bella tá com molho na bochecha!');
+    ctx.face('player', 'right');
     await ctx.say('bella', 'O Weng também tá!');
+    ctx.face('weng', 'left');
     await ctx.say('weng', 'É estilo. Churrasco americano se come assim.');
     const c = await ctx.choose('bella', '(A costela desmanchando, a família inteira rindo)', ['"Melhor costela da minha vida."', 'Limpar o molho da bochecha dele', '"Tia, a senhora trouxe chocolate pra sobremesa?"']);
     if (c === 0) await ctx.say('diego', 'DOZE HORAS, Bella. Agora você entende.');
@@ -49,13 +67,20 @@ const scripts: Record<string, Script> = {
       await ctx.emote('weng', 'heart');
       await ctx.say('vivian', 'Aaaaah! Para, que eu vou chorar no meu milho.');
     } else await ctx.say('mae-lilian', '(abrindo a bolsa) Mas é CLARO que eu trouxe.');
+    await ctx.say('tio-nt', 'Um brinde! À família, que só aumenta.');
+    await ctx.say('diego', 'E ao brisket. Doze horas.');
     await ctx.say('tio-nt', 'Bella, volta sempre, viu? Aqui é a sua casa também.');
     await ctx.say('bella', '(baixinho) Weng... sua família é muito boa.');
     await ctx.say('weng', 'Agora é a sua também. A metade que dá chocolate e a metade que dá pato.');
     ctx.hearts('player', 12);
+    await ctx.say('mingau', 'Comi tudo! AGORA posso ir no escorregador?');
+    await ctx.say('mae-lilian', 'Agora pode!');
     if (ctx.hasArt('memory-nt-03')) await ctx.memory('mem-nt-03');
     ctx.objective(Q, 'almoco');
     await ctx.fadeOut(700);
+    ctx.letterbox(false);
+    await ctx.unfocus(10);
+    ctx.follow('weng', true);
     await ctx.chapterCard('Fim do Capítulo 6', 'Niterói', 'Do outro lado da baía.', 'Continuar', {
       title: 'Do outro lado da baía',
       photos: ['memory-nt-01', 'memory-nt-02', 'memory-nt-03'].filter((k) => ctx.hasArt(k)),

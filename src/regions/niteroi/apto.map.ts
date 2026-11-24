@@ -42,10 +42,19 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'Weng... isso aqui é um apartamento ou um hotel?');
     await ctx.say('weng', 'Eu falei que era bonito.');
     await ctx.say('bella', 'Você falou "é legal". LEGAL. Isso aqui tem vista pro Pão de Açúcar!');
+    // a mãe da Lilian larga a cozinha e vem receber os dois na sala
+    const vindo = ctx.move('mae-lilian', 24.6, 9.6, 90).then(() => ctx.move('mae-lilian', 13.0, 9.6, 90)).then(() => ctx.move('mae-lilian', 13.0, 11.9, 90));
     await ctx.say('mae-lilian', 'Chegaram! Entra, entra! Bella, que bom que você veio!');
+    await ctx.move('player', 5.2, 11.9, 70);
+    await ctx.move('player', 11.6, 11.9, 70);
+    await vindo;
+    ctx.face('player', 'right');
+    ctx.face('mae-lilian', 'left');
+    await ctx.emote('mae-lilian', 'heart');
     await ctx.say('bella', 'Oi! Obrigada por receber a gente!');
-    await ctx.say('mae-lilian', 'Imagina, minha filha. Dá oi pra todo mundo e depois vem aqui na cozinha. Eu tenho uma coisinha pra você.');
+    await ctx.say('mae-lilian', 'Imagina, minha filha. Que abraço gostoso! Dá oi pra todo mundo e depois vem aqui na cozinha. Eu tenho uma coisinha pra você.');
     await ctx.say('weng', '(cochichando) "Uma coisinha". Prepara a bolsa.');
+    void ctx.move('mae-lilian', 13.0, 9.6, 80).then(() => ctx.move('mae-lilian', 24.6, 9.6, 80)).then(() => ctx.move('mae-lilian', 1180 / 48, 382 / 48, 80)).then(() => ctx.face('mae-lilian', 'down'));
     ctx.objective(Q, 'chegar');
     ctx.toast('Dê oi pra família (siga as setas)');
   },
@@ -156,6 +165,8 @@ const scripts: Record<string, Script> = {
     }
     await ctx.say('bella', 'Weng, vem! Abre a varanda!');
     await ctx.fadeOut(400);
+    ctx.letterbox(true);
+    ctx.weather('sunset');
     await ctx.narrate('A porta de vidro abriu e entrou o cheiro de mar.');
     await ctx.narrate('Lá embaixo, a curva da praia de Icaraí e a pedrinha no meio da água. Do outro lado da baía, o Rio inteiro. E o Pão de Açúcar.');
     await ctx.fadeIn(400);
@@ -171,6 +182,7 @@ const scripts: Record<string, Script> = {
       await ctx.say('weng', '...Melhor vista, de novo.');
     }
     await ctx.say('tio-nt', '(lá de dentro) Ô casal! Bora dar uma volta no Caminho Niemeyer antes do almoço?');
+    ctx.letterbox(false);
     await ctx.say('bella', 'Bora!');
     ctx.hearts('player', 6);
     ctx.objective(Q, 'varanda');
@@ -201,11 +213,17 @@ async function chocolates(ctx: ScriptContext): Promise<void> {
   ctx.setFlag('nt-chocolate-estrelas', r.stars);
   const n = 12 + r.pts;
   await ctx.narrate(`No fim, ${n} chocolates. A Bella mal conseguia segurar.`);
+  {
+    const t = ctx.playerTile();
+    await ctx.move('mingau', t.x + 1.3, t.y + 0.3, 120);
+    ctx.face('mingau', 'left');
+  }
   await ctx.say('mingau', '(aparecendo do nada) Precisa de ajuda pra carregar?');
   await ctx.say('bella', 'Não. Mas toma um, pela coragem.');
   await ctx.say('weng', '(pegando um escondido) E esse é pelo motorista.');
   await ctx.say('bella', 'WENG!');
   await ctx.say('mae-lilian', 'Deixa ele! Tem mais na cesta. Sempre tem mais.');
+  void ctx.move('mingau', 805 / 48, 560 / 48, 90).then(() => ctx.face('mingau', 'left'));
   if (!ctx.has('cesta-chocolates')) await ctx.give('cesta-chocolates', 1, false, 'A mãe da Lilian te deu');
   ctx.hearts('player', 8);
   if (ctx.hasArt('memory-nt-01')) await ctx.memory('mem-nt-01');

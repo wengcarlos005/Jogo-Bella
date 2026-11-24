@@ -44,6 +44,9 @@ async function conversaSogro(ctx: ScriptContext): Promise<void> {
   void ctx.move('weng', 14.0, 13.6, 55).then(() => ctx.face('weng', 'left'));
   await ctx.move('player', 7.2, 11.7, 80);
   ctx.face('player', 'left');
+  // só os dois, de frente pro mar: câmera de cinema
+  ctx.letterbox(true);
+  await ctx.frame(13.3, 13.6, 800);
   await ctx.say('pai-ro', 'Senta aqui, Weng. Na cadeira que você pagou.');
   await ctx.say('weng', '(engolindo seco) Claro, sogro.');
   await ctx.say('pai-ro', 'Eu trazia a Bella aqui quando ela era pequenininha. Ela chorava quando a onda derrubava o castelo.');
@@ -59,11 +62,14 @@ async function conversaSogro(ctx: ScriptContext): Promise<void> {
   await ctx.say('pai-ro', 'Só uma coisa. Cuida dela. Ela é o meu tesouro.');
   await ctx.say('weng', 'Pode deixar. Ela é o meu também.');
   await ctx.say('pai-ro', '...Bom. Isso aqui foi uma conversa de homem. Não conta pra ela que eu fiquei emocionado.');
+  ctx.letterbox(false);
+  await ctx.unfocus(600);
   await ctx.move('player', 15.4, 13.9, 80);
   ctx.face('player', 'left');
   await ctx.say('bella', '(voltando com três copos de mate) Do que vocês tavam falando?');
   await ctx.say('pai-ro', 'Do preço do mate. Um absurdo.');
   await ctx.say('weng', '(piscando pra Bella) Do preço do mate.');
+  await ctx.emote('bella', 'question');
   ctx.hearts('player', 10);
   ctx.follow('weng', true);
   ctx.objective(Q, 'sogro');
@@ -205,13 +211,17 @@ const scripts: Record<string, Script> = {
     }
     await ctx.say('weng', 'Fim de tarde, hora do petisco. Bora pro quiosque!');
     await ctx.fadeOut(500);
+    ctx.weather('sunset');
     await ctx.narrate('Fim de tarde. Uma mesinha de plástico, os pés na areia e a mesa cheia.');
     await ctx.fadeIn(400);
     const c = await ctx.choose('bella', 'O que pede primeiro?', ['Batata frita', 'Isca de peixe', 'Camarão', 'Tudo. Pede tudo.']);
     await ctx.say('weng', c === 3 ? 'Tudo. Moço, manda tudo!' : 'E mais um pouco de tudo, que hoje a gente merece.');
     await ctx.say('pai-ro', '...Eu vou provar só um pouquinho. Só um.');
     await ctx.say('bella', '(cochichando) Ele já comeu cinco.');
+    ctx.weather('rain');
+    ctx.shake(400);
     await ctx.narrate('E então o céu fechou. De repente. Vento, nuvem escura e um trovão lá longe.');
+    await ctx.emote('bella', 'exclaim');
     await ctx.say('bella', 'Weng... aquilo é uma tempestade?');
     await ctx.say('weng', 'Pega as coisas! Guarda-sol, toalha, cadeira! CORRE!');
     await ctx.fadeOut(400);

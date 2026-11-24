@@ -10,6 +10,17 @@ const noite2 = () => GameState.is('cf-noite2');
 async function pizza(ctx: ScriptContext): Promise<void> {
   ctx.follow('weng', false);
   await ctx.fadeOut(400);
+  // todo mundo em volta da mesa (cada um no seu lugar), a câmera na mesa
+  ctx.place('player', 7.2, 10.9, 'right');
+  ctx.place('weng', 7.4, 12.1, 'right');
+  ctx.place('nathan', 16.4, 10.6, 'left');
+  ctx.place('vitoria', 16.6, 11.9, 'left');
+  // a fileira da frente (atrás da mesa eles sumiriam)
+  ctx.place('felipe', 9.0, 12.25, 'up');
+  ctx.place('ruan', 11.7, 12.25, 'up');
+  ctx.place('puggian', 14.4, 12.25, 'up');
+  ctx.letterbox(true);
+  await ctx.frame(11.7, 11.2, 0);
   await ctx.narrate('Noite do dia 30. Todo mundo de banho tomado, com fome de leão e areia ainda no pé.');
   await ctx.fadeIn(400);
   await ctx.say('felipe', 'Pizza! Quem escolhe os sabores?');
@@ -30,6 +41,7 @@ async function pizza(ctx: ScriptContext): Promise<void> {
       if (c === 1) await ctx.say('vitoria', 'Bella... cebola. Eu falei da cebola.');
       else {
         acertos++;
+        await ctx.emote('vitoria', 'heart');
         await ctx.say('vitoria', 'Sem cebola! Você é das minhas.');
       }
     }
@@ -48,11 +60,23 @@ async function pizza(ctx: ScriptContext): Promise<void> {
     await ctx.emote('weng', 'heart');
     await ctx.say('vitoria', 'Gente, olha os dois puxando o queijo. Que grude. Que lindo.');
   } else if (c === 1) await ctx.say('nathan', 'Bella, você é a melhor pessoa dessa casa.');
-  else await ctx.say('puggian', 'PEGA ELA! ...Ela já comeu. Ela é rápida.');
+  else {
+    await ctx.emote('puggian', 'exclaim');
+    await ctx.say('puggian', 'PEGA ELA! ...Ela já comeu. Ela é rápida.');
+  }
   ctx.hearts('player', acertos >= 2 ? 8 : 5);
   if (ctx.hasArt('memory-cf-01')) await ctx.memory('mem-cf-01');
   ctx.objective(Q, 'pizza');
   await ctx.fadeOut(600);
+  ctx.letterbox(false);
+  await ctx.unfocus(10);
+  ctx.place('nathan', 990 / 48, 470 / 48, 'left');
+  ctx.place('vitoria', 1370 / 48, 470 / 48, 'left');
+  ctx.place('felipe', 300 / 48, 450 / 48, 'right');
+  ctx.place('ruan', 1250 / 48, 325 / 48, 'down');
+  ctx.place('puggian', 820 / 48, 330 / 48, 'down');
+  ctx.place('player', 6.2, 10.6, 'right');
+  ctx.place('weng', 5.2, 10.8, 'right');
   await ctx.narrate('Dia 31 de dezembro. O último dia do ano amanheceu azul.');
   ctx.setFlag('cf-dia2');
   await ctx.fadeIn(500);
@@ -65,6 +89,8 @@ async function pizza(ctx: ScriptContext): Promise<void> {
 }
 
 async function cartas(ctx: ScriptContext): Promise<void> {
+  ctx.letterbox(true);
+  await ctx.frame(24.6, 10.8, 700);
   await ctx.say('ruan', 'Ainda faltam umas horas pra virada. Gatinho-Bomba?');
   await ctx.say('bella', 'Eu nunca joguei. É difícil?');
   await ctx.say('nathan', 'É fácil. Até você explodir.');
@@ -95,6 +121,8 @@ async function cartas(ctx: ScriptContext): Promise<void> {
   if (c === 0) await ctx.say('vitoria', 'ISSO! A Bella falou, tá decidido!');
   else if (c === 1) await ctx.say('felipe', 'Justo. Reclamar faz parte.');
   else await ctx.say('weng', 'Carrego. Mas só depois do quilômetro quatro.');
+  ctx.letterbox(false);
+  await ctx.unfocus(400);
   const k = await ctx.cincoKm();
   ctx.setFlag('cf-km-estrelas', k.stars);
   // eles já estão na rua, chegando no Forte: nada de voltar a mostrar a casa
@@ -116,6 +144,8 @@ const scripts: Record<string, Script> = {
       if (!ctx.questActive(Q) && !QuestSystem.isDone(Q)) ctx.startQuest(Q);
       ctx.outfit('praia', true);
       await ctx.narrate('Cabo Frio. Uma casa de praia alugada em Peró, a turma inteira e dois dias até a virada.');
+      void ctx.move('nathan', 14.5, 9.0, 95).then(() => ctx.move('nathan', 990 / 48, 470 / 48, 95)).then(() => ctx.face('nathan', 'left'));
+      await ctx.emote('nathan', 'exclaim');
       await ctx.say('nathan', 'CHEGAMOS! Casa de praia! Ventilador de teto! Rede! Coqueiro!');
       await ctx.say('vitoria', 'Amor, calma. A gente nem entrou direito.');
       await ctx.say('puggian', 'Três quartos e sete pessoas. Quem fica com o quarto bom?');
@@ -137,9 +167,13 @@ const scripts: Record<string, Script> = {
       ctx.setFlag('cf-noite2-1');
       ctx.outfit('branco', true);
       await ctx.narrate('Fim de tarde do dia 31. Banho, roupa branca e aquela ansiedade boa de virada.');
-      await ctx.say('vitoria', 'Todo mundo de branco! Foto da turma!');
+      await ctx.say('vitoria', 'Todo mundo de branco! Foto da turma! Juntinho, juntinho!');
+      await ctx.say('nathan', 'Eu fico no meio. Eu organizei a viagem.');
+      await ctx.say('ruan', 'Você organizou o Uber também?');
+      await ctx.photo('A turma toda de branco, pronta pra virada');
       await ctx.say('bella', 'Weng, você tá muito bonito de branco.');
       await ctx.say('weng', 'Você também. Combinando com o ano novo.');
+      await ctx.emote('bella', 'heart');
       ctx.toast('Gatinho-Bomba na mesinha antes de sair');
     }
   },
