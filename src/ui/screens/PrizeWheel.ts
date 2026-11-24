@@ -193,11 +193,11 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
       const mid = i * SEG + SEG / 2;
       // a imagem do prêmio fica perto da borda, o nome mais pra dentro
       const ic = document.createElementNS(NS, 'image');
-      ic.setAttribute('x', '-15');
-      ic.setAttribute('y', '-15');
-      ic.setAttribute('width', '30');
-      ic.setAttribute('height', '30');
-      ic.setAttribute('transform', `rotate(${mid}) translate(0 -76)`);
+      ic.setAttribute('x', '-17');
+      ic.setAttribute('y', '-17');
+      ic.setAttribute('width', '34');
+      ic.setAttribute('height', '34');
+      ic.setAttribute('transform', `rotate(${mid}) translate(0 -75)`);
       icons.push(ic);
       t.setAttribute('text-anchor', 'middle');
       t.setAttribute('dominant-baseline', 'middle');
@@ -242,7 +242,7 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
         icons[i].setAttribute('href', url ?? '');
         icons[i].style.display = url ? '' : 'none';
         const mid = i * SEG + SEG / 2;
-        texts[i].setAttribute('transform', `rotate(${mid}) translate(0 ${url ? -44 : -58}) rotate(90)`);
+        texts[i].setAttribute('transform', `rotate(${mid}) translate(0 ${url ? -42 : -58}) rotate(90)`);
         // quebra em até 3 linhas curtas (o texto vai deitado ao longo do raio)
         const max = url ? 9 : 12;
         const lines: string[] = [];

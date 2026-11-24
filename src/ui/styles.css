@@ -4311,7 +4311,7 @@ body.pad .pad-only { display: flex !important; }
 /* ---------- Roleta da Sorte do Weng (fim dos capítulos 1 e 2) ---------- */
 .pw-panel { position: relative; width: min(94%, calc(var(--u) * 330)) !important; overflow: hidden; background: linear-gradient(#fff6e8, #ffe4c4) !important; }
 .pw-title { color: #c2185b; letter-spacing: .5px; }
-.pw-sub { text-align: center; font-weight: 800; color: #a0704a; font-size: clamp(10px, calc(var(--u) * 4.4), 14px); }
+.pw-sub { text-align: center; font-weight: 800; color: #a0704a; font-size: clamp(10px, calc(var(--u) * 4.4), 14px); margin-top: calc(var(--u) * 1.5); }
 .pw-wheel { position: relative; width: min(100%, calc(var(--u) * 150)); aspect-ratio: 1; margin: calc(var(--u) * 2) auto 0; }
 .pw-wheel.bump { animation: pw-bump .45s cubic-bezier(.2, 1.8, .4, 1); }
 @keyframes pw-bump { 30% { transform: translateX(-5%) rotate(-3deg); } 60% { transform: translateX(3%) rotate(2deg); } }
@@ -4343,7 +4343,7 @@ body.pad .pad-only { display: flex !important; }
 .pw-reveal.show { opacity: 1; transform: none; }
 .pw-kicker { font-family: var(--font-pixel); color: #e0245e; font-size: clamp(16px, calc(var(--u) * 9), 28px); text-shadow: 0 2px 0 #ffd0dc; animation: pw-pulse 1s ease-in-out infinite; }
 .pw-stage { position: relative; width: calc(var(--u) * 118); height: calc(var(--u) * 118); }
-.pw-gift { position: absolute; left: 50%; bottom: 8%; width: 60%; height: 52%; transform: translateX(-50%); transition: opacity .4s .5s; }
+.pw-gift { position: absolute; left: 50%; bottom: 8%; width: 60%; height: 52%; transform: translateX(-50%); transition: opacity .25s; }
 .pw-gift-box { position: absolute; inset: 22% 4% 0; background: linear-gradient(90deg, transparent 43%, #ffd34d 43% 57%, transparent 57%), linear-gradient(#ff8fb1, #e0507e);
   border: calc(var(--u) * 1.2) solid #8a1f45; border-radius: calc(var(--u) * 2); animation: pw-shake .5s ease-in-out infinite; }
 .pw-gift-lid { position: absolute; left: 0; right: 0; top: 0; height: 28%; background: linear-gradient(90deg, transparent 43%, #ffd34d 43% 57%, transparent 57%), linear-gradient(#ffa6c2, #ef6b95);
@@ -4352,7 +4352,7 @@ body.pad .pad-only { display: flex !important; }
 .pw-gift.open .pw-gift-lid { transform: translate(40%, -160%) rotate(35deg); }
 .pw-gift.open .pw-gift-box { animation: none; }
 .pw-reveal.photo .pw-gift { opacity: 0; }
-.pw-polaroid { position: absolute; inset: 0; margin: auto; width: 86%; height: max-content; background: #fff; padding: 5% 5% 13%; border-radius: calc(var(--u) * 1);
+.pw-polaroid { position: absolute; z-index: 2; inset: 0; margin: auto; width: 86%; height: max-content; background: #fff; padding: 5% 5% 13%; border-radius: calc(var(--u) * 1);
   box-shadow: 0 calc(var(--u) * 2) 0 rgba(90, 30, 10, .3); transform: scale(.2) rotate(-14deg); opacity: 0; transition: transform .7s cubic-bezier(.2, 1.5, .4, 1), opacity .3s; }
 .pw-reveal.photo .pw-polaroid { transform: rotate(-3deg); opacity: 1; }
 .pw-photo { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border-radius: 2px; }
