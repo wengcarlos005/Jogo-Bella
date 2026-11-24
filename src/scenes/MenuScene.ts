@@ -44,7 +44,7 @@ export class MenuScene extends Phaser.Scene {
     UI.applyArt();
     UI.showGameplayUI(false);
     void UI.fade(0, 300);
-    AudioSystem.playMusic('tema-principal');
+    AudioSystem.playMusic('amarelo');
     void UI.title.open();
   }
 

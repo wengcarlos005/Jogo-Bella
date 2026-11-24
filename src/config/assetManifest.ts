@@ -278,9 +278,11 @@ export const ASSETS: AssetEntry[] = [
   ),
 
   // Áudio (opcional)
-  { id: 'AUD-001', key: 'music-tema-principal', file: 'assets/audio/music/tema-principal.ogg', kind: 'audio' },
-  { id: 'AUD-002', key: 'music-piabeta', file: 'assets/audio/music/piabeta.ogg', kind: 'audio' },
-  { id: 'AUD-003', key: 'music-casa', file: 'assets/audio/music/casa.ogg', kind: 'audio' },
+  // Trilha: cada faixa toca o arquivo do casal se ele existir (assets/audio/music/<faixa>.mp3);
+  // sem arquivo, toca a versão 8-bit original (systems/Chiptune.ts).
+  ...['amarelo', 'cientista', 'viva', 'paraiso', 'conserto'].map(
+    (n, i): AssetEntry => ({ id: `AUD-${i}`, key: `music-${n}`, file: `assets/audio/music/${n}.mp3`, kind: 'audio' }),
+  ),
 ];
 
 /** Gera a chave de imagem de cenário de um mapa. */

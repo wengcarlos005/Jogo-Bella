@@ -1,4 +1,5 @@
 import { SettingsStore } from './SaveSystem';
+import { Chiptune } from './Chiptune';
 
 export type Sfx =
   | 'blip'
@@ -85,26 +86,39 @@ class AudioSystemImpl {
     }
   }
 
-  /** Toca música se o arquivo existir; caso contrário, silêncio. */
+  /** Toca a faixa (amarelo, cientista, viva, paraiso, conserto): o MP3 do casal se existir, senão a 8-bit. */
   playMusic(key: string): void {
     if (this.musicKey === key) return;
     this.stopMusic();
     this.musicKey = key;
     const file = this.files.get(`music-${key}`);
-    if (!file) return;
-    this.music = file;
-    file.loop = true;
-    file.volume = SettingsStore.data.musicVolume;
-    void file.play().catch(() => undefined);
+    if (file) {
+      this.music = file;
+      file.loop = true;
+      file.volume = SettingsStore.data.musicVolume;
+      void file.play().catch(() => {
+        // navegador bloqueia som antes do primeiro clique/tecla: tenta de novo no próximo
+        const retry = () => {
+          if (this.music === file) void file.play().catch(() => undefined);
+        };
+        window.addEventListener('pointerdown', retry, { once: true });
+        window.addEventListener('keydown', retry, { once: true });
+      });
+      return;
+    }
+    const ac = this.ac();
+    if (ac) Chiptune.play(ac, key, SettingsStore.data.musicVolume);
   }
 
   stopMusic(): void {
     this.music?.pause();
     this.music = null;
     this.musicKey = null;
+    Chiptune.stop();
   }
 
   applyVolumes(): void {
+    Chiptune.setVolume(SettingsStore.data.musicVolume);
     if (this.music) this.music.volume = SettingsStore.data.musicVolume;
     if (this.rainNode) this.updateRain();
   }

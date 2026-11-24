@@ -1,3 +1,4 @@
+import { trackForMap } from '@/systems/Chiptune';
 import { SceneCheckpoints } from '@/systems/SceneCheckpoints';
 import Phaser from 'phaser';
 import { AUTOSAVE_INTERVAL_MS, CAMERA, PROP_SCALE, GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE, TILE } from '@/config/gameConfig';
@@ -186,7 +187,7 @@ export class GameScene extends Phaser.Scene {
       return null;
     });
     UI.showGameplayUI(true);
-    if (def.music) AudioSystem.playMusic(def.music);
+    AudioSystem.playMusic(trackForMap(def.id));
     this.lastTick = this.time.now;
 
     const gen = this.gen;
