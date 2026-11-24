@@ -193,11 +193,11 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
       const mid = i * SEG + SEG / 2;
       // a imagem do prêmio fica perto da borda, o nome mais pra dentro
       const ic = document.createElementNS(NS, 'image');
-      ic.setAttribute('x', '-17');
-      ic.setAttribute('y', '-17');
-      ic.setAttribute('width', '34');
-      ic.setAttribute('height', '34');
-      ic.setAttribute('transform', `rotate(${mid}) translate(0 -75)`);
+      ic.setAttribute('x', '-22');
+      ic.setAttribute('y', '-22');
+      ic.setAttribute('width', '44');
+      ic.setAttribute('height', '44');
+      ic.setAttribute('transform', `rotate(${mid}) translate(0 -64)`);
       icons.push(ic);
       t.setAttribute('text-anchor', 'middle');
       t.setAttribute('dominant-baseline', 'middle');
@@ -242,7 +242,9 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
         icons[i].setAttribute('href', url ?? '');
         icons[i].style.display = url ? '' : 'none';
         const mid = i * SEG + SEG / 2;
-        texts[i].setAttribute('transform', `rotate(${mid}) translate(0 ${url ? -42 : -58}) rotate(90)`);
+        texts[i].setAttribute('transform', `rotate(${mid}) translate(0 -58) rotate(90)`);
+        // com imagem, a fatia é só a imagem (o nome aparece embaixo da roleta quando ela para)
+        texts[i].style.display = url ? 'none' : '';
         // quebra em até 3 linhas curtas (o texto vai deitado ao longo do raio)
         const max = url ? 9 : 12;
         const lines: string[] = [];
@@ -269,9 +271,27 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
     paint();
 
     // ---------- tela ----------
-    const pointer = h('div', { class: 'pw-pointer' });
-    const paw = h('img', { class: 'pw-paw', src: textureURL('portrait-meli') ?? '', alt: '' });
-    const wheelBox = h('div', { class: 'pw-wheel' }, svg as unknown as HTMLElement, pointer, paw);
+    const art = (id: string) => iconUrl(id);
+    const aroUrl = art('aro');
+    const setaUrl = art('seta');
+    const pinoUrl = art('pino');
+    const pataUrl = art('meli-pata');
+    const espiaUrl = art('meli-espia');
+    if (aroUrl) [rim, ...bulbs].forEach((el) => el.remove());
+    if (pinoUrl) [hub, hubImg].forEach((el) => el.remove());
+    const pointer = setaUrl ? h('img', { class: 'pw-pointer art', src: setaUrl, alt: '' }) : h('div', { class: 'pw-pointer' });
+    const paw = h('img', { class: `pw-paw${pataUrl ? ' art' : ''}`, src: pataUrl ?? textureURL('portrait-meli') ?? '', alt: '' });
+    const espia = espiaUrl ? h('img', { class: 'pw-espia', src: espiaUrl, alt: '' }) : null;
+    const wheelBox = h(
+      'div',
+      { class: 'pw-wheel' },
+      espia,
+      svg as unknown as HTMLElement,
+      aroUrl ? h('img', { class: 'pw-aro', src: aroUrl, alt: '' }) : null,
+      pinoUrl ? h('img', { class: 'pw-pino', src: pinoUrl, alt: '' }) : null,
+      pointer,
+      paw,
+    );
     const face = h('img', { class: 'tr-face bust pw-face', alt: '' }) as HTMLImageElement;
     const msg = h('div', { class: 'gp-bubble tr-msg pw-msg' });
     const btn = h('button', { class: 'btn primary pw-btn' }, 'Continuar') as HTMLButtonElement;
@@ -366,12 +386,16 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
         const from = angle;
         const t0 = performance.now();
         let lit = 0;
+        wheelBox.classList.add('spinning');
         const step = (now: number) => {
           const t = Math.min(1, (now - t0) / ms);
           setAngle(from + (target - from) * ease(t));
           if (++lit % 4 === 0) bulbs.forEach((b, k) => b.classList.toggle('on', (k + lit / 4) % 2 < 1));
           if (t < 1) requestAnimationFrame(step);
-          else r();
+          else {
+            wheelBox.classList.remove('spinning');
+            r();
+          }
         };
         requestAnimationFrame(step);
       });
@@ -433,6 +457,12 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
         show(labels[cfg.second.from].full, true);
         await say(cfg.second.before, '...');
         lock();
+        if (espia) {
+          espia.classList.add('in');
+          await wait(1100);
+          espia.classList.remove('in');
+          await wait(250);
+        }
         paw.classList.add('in');
         await wait(650);
         wheelBox.classList.add('bump');

@@ -147,10 +147,46 @@ function finish(): void {
 export function hideLoader(): Promise<void> {
   if (!loader) return Promise.resolve();
   const p = new Promise<void>((r) => onGone.push(r));
-  target = 1;
-  wantHide = true;
-  if (!raf) raf = requestAnimationFrame(loop);
+  const go = () => {
+    target = 1;
+    wantHide = true;
+    if (!raf) raf = requestAnimationFrame(loop);
+  };
+  // O navegador só deixa tocar música depois de um toque/tecla. Sem isso a música do título
+  // ficava muda (e o primeiro clique já era o "Novo jogo"): pede um toque antes de abrir.
+  const ua = (navigator as Navigator & { userActivation?: { hasBeenActive: boolean } }).userActivation;
+  if (ua?.hasBeenActive) go();
+  else waitTap(go);
   return p;
+}
+
+/** "Toque para começar": espera um toque, tecla ou botão do controle. */
+function waitTap(done: () => void): void {
+  const el = loader;
+  if (!el) return done();
+  const hint = h('div', { class: 'ld-tap' }, h('span', {}, '♥'), ' Toque ou aperte qualquer botão para começar ', h('span', {}, '♥'));
+  el.append(hint);
+  target = 1;
+  if (!raf) raf = requestAnimationFrame(loop);
+  let fired = false;
+  const fire = () => {
+    if (fired) return;
+    fired = true;
+    window.removeEventListener('pointerdown', fire, true);
+    window.removeEventListener('keydown', fire, true);
+    hint.remove();
+    done();
+  };
+  window.addEventListener('pointerdown', fire, true);
+  window.addEventListener('keydown', fire, true);
+  // controle: qualquer botão
+  const poll = () => {
+    if (fired) return;
+    const pads = navigator.getGamepads?.() ?? [];
+    if (pads.some((g) => g?.buttons.some((b) => b.pressed))) return fire();
+    requestAnimationFrame(poll);
+  };
+  requestAnimationFrame(poll);
 }
 
 /** Explosão de corações e estrelas a partir de um ponto (% da tela de título). */

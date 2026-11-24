@@ -1,13 +1,25 @@
 """Recorta os ícones da roleta (fundo magenta) em public/assets/minigames/roleta-<id>.webp.
 
 uso: python3 scripts/import-roleta-icons.py <folha> <colunas> <linhas> <id1,id2,...> [lado]
+     python3 scripts/import-roleta-icons.py <folha> box <id:x0,y0,x1,y1:lado> [<id:...> ...]
+     (box: recorta retângulos escolhidos à mão; o item fica no tamanho natural, maior lado = lado)
 """
 import sys
 import numpy as np
 from PIL import Image
 
-src, cols, rows, ids = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4].split(',')
-side = int(sys.argv[5]) if len(sys.argv) > 5 else 192
+src = sys.argv[1]
+BOXES = []
+if sys.argv[2] == 'box':
+    for spec in sys.argv[3:]:
+        i_, b_, sd = spec.split(':')
+        BOXES.append((i_, tuple(int(v) for v in b_.split(',')), int(sd)))
+    cols = rows = 1
+    ids = []
+    side = 0
+else:
+    cols, rows, ids = int(sys.argv[2]), int(sys.argv[3]), sys.argv[4].split(',')
+    side = int(sys.argv[5]) if len(sys.argv) > 5 else 192
 im = np.asarray(Image.open(src).convert('RGB')).astype(np.float32)
 H, W, _ = im.shape
 r, g, b = im[..., 0], im[..., 1], im[..., 2]
@@ -61,11 +73,7 @@ def item_mask(on):
             keep[y, x] = True
     return keep
 
-for k, id_ in enumerate(ids):
-    if id_ == '-':
-        continue
-    cx, cy = k % cols, k // cols
-    cell = img.crop((int(cx * cw), int(cy * ch), int((cx + 1) * cw), int((cy + 1) * ch)))
+def save(cell, id_, side, square=True):
     a = np.asarray(cell)[..., 3]
     keep = item_mask(a > 40)
     cell = Image.fromarray(np.dstack([np.asarray(cell)[..., :3], np.where(keep, a, 0).astype(np.uint8)]), 'RGBA')
@@ -74,15 +82,27 @@ for k, id_ in enumerate(ids):
     piece = cell.crop(box)
     s = side / max(piece.size)
     w, h = max(1, round(piece.width * s)), max(1, round(piece.height * s))
-    # reduz em RGBA pré-multiplicado (sem halo)
     arr = np.asarray(piece).astype(np.float32) / 255
     pm = arr.copy(); pm[..., :3] *= pm[..., 3:4]
     pm_img = [Image.fromarray((pm[..., c] * 255).astype(np.uint8)).resize((w, h), Image.LANCZOS) for c in range(4)]
     pm2 = np.dstack([np.asarray(x).astype(np.float32) / 255 for x in pm_img])
     al = pm2[..., 3:4]
     col = np.where(al > 0, pm2[..., :3] / np.maximum(al, 1e-4), 0)
-    res = np.dstack([np.clip(col, 0, 1), al]) * 255
-    canvas = Image.new('RGBA', (side, side), (0, 0, 0, 0))
-    canvas.paste(Image.fromarray(res.astype(np.uint8), 'RGBA'), ((side - w) // 2, (side - h) // 2))
-    canvas.save(f'public/assets/minigames/roleta-{id_}.webp', lossless=True)
-    print(id_, piece.size, '->', (w, h))
+    res = Image.fromarray((np.dstack([np.clip(col, 0, 1), al]) * 255).astype(np.uint8), 'RGBA')
+    if square:
+        canvas = Image.new('RGBA', (side, side), (0, 0, 0, 0))
+        canvas.paste(res, ((side - w) // 2, (side - h) // 2))
+        res = canvas
+    res.save(f'public/assets/minigames/roleta-{id_}.webp', lossless=True)
+    print(id_, piece.size, '->', res.size)
+
+
+for id_, b_, sd in BOXES:
+    save(img.crop(b_), id_, sd, square=False)
+
+for k, id_ in enumerate(ids):
+    if id_ == '-':
+        continue
+    cx, cy = k % cols, k // cols
+    cell = img.crop((int(cx * cw), int(cy * ch), int((cx + 1) * cw), int((cy + 1) * ch)))
+    save(cell, id_, side)

@@ -101,12 +101,15 @@ class AudioSystemImpl {
       file.loop = true;
       file.volume = this.musicLevel();
       void file.play().catch(() => {
-        // navegador bloqueia som antes do primeiro clique/tecla: tenta de novo no próximo
+        // navegador bloqueia som antes do primeiro clique/tecla: tenta de novo a cada toque até tocar
         const retry = () => {
-          if (this.music === file) void file.play().catch(() => undefined);
+          if (this.music !== file) return stop();
+          void file.play().then(stop, () => undefined);
         };
-        window.addEventListener('pointerdown', retry, { once: true });
-        window.addEventListener('keydown', retry, { once: true });
+        const stop = () => {
+          for (const ev of ['pointerdown', 'keydown', 'touchend']) window.removeEventListener(ev, retry, true);
+        };
+        for (const ev of ['pointerdown', 'keydown', 'touchend']) window.addEventListener(ev, retry, true);
       });
       return;
     }
