@@ -3,6 +3,7 @@ import { playGrillGame, type GrillResult } from './screens/GrillGame';
 import { playCardGame, type CardResult } from './screens/CardGame';
 import { playKissGame, type KissResult } from './screens/KissGame';
 import { playPhoneChat, type PhoneMsg, type PhoneOptions } from './screens/PhoneChat';
+import { playPrizeWheel, type PrizeWheelId } from './screens/PrizeWheel';
 import { playAcaiGame, type AcaiOptions, type AcaiResult } from './screens/AcaiGame';
 import { playTacoGame, type TacoResult } from './screens/TacoGame';
 import { playCookGame, type CookResult } from './screens/CookGame';
@@ -376,6 +377,12 @@ class UIManagerImpl {
   kissGame(): Promise<KissResult> {
     this.dialogue.close();
     return this.replayable(() => playKissGame(this.root), 'kiss');
+  }
+
+  /** Roleta da Sorte do Weng (fim dos capítulos 1 e 2): trapaceia e no fim entrega o presente de verdade. */
+  prizeWheel(id: PrizeWheelId): Promise<void> {
+    this.dialogue.close();
+    return playPrizeWheel(this.root, id);
   }
 
   phone(opts: PhoneOptions, msgs: PhoneMsg[]): Promise<void> {

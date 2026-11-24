@@ -775,6 +775,7 @@ export function createScriptContext(scene: GameScene): ScriptContext {
 
     lead: (who) => scene.setLead(who === 'weng'),
     refresh: () => scene.refreshVisibility(),
+    prizeWheel: (id) => UI.prizeWheel(id),
     teleport: (mapId, spawn) => scene.goTo(mapId, spawn),
   };
   return ctx;

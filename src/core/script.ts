@@ -56,6 +56,8 @@ export interface ScriptContext {
   grill(opts?: { title?: string; helper?: string }): Promise<import('@/ui/screens/GrillGame').GrillResult>;
   /** Minigame do beijo escondido no sofá. */
   kissGame(): Promise<import('@/ui/screens/KissGame').KissResult>;
+  /** Roleta da Sorte do Weng: prêmio de verdade no fim dos capítulos 1 ('bolsa') e 2 ('kitty'). */
+  prizeWheel(id: 'bolsa' | 'kitty'): Promise<void>;
   /** Conversa no celular (transições entre cenas). */
   phone(opts: import('@/ui/screens/PhoneChat').PhoneOptions, msgs: import('@/ui/screens/PhoneChat').PhoneMsg[]): Promise<void>;
   cards(opts?: { title?: string; rounds?: number }): Promise<import('@/ui/screens/CardGame').CardResult>;
