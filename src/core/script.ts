@@ -147,6 +147,12 @@ export interface ScriptContext {
    * Coordenadas em px do cenário ORIGINAL: centro do assento e altura do assento.
    * Resolve quando a jogadora levanta (anda ou aperta interagir).
    */
+  /**
+   * Senta um personagem no meio de uma cena (sem esperar a jogadora levantar). Coordenadas em px da
+   * arte original; seatY = altura do assento. 'up' = de costas, olhando a paisagem. Use stand() depois.
+   */
+  seat(who: string, seatX: number, seatY: number, dir?: Direction): void;
+  stand(who: string): void;
   sit(seatX: number, seatY: number, lines?: [string, string][], couple?: { key: string; x: number; y: number; /** largura do banco pintado (px da arte original) */ w?: number }): Promise<void>;
   /**
    * Animação do beijo. `eyesClosed` (padrão): troca pelos sprites de olhos fechados da roupa que

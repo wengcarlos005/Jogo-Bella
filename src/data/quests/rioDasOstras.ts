@@ -7,7 +7,7 @@ export const RIO_OSTRAS_QUESTS: QuestDef[] = [
     chapter: 'Capítulo 5',
     title: 'Um dia de praia',
     kind: 'principal',
-    description: 'Uma passagem rápida por Rio das Ostras: sol, guarda-sol, frescobol e petisco até a tempestade.',
+    description: 'Uma passagem rápida por Rio das Ostras: sol, guarda-sol, frescobol, petisco até a tempestade e o pôr do sol no costão.',
     objectives: [
       { id: 'chegar', text: 'Chegar na praia', hint: 'Desça pela areia.' },
       { id: 'sol', text: 'Sobreviver ao sol', hint: 'Fica perto da toalha.' },
@@ -19,6 +19,8 @@ export const RIO_OSTRAS_QUESTS: QuestDef[] = [
       { id: 'sogro', text: 'Conversa de sogro', hint: 'O pai da Bella quer falar com o Weng.' },
       { id: 'petisco', text: 'Petisco no quiosque', hint: 'O quiosque de toldo amarelo fica lá em cima, à direita.' },
       { id: 'tempestade', text: 'Fugir da tempestade', hint: 'Junto com o petisco.' },
+      { id: 'piscinas', text: 'Explorar as piscinas naturais do costão', hint: 'Desça da passarela pras pedras: são três piscininhas.' },
+      { id: 'mirante', text: 'Ver o pôr do sol no mirante', hint: 'O banco do mirante fica no fim da passarela, à direita.' },
     ],
   },
 ];

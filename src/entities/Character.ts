@@ -136,13 +136,16 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
 
   sitting = false;
 
-  /** Senta (sem sprite próprio: esconde as pernas atrás do assento). seatY = altura do assento no mundo. */
+  /**
+   * Senta. seatY = altura do assento no mundo. De frente usa a pose sentada desenhada; de costas
+   * (dir 'up', olhando a paisagem) não há pose: esconde as pernas atrás do assento.
+   */
   sit(x: number, seatY: number, dir: Direction = 'down'): void {
     this.sitting = true;
     this.anims.stop();
     const who = this.charKey.startsWith('bella') ? 'bella' : this.charKey.startsWith('weng') ? 'weng' : '';
     const sitKey = `${who}-sit`;
-    if (who && this.scene.textures.exists(sitKey)) {
+    if (who && dir !== 'up' && this.scene.textures.exists(sitKey)) {
       // pose sentada de verdade: pés no chão, um pouco abaixo do assento
       this.standKey = this.charKey;
       this.setTexture(sitKey, 0);

@@ -201,6 +201,14 @@ export const MEMORIES: MemoryDef[] = [
     image: 'memory-ro-02',
   },
   {
+    id: 'mem-ro-03',
+    region: 'rio-das-ostras',
+    title: 'O pôr do sol depois da chuva',
+    year: 'Ano 1',
+    text: 'A chuva passou e o céu abriu laranja. No costão, ele me contou o segredo do meu pai: que eu sou o tesouro dele. E que sou o do Weng também. A gente ficou ali, molhado e abraçado, até o sol sumir.',
+    image: 'memory-ro-03',
+  },
+  {
     id: 'mem-nt-01',
     region: 'niteroi',
     title: 'Os chocolates da mãe da Lilian',

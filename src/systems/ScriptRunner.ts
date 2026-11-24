@@ -520,6 +520,26 @@ export function createScriptContext(scene: GameScene): ScriptContext {
       scene.setUmbrella(who === 'player' ? 'bella' : who, mode);
     },
 
+    seat(who, seatX, seatY, dir = 'down') {
+      const a = actor(who);
+      if (!a) return;
+      if (a instanceof NPC) {
+        a.stopFollowing();
+        a.behavior = 'scripted';
+      }
+      (a.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+      a.sit(seatX / 3, seatY / 3, dir);
+    },
+
+    stand(who) {
+      const a = actor(who);
+      if (!a?.sitting) return;
+      const seatY = a.depth - 40;
+      a.standUp();
+      a.setPosition(a.x, seatY + 20);
+      (a.body as Phaser.Physics.Arcade.Body).reset(a.x, a.y);
+    },
+
     async sit(seatX, seatY, lines, couple) {
       const sx = seatX / 3;
       const sy = seatY / 3;

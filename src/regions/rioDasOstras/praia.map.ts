@@ -236,89 +236,17 @@ const scripts: Record<string, Script> = {
     await ctx.say('bella', 'A gente tá queimado, molhado e cheio de areia.');
     await ctx.say('weng', 'Melhor dia de praia da vida?');
     await ctx.say('bella', 'Melhor dia de praia da vida.');
-    // a chuva passa e o fim de tarde fica só pros dois, na beira d'água
-    await ctx.fadeOut(600);
-    ctx.weather('sunset');
-    ctx.follow('weng', false);
-    ctx.place('player', 16.4, 14.55, 'right');
-    ctx.place('weng', 17.8, 14.45, 'left');
-    ctx.place('pai-ro', 12.6, 13.6, 'right');
-    ctx.letterbox(true);
-    await ctx.frame(17.1, 14.5, 0);
-    await ctx.narrate('A chuva foi embora tão rápido quanto veio. O céu abriu laranja, e a beira do mar ficou só pra eles.');
-    await ctx.fadeIn(700);
-    await ctx.say('bella', 'Weng... eu sei que vocês não tavam falando do preço do mate.');
-    await ctx.say('weng', '...Ele disse que você é o tesouro dele.');
-    await ctx.emote('bella', 'heart');
-    await ctx.say('bella', 'E você respondeu o quê?');
-    await ctx.say('weng', 'Que você é o meu também.');
-    const fim = await ctx.choose('bella', '(Os dois de pé na areia molhada, o sol encostando no mar)', ['Abraçar ele bem forte', '"Então cuida bem, tá?"', 'Dar um beijo com gosto de sal']);
-    if (fim === 0) {
-      await ctx.emote('weng', 'heart');
-      await ctx.say('weng', 'Molhado, cheio de areia e queimado. O abraço mais bonito do dia.');
-    } else if (fim === 1) await ctx.say('weng', 'Todo dia. Com guarda-sol e tudo.');
-    else {
-      await ctx.emote('weng', 'heart');
-      await ctx.say('weng', 'Sal, protetor e batata frita. Aprovado.');
-    }
-    await ctx.say('pai-ro', '(lá do quiosque) Ô casal! O carro tá esperando! E alguém viu a minha torrada?');
-    await ctx.say('bella', '(rindo) Ele vai procurar aquela torrada até o Natal.');
-    ctx.letterbox(false);
-    await ctx.unfocus(500);
-    ctx.follow('weng', true);
-    ctx.hearts('player', 12);
+    await ctx.say('pai-ro', 'Bom. Parou de chover. Vou levando as coisas pro carro.');
+    await ctx.say('pai-ro', 'Vocês têm meia hora. Depois disso eu começo a cobrar estacionamento.');
+    await ctx.say('bella', 'PAI.');
+    await ctx.say('weng', 'Meia hora... Bella, e se a gente subir no costão? Depois da chuva o pôr do sol deve ficar lindo lá de cima.');
+    await ctx.say('bella', 'E tem as piscininhas naturais! Bora, bora!');
+    ctx.hearts('player', 8);
     await ctx.memory('mem-ro-02');
     ctx.objective(Q, 'petisco');
     ctx.objective(Q, 'tempestade');
     await ctx.fadeOut(600);
-    await ctx.chapterCard('Fim do Capítulo 5', 'Rio das Ostras', 'Um dia de praia.', 'Continuar', {
-      title: 'Um dia de praia',
-      photos: ['memory-ro-01', 'memory-ro-02'],
-      lines: [
-        'Uma passagem rápida por Rio das Ostras, e o melhor de tudo foi a praia.',
-        'O pai dela não quis pagar o guarda-sol, e os dois viraram camarão.',
-        'O Weng salvou o dia: sombra, cadeira e um herói de chinelo.',
-        'Frescobol, castelo de areia meio torto, onda gigante e um chapéu resgatado do mar.',
-        'Uma conversa de sogro sobre "o preço do mate".',
-        'E petisco no quiosque até a tempestade chegar.',
-        'Depois da chuva, o pôr do sol na beira do mar e um segredo de sogro contado baixinho.',
-      ],
-    });
-    // a família do Weng chama os dois pra Niterói
-    await ctx.narrate('Algumas semanas depois.');
-    await ctx.phone({ contact: 'Lilian', avatar: 'portrait-lilian', clock: '10:24', caption: 'No celular do Weng' }, [
-      { from: 'them', text: 'Weng!! Minha mãe mandou avisar: domingo almoço aqui em Icaraí' },
-      { from: 'them', text: 'E é pra trazer a Bella. Ela já comprou chocolate.' },
-      { from: 'me', text: 'Já comprou?? Faltam 5 dias kkkk' },
-      { from: 'them', text: 'Uma cesta. Uma CESTA, Weng.' },
-      { from: 'them', text: 'Depois a gente dá uma volta no Caminho Niemeyer e meu pai quer levar todo mundo no On Fire' },
-      { from: 'them', text: 'Ah, e o Vinicius vai. Pela primeira vez. Sejam legais com ele' },
-      { from: 'me', text: 'A gente é sempre legal 😇' },
-      { from: 'them', text: 'Você não. A Bella sim.' },
-    ]);
-    await ctx.say('weng', 'Bella, domingo tem almoço em Niterói. Com a família da Lilian.');
-    await ctx.say('bella', 'A família INTEIRA de novo?');
-    await ctx.say('weng', 'Metade. A metade que dá chocolate.');
-    await ctx.say('bella', '...Então eu vou. E vou de vestido laranja.');
-    await ctx.roadTrip(
-      'Rio das Ostras',
-      'Niterói',
-      [
-        { who: 'bella', text: 'Quem vai estar lá, mesmo?' },
-        { who: 'weng', text: 'A mãe da Lilian, meu tio, a Lilian, a Vivian, o Diego e o Mingau. E o Vinicius, que é novo.' },
-        { who: 'bella', text: 'Ótimo. Pela primeira vez eu não vou ser a pessoa nova da família.' },
-        { who: 'weng', text: 'Olha a ponte! Lá embaixo é a baía de Guanabara.' },
-        { who: 'bella', text: 'Dá pra ver o Pão de Açúcar daqui de cima!' },
-        { who: 'weng', text: 'Chegamos em Icaraí. Respira: lá vem a cesta.' },
-      ],
-      ['pr-palmeira', 'nn-palmeira'],
-      { coast: true },
-    );
-    ctx.unlockRegion('niteroi');
-    await ctx.chapterCard('Capítulo 6', 'Niterói', 'Do outro lado da baía.', 'Começar');
-    if (!GameState.data.regionsVisited.includes('niteroi')) GameState.data.regionsVisited.push('niteroi');
-    if (!ctx.questActive('nt-m1') && !QuestSystem.isDone('nt-m1')) ctx.startQuest('nt-m1');
-    await ctx.teleport('nt-apto', 'porta');
+    await ctx.teleport('ro-costao', 'passarela');
   },
 
   async pai(ctx) {
