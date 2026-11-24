@@ -205,8 +205,10 @@ const scripts: Record<string, Script> = {
     await ctx.say('weng', 'Chegamos bem na hora. Senta aqui comigo.');
     await ctx.fadeOut(400);
     ctx.follow('weng', false);
-    ctx.seat('player', 1207, 642, 'up');
-    ctx.seat('weng', 1271, 642, 'up');
+    // sentados de costas: a borda da frente do assento e os pés do banco ficam na frente deles
+    ctx.setFlag('ro-no-banco');
+    ctx.seat('player', 1207, 648, 'up');
+    ctx.seat('weng', 1271, 648, 'up');
     ctx.letterbox(true);
     await ctx.frame(26.2, 11.2, 0);
     await ctx.fadeIn(800);
@@ -234,6 +236,7 @@ const scripts: Record<string, Script> = {
     await ctx.fadeOut(500);
     ctx.stand('player');
     ctx.stand('weng');
+    ctx.setFlag('ro-no-banco', false);
     ctx.letterbox(false);
     await ctx.unfocus(0);
     ctx.follow('weng', true);
@@ -309,6 +312,18 @@ export const roCostaoMap: MapDef = {
   blocks: blocos(),
 
   overlays: [
+    // banco do mirante (só com os dois sentados): a parte de perto do assento cobre o quadril deles
+    {
+      x0: 1156,
+      y0: 640,
+      x1: 1320,
+      y1: 700,
+      base: 700,
+      front: true,
+      frontAlpha: 1,
+      when: () => GameState.is('ro-no-banco'),
+      poly: [[1158, 641], [1318, 641], [1318, 669], [1306, 669], [1306, 697], [1282, 697], [1282, 669], [1192, 669], [1192, 697], [1166, 697], [1166, 669], [1158, 669]],
+    },
     // lampião do mirante: na frente de quem passa atrás dele
     { x0: 1352, y0: 636, x1: 1412, y1: 782, base: 770, tall: true, poly: [[1362, 644], [1398, 644], [1400, 706], [1390, 708], [1390, 738], [1402, 744], [1402, 772], [1358, 772], [1358, 744], [1370, 738], [1370, 708], [1360, 706]] },
   ],
