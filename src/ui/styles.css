@@ -4411,3 +4411,41 @@ body.pad .pad-only { display: flex !important; }
 .pw-side { gap: calc(var(--u) * 7); }
 .pw-kicker { font-size: clamp(22px, calc(var(--u) * 11), 34px) !important; }
 .pw-text { font-size: clamp(15px, calc(var(--u) * 6.2), 20px) !important; color: #6a3a24 !important; }
+/* ================= Travessia (v3): a faixa de areia de verdade do cenário até a ilhota ================= */
+.tv3-stage { position: relative; overflow: hidden; aspect-ratio: 900 / 340; width: 100%; padding: 0 !important; border-radius: calc(var(--u) * 3); background: #3fc6cf; }
+.tv3-view { position: absolute; inset: 0; }
+.tv3-world { position: absolute; left: 0; top: 0; width: 1536px; height: 1024px; transform-origin: 0 0; background-size: 100% 100%; image-rendering: auto; }
+.tv3-spot { position: absolute; width: 58px; height: 36px; transform: translate(-50%, -50%); border-radius: 50%; cursor: pointer; }
+.tv3-spot img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -62%); pointer-events: none; }
+.tv3-spot.siri img { width: 40px; animation: tv3Crab 1.4s ease-in-out infinite; filter: drop-shadow(0 2px 0 rgba(90, 30, 10, .35)); }
+.tv3-spot.concha img { width: 26px; image-rendering: pixelated; filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 1px #ffc0d0); animation: mgcBeat 1.2s infinite; }
+@keyframes tv3Crab { 0%, 100% { transform: translate(-50%, -62%); } 25% { transform: translate(-64%, -62%) rotate(-6deg); } 75% { transform: translate(-36%, -62%) rotate(6deg); } }
+/* água funda: mancha azul-escura com redemoinho */
+.tv3-spot.fundo { background: radial-gradient(ellipse at 50% 50%, rgba(6, 40, 96, .85), rgba(12, 70, 130, .55) 55%, rgba(30, 110, 160, 0) 75%); }
+.tv3-spot.fundo i { position: absolute; inset: 18% 22%; border-radius: 50%; border: 2px solid rgba(170, 225, 255, .55); animation: tvRipple 2.2s ease-out infinite; }
+/* areia rasinha dentro da água (do lado da faixa): bancozinho claro */
+.tv3-spot.areia.lane0, .tv3-spot.areia.lane2 { background: radial-gradient(ellipse at 50% 50%, rgba(255, 238, 196, .75), rgba(240, 214, 160, .45) 55%, rgba(240, 214, 160, 0) 75%); }
+/* os lugares do próximo passo: anel pontilhado; o escolhido brilha e tem a setinha */
+.tv3-spot.next::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px dashed rgba(255, 255, 255, .9); animation: tv3Pulse 1s ease-in-out infinite; }
+.tv3-spot.aim::after { border: 3px solid #ffd23f; box-shadow: 0 0 14px #ffd23f, inset 0 0 8px rgba(255, 210, 63, .6); animation: none; }
+.tv3-spot.aim::before { content: '▼'; position: absolute; left: 50%; top: -30px; transform: translateX(-50%); color: #ffd23f; font-size: 18px; text-shadow: 0 2px 0 #7a4a00; animation: tv3Bob .6s ease-in-out infinite; }
+@keyframes tv3Pulse { 50% { opacity: .45; } }
+@keyframes tv3Bob { 50% { transform: translate(-50%, -5px); } }
+.tv3-spot.seen.fundo::after, .tv3-spot.seen.concha::after, .tv3-spot.seen.siri::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 3px solid #ff5a5a; }
+/* o casal, de lado, andando pra direita (linha 3 da folha) */
+.tv3-me { position: absolute; z-index: 5; display: flex; transform: translate(-50%, -88%); transition: left .45s ease-out, top .45s ease-out; pointer-events: none; }
+.tv3-chr { display: block; width: 62px; height: 62px; background-size: 400% 400%; background-position: 0% 66.667%; image-rendering: auto; filter: drop-shadow(0 4px 2px rgba(0, 50, 70, .35)); }
+.tv3-chr.w { margin-left: -26px; }
+.tv3-me.walk .tv3-chr { animation: tv3Walk .45s steps(4) 1; }
+@keyframes tv3Walk { from { background-position-x: 0%; } to { background-position-x: 133.33%; } }
+.tv3-hand { position: absolute; left: 50%; bottom: 34%; transform: translateX(-50%); color: #ff5f9a; font-size: 14px; text-shadow: 0 1px 0 #fff; opacity: 0; transition: opacity .2s; }
+.tv3-me.holding .tv3-hand { opacity: 1; animation: mgcBeat .8s infinite; }
+.tv3-me.scared .tv3-chr.b { animation: shake .25s infinite; }
+.tv3-me.hit { animation: shake .3s 2; }
+.tv3-fx { position: absolute; left: 0; top: 0; z-index: 6; pointer-events: none; }
+.tv3-pop { position: absolute; transform: translateX(-50%); font-family: var(--font-pixel); font-size: 22px; white-space: nowrap; animation: tv3PopUp 1s ease-out forwards; text-shadow: 0 2px 0 rgba(0, 0, 0, .35); }
+.tv3-pop.good { color: #fff7c2; }
+.tv3-pop.bad { color: #ff6a6a; }
+@keyframes tv3PopUp { from { opacity: 0; transform: translate(-50%, 10px); } 20% { opacity: 1; } to { opacity: 0; transform: translate(-50%, -26px); } }
+.tv3-rules { position: absolute; inset: 8% 10%; z-index: 8; }
+.pg-stage.tv3-stage { height: auto; max-height: 46vh; }

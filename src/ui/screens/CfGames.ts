@@ -270,12 +270,14 @@ export function playGatinhoGame(parent: HTMLElement): Promise<MiniResult & { pla
 
 // ====================================================================== Travessia até a ilha
 /**
- * Atravessar a pé até a ilha pela faixa de areia na água. A cada passo, escolha onde pisar
- * (← → e ↑ pra andar). Areia clarinha é seguro. Azul-escuro é FUNDO. Brilhinho = concha cortante,
- * bolhinhas = siri. O medo da Bella sobe enquanto ela pensa; segure Espaço pra apertar a mão do Weng.
+ * Atravessar a pé até a ilhota pela faixa de areia de verdade do cenário da Praia do Japonês
+ * (a língua de areia que sai da praia e chega na ilha). São 8 passos; em cada um dá pra pisar em
+ * cima da faixa ou na água rasinha dos lados (↑ ↓ escolhe, → pisa, ou toque no lugar). O perigo fica à vista: siri,
+ * concha cortante e buraco FUNDO (água escura). Errou: perde 1 coração (são 3).
+ * O medo da Bella sobe enquanto ela pensa; segure Espaço pra apertar a mão do Weng.
  */
 type Tile = 'areia' | 'fundo' | 'concha' | 'siri';
-/** Siri meio enterrado (antes as bolhinhas brancas sumiam na areia clara e o siri parecia areia segura). */
+/** Siri pequenininho (antes o siri era só umas bolhas brancas que sumiam na areia). */
 const CRAB =
   'data:image/svg+xml,' +
   encodeURIComponent(
@@ -293,65 +295,87 @@ const CRAB =
       <ellipse cx="26" cy="26" rx="6" ry="3" fill="#ffb08a"/>
     </svg>`,
   );
+/** Linha do meio da faixa de areia no cenário (px da arte 1536x1024), da praia até a ilhota. */
+const BAR: [number, number][] = [[350, 812], [400, 830], [500, 846], [600, 851], [700, 847], [800, 836], [900, 818], [1000, 798], [1060, 786]];
+const barY = (x: number) => {
+  for (let i = 1; i < BAR.length; i++) {
+    const [x0, y0] = BAR[i - 1];
+    const [x1, y1] = BAR[i];
+    if (x <= x1) return y0 + ((y1 - y0) * (x - x0)) / (x1 - x0);
+  }
+  return BAR[BAR.length - 1][1];
+};
+/** Recorte do cenário que aparece na tela (px da arte). */
+const VIEW = { x: 250, y: 650, w: 900, h: 340 };
+const LANE = 46; // distância entre as faixas (água de cima, areia, água de baixo)
+
 export function playTravessiaGame(parent: HTMLElement): Promise<MiniResult & { lives: number }> {
   return new Promise((resolve) => {
-    const ui = shell(parent, 'tv2', 'Travessia até a ilha');
+    const ui = shell(parent, 'tv3', 'Travessia até a ilha');
     const bg = textureURL('map-cf-japones-bg');
-    const ROWS = 8;
-    const COLS = 4;
-    // cada linha tem pelo menos uma areia clarinha, e a areia segura forma um caminho (vizinha da de antes)
+    const STEPS = 8;
+    const LANES = 3; // 0 = água do lado da enseada, 1 = em cima da faixa, 2 = água do lado do mar
+    // cada passo tem 1 ou 2 lugares seguros (sempre dá pra passar); o resto é siri, concha ou fundo
     const grid: Tile[][] = [];
-    let safe = 1 + Math.floor(Math.random() * 2);
-    for (let r = 0; r < ROWS; r++) {
+    for (let r = 0; r < STEPS; r++) {
       const row: Tile[] = [];
-      for (let c = 0; c < COLS; c++) {
-        const x = Math.random();
-        row.push(x < 0.42 ? 'fundo' : x < 0.64 ? 'concha' : x < 0.84 ? 'siri' : 'areia');
+      const safe = new Set<number>([Math.floor(Math.random() * LANES)]);
+      if (Math.random() < 0.45) safe.add(Math.floor(Math.random() * LANES));
+      for (let c = 0; c < LANES; c++) {
+        if (safe.has(c)) row.push('areia');
+        // em cima da faixa o perigo é bicho; na água dos lados pode ser fundo
+        else if (c === 1) row.push(Math.random() < 0.55 ? 'siri' : 'concha');
+        else row.push(Math.random() < 0.5 ? 'fundo' : Math.random() < 0.5 ? 'concha' : 'siri');
       }
-      row[safe] = 'areia';
       grid.push(row);
-      safe = Math.max(0, Math.min(COLS - 1, safe + [-1, 0, 1][Math.floor(Math.random() * 3)]));
     }
-    const board = h('div', { class: 'tv2-board' });
-    const cells: HTMLElement[][] = grid.map((row, r) =>
+    const stepX = (r: number) => 420 + r * 80;
+    const spot = (r: number, c: number) => {
+      const x = stepX(r);
+      return { x, y: barY(x) + (c - 1) * LANE };
+    };
+
+    // o "mundo": o cenário inteiro no tamanho da arte, recortado e escalado pra caber no palco
+    const world = h('div', { class: 'tv3-world', style: bg ? `background-image:url(${bg})` : '' });
+    const view = h('div', { class: 'tv3-view' }, world);
+    const marks: HTMLElement[][] = grid.map((row, r) =>
       row.map((t, c) => {
-        // manchinha de areia com formato próprio (cada uma diferente), concha de verdade brilhando, bolhas de siri
-        const rad = `${40 + Math.random() * 20}% ${40 + Math.random() * 20}% ${40 + Math.random() * 20}% ${40 + Math.random() * 20}% / ${45 + Math.random() * 15}% ${45 + Math.random() * 15}% ${45 + Math.random() * 15}% ${45 + Math.random() * 15}%`;
-        const inner =
-          t === 'concha'
-            ? h('img', { class: 'tv2-shell', src: textureURL('it:concha-ilha') ?? '', alt: '' })
-            : t === 'siri'
-              ? h('img', { class: 'tv2-crab', src: CRAB, alt: '' })
-              : h('i', {});
-        const el = h('div', { class: `tv2-cell ${t}`, style: `grid-row:${ROWS - r};grid-column:${c + 1};border-radius:${rad}` }, inner);
-        board.append(el);
+        const p = spot(r, c);
+        const inner = t === 'siri' ? h('img', { src: CRAB, alt: '' }) : t === 'concha' ? h('img', { src: textureURL('it:concha-ilha') ?? '', alt: '' }) : h('i');
+        const el = h('div', { class: `tv3-spot ${t} lane${c}`, style: `left:${p.x}px;top:${p.y}px` }, inner);
+        world.append(el);
         return el;
       }),
     );
-    // o casal de costas, de mãos dadas, andando pela faixa (folhas de andar de praia)
     const sheet = (k: string, fb: string) => textureURL(k) ?? textureURL(fb) ?? '';
     const couple = h(
       'div',
-      { class: 'tv2-me' },
-      h('i', { class: 'tv2-chr', style: `background-image:url(${sheet('bella-praia', 'bella-casual')})` }),
-      h('i', { class: 'tv2-chr', style: `background-image:url(${sheet('weng-praia', 'weng-casual')})` }),
-      h('i', { class: 'tv2-hand' }, '♥'),
+      { class: 'tv3-me' },
+      h('i', { class: 'tv3-chr b', style: `background-image:url(${sheet('bella-praia', 'bella-casual')})` }),
+      h('i', { class: 'tv3-chr w', style: `background-image:url(${sheet('weng-praia', 'weng-casual')})` }),
+      h('b', { class: 'tv3-hand' }, '♥'),
     );
-    const island = h('div', { class: 'tv2-island' }, 'ILHA');
-    const beach = h('div', { class: 'tv2-beach' }, 'PRAIA');
-    const fx = h('div', { class: 'fr-fx' });
+    world.append(couple);
+    const fx = h('div', { class: 'tv3-fx' });
+    world.append(fx);
     const rules = h(
       'div',
-      { class: 'cs-rules tv2-rules' },
+      { class: 'cs-rules tv3-rules' },
       h('b', {}, 'Como jogar'),
-      h('div', {}, h('span', { class: 'tv2-ico areia' }), h('span', {}, 'Escolha a próxima pedra com ', h('kbd', {}, '←'), ' ', h('kbd', {}, '→'), ' e pise com ', h('kbd', {}, '↑'), '. ', h('u', { class: 'g' }, 'Areia clarinha'), ' é seguro.')),
-      h('div', {}, h('span', { class: 'tv2-ico fundo' }), h('span', {}, 'Azul-escuro é FUNDO. Brilhinho é concha cortante e bolhinha é siri! Errou: perde 1 ♥ (são 3).')),
-      h('div', {}, h('span', { class: 'tv2-ico' }, '♥'), h('span', {}, 'O medo da Bella sobe enquanto ela pensa. Segure ', h('kbd', {}, 'Espaço'), ' pra apertar a mão do Weng e acalmar.')),
+      h('div', {}, h('span', {}, 'Siga a faixa de areia até a ilha. Escolha onde pisar com ', h('kbd', {}, '↑'), ' ', h('kbd', {}, '↓'), ' e pise com ', h('kbd', {}, '→'), ' (ou toque no lugar).')),
+      h('div', {}, h('span', {}, 'Fuja do ', h('u', {}, 'siri'), ', da ', h('u', {}, 'concha cortante'), ' e da ', h('u', {}, 'água escura'), ' (é fundo!). Errou: perde 1 ♥ (são 3).')),
+      h('div', {}, h('span', {}, 'O medo da Bella sobe enquanto ela pensa. Segure ', h('kbd', {}, 'Espaço'), ' pra apertar a mão do Weng.')),
     );
-    ui.stage.append(h('div', { class: 'tv2-bg', style: bg ? `background-image:url(${bg})` : '' }), island, board, beach, couple, fx, rules);
+    ui.stage.append(view, rules);
+    const fit = () => {
+      const k = ui.stage.clientWidth / VIEW.w;
+      world.style.transform = `scale(${k}) translate(${-VIEW.x}px, ${-VIEW.y}px)`;
+    };
+    const ro = new ResizeObserver(fit);
+    ro.observe(ui.stage);
+    requestAnimationFrame(fit);
 
-    let row = -1;
-    let col = 1;
+    let row = -1; // passo atual (-1 = na praia)
     let aim = 1;
     let lives = 3;
     let fear = 20;
@@ -361,56 +385,56 @@ export function playTravessiaGame(parent: HTMLElement): Promise<MiniResult & { l
     let last = 0;
     let raf = 0;
     const sbF = h('i', {});
-    const sbR = h('b', { class: 'so-sb-n' }, `0/${ROWS}`);
+    const sbR = h('b', { class: 'so-sb-n' }, `0/${STEPS}`);
     const sbL = h('div', { class: 'tp-sb-lives' });
     ui.hud.replaceChildren(h('div', { class: 'so-sb' }, h('div', { class: 'so-sb-chip' }, h('span', {}, 'Passos'), sbR), h('div', { class: 'so-sb-burn' }, h('span', { class: 'lbl' }, 'Medo'), h('div', { class: 'so-sb-bar' }, sbF)), h('div', { class: 'so-sb-chip' }, sbL)));
     const hud = () => {
-      sbR.textContent = `${Math.max(0, row + 1)}/${ROWS}`;
+      sbR.textContent = `${Math.max(0, row + 1)}/${STEPS}`;
       sbF.style.width = `${fear}%`;
       sbF.className = fear > 70 ? 'hot' : fear > 40 ? 'warm' : '';
       sbL.replaceChildren(...[0, 1, 2].map((k) => h('i', { class: k < lives ? 'on' : '' }, '♥')));
     };
-    const place = () => {
-      // posição do casal: na linha atual (ou na praia), na coluna atual
-      // posição pela pedra de verdade na tela (a faixa está em perspectiva)
-      const st = ui.stage.getBoundingClientRect();
-      const ref = (row >= 0 ? cells[row][col] : cells[0][col]).getBoundingClientRect();
-      const x = ref.left + ref.width / 2 - st.left;
-      const y = row >= 0 ? ref.top + ref.height * 0.55 - st.top : ref.bottom - st.top + ref.height * 0.9;
-      couple.style.left = `${x}px`;
-      couple.style.top = `${y}px`;
-      // mais longe (perto da ilha) = menor
-      couple.style.setProperty('--k', String(1 - Math.max(0, row) * 0.045));
-      couple.classList.remove('walk');
-      void couple.offsetWidth;
-      couple.classList.add('walk');
-      cells.forEach((rr, r) => rr.forEach((el, c) => el.classList.toggle('aim', r === row + 1 && c === aim && running)));
+    let lane = 1;
+    const place = (walk = true) => {
+      const p = row >= 0 ? spot(row, lane) : { x: 360, y: barY(360) };
+      couple.style.left = `${p.x}px`;
+      couple.style.top = `${p.y}px`;
+      if (walk) {
+        couple.classList.remove('walk');
+        void couple.offsetWidth;
+        couple.classList.add('walk');
+      }
+      marks.forEach((rr, r) => rr.forEach((el, c) => {
+        el.classList.toggle('next', running && r === row + 1);
+        el.classList.toggle('aim', running && r === row + 1 && c === aim);
+      }));
     };
-    const pop = (text: string, cls: string) => {
-      const el = h('b', { class: `fr-pop ${cls}`, style: `left:${couple.style.left};top:${couple.style.top}` }, text);
+    const pop = (text: string, cls: string, x: number, y: number) => {
+      const el = h('b', { class: `tv3-pop ${cls}`, style: `left:${x}px;top:${y - 40}px` }, text);
       fx.append(el);
-      setTimeout(() => el.remove(), 900);
+      setTimeout(() => el.remove(), 1000);
     };
     const step = () => {
       if (!running) return;
       const r = row + 1;
       const t = grid[r][aim];
-      cells[r][aim].classList.add('seen');
+      const p = spot(r, aim);
+      marks[r][aim].classList.add('seen');
       if (t === 'areia') {
         row = r;
-        col = aim;
+        lane = aim;
         fear = Math.max(0, fear - 12);
         AudioSystem.play('pickup');
-        pop(['Ufa!', 'Areia!', 'Firme!'][Math.floor(Math.random() * 3)], 'good');
+        pop(['Ufa!', 'Areia!', 'Firme!'][Math.floor(Math.random() * 3)], 'good', p.x, p.y);
         if (row === 2) ui.say('weng', 'Tá vendo? Areia firminha. Pisa onde eu piso.');
-        if (row === 5) ui.say('bella', 'Tá ficando fundo... Weng, tá ficando FUNDO?');
-        if (row >= ROWS - 1) return finish(true);
+        if (row === 5) ui.say('bella', 'A ilha tá logo ali... Weng, não solta minha mão.');
+        if (row >= STEPS - 1) return finish(true);
       } else {
         lives--;
         fear = Math.min(100, fear + 25);
         ui.shake();
         AudioSystem.play('cancel');
-        pop(t === 'fundo' ? 'FUNDO!' : t === 'concha' ? 'Concha!' : 'SIRI!', 'bad');
+        pop(t === 'fundo' ? 'FUNDO!' : t === 'concha' ? 'Ai, concha!' : 'SIRI!', 'bad', p.x, p.y);
         ui.say('bella', t === 'fundo' ? 'AAAH, afundou! Tá na cintura! Volta, volta!' : t === 'concha' ? 'Ai! Uma concha! Meu pé!' : 'UM SIRI! Ele me olhou! Ele OLHOU pra mim!');
         couple.classList.add('hit');
         setTimeout(() => couple.classList.remove('hit'), 500);
@@ -442,10 +466,19 @@ export function playTravessiaGame(parent: HTMLElement): Promise<MiniResult & { l
       done = true;
       running = false;
       cancelAnimationFrame(raf);
+      ro.disconnect();
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('keyup', onKeyUp);
       hud();
-      place();
+      if (won) {
+        // o último passo: sobe na ilhota
+        setTimeout(() => {
+          couple.style.left = '1050px';
+          couple.style.top = `${barY(1050) - 6}px`;
+          couple.classList.add('walk');
+        }, 350);
+      }
+      place(false);
       const stars = !won ? 1 : lives === 3 ? 3 : 2;
       ui.say(won ? 'bella' : 'weng', won ? 'CHEGAMOS NA ILHA! Eu atravessei! Sem desmaiar! (Quase.)' : 'Tá tudo bem, eu te carrego no colo o resto do caminho.');
       ui.end(stars, 'Subir na ilha', () => resolve({ stars, mistakes: 3 - lives, lives }));
@@ -460,13 +493,14 @@ export function playTravessiaGame(parent: HTMLElement): Promise<MiniResult & { l
         return;
       }
       if (!running || e.repeat) return;
-      if (c === 'ArrowLeft' || c === 'KeyA') aim = Math.max(0, aim - 1);
-      else if (c === 'ArrowRight' || c === 'KeyD') aim = Math.min(COLS - 1, aim + 1);
-      else if (c === 'ArrowUp' || c === 'KeyW') return step();
+      // a faixa vai da esquerda (praia) pra direita (ilha): ↑ ↓ escolhem onde pisar, → pisa
+      if (c === 'ArrowUp' || c === 'KeyW') aim = Math.max(0, aim - 1);
+      else if (c === 'ArrowDown' || c === 'KeyS') aim = Math.min(LANES - 1, aim + 1);
+      else if (c === 'ArrowRight' || c === 'KeyD') return step();
       else return;
       e.preventDefault();
       AudioSystem.play('blip');
-      place();
+      place(false);
     };
     const onKeyUp = (e: KeyboardEvent) => {
       if (e.code === 'Space' || e.code === 'KeyE' || e.code === 'Enter') hold = false;
@@ -476,16 +510,26 @@ export function playTravessiaGame(parent: HTMLElement): Promise<MiniResult & { l
       rules.classList.add('off');
       running = true;
       ui.actions.replaceChildren();
-      ui.say('weng', 'Pisa onde a areia tá clarinha. Eu tô do seu lado o tempo todo.');
-      place();
+      ui.say('weng', 'Pisa onde tá limpinho. Eu tô do seu lado o tempo todo.');
+      place(false);
     };
+    // toque/clique: tocar num lugar do próximo passo pisa nele
+    marks.forEach((rr, r) =>
+      rr.forEach((el, c) =>
+        el.addEventListener('click', () => {
+          if (!running || r !== row + 1) return;
+          aim = c;
+          step();
+        }),
+      ),
+    );
     const startBtn = h('button', { class: 'btn primary' }, 'Dar a mão pro Weng');
     startBtn.addEventListener('click', start);
     ui.actions.append(startBtn);
     window.addEventListener('keydown', onKey);
     window.addEventListener('keyup', onKeyUp);
     hud();
-    requestAnimationFrame(() => place());
+    place(false);
     ui.say('bella', 'Weng... e se tiver fundo? E se tiver bicho? E se tiver um BICHO no FUNDO?');
     raf = requestAnimationFrame(tick);
   });
