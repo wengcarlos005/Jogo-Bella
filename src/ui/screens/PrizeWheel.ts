@@ -193,10 +193,10 @@ export function playPrizeWheel(parent: HTMLElement, id: PrizeWheelId): Promise<v
       const mid = i * SEG + SEG / 2;
       // a imagem do prêmio fica perto da borda, o nome mais pra dentro
       const ic = document.createElementNS(NS, 'image');
-      ic.setAttribute('x', '-22');
-      ic.setAttribute('y', '-22');
-      ic.setAttribute('width', '44');
-      ic.setAttribute('height', '44');
+      ic.setAttribute('x', '-16');
+      ic.setAttribute('y', '-16');
+      ic.setAttribute('width', '32');
+      ic.setAttribute('height', '32');
       ic.setAttribute('transform', `rotate(${mid}) translate(0 -64)`);
       icons.push(ic);
       t.setAttribute('text-anchor', 'middle');
